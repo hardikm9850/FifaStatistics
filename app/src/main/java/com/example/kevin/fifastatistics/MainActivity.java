@@ -3,6 +3,7 @@ package com.example.kevin.fifastatistics;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -13,8 +14,11 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.example.kevin.fifastatistics.User.User;
+
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener,
+        FriendsFragment.OnListFragmentInteractionListener {
 
     NavigationView navigationView = null;
     Toolbar toolbar = null;
@@ -47,6 +51,11 @@ public class MainActivity extends AppCompatActivity
 
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+    }
+
+    @Override
+    public void onListFragmentInteraction(User user) {
+        System.out.println("Interacted");
     }
 
     public void setActionBarTitle(String title)
@@ -97,7 +106,7 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_statistics) {
             initializeSecondFragment();
         } else if (id == R.id.nav_friends) {
-
+            initializeFriendsFragment();
         } else if (id == R.id.nav_starred) {
 
         } else if (id == R.id.nav_settings) {
@@ -122,6 +131,16 @@ public class MainActivity extends AppCompatActivity
     private void initializeSecondFragment() {
         SecondFragment fragment = new SecondFragment();
         toolbar.setTitle("Statistics");
+        android.support.v4.app.FragmentTransaction fragmentTransaction =
+                getSupportFragmentManager().beginTransaction();
+
+        fragmentTransaction.replace(R.id.fragment_container, fragment);
+        fragmentTransaction.commit();
+    }
+
+    private void initializeFriendsFragment() {
+        FriendsFragment fragment = new FriendsFragment();
+        toolbar.setTitle("Friends");
         android.support.v4.app.FragmentTransaction fragmentTransaction =
                 getSupportFragmentManager().beginTransaction();
 
