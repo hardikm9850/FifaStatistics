@@ -1,9 +1,12 @@
 package com.example.kevin.fifastatistics.RestClient;
 
+import android.util.Log;
+
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -16,10 +19,9 @@ public class RestClient {
 
     private static RestClient instance = new RestClient();
 
-    private static final String host = "192.168.0.106";
-    private static final String port = "8080";
+    private static final String host = "fifastatisticsapi.azurewebsites.net";
 
-    private static final String users = "Users/";
+    private static final String users = "users/";
     private static final String embedded = "_embedded";
 
     public static RestClient getInstance() {
@@ -31,7 +33,7 @@ public class RestClient {
 
     private String getUrlBase()
     {
-        return "http://" + host + ":" + port + "/";
+        return "https://" + host + "/";
     }
 
     private JsonNode getResponse(String path) {
@@ -54,7 +56,7 @@ public class RestClient {
                 urlConnection.disconnect();
             }
         }
-        catch(Exception e) {
+        catch(IOException e) {
             e.printStackTrace();
             return null;
         }
@@ -68,13 +70,11 @@ public class RestClient {
      * Returns the list of users in JSON format
      * @return  the users, null if the response was empty
      */
-    public JsonNode getUsers()
-    {
+    public JsonNode getUsers() {
         JsonNode response = getResponse(users);
         if (response != null) {
-            return response.get(embedded).get("Users");
-        }
-        else {
+            return response.get(embedded).get("users");
+        } else {
             return null;
         }
     }
@@ -84,13 +84,11 @@ public class RestClient {
      * @param name  the name being searched on
      * @return Users with the specified name, null if the response was empty
      */
-    public JsonNode getUsersWithName(String name)
-    {
+    public JsonNode getUsersWithName(String name) {
         JsonNode response = getResponse(users + "search/findByName" + "?name=" + name);
         if (response != null) {
-            return response.get(embedded).get("Users");
-        }
-        else {
+            return response.get(embedded).get("users");
+        } else {
             return null;
         }
     }
@@ -104,20 +102,16 @@ public class RestClient {
      * @param jsonPayload   The JSON String
      * @return the JsonNode
      */
-    private static JsonNode parseJsonNodeFromJson(String jsonPayload)
-    {
+    private static JsonNode parseJsonNodeFromJson(String jsonPayload) {
         ObjectMapper mapper	= new ObjectMapper();
-        JsonNode jsonNode = null;
-        if(jsonPayload == null ||jsonPayload.isEmpty())
-        {
+        JsonNode jsonNode;
+        if(jsonPayload == null ||jsonPayload.isEmpty()) {
             return null;
         }
-        try
-        {
+        try {
             jsonNode = mapper.readTree(jsonPayload);
-        } catch (Exception e)
-        {
-
+        } catch (IOException e) {
+            return null;
         }
 
         return jsonNode;

@@ -1,17 +1,32 @@
 package com.example.kevin.fifastatistics;
 
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.TransitionDrawable;
 import android.os.AsyncTask;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.kevin.fifastatistics.FriendsFragment.OnListFragmentInteractionListener;
 import com.example.kevin.fifastatistics.User.User;
 
+import java.io.InputStream;
 import java.util.List;
 
 /**
@@ -40,7 +55,8 @@ public class MyFriendsRecyclerViewAdapter extends RecyclerView.Adapter<MyFriends
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mUsers.get(position);
         holder.mNameView.setText(mUsers.get(position).getName());
-        holder.mImageView.setText(mUsers.get(position).getImageUrl());
+        
+        new getAndSetImageTask(holder.mImageView).execute(mUsers.get(position).getImageUrl());
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -62,20 +78,39 @@ public class MyFriendsRecyclerViewAdapter extends RecyclerView.Adapter<MyFriends
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
         public final TextView mNameView;
-        public final TextView mImageView;
+        public final ImageView mImageView;
         public User mItem;
 
         public ViewHolder(View view) {
             super(view);
             mView = view;
             mNameView = (TextView) view.findViewById(R.id.name);
-            mImageView = (TextView) view.findViewById(R.id.imageUrl);
-        }
-
-        @Override
-        public String toString() {
-            return super.toString() + " '" + mImageView.getText() + "'";
+            mImageView = (ImageView) view.findViewById(R.id.user_image);
         }
     }
-    
+
+    private class getAndSetImageTask extends AsyncTask<String, Void, Bitmap> {
+        ImageView bmImage;
+
+        public getAndSetImageTask(ImageView bmImage) {
+            this.bmImage = bmImage;
+        }
+
+        protected Bitmap doInBackground(String... urls) {
+            String urlDisplay = urls[0];
+            Bitmap mIcon11 = null;
+            try {
+                InputStream in = new java.net.URL(urlDisplay).openStream();
+                mIcon11 = BitmapFactory.decodeStream(in);
+            } catch (Exception e) {
+                Log.e("Error", e.getMessage());
+                e.printStackTrace();
+            }
+            return mIcon11;
+        }
+
+        protected void onPostExecute(Bitmap result) {
+            bmImage.setImageBitmap(result);
+        }
+    }
 }

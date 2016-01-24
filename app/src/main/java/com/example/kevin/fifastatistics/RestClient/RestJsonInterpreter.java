@@ -6,6 +6,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 import java.util.ArrayList;
 
 /**
+ * Interprets the JSON returned by the {@link RestClient} class and returns data as its appropriate
+ * type, e.g. User, Match, etc.
  * Created by Kevin on 1/1/2016.
  */
 public class RestJsonInterpreter {
