@@ -8,6 +8,7 @@ import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -17,8 +18,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.example.kevin.fifastatistics.User.User;
+import com.example.kevin.fifastatistics.utils.GetAndSetImageFromUrl;
 import com.example.kevin.fifastatistics.utils.PreferenceHandler;
 
 public class MainActivity extends AppCompatActivity
@@ -28,13 +32,14 @@ public class MainActivity extends AppCompatActivity
     NavigationView navigationView = null;
     Toolbar toolbar = null;
     private PreferenceHandler handler;
+    private User currentUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        handler = PreferenceHandler.getInstance(getApplicationContext());
-        handler.getCurrentUser();
         setContentView(R.layout.activity_main);
+        handler = PreferenceHandler.getInstance(getApplicationContext());
+        currentUser = handler.getCurrentUser();
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -50,14 +55,28 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+
+        initializeDrawer();
+    }
+
+    private void initializeDrawer()
+    {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+
+        View headerView = navigationView.inflateHeaderView(R.layout.nav_header_main);
+
+        ImageView profileImage= (ImageView) headerView.findViewById(R.id.profile_image);
+        new GetAndSetImageFromUrl(profileImage).execute(currentUser.getImageUrl());
+
+        TextView name = (TextView) headerView.findViewById(R.id.username);
+        name.setText(currentUser.getName());
+
         drawer.setDrawerListener(toggle);
         toggle.syncState();
-
-        navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
     }
 
     @Override

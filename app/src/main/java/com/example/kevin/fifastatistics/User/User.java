@@ -12,6 +12,8 @@ public class User {
     private String googleId;
     private String imageUrl;
     private ArrayNode friends;
+    private int level;
+    private int experience;
 
     /**
      * Default constructor to create a new user.
@@ -26,6 +28,8 @@ public class User {
         this.email = email;
         this.googleId = googleId;
         this.imageUrl = imageUrl;
+        level = 0;
+        experience = 0;
     }
 
     public User(String name, String imageUrl)
@@ -34,6 +38,8 @@ public class User {
         this.imageUrl = imageUrl;
         this.email = null;
         this.googleId = null;
+        level = 0;
+        experience = 0;
     }
 
     public String getName()
@@ -56,4 +62,23 @@ public class User {
         return googleId;
     }
 
+    public int getLevel()
+    {
+        return level;
+    }
+
+    public void setLevel(int level)
+    {
+        this.level = level;
+    }
+
+    public int getExperience()
+    {
+        return experience;
+    }
+
+    public void setExperience(int experience)
+    {
+        this.experience = experience;
+    }
 }
