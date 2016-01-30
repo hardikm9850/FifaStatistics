@@ -1,14 +1,8 @@
 package com.example.kevin.fifastatistics;
 
-import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -21,6 +15,7 @@ import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.kevin.fifastatistics.User.Friend;
 import com.example.kevin.fifastatistics.User.User;
 import com.example.kevin.fifastatistics.utils.GetAndSetImageFromUrl;
 import com.example.kevin.fifastatistics.utils.PreferenceHandler;
@@ -70,23 +65,18 @@ public class MainActivity extends AppCompatActivity
         View headerView = navigationView.inflateHeaderView(R.layout.nav_header_main);
 
         ImageView profileImage= (ImageView) headerView.findViewById(R.id.profile_image);
-        new GetAndSetImageFromUrl(profileImage).execute(currentUser.getImageUrl());
+        new GetAndSetImageFromUrl(profileImage).execute(currentUser.imageUrl);
 
         TextView name = (TextView) headerView.findViewById(R.id.username);
-        name.setText(currentUser.getName());
+        name.setText(currentUser.name);
 
         drawer.setDrawerListener(toggle);
         toggle.syncState();
     }
 
     @Override
-    public void onListFragmentInteraction(User user) {
+    public void onListFragmentInteraction(Friend friend) {
         System.out.println("Interacted");
-    }
-
-    public void setActionBarTitle(String title)
-    {
-        toolbar.setTitle(title);
     }
 
     @Override

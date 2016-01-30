@@ -12,7 +12,7 @@
         android:layout_height="130dp"
         app:civ_border_width="2dp"
         app:civ_border_color="#FFFFFF"
-        android:src="@drawable/profile"
+        android:src="@android:color/white"
         android:layout_gravity="center_horizontal"/>
 
     <TextView

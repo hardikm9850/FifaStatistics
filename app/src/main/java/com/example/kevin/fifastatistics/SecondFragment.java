@@ -62,7 +62,7 @@ public class SecondFragment extends Fragment {
         @Override
         protected Void doInBackground(Void... arg0) {
 
-            friendsList = reader.getUserList();
+//            friendsList = reader.getUserList();
 
             if (friendsList == null) {
                 Log.e("ServiceHandler", "Couldn't get any data from the url");
@@ -82,8 +82,8 @@ public class SecondFragment extends Fragment {
             /**
              * Updating parsed JSON data into ListView
              * */
-            Button button = (Button) view.findViewById(R.id.textView);
-            button.setText(friendsList.get(0).getName());
+//            Button button = (Button) view.findViewById(R.id.textView);
+//            button.setText(friendsList.get(0).getName());
         }
 
     }

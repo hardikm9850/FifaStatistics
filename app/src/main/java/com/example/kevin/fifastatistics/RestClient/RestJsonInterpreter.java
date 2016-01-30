@@ -26,14 +26,14 @@ public class RestJsonInterpreter {
      * Returns an ArrayList of all Users in the database.
      * @return  the user list
      */
-    public ArrayList<User> getUserList() {
-        ArrayList<User> userList = new ArrayList<>();
-
-        JsonNode users = client.getUsers();
-        for (JsonNode user : users) {
-            userList.add(new User(user.get("name").asText(), user.get("imageUrl").asText()));
-        }
-
-        return userList;
-    }
+//    public ArrayList<User> getUserList() {
+//        ArrayList<User> userList = new ArrayList<>();
+//
+//        JsonNode users = client.getUsers();
+//        for (JsonNode user : users) {
+//            userList.add(new User(user.get("name").asText(), user.get("imageUrl").asText()));
+//        }
+//
+//        return userList;
+//    }
 }

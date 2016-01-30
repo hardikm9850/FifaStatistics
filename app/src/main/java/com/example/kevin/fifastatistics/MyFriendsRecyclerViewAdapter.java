@@ -8,22 +8,22 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.kevin.fifastatistics.FriendsFragment.OnListFragmentInteractionListener;
-import com.example.kevin.fifastatistics.User.User;
+import com.example.kevin.fifastatistics.User.Friend;
 import com.example.kevin.fifastatistics.utils.GetAndSetImageFromUrl;
 
-import java.util.List;
+import java.util.ArrayList;
 
 /**
- * {@link RecyclerView.Adapter} that can display a {@link User} and makes a call to the
+ * {@link RecyclerView.Adapter} that can display a {@link Friend} and makes a call to the
  * specified {@link OnListFragmentInteractionListener}.
  * TODO: Replace the implementation with code for your data type.
  */
 public class MyFriendsRecyclerViewAdapter extends RecyclerView.Adapter<MyFriendsRecyclerViewAdapter.ViewHolder> {
 
-    private List<User> mUsers;
+    private ArrayList<Friend> mUsers;
     private final OnListFragmentInteractionListener mListener;
 
-    public MyFriendsRecyclerViewAdapter(List<User> users, OnListFragmentInteractionListener listener) {
+    public MyFriendsRecyclerViewAdapter(ArrayList<Friend> users, OnListFragmentInteractionListener listener) {
         mUsers = users;
         mListener = listener;
     }
@@ -39,15 +39,13 @@ public class MyFriendsRecyclerViewAdapter extends RecyclerView.Adapter<MyFriends
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mUsers.get(position);
         holder.mNameView.setText(mUsers.get(position).getName());
-        
+
         new GetAndSetImageFromUrl(holder.mImageView).execute(mUsers.get(position).getImageUrl());
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (null != mListener) {
-                    // Notify the active callbacks interface (the activity, if the
-                    // fragment is attached to one) that an item has been selected.
                     mListener.onListFragmentInteraction(holder.mItem);
                 }
             }
@@ -63,7 +61,7 @@ public class MyFriendsRecyclerViewAdapter extends RecyclerView.Adapter<MyFriends
         public final View mView;
         public final TextView mNameView;
         public final ImageView mImageView;
-        public User mItem;
+        public Friend mItem;
 
         public ViewHolder(View view) {
             super(view);
