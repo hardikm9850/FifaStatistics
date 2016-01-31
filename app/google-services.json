@@ -1,0 +1,51 @@
+{
+  "project_info": {
+    "project_id": "fifastatistics",
+    "project_number": "433114915503",
+    "name": "FifaStatistics"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:433114915503:android:5a0c9af5ef0f4c04",
+        "client_id": "android:com.example.kevin",
+        "client_type": 1,
+        "android_client_info": {
+          "package_name": "com.example.kevin"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "433114915503-ek2cfp684a0vboth5dnoj1q0ltsiajpt.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.kevin",
+            "certificate_hash": "89EE1298B6ECA381699C3910B5D379BAA42A0249"
+          }
+        }
+      ],
+      "api_key": [],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "cloud_messaging_service": {
+          "status": 1,
+          "apns_config": []
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "google_signin_service": {
+          "status": 2
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "client_info": [],
+  "ARTIFACT_VERSION": "1"
+}
