@@ -68,6 +68,7 @@ public class GetFriendRequestsAsyncTask extends AsyncTask<String, Void, Void>
                     request = requests.get(i);
                     incomingRequest.id = request.get("senderId").asText();
                     incomingRequest.name = request.get("senderName").asText();
+                    incomingRequest.requestId = request.get("requestId").asText();
                     user.incomingRequests.add(incomingRequest);
                 }
 

@@ -145,11 +145,13 @@ public class User {
 
         public String id;
         public String name;
+        public String requestId;
 
-        public Request(String id, String name)
+        public Request(String id, String name, String requestId)
         {
             this.id = id;
             this.name = name;
+            this.requestId = requestId;
         }
 
         public Request() {

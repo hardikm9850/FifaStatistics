@@ -31,6 +31,8 @@ public class MainActivity extends AppCompatActivity
     Toolbar toolbar = null;
     private PreferenceHandler handler;
     private User currentUser;
+    private static boolean doShowSearchItem = false;
+    private static String title = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,29 +99,42 @@ public class MainActivity extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
+
+        MenuItem item = menu.findItem(R.id.action_search);
+        item.setVisible(doShowSearchItem);
         return true;
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        // Handle action bar item clicks here. The action bar will
+//        // automatically handle clicks on the Home/Up button, so long
+//        // as you specify a parent activity in AndroidManifest.xml.
+//        int id = item.getItemId();
+//
+//        //noinspection SimplifiableIfStatement
+//        if (id == R.id.action_settings) {
+//            return true;
+//        }
+//
+//        return super.onOptionsItemSelected(item);
+//    }
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
+
+        String itemTitle = item.getTitle().toString();
+        if (title.equals(itemTitle))
+        {
+            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+            drawer.closeDrawer(GravityCompat.START);
+            return true;
+        }
+
+        title = itemTitle;
 
         if (id == R.id.nav_overview) {
             initializeMainFragment();
@@ -158,7 +173,10 @@ public class MainActivity extends AppCompatActivity
         fragmentTransaction.commit();
     }
 
-    private void initializeFriendsFragment() {
+    private void initializeFriendsFragment()
+    {
+        doShowSearchItem = true;
+        this.invalidateOptionsMenu();
         FriendsFragment fragment = new FriendsFragment();
         toolbar.setTitle("Friends");
         android.support.v4.app.FragmentTransaction fragmentTransaction =
