@@ -1,4 +1,6 @@
-package com.example.kevin.fifastatistics.User;
+package com.example.kevin.fifastatistics.user;
+
+import com.fasterxml.jackson.databind.JsonNode;
 
 import java.util.ArrayList;
 
@@ -17,15 +19,18 @@ import java.util.ArrayList;
  */
 public class User {
 
+    public String id;
     public String name;
     public String email;
     public String googleId;
     public String imageUrl;
     public ArrayList<Friend> friends;
-    public ArrayList<Stats> records;
-    public ArrayList<Stats> averages;
+    public ArrayList<Request> incomingRequests;
+    public ArrayList<Friend> outgoingRequests;
     public ArrayList<MatchStub> matches;
     public ArrayList<SeriesStub> series;
+    public Stats records;
+    public Stats averages;
     public int matchWins;
     public int matchLosses;
     public int seriesWins;
@@ -33,17 +38,21 @@ public class User {
     public int level;
     public int experience;
 
-    public User(String name, String email, String googleId, String imageUrl,
-                ArrayList<Friend> friends, ArrayList<Stats> records,
-                ArrayList<Stats> averages, ArrayList<MatchStub> matches,
+    public User(String id, String name, String email, String googleId, String imageUrl,
+                ArrayList<Friend> friends, ArrayList<Request> incomingRequests,
+                ArrayList<Friend> outgoingRequests, Stats records,
+                Stats averages, ArrayList<MatchStub> matches,
                 ArrayList<SeriesStub> series, int matchWins, int matchLosses,
                 int seriesWins, int seriesLosses, int level, int experience)
     {
+        this.id = id;
         this.name = name;
         this.email = email;
         this.googleId = googleId;
         this.imageUrl = imageUrl;
         this.friends = friends;
+        this.incomingRequests = incomingRequests;
+        this.outgoingRequests = outgoingRequests;
         this.records = records;
         this.averages = averages;
         this.matches = matches;
@@ -62,6 +71,15 @@ public class User {
         this.email = email;
         this.googleId = googleId;
         this.imageUrl = imageUrl;
+    }
+
+    public User(String name, String email, String googleId, String imageUrl, String id)
+    {
+        this.name = name;
+        this.email = email;
+        this.googleId = googleId;
+        this.imageUrl = imageUrl;
+        this.id = id;
     }
 
     private class Stats {
@@ -105,16 +123,16 @@ public class User {
 
     private class MatchStub {
 
-        public String href;
+        public String id;
         public String opponent;
         public String date;
         public int goalsFor;
         public int goalsAgainst;
         public boolean won;
 
-        public MatchStub(String href, String opponent, String date,
+        public MatchStub(String id, String opponent, String date,
                          int goalsFor, int goalsAgainst, boolean won) {
-            this.href = href;
+            this.id = id;
             this.opponent = opponent;
             this.date = date;
             this.goalsFor = goalsFor;
@@ -123,17 +141,33 @@ public class User {
         }
     }
 
+    public class Request {
+
+        public String id;
+        public String name;
+
+        public Request(String id, String name)
+        {
+            this.id = id;
+            this.name = name;
+        }
+
+        public Request() {
+
+        }
+    }
+
     private class SeriesStub {
 
-        public String href;
+        public String id;
         public String opponent;
         public String date;
         public ArrayList<MatchSummary> matches;
         public boolean win;
 
-        public SeriesStub(String href, String opponent, String date,
+        public SeriesStub(String id, String opponent, String date,
                           ArrayList<MatchSummary> matches, boolean win) {
-            this.href = href;
+            this.id = id;
             this.opponent = opponent;
             this.date = date;
             this.matches = matches;

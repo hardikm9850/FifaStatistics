@@ -6,15 +6,13 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
-import com.example.kevin.fifastatistics.RestClient.RestClient;
-import com.example.kevin.fifastatistics.User.Friend;
-import com.example.kevin.fifastatistics.User.User;
+import com.example.kevin.fifastatistics.overview.MainActivity;
+import com.example.kevin.fifastatistics.restclient.RestClient;
+import com.example.kevin.fifastatistics.user.User;
 import com.example.kevin.fifastatistics.utils.PreferenceHandler;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.google.android.gms.auth.api.Auth;
@@ -253,14 +251,26 @@ public class SignInActivity extends AppCompatActivity implements
 
             if (user == null)
             {
+                JsonNode json;
                 try
                 {
                     publishProgress("Creating new user...");
-                    client.createUser(name, googleId, email, imageUrl);
-                    handler.setCurrentUser(name, googleId, email, imageUrl);
-                    handler.setSignedIn(true);
+                    json = client.createUser(name, googleId, email, imageUrl);
+                    Log.d("CREATEUSER", "response: " + json);
                 }
                 catch (IOException e)
+                {
+                    failedCreate = true;
+                    return null;
+                }
+
+                try
+                {
+                    handler.setCurrentUser(name, googleId, email, imageUrl);
+                    handler.storeUser(new User(name, googleId, email, imageUrl, json.get("id").asText()));
+                    handler.setSignedIn(true);
+                }
+                catch (NullPointerException e)
                 {
                     failedCreate = true;
                     return null;
@@ -269,6 +279,7 @@ public class SignInActivity extends AppCompatActivity implements
             else
             {
                 handler.setCurrentUser(name, googleId, email, imageUrl);
+                handler.storeUser(user);
                 handler.setSignedIn(true);
             }
 

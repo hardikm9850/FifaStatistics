@@ -1,9 +1,4 @@
-package com.example.kevin.fifastatistics.RestClient;
-
-import com.example.kevin.fifastatistics.User.User;
-import com.fasterxml.jackson.databind.JsonNode;
-
-import java.util.ArrayList;
+package com.example.kevin.fifastatistics.restclient;
 
 /**
  * Interprets the JSON returned by the {@link RestClient} class and returns data as its appropriate

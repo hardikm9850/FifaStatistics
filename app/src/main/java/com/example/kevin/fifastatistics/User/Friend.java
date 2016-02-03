@@ -1,4 +1,4 @@
-package com.example.kevin.fifastatistics.User;
+package com.example.kevin.fifastatistics.user;
 
 /**
  * Created by Kevin on 1/29/2016.
@@ -19,14 +19,14 @@ package com.example.kevin.fifastatistics.User;
  */
 public class Friend
 {
-    private String href;
-    private String name;
-    private String imageUrl;
-    private int level;
+    public String id;
+    public String name;
+    public String imageUrl;
+    public int level;
 
-    public Friend(String href, String name, String imageUrl, int level)
+    public Friend(String id, String name, String imageUrl, int level)
     {
-        this.href = href;
+        this.id = id;
         this.name = name;
         this.imageUrl = imageUrl;
         this.level = level;
@@ -34,38 +34,5 @@ public class Friend
 
     public Friend() {
 
-    }
-
-    public String getHref() {
-        return href;
-    }
-
-    public void setHref(String href) {
-        this.href = href;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getImageUrl() {
-        return imageUrl;
-    }
-
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
-    }
-
-    public int getLevel() {
-        return level;
-    }
-
-    public void setLevel(int level)
-    {
-        this.level = level;
     }
 }

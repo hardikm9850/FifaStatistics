@@ -3,7 +3,9 @@ package com.example.kevin.fifastatistics.utils;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import com.example.kevin.fifastatistics.User.User;
+import com.example.kevin.fifastatistics.user.User;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.google.gson.Gson;
 
 /**
  * Created by Kevin on 1/23/2016.
@@ -62,6 +64,45 @@ public class PreferenceHandler
         editor.commit();
     }
 
+    public void storeUser(User user)
+    {
+        editor = preferences.edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(user);
+        editor.putString(PreferenceNames.CURRENT_USER.name(), json);
+        editor.commit();
+    }
+
+    public void storeUserAsync(User user)
+    {
+        editor = preferences.edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(user);
+        editor.putString(PreferenceNames.CURRENT_USER.name(), json);
+        editor.apply();
+    }
+
+    public void storeUser(JsonNode user)
+    {
+        editor = preferences.edit();
+        editor.putString(PreferenceNames.CURRENT_USER.name(), user.toString());
+        editor.commit();
+    }
+
+    public void storeUserAsync(JsonNode user)
+    {
+        editor = preferences.edit();
+        editor.putString(PreferenceNames.CURRENT_USER.name(), user.toString());
+        editor.apply();
+    }
+
+    public User getUser()
+    {
+        Gson gson = new Gson();
+        String user = preferences.getString(PreferenceNames.CURRENT_USER.name(), null);
+        return gson.fromJson(user, User.class);
+    }
+
     private enum PreferenceNames
     {
         PREFERENCES,         // String, Default Shared Preference name
@@ -69,6 +110,7 @@ public class PreferenceHandler
         CURRENT_USER_NAME,   // String, the current signed in user's name
         CURRENT_USER_EMAIL,  // String
         CURRENT_USER_IMAGE_URL,
-        CURRENT_USER_GOOGLE_ID
+        CURRENT_USER_GOOGLE_ID,
+        CURRENT_USER
     }
 }

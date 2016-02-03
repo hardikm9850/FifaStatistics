@@ -1,19 +1,15 @@
-package com.example.kevin.fifastatistics.RestClient;
+package com.example.kevin.fifastatistics.restclient;
 
-import android.app.DownloadManager;
 import android.util.Log;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.ConnectException;
-import java.net.HttpURLConnection;
-import java.net.URL;
+import java.util.ArrayList;
 
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -31,9 +27,11 @@ public class RestClient {
     private static final String JSON_TYPE = "application/json";
     private static final String HOST = "https://fifastatisticsapi.azurewebsites.net/";
     private static final String USERS = "users/";
+    private static final String REQUESTS = "requests/";
     private static final String EMBEDDED = "_embedded";
     private static final String FIND_BY_NAME = USERS + "search/findByName?name=";
     private static final String FIND_BY_GOOGLE_ID = USERS + "search/findByGoogleId?googleId=";
+    private static final String FIND_BY_RECEIVER_ID = REQUESTS + "search/findByReceiverId?receiverId=";
 
     public static RestClient getInstance() {
         return instance;
@@ -66,7 +64,7 @@ public class RestClient {
     // PUBLIC METHODS
     //----------------------------------------------------------------------------------------------
 
-    public void createUser(String name, String googleId, String email, String imageUrl)
+    public JsonNode createUser(String name, String googleId, String email, String imageUrl)
             throws IOException
     {
         OkHttpClient client = new OkHttpClient();
@@ -85,7 +83,13 @@ public class RestClient {
         {
             throw new IOException();
         }
+        else
+        {
+            return parseJsonNodeFromJson(response.body().string());
+        }
     }
+
+//    public void sendFriendRequest()
 
     /**
      * Returns the list of users in JSON format
@@ -126,6 +130,23 @@ public class RestClient {
     public JsonNode getUserWithGoogleId(String googleId) throws IOException
     {
         return getResponse(FIND_BY_GOOGLE_ID + googleId);
+    }
+
+    /**
+     * Returns friend requests where the user defined by the ID parameter is the receiver of the
+     * request.
+     * @param id
+     * @return
+     * @throws IOException
+     */
+    public ArrayNode getRequestsForUser(String id) throws IOException
+    {
+        JsonNode response = getResponse(FIND_BY_RECEIVER_ID + id);
+        if (response != null)
+        {
+            return (ArrayNode) response.get(EMBEDDED).get("requests");
+        }
+        else throw new IOException();
     }
 
     // ---------------------------------------------------------------------------------------------

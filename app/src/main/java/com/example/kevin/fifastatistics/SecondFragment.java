@@ -9,12 +9,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 
-import com.example.kevin.fifastatistics.RestClient.RestJsonInterpreter;
-import com.example.kevin.fifastatistics.User.User;
+import com.example.kevin.fifastatistics.restclient.RestJsonInterpreter;
+import com.example.kevin.fifastatistics.user.User;
 
 import java.util.ArrayList;
 
