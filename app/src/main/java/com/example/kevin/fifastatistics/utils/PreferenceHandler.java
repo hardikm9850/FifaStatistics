@@ -16,7 +16,8 @@ public class PreferenceHandler
     private SharedPreferences preferences;
     private SharedPreferences.Editor editor;
 
-    public static PreferenceHandler getInstance(Context context) {
+    public static PreferenceHandler getInstance(Context context)
+    {
         instance.preferences = context.getSharedPreferences(
                 PreferenceNames.PREFERENCES.name(), Context.MODE_PRIVATE);
         return instance;
@@ -42,6 +43,42 @@ public class PreferenceHandler
     {
         editor = preferences.edit();
         editor.putBoolean(PreferenceNames.SIGNED_IN.name(), signedIn);
+        editor.apply();
+    }
+
+    public boolean didSendRegistrationToken()
+    {
+        return preferences.getBoolean(PreferenceNames.SENT_TOKEN_TO_SERVER.name(), false);
+    }
+
+    public void setDidSendRegistrationToken(boolean didSendToken)
+    {
+        editor = preferences.edit();
+        editor.putBoolean(PreferenceNames.SENT_TOKEN_TO_SERVER.name(), didSendToken);
+        editor.apply();
+    }
+
+    public String getRegistrationToken()
+    {
+        return preferences.getString(PreferenceNames.REGISTRATION_TOKEN.name(), null);
+    }
+
+    public void setRegistrationToken(String registrationToken)
+    {
+        editor = preferences.edit();
+        editor.putString(PreferenceNames.REGISTRATION_TOKEN.name(), registrationToken);
+        editor.apply();
+    }
+
+    public boolean getRegistrationFailed()
+    {
+        return preferences.getBoolean(PreferenceNames.REGISTRATION_FAILED.name(), false);
+    }
+
+    public void setRegistrationFailed(boolean registrationFailed)
+    {
+        editor = preferences.edit();
+        editor.putBoolean(PreferenceNames.REGISTRATION_FAILED.name(), registrationFailed);
         editor.apply();
     }
 
@@ -105,10 +142,13 @@ public class PreferenceHandler
 
     private enum PreferenceNames
     {
-        PREFERENCES,         // String, Default Shared Preference name
-        SIGNED_IN,           // Boolean, true if user is signed in to Google
-        CURRENT_USER_NAME,   // String, the current signed in user's name
-        CURRENT_USER_EMAIL,  // String
+        PREFERENCES,          // String, Default Shared Preference name
+        SIGNED_IN,            // Boolean, true if user is signed in to Google
+        CURRENT_USER_NAME,    // String, the current signed in user's name
+        CURRENT_USER_EMAIL,   // String
+        SENT_TOKEN_TO_SERVER, // Boolean, true if registration token successfully sent to server
+        REGISTRATION_FAILED,
+        REGISTRATION_TOKEN,
         CURRENT_USER_IMAGE_URL,
         CURRENT_USER_GOOGLE_ID,
         CURRENT_USER

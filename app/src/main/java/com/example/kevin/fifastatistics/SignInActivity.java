@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
+import com.example.kevin.fifastatistics.gcm.RegistrationIntentService;
 import com.example.kevin.fifastatistics.overview.MainActivity;
 import com.example.kevin.fifastatistics.restclient.RestClient;
 import com.example.kevin.fifastatistics.user.User;
@@ -20,6 +21,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.OptionalPendingResult;
@@ -37,6 +39,7 @@ public class SignInActivity extends AppCompatActivity implements
         View.OnClickListener {
 
     private static final String TAG = "SignInActivity";
+    private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
     private static final int RC_SIGN_IN = 9001;
 
     private PreferenceHandler handler;
@@ -51,6 +54,12 @@ public class SignInActivity extends AppCompatActivity implements
         handler = PreferenceHandler.getInstance(getApplicationContext());
         checkSignedIn();
         setContentView(R.layout.activity_login);
+
+        if (checkPlayServices()) {
+            // Start IntentService to register this application with GCM.
+            Intent intent = new Intent(this, RegistrationIntentService.class);
+            startService(intent);
+        }
 
         mStatusTextView = (TextView) findViewById(R.id.status);
 
@@ -208,6 +217,27 @@ public class SignInActivity extends AppCompatActivity implements
     }
 
     /**
+     * Check the device to make sure it has the Google Play Services APK. If
+     * it doesn't, display a dialog that allows users to download the APK from
+     * the Google Play Store or enable it in the device's system settings.
+     */
+    private boolean checkPlayServices() {
+        GoogleApiAvailability apiAvailability = GoogleApiAvailability.getInstance();
+        int resultCode = apiAvailability.isGooglePlayServicesAvailable(this);
+        if (resultCode != ConnectionResult.SUCCESS) {
+            if (apiAvailability.isUserResolvableError(resultCode)) {
+                apiAvailability.getErrorDialog(this, resultCode, PLAY_SERVICES_RESOLUTION_REQUEST)
+                        .show();
+            } else {
+                Log.i(TAG, "This device is not supported.");
+                finish();
+            }
+            return false;
+        }
+        return true;
+    }
+
+    /**
      * Async task class to get json by making HTTP call
      * */
     private class GetOrCreateUser extends AsyncTask<String, String, Void>
@@ -252,11 +282,22 @@ public class SignInActivity extends AppCompatActivity implements
             if (user == null)
             {
                 JsonNode json;
+                String registrationToken = null;
                 try
                 {
                     publishProgress("Creating new user...");
-                    json = client.createUser(name, googleId, email, imageUrl);
-                    Log.d("CREATEUSER", "response: " + json);
+
+                    while (registrationToken == null)
+                    {
+                        if (!handler.getRegistrationFailed()) {
+                            registrationToken = handler.getRegistrationToken();
+                        } else {
+                            Log.i(TAG, "failed to retrieve registration token");
+                            throw new IOException();
+                        }
+                    }
+                    json = client.createUser(name, googleId, email, registrationToken, imageUrl);
+                    Log.d(TAG, "response: " + json);
                 }
                 catch (IOException e)
                 {
@@ -267,7 +308,8 @@ public class SignInActivity extends AppCompatActivity implements
                 try
                 {
                     handler.setCurrentUser(name, googleId, email, imageUrl);
-                    handler.storeUser(new User(name, googleId, email, imageUrl, json.get("id").asText()));
+                    handler.storeUser(new User(
+                            name, email, googleId, registrationToken, imageUrl, json.get("id").asText()));
                     handler.setSignedIn(true);
                 }
                 catch (NullPointerException e)

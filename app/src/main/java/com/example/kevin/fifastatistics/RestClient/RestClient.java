@@ -64,13 +64,15 @@ public class RestClient {
     // PUBLIC METHODS
     //----------------------------------------------------------------------------------------------
 
-    public JsonNode createUser(String name, String googleId, String email, String imageUrl)
+    public JsonNode createUser(String name, String googleId, String email,
+                               String registrationToken, String imageUrl)
             throws IOException
     {
         OkHttpClient client = new OkHttpClient();
 
         MediaType type = MediaType.parse(JSON_TYPE);
-        RequestBody body = RequestBody.create(type, buildUser(name, googleId, email, imageUrl));
+        RequestBody body = RequestBody.create(
+                type, buildUser(name, googleId, email, registrationToken, imageUrl));
         Request request = new Request.Builder()
                 .url(HOST + USERS)
                 .post(body)
@@ -155,13 +157,14 @@ public class RestClient {
     // HELPERS
     // ---------------------------------------------------------------------------------------------
 
-    private static String buildUser(String name, String googleId,
-                                    String email, String imageUrl)
+    private static String buildUser(String name, String googleId, String email,
+                                    String registrationToken, String imageUrl)
     {
         Log.d("BUILDING", "building user");
         ObjectNode node = JsonNodeFactory.instance.objectNode();
         node.put("name", name);
         node.put("googleId", googleId);
+        node.put("registrationToken", registrationToken);
         node.put("email", email);
         node.put("imageUrl", imageUrl);
         Log.d("creating", "request body json: " + node.toString());

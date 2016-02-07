@@ -22,6 +22,10 @@
             "package_name": "com.example.kevin",
             "certificate_hash": "89EE1298B6ECA381699C3910B5D379BAA42A0249"
           }
+        },
+        {
+          "client_id": "433114915503-tmk7hf9qemqr8av2bdlfagi5qletbt0m.apps.googleusercontent.com",
+          "client_type": 3
         }
       ],
       "api_key": [],
@@ -31,6 +35,50 @@
         },
         "cloud_messaging_service": {
           "status": 1,
+          "apns_config": []
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "google_signin_service": {
+          "status": 2
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:433114915503:android:3048f8005ce5d64e",
+        "client_id": "android:com.example.kevin.fifastatistics",
+        "client_type": 1,
+        "android_client_info": {
+          "package_name": "com.example.kevin.fifastatistics"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "433114915503-1tgpgppqctui1f3k7d6ollra1gcq3gq6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.kevin.fifastatistics",
+            "certificate_hash": "89EE1298B6ECA381699C3910B5D379BAA42A0249"
+          }
+        },
+        {
+          "client_id": "433114915503-tmk7hf9qemqr8av2bdlfagi5qletbt0m.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "cloud_messaging_service": {
+          "status": 2,
           "apns_config": []
         },
         "appinvite_service": {

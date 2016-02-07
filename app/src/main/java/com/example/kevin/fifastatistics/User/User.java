@@ -23,6 +23,7 @@ public class User {
     public String name;
     public String email;
     public String googleId;
+    public String registrationToken;
     public String imageUrl;
     public ArrayList<Friend> friends;
     public ArrayList<Request> incomingRequests;
@@ -73,11 +74,12 @@ public class User {
         this.imageUrl = imageUrl;
     }
 
-    public User(String name, String email, String googleId, String imageUrl, String id)
+    public User(String name, String email, String googleId, String registrationToken, String imageUrl, String id)
     {
         this.name = name;
         this.email = email;
         this.googleId = googleId;
+        this.registrationToken = registrationToken;
         this.imageUrl = imageUrl;
         this.id = id;
     }

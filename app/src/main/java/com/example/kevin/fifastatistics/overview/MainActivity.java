@@ -1,8 +1,6 @@
 package com.example.kevin.fifastatistics.overview;
 
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -29,32 +27,24 @@ public class MainActivity extends AppCompatActivity
 
     NavigationView navigationView = null;
     Toolbar toolbar = null;
-    private PreferenceHandler handler;
-    private User currentUser;
-    private static boolean doShowSearchItem = false;
+
+    private static final String TAG = "MainActivity";
+
     private static String title = "";
+    private static boolean doShowSearchItem = false;
+    private static User currentUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        handler = PreferenceHandler.getInstance(getApplicationContext());
+        PreferenceHandler handler = PreferenceHandler.getInstance(getApplicationContext());
         currentUser = handler.getUser();
         new GetFriendRequestsAsyncTask(currentUser, handler).execute(currentUser.id);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        // Set the fragment initially
         initializeMainFragment();
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
 
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
@@ -153,7 +143,13 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-    private void initializeMainFragment() {
+    private void initializeMainFragment()
+    {
+        if (doShowSearchItem)
+        {
+            doShowSearchItem = false;
+            this.invalidateOptionsMenu();
+        }
         OverviewFragment fragment = new OverviewFragment();
         toolbar.setTitle("Overview");
         android.support.v4.app.FragmentTransaction fragmentTransaction =
@@ -175,8 +171,12 @@ public class MainActivity extends AppCompatActivity
 
     private void initializeFriendsFragment()
     {
-        doShowSearchItem = true;
-        this.invalidateOptionsMenu();
+        if (!doShowSearchItem)
+        {
+            doShowSearchItem = true;
+            this.invalidateOptionsMenu();
+        }
+
         FriendsFragment fragment = new FriendsFragment();
         toolbar.setTitle("Friends");
         android.support.v4.app.FragmentTransaction fragmentTransaction =
@@ -185,4 +185,5 @@ public class MainActivity extends AppCompatActivity
         fragmentTransaction.replace(R.id.fragment_container, fragment);
         fragmentTransaction.commit();
     }
+
 }
