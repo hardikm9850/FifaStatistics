@@ -309,7 +309,8 @@ public class SignInActivity extends AppCompatActivity implements
                 {
                     handler.setCurrentUser(name, googleId, email, imageUrl);
                     handler.storeUser(new User(
-                            name, email, googleId, registrationToken, imageUrl, json.get("id").asText()));
+                            name, email, googleId, registrationToken, imageUrl,
+                            json.get("id").asText()));
                     handler.setSignedIn(true);
                 }
                 catch (NullPointerException e)
@@ -320,7 +321,6 @@ public class SignInActivity extends AppCompatActivity implements
             }
             else
             {
-                handler.setCurrentUser(name, googleId, email, imageUrl);
                 handler.storeUser(user);
                 handler.setSignedIn(true);
             }

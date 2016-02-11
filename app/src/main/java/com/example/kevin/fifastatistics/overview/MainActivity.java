@@ -1,5 +1,6 @@
 package com.example.kevin.fifastatistics.overview;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -18,8 +19,13 @@ import com.example.kevin.fifastatistics.SecondFragment;
 import com.example.kevin.fifastatistics.friendsfragment.FriendsFragment;
 import com.example.kevin.fifastatistics.user.Friend;
 import com.example.kevin.fifastatistics.user.User;
-import com.example.kevin.fifastatistics.utils.GetAndSetImageFromUrl;
 import com.example.kevin.fifastatistics.utils.PreferenceHandler;
+import com.nostra13.universalimageloader.cache.memory.impl.WeakMemoryCache;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.nostra13.universalimageloader.core.assist.ImageScaleType;
+import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
@@ -29,27 +35,53 @@ public class MainActivity extends AppCompatActivity
     Toolbar toolbar = null;
 
     private static final String TAG = "MainActivity";
-
     private static String title = "";
     private static boolean doShowSearchItem = false;
     private static User currentUser;
+    private static Context mContext;
+    private static PreferenceHandler mHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        PreferenceHandler handler = PreferenceHandler.getInstance(getApplicationContext());
-        currentUser = handler.getUser();
-        new GetFriendRequestsAsyncTask(currentUser, handler).execute(currentUser.id);
+        mContext = getApplicationContext();
+        initializeImageLoader();
+        mHandler = PreferenceHandler.getInstance(mContext);
+        currentUser = mHandler.getUser();
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        initializeMainFragment();
+        String menuFragment = getIntent().getStringExtra("fragment");
+        if (menuFragment == null) {
+            initializeMainFragment();
+        }
+        else if (menuFragment.equals("friends")) {
+            initializeFriendsFragment();
+        }
+        else {
+            initializeMainFragment();
+        }
 
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
         initializeDrawer();
+    }
+
+    private void initializeImageLoader()
+    {
+        DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder()
+                .cacheOnDisk(true).cacheInMemory(true)
+                .imageScaleType(ImageScaleType.EXACTLY)
+                .displayer(new FadeInBitmapDisplayer(300)).build();
+
+        ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(mContext)
+                .defaultDisplayImageOptions(defaultOptions)
+                .memoryCache(new WeakMemoryCache())
+                .diskCacheSize(100 * 1024 * 1024).build();
+
+        ImageLoader.getInstance().init(config);
     }
 
     private void initializeDrawer()
@@ -60,8 +92,9 @@ public class MainActivity extends AppCompatActivity
 
         View headerView = navigationView.inflateHeaderView(R.layout.nav_header_main);
 
-        ImageView profileImage= (ImageView) headerView.findViewById(R.id.profile_image);
-        new GetAndSetImageFromUrl(profileImage).execute(currentUser.imageUrl);
+        ImageView profileImage = (ImageView) headerView.findViewById(R.id.profile_image);
+        ImageLoader imageLoader = ImageLoader.getInstance();
+        imageLoader.displayImage(currentUser.imageUrl, profileImage);
 
         TextView name = (TextView) headerView.findViewById(R.id.username);
         name.setText(currentUser.name);
@@ -152,6 +185,7 @@ public class MainActivity extends AppCompatActivity
         }
         OverviewFragment fragment = new OverviewFragment();
         toolbar.setTitle("Overview");
+        title = "Overview";
         android.support.v4.app.FragmentTransaction fragmentTransaction =
                 getSupportFragmentManager().beginTransaction();
 
@@ -179,11 +213,11 @@ public class MainActivity extends AppCompatActivity
 
         FriendsFragment fragment = new FriendsFragment();
         toolbar.setTitle("Friends");
+        title = "Friends";
         android.support.v4.app.FragmentTransaction fragmentTransaction =
                 getSupportFragmentManager().beginTransaction();
 
         fragmentTransaction.replace(R.id.fragment_container, fragment);
         fragmentTransaction.commit();
     }
-
 }

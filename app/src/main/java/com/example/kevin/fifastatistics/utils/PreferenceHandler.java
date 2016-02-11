@@ -2,6 +2,7 @@ package com.example.kevin.fifastatistics.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 
 import com.example.kevin.fifastatistics.user.User;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -15,9 +16,11 @@ public class PreferenceHandler
     private static PreferenceHandler instance = new PreferenceHandler();
     private SharedPreferences preferences;
     private SharedPreferences.Editor editor;
+    private Context context;
 
     public static PreferenceHandler getInstance(Context context)
     {
+        instance.context = context;
         instance.preferences = context.getSharedPreferences(
                 PreferenceNames.PREFERENCES.name(), Context.MODE_PRIVATE);
         return instance;
@@ -151,6 +154,6 @@ public class PreferenceHandler
         REGISTRATION_TOKEN,
         CURRENT_USER_IMAGE_URL,
         CURRENT_USER_GOOGLE_ID,
-        CURRENT_USER
+        CURRENT_USER,
     }
 }

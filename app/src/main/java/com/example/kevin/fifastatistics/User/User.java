@@ -1,6 +1,6 @@
 package com.example.kevin.fifastatistics.user;
 
-import com.fasterxml.jackson.databind.JsonNode;
+import android.content.Context;
 
 import java.util.ArrayList;
 
@@ -74,7 +74,8 @@ public class User {
         this.imageUrl = imageUrl;
     }
 
-    public User(String name, String email, String googleId, String registrationToken, String imageUrl, String id)
+    public User(String name, String email, String googleId, String registrationToken,
+                String imageUrl, String id)
     {
         this.name = name;
         this.email = email;
@@ -83,6 +84,22 @@ public class User {
         this.imageUrl = imageUrl;
         this.id = id;
     }
+
+    // ----------------------------------------------------------------------
+    // UTILITIES
+    // ----------------------------------------------------------------------
+
+    public void addIncomingRequest(String name, String id, String imageUrl, Context context)
+    {
+        if (incomingRequests == null) {
+            incomingRequests = new ArrayList<>();
+        }
+        incomingRequests.add(new Request(id, name, imageUrl));
+    }
+
+    // ----------------------------------------------------------------------
+    // NESTED CLASSES
+    // ----------------------------------------------------------------------
 
     private class Stats {
 
@@ -147,13 +164,13 @@ public class User {
 
         public String id;
         public String name;
-        public String requestId;
+        public String imageUrl;
 
-        public Request(String id, String name, String requestId)
+        public Request(String id, String name, String imageUrl)
         {
             this.id = id;
             this.name = name;
-            this.requestId = requestId;
+            this.imageUrl = imageUrl;
         }
 
         public Request() {

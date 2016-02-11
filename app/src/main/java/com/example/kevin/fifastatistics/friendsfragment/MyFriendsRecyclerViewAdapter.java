@@ -11,6 +11,7 @@ import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.friendsfragment.FriendsFragment.OnListFragmentInteractionListener;
 import com.example.kevin.fifastatistics.user.Friend;
 import com.example.kevin.fifastatistics.utils.GetAndSetImageFromUrl;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.util.ArrayList;
 
@@ -41,8 +42,9 @@ public class MyFriendsRecyclerViewAdapter extends RecyclerView.Adapter<MyFriends
         holder.mItem = mUsers.get(position);
         holder.mNameView.setText(mUsers.get(position).name);
 
-        new GetAndSetImageFromUrl(holder.mImageView).execute(mUsers.get(position).imageUrl);
-
+//        new GetAndSetImageFromUrl(holder.mImageView).execute(mUsers.get(position).imageUrl);
+        ImageLoader imageLoader = ImageLoader.getInstance();
+        imageLoader.displayImage(mUsers.get(position).imageUrl, holder.mImageView);
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
