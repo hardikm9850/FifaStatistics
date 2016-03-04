@@ -2,6 +2,7 @@ package com.example.kevin.fifastatistics.overview;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -20,6 +21,7 @@ import com.example.kevin.fifastatistics.friendsfragment.FriendsFragment;
 import com.example.kevin.fifastatistics.user.Friend;
 import com.example.kevin.fifastatistics.user.User;
 import com.example.kevin.fifastatistics.utils.PreferenceHandler;
+import com.miguelcatalan.materialsearchview.MaterialSearchView;
 import com.nostra13.universalimageloader.cache.memory.impl.WeakMemoryCache;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -41,6 +43,8 @@ public class MainActivity extends AppCompatActivity
     private static Context mContext;
     private static PreferenceHandler mHandler;
 
+    private MaterialSearchView searchView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,8 +53,11 @@ public class MainActivity extends AppCompatActivity
         initializeImageLoader();
         mHandler = PreferenceHandler.getInstance(mContext);
         currentUser = mHandler.getUser();
+
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        searchView = (MaterialSearchView) findViewById(R.id.search_view);
+        initializeSearchView();
 
         String menuFragment = getIntent().getStringExtra("fragment");
         if (menuFragment == null) {
@@ -74,7 +81,7 @@ public class MainActivity extends AppCompatActivity
         DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder()
                 .cacheOnDisk(true).cacheInMemory(true)
                 .imageScaleType(ImageScaleType.EXACTLY)
-                .displayer(new FadeInBitmapDisplayer(300)).build();
+                .displayer(new FadeInBitmapDisplayer(600)).build();
 
         ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(mContext)
                 .defaultDisplayImageOptions(defaultOptions)
@@ -94,13 +101,47 @@ public class MainActivity extends AppCompatActivity
 
         ImageView profileImage = (ImageView) headerView.findViewById(R.id.profile_image);
         ImageLoader imageLoader = ImageLoader.getInstance();
-        imageLoader.displayImage(currentUser.imageUrl, profileImage);
+        imageLoader.displayImage(currentUser.getImageUrl(), profileImage);
 
         TextView name = (TextView) headerView.findViewById(R.id.username);
-        name.setText(currentUser.name);
+        name.setText(currentUser.getName());
 
         drawer.setDrawerListener(toggle);
         toggle.syncState();
+    }
+
+    private void initializeSearchView()
+    {
+        searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                //Do some magic
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                //Do some magic
+                return false;
+            }
+        });
+
+        Log.i(TAG, "Setting on search view listener####");
+        searchView.setOnSearchViewListener(new MaterialSearchView.SearchViewListener() {
+            @Override
+            public void onSearchViewShown() {
+                searchView.setVisibility(View.VISIBLE);
+                Log.i(TAG, "Showing Search View!");
+            }
+
+            @Override
+            public void onSearchViewClosed() {
+                Log.i(TAG, "Closing Search View!");
+            }
+        });
+
+        searchView.setVoiceSearch(false);
+        searchView.setHint("Search Users");
     }
 
     @Override
@@ -113,6 +154,9 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
+        }
+        else if (searchView.isSearchOpen()) {
+            searchView.closeSearch();
         } else {
             super.onBackPressed();
         }
@@ -123,24 +167,25 @@ public class MainActivity extends AppCompatActivity
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
 
-        MenuItem item = menu.findItem(R.id.action_search);
-        item.setVisible(doShowSearchItem);
+        MenuItem searchItem = menu.findItem(R.id.action_search);
+        searchItem.setVisible(doShowSearchItem);
+        searchView.setMenuItem(searchItem);
+
         return true;
     }
 
 //    @Override
 //    public boolean onOptionsItemSelected(MenuItem item) {
-//        // Handle action bar item clicks here. The action bar will
-//        // automatically handle clicks on the Home/Up button, so long
-//        // as you specify a parent activity in AndroidManifest.xml.
-//        int id = item.getItemId();
-//
-//        //noinspection SimplifiableIfStatement
-//        if (id == R.id.action_settings) {
-//            return true;
+//        // Handle item selection
+//        switch (item.getItemId()) {
+//            case R.id.action_search:
+//                Log.i(TAG, "#########CLICKED###########");
+//                searchView.setVisibility(View.VISIBLE);
+//                searchView.showSearch();
+//                return true;
+//            default:
+//                return super.onOptionsItemSelected(item);
 //        }
-//
-//        return super.onOptionsItemSelected(item);
 //    }
 
     @SuppressWarnings("StatementWithEmptyBody")
@@ -220,4 +265,5 @@ public class MainActivity extends AppCompatActivity
         fragmentTransaction.replace(R.id.fragment_container, fragment);
         fragmentTransaction.commit();
     }
+
 }

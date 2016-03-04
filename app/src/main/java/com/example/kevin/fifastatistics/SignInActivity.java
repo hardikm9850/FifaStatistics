@@ -292,7 +292,7 @@ public class SignInActivity extends AppCompatActivity implements
                         if (!handler.getRegistrationFailed()) {
                             registrationToken = handler.getRegistrationToken();
                         } else {
-                            Log.i(TAG, "failed to retrieve registration token");
+                            Log.e(TAG, "failed to retrieve registration token");
                             throw new IOException();
                         }
                     }
@@ -340,13 +340,13 @@ public class SignInActivity extends AppCompatActivity implements
 
             if (failedGet)
             {
-                mProgressDialog.setMessage("Failed to retrieve user data.");
+                Log.e(TAG, "failed get!");
                 mProgressDialog.dismiss();
                 // TODO add little popup this saying this failed
             }
             else if (failedCreate)
             {
-                mProgressDialog.setMessage("Failed to create user.");
+                Log.e(TAG, "failed create!");
                 mProgressDialog.dismiss();
                 // TODO add little popup this saying this failed
             }

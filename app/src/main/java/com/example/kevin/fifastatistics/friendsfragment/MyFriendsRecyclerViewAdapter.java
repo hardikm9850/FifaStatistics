@@ -10,7 +10,7 @@ import android.widget.TextView;
 import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.friendsfragment.FriendsFragment.OnListFragmentInteractionListener;
 import com.example.kevin.fifastatistics.user.Friend;
-import com.example.kevin.fifastatistics.utils.GetAndSetImageFromUrl;
+
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.util.ArrayList;

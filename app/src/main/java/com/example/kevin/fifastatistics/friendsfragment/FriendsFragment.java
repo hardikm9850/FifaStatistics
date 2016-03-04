@@ -7,7 +7,9 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -55,6 +57,7 @@ public class FriendsFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -66,7 +69,6 @@ public class FriendsFragment extends Fragment {
 
         return view;
     }
-
 
     @Override
     public void onAttach(Context context) {
@@ -131,7 +133,8 @@ public class FriendsFragment extends Fragment {
                             user.get("_links").get("self").get("href").asText(),
                             user.get("name").asText(),
                             user.get("imageUrl").asText(),
-                            user.get("level").asInt()));
+                            user.get("level").asInt(),
+                            user.get("registrationToken").asText()));
                 }
                 return null;
             }

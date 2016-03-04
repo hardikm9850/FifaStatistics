@@ -17,62 +17,62 @@ import java.util.ArrayList;
  * Attempts to retrieve any friends requests directed to the current user. If there are any,
  * they are linked to the current user.
  */
-public class GetFriendRequestsAsyncTask extends AsyncTask<String, Void, Void>
+public class GetFriendRequestsAsyncTask //extends AsyncTask<String, Void, Void>
 {
-    private static final RestClient client = RestClient.getInstance();
-    private PreferenceHandler handler;
-    private ArrayNode requests;
-    private User user;
-
-    public GetFriendRequestsAsyncTask(User user, PreferenceHandler handler)
-    {
-        this.user = user;
-        this.handler = handler;
-    }
-
-    @Override
-    protected Void doInBackground(String... args)
-    {
-        try
-        {
-            if (args[0] != null)
-            {
-                requests = client.getRequestsForUser(args[0]);
-            }
-        }
-        catch (IOException e)
-        {
-            Log.e("GetFriendRequests", "Unable to retrieve requests");
-        }
-
-        return null;
-    }
-
-    @Override
-    protected void onPostExecute(Void result)
-    {
-        Log.d("GetFriendRequests", "requests: " + requests);
-        if (requests != null)
-        {
-            int size = requests.size();
-            Log.d("GetFriendRequests", "size: " + size);
-            if (size > 0)
-            {
-                if (user.incomingRequests == null)
-                {
-                    user.incomingRequests = new ArrayList<>();
-                }
-                JsonNode request;
-                User.Request incomingRequest = user.new Request();
-                for (int i = 0; i < size; i++) {
-                    request = requests.get(i);
-                    incomingRequest.id = request.get("senderId").asText();
-                    incomingRequest.name = request.get("senderName").asText();
-                    user.incomingRequests.add(incomingRequest);
-                }
-
-                handler.storeUserAsync(user);
-            }
-        }
-    }
+//    private static final RestClient client = RestClient.getInstance();
+//    private PreferenceHandler handler;
+//    private ArrayNode requests;
+//    private User user;
+//
+//    public GetFriendRequestsAsyncTask(User user, PreferenceHandler handler)
+//    {
+//        this.user = user;
+//        this.handler = handler;
+//    }
+//
+//    @Override
+//    protected Void doInBackground(String... args)
+//    {
+//        try
+//        {
+//            if (args[0] != null)
+//            {
+//                requests = client.getRequestsForUser(args[0]);
+//            }
+//        }
+//        catch (IOException e)
+//        {
+//            Log.e("GetFriendRequests", "Unable to retrieve requests");
+//        }
+//
+//        return null;
+//    }
+//
+//    @Override
+//    protected void onPostExecute(Void result)
+//    {
+//        Log.d("GetFriendRequests", "requests: " + requests);
+//        if (requests != null)
+//        {
+//            int size = requests.size();
+//            Log.d("GetFriendRequests", "size: " + size);
+//            if (size > 0)
+//            {
+//                if (user.getIncomingRequests() == null)
+//                {
+//                    user.setIncomingRequests(new ArrayList<>(User.Request));
+//                }
+//                JsonNode request;
+//                User.Request incomingRequest = user.new Request();
+//                for (int i = 0; i < size; i++) {
+//                    request = requests.get(i);
+//                    incomingRequest.id = request.get("senderId").asText();
+//                    incomingRequest.name = request.get("senderName").asText();
+//                    user.incomingRequests.add(incomingRequest);
+//                }
+//
+//                handler.storeUserAsync(user);
+//            }
+//        }
+//    }
 }

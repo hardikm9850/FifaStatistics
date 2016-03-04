@@ -1,11 +1,17 @@
 package com.example.kevin.fifastatistics.gcm;
 
-
-import android.app.Application;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
+import android.graphics.Rect;
+import android.graphics.RectF;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
@@ -17,10 +23,25 @@ import com.example.kevin.fifastatistics.overview.MainActivity;
 import com.example.kevin.fifastatistics.user.User;
 import com.example.kevin.fifastatistics.utils.PreferenceHandler;
 import com.google.android.gms.gcm.GcmListenerService;
+import com.nostra13.universalimageloader.cache.memory.impl.WeakMemoryCache;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.nostra13.universalimageloader.core.assist.ImageScaleType;
+import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
 
 public class MyGcmListenerService extends GcmListenerService {
 
     private static final String TAG = "MyGcmListenerService";
+
+    private static final String IMAGE_URL = "imageUrl";
+    private static final String TITLE = "gcm.notification.title";
+    private static final String BODY = "gcm.notification.body";
+
+    private static final String NEW_REQUEST = "New Friend Request";
+
+    private static final String DEFAULT_TITLE = "FIFA Statistics";
+    private static final String DEFAULT_BODY = "";
 
     /**
      * Called when message is received.
@@ -30,10 +51,10 @@ public class MyGcmListenerService extends GcmListenerService {
      *             For Set of keys use data.keySet().
      */
     @Override
-    public void onMessageReceived(String from, Bundle bundle) {
-        String message = bundle.getString("message");
+    public void onMessageReceived(String from, Bundle bundle)
+    {
         Log.d(TAG, "From: " + from);
-        Log.d(TAG, "Message: " + message);
+        initializeImageLoader();
 
         if (from.startsWith("/topics/")) {
             // message received from some topic.
@@ -44,7 +65,7 @@ public class MyGcmListenerService extends GcmListenerService {
         String tag = getTag(bundle);
         Log.i(TAG, "tag: " + tag);
         if (tag == null) {
-            // Do nothing
+            return;
         }
         else if (tag.equals(NotificationTypesEnum.FRIEND_REQUEST.name()))
         {
@@ -64,6 +85,9 @@ public class MyGcmListenerService extends GcmListenerService {
      */
     private void sendFriendRequestNotification(Bundle notification)
     {
+        ImageLoader imageLoader = ImageLoader.getInstance();
+        Bitmap largeIcon = imageLoader.loadImageSync(notification.getString(IMAGE_URL));
+
         Intent intent = new Intent(this, MainActivity.class);
         intent.putExtra("fragment", "friends");
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -71,23 +95,22 @@ public class MyGcmListenerService extends GcmListenerService {
                 PendingIntent.FLAG_ONE_SHOT);
 
         // TODO HANDLE NPE
-        String title = "";
-        String body = "";
-        final String NEW_REQUEST = "New Friend Request";
+        String title = NEW_REQUEST;
+        String body = DEFAULT_BODY;
         try
         {
-            title = notification.getString("gcm.notification.title");
-            body = notification.getString("gcm.notification.body");
+            title = notification.getString(TITLE);
+            body = notification.getString(BODY);
         }
         catch (NullPointerException e)
         {
             Log.e(TAG, "NPE!");
-            title = NEW_REQUEST;
         }
 
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
                 .setSmallIcon(R.mipmap.ic_launcher)
+                .setLargeIcon(getCircleBitmap(largeIcon))
                 .setContentTitle(title)
                 .setContentText(body)
                 .setAutoCancel(true)
@@ -100,17 +123,16 @@ public class MyGcmListenerService extends GcmListenerService {
         notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
     }
 
-    public void addFriendRequestToUser(Bundle data)
+    private void addFriendRequestToUser(Bundle data)
     {
-        Context context = getApplicationContext();
-        PreferenceHandler handler = PreferenceHandler.getInstance(context);
+        PreferenceHandler handler = PreferenceHandler.getInstance(getApplicationContext());
         User user = handler.getUser();
         user.addIncomingRequest(
-                data.getString("name"), data.getString("id"), data.getString("imageUrl"), context);
-        handler.storeUser(user);
+                data.getString("name"), data.getString("id"), data.getString(IMAGE_URL));
+        handler.storeUserAsync(user);
     }
 
-    public static String getTag(Bundle data)
+    private static String getTag(Bundle data)
     {
         try
         {
@@ -120,5 +142,45 @@ public class MyGcmListenerService extends GcmListenerService {
         {
             return null;
         }
+    }
+
+    private void initializeImageLoader()
+    {
+        DisplayImageOptions notificationOptions = new DisplayImageOptions.Builder()
+                .cacheOnDisk(false).cacheInMemory(true)
+                .imageScaleType(ImageScaleType.EXACTLY)
+                .displayer(new RoundedBitmapDisplayer(256)).build();
+
+        ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(
+                getApplicationContext())
+                .defaultDisplayImageOptions(notificationOptions)
+                .memoryCache(new WeakMemoryCache())
+                .diskCacheSize(100 * 1024 * 1024).build();
+
+        ImageLoader.getInstance().init(config);
+    }
+
+    private Bitmap getCircleBitmap(Bitmap bitmap)
+    {
+        final Bitmap output = Bitmap.createBitmap(bitmap.getWidth(),
+                bitmap.getHeight(), Bitmap.Config.ARGB_8888);
+        final Canvas canvas = new Canvas(output);
+
+        final int color = Color.RED;
+        final Paint paint = new Paint();
+        final Rect rect = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
+        final RectF rectF = new RectF(rect);
+
+        paint.setAntiAlias(true);
+        canvas.drawARGB(0, 0, 0, 0);
+        paint.setColor(color);
+        canvas.drawOval(rectF, paint);
+
+        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
+        canvas.drawBitmap(bitmap, rect, rect, paint);
+
+        bitmap.recycle();
+
+        return output;
     }
 }

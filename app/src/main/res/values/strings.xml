@@ -60,5 +60,6 @@
     <!-- Server Client ID.  This should be a valid Web OAuth 2.0 Client ID obtained
          from https://console.developers.google.com/ -->
     <string name="server_client_id">433114915503-1tgpgppqctui1f3k7d6ollra1gcq3gq6.apps.googleusercontent.com</string>
+    <string name="notification_key">AIzaSyDjCHksoGamhWxeNsaDN-DW5v3p9IcJNFE</string>
 
 </resources>

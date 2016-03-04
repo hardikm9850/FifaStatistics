@@ -1,7 +1,5 @@
 package com.example.kevin.fifastatistics.user;
 
-import android.content.Context;
-
 import java.util.ArrayList;
 
 /**
@@ -19,29 +17,29 @@ import java.util.ArrayList;
  */
 public class User {
 
-    public String id;
-    public String name;
-    public String email;
-    public String googleId;
-    public String registrationToken;
-    public String imageUrl;
-    public ArrayList<Friend> friends;
-    public ArrayList<Request> incomingRequests;
-    public ArrayList<Friend> outgoingRequests;
-    public ArrayList<MatchStub> matches;
-    public ArrayList<SeriesStub> series;
-    public Stats records;
-    public Stats averages;
-    public int matchWins;
-    public int matchLosses;
-    public int seriesWins;
-    public int seriesLosses;
-    public int level;
-    public int experience;
+    private String id;
+    private String name;
+    private String email;
+    private String googleId;
+    private String registrationToken;
+    private String imageUrl;
+    private ArrayList<Friend> friends;
+    private ArrayList<FriendRequest> incomingRequests;
+    private ArrayList<FriendRequest> outgoingRequests;
+    private ArrayList<MatchStub> matches;
+    private ArrayList<SeriesStub> series;
+    private Stats records;
+    private Stats averages;
+    private int matchWins;
+    private int matchLosses;
+    private int seriesWins;
+    private int seriesLosses;
+    private int level;
+    private int experience;
 
     public User(String id, String name, String email, String googleId, String imageUrl,
-                ArrayList<Friend> friends, ArrayList<Request> incomingRequests,
-                ArrayList<Friend> outgoingRequests, Stats records,
+                ArrayList<Friend> friends, ArrayList<FriendRequest> incomingRequests,
+                ArrayList<FriendRequest> outgoingRequests, Stats records,
                 Stats averages, ArrayList<MatchStub> matches,
                 ArrayList<SeriesStub> series, int matchWins, int matchLosses,
                 int seriesWins, int seriesLosses, int level, int experience)
@@ -86,126 +84,208 @@ public class User {
     }
 
     // ----------------------------------------------------------------------
+    // GETTERS / SETTERS
+    // ----------------------------------------------------------------------
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getGoogleId() {
+        return googleId;
+    }
+
+    public void setGoogleId(String googleId) {
+        this.googleId = googleId;
+    }
+
+    public String getRegistrationToken() {
+        return registrationToken;
+    }
+
+    public void setRegistrationToken(String registrationToken) {
+        this.registrationToken = registrationToken;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
+    public ArrayList<Friend> getFriends() {
+        return friends;
+    }
+
+    public void setFriends(ArrayList<Friend> friends) {
+        this.friends = friends;
+    }
+
+    public ArrayList<FriendRequest> getIncomingRequests() {
+        return incomingRequests;
+    }
+
+    public void setIncomingRequests(ArrayList<FriendRequest> incomingRequests) {
+        this.incomingRequests = incomingRequests;
+    }
+
+    public ArrayList<FriendRequest> getOutgoingRequests() {
+        return outgoingRequests;
+    }
+
+    public void setOutgoingRequests(ArrayList<FriendRequest> outgoingRequests) {
+        this.outgoingRequests = outgoingRequests;
+    }
+
+    public ArrayList<MatchStub> getMatches() {
+        return matches;
+    }
+
+    public void setMatches(ArrayList<MatchStub> matches) {
+        this.matches = matches;
+    }
+
+    public ArrayList<SeriesStub> getSeries() {
+        return series;
+    }
+
+    public void setSeries(ArrayList<SeriesStub> series) {
+        this.series = series;
+    }
+
+    public Stats getRecords() {
+        return records;
+    }
+
+    public void setRecords(Stats records) {
+        this.records = records;
+    }
+
+    public Stats getAverages() {
+        return averages;
+    }
+
+    public void setAverages(Stats averages) {
+        this.averages = averages;
+    }
+
+    public int getMatchWins() {
+        return matchWins;
+    }
+
+    public void setMatchWins(int matchWins) {
+        this.matchWins = matchWins;
+    }
+
+    public int getMatchLosses() {
+        return matchLosses;
+    }
+
+    public void setMatchLosses(int matchLosses) {
+        this.matchLosses = matchLosses;
+    }
+
+    public int getSeriesWins() {
+        return seriesWins;
+    }
+
+    public void setSeriesWins(int seriesWins) {
+        this.seriesWins = seriesWins;
+    }
+
+    public int getSeriesLosses() {
+        return seriesLosses;
+    }
+
+    public void setSeriesLosses(int seriesLosses) {
+        this.seriesLosses = seriesLosses;
+    }
+
+    public int getLevel() {
+        return level;
+    }
+
+    public void setLevel(int level) {
+        this.level = level;
+    }
+
+    public int getExperience() {
+        return experience;
+    }
+
+    public void setExperience(int experience) {
+        this.experience = experience;
+    }
+
+    // ----------------------------------------------------------------------
     // UTILITIES
     // ----------------------------------------------------------------------
 
-    public void addIncomingRequest(String name, String id, String imageUrl, Context context)
+    /**
+     * Adds a FriendRequest to the User's incoming requests list.
+     * @param name          The name of the user
+     * @param id            The ID of the user
+     * @param imageUrl      The user's image URL
+     */
+    public void addIncomingRequest(String name, String id, String imageUrl)
     {
         if (incomingRequests == null) {
             incomingRequests = new ArrayList<>();
         }
-        incomingRequests.add(new Request(id, name, imageUrl));
+        incomingRequests.add(new FriendRequest(id, name, imageUrl));
     }
 
-    // ----------------------------------------------------------------------
-    // NESTED CLASSES
-    // ----------------------------------------------------------------------
-
-    private class Stats {
-
-        public int goalsFor;
-        public int goalsAgainst;
-        public int shotsFor;
-        public int shotsAgainst;
-        public int shotsOnTarget;
-        public int possession;
-        public int tacklesFor;
-        public int tacklesAgainst;
-        public int fouls;
-        public int redCards;
-        public int offsides;
-        public int shotAccuracy;
-        public int passAccuracy;
-
-        public Stats(
-                int goalsFor, int goalsAgainst, int shotsFor,
-                int shotsAgainst, int shotsOnTarget, int possession,
-                int tacklesFor, int tacklesAgainst, int fouls,
-                int redCards, int offsides, int shotAccuracy,
-                int passAccuracy)
-        {
-            this.goalsFor = goalsFor;
-            this.goalsAgainst = goalsAgainst;
-            this.shotsFor = shotsFor;
-            this.shotsAgainst = shotsAgainst;
-            this.shotsOnTarget = shotsOnTarget;
-            this.possession = possession;
-            this.tacklesFor = tacklesFor;
-            this.tacklesAgainst = tacklesAgainst;
-            this.fouls = fouls;
-            this.redCards = redCards;
-            this.offsides = offsides;
-            this.shotAccuracy = shotAccuracy;
-            this.passAccuracy = passAccuracy;
+    /**
+     * Adds a FriendRequest to the User's outgoing requests list.
+     * @param name          The name of the user
+     * @param id            The ID of the user
+     * @param imageUrl      The user's image URL
+     */
+    public void addOutgoingRequest(String name, String id, String imageUrl)
+    {
+        if (outgoingRequests == null) {
+            outgoingRequests = new ArrayList<>();
         }
+        outgoingRequests.add(new FriendRequest(id, name, imageUrl));
     }
 
-    private class MatchStub {
-
-        public String id;
-        public String opponent;
-        public String date;
-        public int goalsFor;
-        public int goalsAgainst;
-        public boolean won;
-
-        public MatchStub(String id, String opponent, String date,
-                         int goalsFor, int goalsAgainst, boolean won) {
-            this.id = id;
-            this.opponent = opponent;
-            this.date = date;
-            this.goalsFor = goalsFor;
-            this.goalsAgainst = goalsAgainst;
-            this.won = won;
+    /**
+     * Adds a Friend to the User's friends list.
+     * @param id            The User's ID
+     * @param name          The User's name
+     * @param imageUrl      The User's image URL
+     * @param level         The User's level
+     * @param registrationToken     The User's registration token
+     */
+    public void addFriend(String id, String name, String imageUrl,
+                          int level, String registrationToken)
+    {
+        if (friends == null) {
+            friends = new ArrayList<>();
         }
+        friends.add(new Friend(id, name, imageUrl, level, registrationToken));
     }
 
-    public class Request {
-
-        public String id;
-        public String name;
-        public String imageUrl;
-
-        public Request(String id, String name, String imageUrl)
-        {
-            this.id = id;
-            this.name = name;
-            this.imageUrl = imageUrl;
-        }
-
-        public Request() {
-
-        }
-    }
-
-    private class SeriesStub {
-
-        public String id;
-        public String opponent;
-        public String date;
-        public ArrayList<MatchSummary> matches;
-        public boolean win;
-
-        public SeriesStub(String id, String opponent, String date,
-                          ArrayList<MatchSummary> matches, boolean win) {
-            this.id = id;
-            this.opponent = opponent;
-            this.date = date;
-            this.matches = matches;
-            this.win = win;
-        }
-
-        private class MatchSummary {
-
-            public int goalsFor;
-            public int goalsAgainst;
-            public boolean win;
-
-            public MatchSummary(int goalsFor, int goalsAgainst, boolean win) {
-                this.goalsFor = goalsFor;
-                this.goalsAgainst = goalsAgainst;
-                this.win = win;
-            }
-        }
-    }
 }

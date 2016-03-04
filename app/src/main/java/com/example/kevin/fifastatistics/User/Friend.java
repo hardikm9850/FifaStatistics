@@ -1,20 +1,6 @@
 package com.example.kevin.fifastatistics.user;
 
 /**
- * Created by Kevin on 1/29/2016.
- */
-
-import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
-import android.util.Log;
-
-import com.example.kevin.fifastatistics.utils.PreferenceHandler;
-
-import java.io.InputStream;
-
-/**
  * <b>Class:</b> Friend <br><br>
  * <b>Description:</b> <br>
  * The Friend class is meant to act as a 'stub' of a user, and should exist only
@@ -33,15 +19,16 @@ public class Friend
     public String id;
     public String name;
     public String imageUrl;
-    public Bitmap image;
+    public String registrationToken;
     public int level;
 
-    public Friend(String id, String name, String imageUrl, int level)
+    public Friend(String id, String name, String imageUrl, int level, String registrationToken)
     {
         this.id = id;
         this.name = name;
         this.imageUrl = imageUrl;
         this.level = level;
+        this.registrationToken = registrationToken;
     }
 
     public Friend() {

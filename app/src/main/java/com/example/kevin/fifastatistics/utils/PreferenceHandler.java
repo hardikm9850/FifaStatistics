@@ -2,14 +2,15 @@ package com.example.kevin.fifastatistics.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
 
 import com.example.kevin.fifastatistics.user.User;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.google.gson.Gson;
 
 /**
- * Created by Kevin on 1/23/2016.
+ * Utility class for handling all Shared Preference needs.
+ * Implemented as a singleton. Application Context must be passed to the
+ * instance when retrieving it.
  */
 public class PreferenceHandler
 {
