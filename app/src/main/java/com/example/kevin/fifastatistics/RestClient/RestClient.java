@@ -11,9 +11,7 @@ import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -25,9 +23,11 @@ import okhttp3.Response;
  * Rest Client that interacts with the FifaStats REST API. Implemented as a singleton.
  * Created by Kevin on 1/1/2016.
  */
-public class RestClient {
-
+public class RestClient
+{
     private static RestClient instance = new RestClient();
+
+    // TODO Change paths so prefixed by HOST
     private static final String JSON_TYPE = "application/json";
     private static final String HOST = "https://fifastatisticsapi.azurewebsites.net/";
     private static final String USERS = "users/";
@@ -49,6 +49,9 @@ public class RestClient {
     private RestClient() {
     }
 
+    /**
+     * HTTP GET response
+     */
     private JsonNode getResponse(String path) throws IOException
     {
         OkHttpClient client = new OkHttpClient();
@@ -69,6 +72,10 @@ public class RestClient {
         }
     }
 
+    /**
+     * HTTP POST Request, with extra headers
+     * Body should be JSON format
+     */
     private JsonNode postResponse(String path, String body, HashMap<String, String> headers)
             throws IOException
     {
@@ -104,6 +111,7 @@ public class RestClient {
 
     /**
      * HTTP POST Request, with no extra headers
+     * Body should be JSON format
      */
     private JsonNode postResponse(String path, String body) throws IOException
     {
@@ -122,13 +130,13 @@ public class RestClient {
      * @param registrationToken The registration token of the user
      * @param imageUrl The imageUrl of the user
      * @return the JSON response
-     * @throws IOException
+     * @throws IOException If the creation failed
      */
     public JsonNode createUser(String name, String googleId, String email,
                                String registrationToken, String imageUrl)
             throws IOException
     {
-        JsonNode response = postResponse(HOST + USERS, buildUser(
+        JsonNode response = postResponse(HOST + USERS, buildUserRequestBody(
                 name, googleId, email, registrationToken, imageUrl));
 
         if (response != null) {
@@ -222,8 +230,8 @@ public class RestClient {
     // HELPERS
     // ---------------------------------------------------------------------------------------------
 
-    private static String buildUser(String name, String googleId, String email,
-                                    String registrationToken, String imageUrl)
+    private static String buildUserRequestBody(String name, String googleId, String email,
+                                               String registrationToken, String imageUrl)
     {
         Log.d("BUILDING", "building user");
         ObjectNode node = JsonNodeFactory.instance.objectNode();

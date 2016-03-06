@@ -9,6 +9,10 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
+    <!-- MENU ITEMS -->
+    <string name="menuItem_search">Search</string>
+    <string name="menuItem_requests">Requests</string>
+
     <!-- NAVIGATION DRAWER -->
     <string name="overview">Overview</string>
     <string name="statistics">Statistics</string>

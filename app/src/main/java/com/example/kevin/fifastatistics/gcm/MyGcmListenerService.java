@@ -128,7 +128,8 @@ public class MyGcmListenerService extends GcmListenerService {
         PreferenceHandler handler = PreferenceHandler.getInstance(getApplicationContext());
         User user = handler.getUser();
         user.addIncomingRequest(
-                data.getString("name"), data.getString("id"), data.getString(IMAGE_URL));
+                data.getString("name"), data.getString("id"), data.getString(IMAGE_URL),
+                data.getInt("level"), data.getString("RegistrationToken"));
         handler.storeUserAsync(user);
     }
 

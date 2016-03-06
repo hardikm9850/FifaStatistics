@@ -24,8 +24,8 @@ public class User {
     private String registrationToken;
     private String imageUrl;
     private ArrayList<Friend> friends;
-    private ArrayList<FriendRequest> incomingRequests;
-    private ArrayList<FriendRequest> outgoingRequests;
+    private ArrayList<Friend> incomingRequests;
+    private ArrayList<Friend> outgoingRequests;
     private ArrayList<MatchStub> matches;
     private ArrayList<SeriesStub> series;
     private Stats records;
@@ -38,8 +38,8 @@ public class User {
     private int experience;
 
     public User(String id, String name, String email, String googleId, String imageUrl,
-                ArrayList<Friend> friends, ArrayList<FriendRequest> incomingRequests,
-                ArrayList<FriendRequest> outgoingRequests, Stats records,
+                ArrayList<Friend> friends, ArrayList<Friend> incomingRequests,
+                ArrayList<Friend> outgoingRequests, Stats records,
                 Stats averages, ArrayList<MatchStub> matches,
                 ArrayList<SeriesStub> series, int matchWins, int matchLosses,
                 int seriesWins, int seriesLosses, int level, int experience)
@@ -143,19 +143,19 @@ public class User {
         this.friends = friends;
     }
 
-    public ArrayList<FriendRequest> getIncomingRequests() {
+    public ArrayList<Friend> getIncomingRequests() {
         return incomingRequests;
     }
 
-    public void setIncomingRequests(ArrayList<FriendRequest> incomingRequests) {
+    public void setIncomingRequests(ArrayList<Friend> incomingRequests) {
         this.incomingRequests = incomingRequests;
     }
 
-    public ArrayList<FriendRequest> getOutgoingRequests() {
+    public ArrayList<Friend> getOutgoingRequests() {
         return outgoingRequests;
     }
 
-    public void setOutgoingRequests(ArrayList<FriendRequest> outgoingRequests) {
+    public void setOutgoingRequests(ArrayList<Friend> outgoingRequests) {
         this.outgoingRequests = outgoingRequests;
     }
 
@@ -249,12 +249,13 @@ public class User {
      * @param id            The ID of the user
      * @param imageUrl      The user's image URL
      */
-    public void addIncomingRequest(String name, String id, String imageUrl)
+    public void addIncomingRequest(String name, String id, String imageUrl, int level,
+                                   String registrationToken)
     {
         if (incomingRequests == null) {
             incomingRequests = new ArrayList<>();
         }
-        incomingRequests.add(new FriendRequest(id, name, imageUrl));
+        incomingRequests.add(new Friend(id, name, imageUrl, level, registrationToken));
     }
 
     /**
@@ -263,12 +264,13 @@ public class User {
      * @param id            The ID of the user
      * @param imageUrl      The user's image URL
      */
-    public void addOutgoingRequest(String name, String id, String imageUrl)
+    public void addOutgoingRequest(String name, String id, String imageUrl, int level,
+                                   String registrationToken)
     {
         if (outgoingRequests == null) {
             outgoingRequests = new ArrayList<>();
         }
-        outgoingRequests.add(new FriendRequest(id, name, imageUrl));
+        outgoingRequests.add(new Friend(id, name, imageUrl, level, registrationToken));
     }
 
     /**
@@ -286,6 +288,14 @@ public class User {
             friends = new ArrayList<>();
         }
         friends.add(new Friend(id, name, imageUrl, level, registrationToken));
+    }
+
+    public void addFriend(Friend friend)
+    {
+        if (friends == null) {
+            friends = new ArrayList<>();
+        }
+        friends.add(friend);
     }
 
 }

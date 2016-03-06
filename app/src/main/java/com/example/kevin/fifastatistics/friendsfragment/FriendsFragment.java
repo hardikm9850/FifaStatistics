@@ -16,6 +16,8 @@ import android.view.ViewGroup;
 import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.restclient.RestClient;
 import com.example.kevin.fifastatistics.user.Friend;
+import com.example.kevin.fifastatistics.user.User;
+import com.example.kevin.fifastatistics.utils.PreferenceHandler;
 import com.fasterxml.jackson.databind.JsonNode;
 
 import java.io.IOException;
@@ -37,6 +39,7 @@ public class FriendsFragment extends Fragment {
     private OnListFragmentInteractionListener mListener;
     private ProgressDialog pDialog;
 
+    private User mUser;
     private ArrayList<Friend> friendsList = new ArrayList<>();
     private View view = null;
 
@@ -57,6 +60,9 @@ public class FriendsFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        PreferenceHandler handler = PreferenceHandler.getInstance(getContext());
+        mUser = handler.getUser();
+
         setHasOptionsMenu(true);
     }
 
@@ -64,8 +70,8 @@ public class FriendsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_friends_list, container, false);
-
-        new GetUsers().execute();
+        setAdapter(mUser.getFriends());
+//        new GetUsers().execute();
 
         return view;
     }
@@ -85,6 +91,45 @@ public class FriendsFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item)
+    {
+        Log.i("FRIENDS", "Selected onContextItemSelected menu item#######################");
+        if (item.getItemId() == R.id.friend_requests) {
+            Log.i("FRIENDS", "Selected friends menu item#######################");
+            setAdapter(mUser.getIncomingRequests());
+            return false;
+        }
+        else {
+            return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected (MenuItem item)
+    {
+        Log.i("FRIENDS", "Selected onOptionsItemSelected menu item#######################");
+        if (item.getItemId() == R.id.friend_requests) {
+            Log.i("FRIENDS", "Selected friends menu item#######################");
+            setAdapter(mUser.getIncomingRequests());
+            return true;
+        }
+        else {
+            return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void setAdapter(ArrayList<Friend> users)
+    {
+        if (view instanceof RecyclerView)
+        {
+            RecyclerView recyclerView = (RecyclerView) view;
+
+            recyclerView.setLayoutManager(new GridLayoutManager(view.getContext(), mColumnCount));
+            recyclerView.setAdapter(new MyFriendsRecyclerViewAdapter(users, mListener));
+        }
     }
 
     /**
@@ -152,15 +197,7 @@ public class FriendsFragment extends Fragment {
             if (pDialog.isShowing())
                 pDialog.dismiss();
 
-            // Set the adapter
-            if (view instanceof RecyclerView)
-            {
-                Context context = view.getContext();
-                RecyclerView recyclerView = (RecyclerView) view;
-
-                recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
-                recyclerView.setAdapter(new MyFriendsRecyclerViewAdapter(friendsList, mListener));
-            }
+            setAdapter(friendsList);
         }
     }
 }

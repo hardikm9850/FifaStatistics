@@ -1,6 +1,7 @@
 package com.example.kevin.fifastatistics.friendsfragment;
 
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,6 +43,8 @@ public class MyFriendsRecyclerViewAdapter extends RecyclerView.Adapter<MyFriends
         holder.mItem = mUsers.get(position);
         holder.mNameView.setText(mUsers.get(position).name);
 
+        Log.i("RECYCLER ADAPTER", "Setting USERS");
+
 //        new GetAndSetImageFromUrl(holder.mImageView).execute(mUsers.get(position).imageUrl);
         ImageLoader imageLoader = ImageLoader.getInstance();
         imageLoader.displayImage(mUsers.get(position).imageUrl, holder.mImageView);
@@ -57,7 +60,12 @@ public class MyFriendsRecyclerViewAdapter extends RecyclerView.Adapter<MyFriends
 
     @Override
     public int getItemCount() {
-        return mUsers.size();
+        if (mUsers == null) {
+            return 0;
+        }
+        else {
+            return mUsers.size();
+        }
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

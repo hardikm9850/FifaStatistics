@@ -1,6 +1,7 @@
 package com.example.kevin.fifastatistics.overview;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -27,61 +28,87 @@ import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.ImageScaleType;
-import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
 
-public class MainActivity extends AppCompatActivity
+public class MainActivity
+        extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
-        FriendsFragment.OnListFragmentInteractionListener {
-
+                   FriendsFragment.OnListFragmentInteractionListener
+{
     NavigationView navigationView = null;
     Toolbar toolbar = null;
 
+    // Properties
     private static final String TAG = "MainActivity";
     private static String title = "";
     private static boolean doShowSearchItem = false;
+    private static boolean doShowFriendRequestsItem = false;
     private static User currentUser;
     private static Context mContext;
     private static PreferenceHandler mHandler;
+    private static MaterialSearchView mSearchView;
 
-    private MaterialSearchView searchView;
+    // Fragment Names
+    private static final String OVERVIEW = "overview";
+    private static final String FRIENDS = "friends";
+    private static final String STATISTICS = "statistics";
+    private static final String STARRED = "starred";
+    private static final String SETTINGS = "settings";
+
+    // ---------------------------------------------------------------------------------------------
+    // INITIALIZATION
+    // ---------------------------------------------------------------------------------------------
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mContext = getApplicationContext();
+
         initializeImageLoader();
         mHandler = PreferenceHandler.getInstance(mContext);
         currentUser = mHandler.getUser();
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        searchView = (MaterialSearchView) findViewById(R.id.search_view);
+        mSearchView = (MaterialSearchView) findViewById(R.id.search_view);
         initializeSearchView();
 
         String menuFragment = getIntent().getStringExtra("fragment");
-        if (menuFragment == null) {
-            initializeMainFragment();
-        }
-        else if (menuFragment.equals("friends")) {
-            initializeFriendsFragment();
-        }
-        else {
-            initializeMainFragment();
+        menuFragment = (menuFragment == null) ? OVERVIEW : menuFragment;
+        switch (menuFragment) {
+            case (FRIENDS):
+                initializeFriendsFragment();
+                break;
+            case (OVERVIEW):
+                initializeMainFragment();
+                break;
+            default:
+                initializeMainFragment();
+                break;
         }
 
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-
         initializeDrawer();
     }
+
+    @Override
+    protected void onPause()
+    {
+        super.onPause();
+        if (mSearchView.isSearchOpen()) {
+            mSearchView.closeSearch();
+        }
+    }
+
 
     private void initializeImageLoader()
     {
         DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder()
                 .cacheOnDisk(true).cacheInMemory(true)
                 .imageScaleType(ImageScaleType.EXACTLY)
-                .displayer(new FadeInBitmapDisplayer(600)).build();
+                .build();
 
         ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(mContext)
                 .defaultDisplayImageOptions(defaultOptions)
@@ -112,7 +139,7 @@ public class MainActivity extends AppCompatActivity
 
     private void initializeSearchView()
     {
-        searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
+        mSearchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 //Do some magic
@@ -127,10 +154,9 @@ public class MainActivity extends AppCompatActivity
         });
 
         Log.i(TAG, "Setting on search view listener####");
-        searchView.setOnSearchViewListener(new MaterialSearchView.SearchViewListener() {
+        mSearchView.setOnSearchViewListener(new MaterialSearchView.SearchViewListener() {
             @Override
             public void onSearchViewShown() {
-                searchView.setVisibility(View.VISIBLE);
                 Log.i(TAG, "Showing Search View!");
             }
 
@@ -140,8 +166,9 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-        searchView.setVoiceSearch(false);
-        searchView.setHint("Search Users");
+        mSearchView.setVoiceSearch(false);
+        mSearchView.setHint("Search Users");
+        mSearchView.setHintTextColor(Color.LTGRAY);
     }
 
     @Override
@@ -149,27 +176,34 @@ public class MainActivity extends AppCompatActivity
         System.out.println("Interacted");
     }
 
+    // ---------------------------------------------------------------------------------------------
+    // IMPLEMENTATION
+    // ---------------------------------------------------------------------------------------------
+
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         }
-        else if (searchView.isSearchOpen()) {
-            searchView.closeSearch();
+        else if (mSearchView.isSearchOpen()) {
+            mSearchView.closeSearch();
         } else {
             super.onBackPressed();
         }
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
         getMenuInflater().inflate(R.menu.main, menu);
 
         MenuItem searchItem = menu.findItem(R.id.action_search);
         searchItem.setVisible(doShowSearchItem);
-        searchView.setMenuItem(searchItem);
+        mSearchView.setMenuItem(searchItem);
+
+        MenuItem requestsItem = menu.findItem(R.id.friend_requests);
+        requestsItem.setVisible(doShowFriendRequestsItem);
 
         return true;
     }
@@ -178,15 +212,16 @@ public class MainActivity extends AppCompatActivity
 //    public boolean onOptionsItemSelected(MenuItem item) {
 //        // Handle item selection
 //        switch (item.getItemId()) {
-//            case R.id.action_search:
-//                Log.i(TAG, "#########CLICKED###########");
-//                searchView.setVisibility(View.VISIBLE);
-//                searchView.showSearch();
-//                return true;
+//            case R.id.friend_requests:
+//
 //            default:
 //                return super.onOptionsItemSelected(item);
 //        }
 //    }
+
+    // ---------------------------------------------------------------------------------------------
+    // NAVIGATION
+    // ---------------------------------------------------------------------------------------------
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
@@ -223,11 +258,20 @@ public class MainActivity extends AppCompatActivity
 
     private void initializeMainFragment()
     {
-        if (doShowSearchItem)
-        {
+        boolean invalidateOptions = false;
+
+        if (doShowSearchItem) {
             doShowSearchItem = false;
+            invalidateOptions = true;
+        }
+        if (doShowFriendRequestsItem) {
+            doShowFriendRequestsItem = false;
+            invalidateOptions = true;
+        }
+        if (invalidateOptions) {
             this.invalidateOptionsMenu();
         }
+
         OverviewFragment fragment = new OverviewFragment();
         toolbar.setTitle("Overview");
         title = "Overview";
@@ -250,15 +294,37 @@ public class MainActivity extends AppCompatActivity
 
     private void initializeFriendsFragment()
     {
+        boolean invalidateOptions = false;
+
         if (!doShowSearchItem)
         {
             doShowSearchItem = true;
+            invalidateOptions = true;
+        }
+
+        int incomingRequests = 0;
+        if (currentUser.getIncomingRequests() != null) {
+            incomingRequests = currentUser.getIncomingRequests().size();
+        }
+
+        if (incomingRequests > 0) {
+            doShowFriendRequestsItem = true;
+            invalidateOptions = true;
+        }
+
+        if (invalidateOptions) {
             this.invalidateOptionsMenu();
         }
+
 
         FriendsFragment fragment = new FriendsFragment();
         toolbar.setTitle("Friends");
         title = "Friends";
+
+        Bundle bundle = new Bundle();
+        bundle.putInt("view", 0);
+        fragment.setArguments(bundle);
+
         android.support.v4.app.FragmentTransaction fragmentTransaction =
                 getSupportFragmentManager().beginTransaction();
 
