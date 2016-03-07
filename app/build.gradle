@@ -25,10 +25,10 @@ dependencies {
     testCompile 'junit:junit:4.12'
 
     // Android
-    compile 'com.android.support:appcompat-v7:23.1.1'
-    compile 'com.android.support:design:23.1.1'
-    compile 'com.android.support:support-v4:23.1.1'
-    compile 'com.android.support:recyclerview-v7:23.1.1'
+    compile 'com.android.support:appcompat-v7:23.2.0'
+    compile 'com.android.support:design:23.2.0'
+    compile 'com.android.support:support-v4:23.2.0'
+    compile 'com.android.support:recyclerview-v7:23.2.0'
     compile 'com.google.android.gms:play-services-auth:8.3.0'
     compile "com.google.android.gms:play-services-gcm:8.3.0"
 
@@ -44,4 +44,17 @@ dependencies {
 
     // Search
     compile 'com.miguelcatalan:materialsearchview:1.4.0'
+
+    // Navigation
+    compile 'com.mikepenz:google-material-typeface:2.2.0.1.original@aar'
+    compile 'com.mikepenz:iconics-core:2.5.8@aar'
+    compile('com.mikepenz:materialdrawer:5.1.1@aar') {
+        transitive = true
+    }
+    compile('com.mikepenz:materialize:0.8.5@aar') {
+        transitive = true
+    }
+    compile('com.mikepenz:fastadapter:1.2.3@aar') {
+        transitive = true
+    }
 }

@@ -2,20 +2,18 @@ package com.example.kevin.fifastatistics.overview;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
-import android.view.View;
-import android.support.design.widget.NavigationView;
-import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
+import android.util.Log;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.SecondFragment;
@@ -24,6 +22,17 @@ import com.example.kevin.fifastatistics.user.Friend;
 import com.example.kevin.fifastatistics.user.User;
 import com.example.kevin.fifastatistics.utils.PreferenceHandler;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
+import com.mikepenz.materialdrawer.AccountHeader;
+import com.mikepenz.materialdrawer.AccountHeaderBuilder;
+import com.mikepenz.materialdrawer.Drawer;
+import com.mikepenz.materialdrawer.DrawerBuilder;
+import com.mikepenz.materialdrawer.holder.BadgeStyle;
+import com.mikepenz.materialdrawer.model.DividerDrawerItem;
+import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
+import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
+import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
+import com.mikepenz.materialdrawer.util.AbstractDrawerImageLoader;
+import com.mikepenz.materialdrawer.util.DrawerImageLoader;
 import com.nostra13.universalimageloader.cache.memory.impl.WeakMemoryCache;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -32,14 +41,12 @@ import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 
 public class MainActivity
         extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener,
-        FriendsFragment.OnListFragmentInteractionListener {
-    NavigationView navigationView = null;
+        implements FriendsFragment.OnListFragmentInteractionListener
+{
     Toolbar toolbar = null;
 
     // Properties
     private static final String TAG = "MainActivity";
-    private static String title = "";
     private static boolean doShowSearchItem = false;
     private static boolean doShowFriendRequestsItem = false;
     private static int incomingRequestsCount = 0;
@@ -49,18 +56,21 @@ public class MainActivity
     private static MaterialSearchView mSearchView;
 
     // Fragment Names
-    private static final String OVERVIEW = "overview";
-    private static final String FRIENDS = "friends";
-    private static final String STATISTICS = "statistics";
-    private static final String STARRED = "starred";
-    private static final String SETTINGS = "settings";
+    private static final String OVERVIEW = "Overview";
+    private static final String FRIENDS = "Friends";
+    private static final String STATISTICS = "Statistics";
+    private static final String STARRED = "Starred";
+    private static final String SETTINGS = "Settings";
+
+    private static Drawer drawer;
 
     // ---------------------------------------------------------------------------------------------
     // INITIALIZATION
     // ---------------------------------------------------------------------------------------------
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mContext = getApplicationContext();
@@ -78,6 +88,8 @@ public class MainActivity
             incomingRequestsCount = currentUser.getIncomingRequests().size();
         }
 
+        initializeDrawer();
+
         String menuFragment = getIntent().getStringExtra("fragment");
         menuFragment = (menuFragment == null) ? OVERVIEW : menuFragment;
         Log.i(TAG, "Fragment: " + menuFragment);
@@ -92,22 +104,103 @@ public class MainActivity
                 initializeMainFragment();
                 break;
         }
-
-        navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
-        initializeDrawer();
     }
 
     @Override
-    protected void onPause() {
+    protected void onPause()
+    {
         super.onPause();
         if (mSearchView.isSearchOpen()) {
             mSearchView.closeSearch();
         }
     }
 
+    private void initializeDrawer()
+    {
+        BadgeStyle badgeStyle = new BadgeStyle().withColorRes(R.color.colorAccent).withCornersDp(20);
 
-    private void initializeImageLoader() {
+        PrimaryDrawerItem overviewItem = new PrimaryDrawerItem()
+                .withName(R.string.overview)
+                .withIcon(R.drawable.ic_home_black_24dp)
+                .withIconTintingEnabled(true);
+
+        PrimaryDrawerItem statisticsItem = new PrimaryDrawerItem()
+                .withName(R.string.statistics)
+                .withIcon(R.drawable.ic_assessment_black_24dp)
+                .withIconTintingEnabled(true);
+
+        PrimaryDrawerItem friendsItem = new PrimaryDrawerItem()
+                .withName(R.string.friends)
+                .withIcon(R.drawable.ic_group_black_24dp)
+                .withBadge(String.valueOf(incomingRequestsCount))
+                .withBadgeStyle(badgeStyle)
+                .withIdentifier(1)
+                .withIconTintingEnabled(true);
+
+        PrimaryDrawerItem starredItem = new PrimaryDrawerItem()
+                .withName(R.string.starred)
+                .withIcon(R.drawable.ic_star_black_24dp)
+                .withIconTintingEnabled(true);
+
+        PrimaryDrawerItem settingsItem = new PrimaryDrawerItem()
+                .withName(R.string.settings)
+                .withIcon(R.drawable.ic_settings_black_24dp)
+                .withIconTintingEnabled(true);
+
+        //initialize and create the image loader logic
+        DrawerImageLoader.init(new AbstractDrawerImageLoader() {
+            @Override
+            public void set(ImageView imageView, Uri uri, Drawable placeholder) {
+                ImageLoader imageLoader = ImageLoader.getInstance();
+                imageLoader.displayImage(currentUser.getImageUrl(), imageView);
+            }});
+
+        // Create the account header
+        AccountHeader headerResult = new AccountHeaderBuilder()
+                .withActivity(this)
+                .withHeaderBackground(R.drawable.header)
+                .addProfiles(
+                        new ProfileDrawerItem()
+                                .withName(currentUser.getName())
+                                .withEmail("FIFA Legend")
+                                .withIcon(currentUser.getImageUrl())
+                )
+                .build();
+
+        // Create the drawer
+        drawer = new DrawerBuilder()
+                .withActivity(this)
+                .withAccountHeader(headerResult)
+                .withActionBarDrawerToggle(true)
+                .withActionBarDrawerToggleAnimated(true)
+                .withToolbar(toolbar)
+                .addDrawerItems(
+                        overviewItem,
+                        statisticsItem,
+                        friendsItem,
+                        starredItem,
+                        new DividerDrawerItem(),
+                        settingsItem
+                )
+                .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
+                    @Override
+                    public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
+                        if (position == 1) {
+                            initializeMainFragment();
+                        } else if (position == 2) {
+                            initializeSecondFragment();
+                        } else if (position == 3) {
+                            initializeFriendsFragment();
+                        }
+
+                        return false;
+                    }
+                })
+                .build();
+    }
+
+    private void initializeImageLoader()
+    {
         DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder()
                 .cacheOnDisk(true).cacheInMemory(true)
                 .imageScaleType(ImageScaleType.EXACTLY)
@@ -119,24 +212,6 @@ public class MainActivity
                 .diskCacheSize(100 * 1024 * 1024).build();
 
         ImageLoader.getInstance().init(config);
-    }
-
-    private void initializeDrawer() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-
-        View headerView = navigationView.inflateHeaderView(R.layout.nav_header_main);
-
-        ImageView profileImage = (ImageView) headerView.findViewById(R.id.profile_image);
-        ImageLoader imageLoader = ImageLoader.getInstance();
-        imageLoader.displayImage(currentUser.getImageUrl(), profileImage);
-
-        TextView name = (TextView) headerView.findViewById(R.id.username);
-        name.setText(currentUser.getName());
-
-        drawer.setDrawerListener(toggle);
-        toggle.syncState();
     }
 
     private void initializeSearchView() {
@@ -158,11 +233,13 @@ public class MainActivity
         mSearchView.setOnSearchViewListener(new MaterialSearchView.SearchViewListener() {
             @Override
             public void onSearchViewShown() {
+                drawer.getDrawerLayout().setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
                 Log.i(TAG, "Showing Search View!");
             }
 
             @Override
             public void onSearchViewClosed() {
+                drawer.getDrawerLayout().setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
                 Log.i(TAG, "Closing Search View!");
             }
         });
@@ -182,19 +259,19 @@ public class MainActivity
     // ---------------------------------------------------------------------------------------------
 
     @Override
-    public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else if (mSearchView.isSearchOpen()) {
+    public void onBackPressed()
+    {
+        if (mSearchView.isSearchOpen()) {
             mSearchView.closeSearch();
-        } else {
+        }
+        else {
             super.onBackPressed();
         }
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
         getMenuInflater().inflate(R.menu.main, menu);
 
         MenuItem searchItem = menu.findItem(R.id.action_search);
@@ -219,40 +296,8 @@ public class MainActivity
 //    }
 
     // ---------------------------------------------------------------------------------------------
-    // NAVIGATION
+    // FRAGMENT INITIALIZATION
     // ---------------------------------------------------------------------------------------------
-
-    @SuppressWarnings("StatementWithEmptyBody")
-    @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
-        int id = item.getItemId();
-
-        String itemTitle = item.getTitle().toString();
-        if (title.equals(itemTitle)) {
-            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-            drawer.closeDrawer(GravityCompat.START);
-            return true;
-        }
-
-        title = itemTitle;
-
-        if (id == R.id.nav_overview) {
-            initializeMainFragment();
-        } else if (id == R.id.nav_statistics) {
-            initializeSecondFragment();
-        } else if (id == R.id.nav_friends) {
-            initializeFriendsFragment();
-        } else if (id == R.id.nav_starred) {
-
-        } else if (id == R.id.nav_settings) {
-
-        }
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
-    }
 
     private void initializeMainFragment() {
         boolean invalidateOptions = false;
@@ -270,8 +315,7 @@ public class MainActivity
         }
 
         OverviewFragment fragment = new OverviewFragment();
-        toolbar.setTitle("Overview");
-        title = "Overview";
+        toolbar.setTitle(OVERVIEW);
         FragmentTransaction fragmentTransaction =
                 getSupportFragmentManager().beginTransaction();
 
@@ -281,7 +325,7 @@ public class MainActivity
 
     private void initializeSecondFragment() {
         SecondFragment fragment = new SecondFragment();
-        toolbar.setTitle("Statistics");
+        toolbar.setTitle(STATISTICS);
         FragmentTransaction fragmentTransaction =
                 getSupportFragmentManager().beginTransaction();
 
@@ -307,8 +351,7 @@ public class MainActivity
         }
 
         FriendsFragment fragment = new FriendsFragment();
-        toolbar.setTitle("Friends");
-        title = "Friends";
+        toolbar.setTitle(FRIENDS);
 
         int viewToShow = getIntent().getIntExtra("view", 0);
         getIntent().removeExtra("view");
