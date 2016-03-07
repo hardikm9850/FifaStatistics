@@ -90,6 +90,7 @@ public class MyGcmListenerService extends GcmListenerService {
 
         Intent intent = new Intent(this, MainActivity.class);
         intent.putExtra("fragment", "friends");
+        intent.putExtra("view", 1);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
                 PendingIntent.FLAG_ONE_SHOT);
@@ -127,9 +128,11 @@ public class MyGcmListenerService extends GcmListenerService {
     {
         PreferenceHandler handler = PreferenceHandler.getInstance(getApplicationContext());
         User user = handler.getUser();
+
+        int level = Integer.parseInt(data.getString("level"));
         user.addIncomingRequest(
                 data.getString("name"), data.getString("id"), data.getString(IMAGE_URL),
-                data.getInt("level"), data.getString("RegistrationToken"));
+                level, data.getString("RegistrationToken"));
         handler.storeUserAsync(user);
     }
 
@@ -150,7 +153,7 @@ public class MyGcmListenerService extends GcmListenerService {
         DisplayImageOptions notificationOptions = new DisplayImageOptions.Builder()
                 .cacheOnDisk(false).cacheInMemory(true)
                 .imageScaleType(ImageScaleType.EXACTLY)
-                .displayer(new RoundedBitmapDisplayer(256)).build();
+                .build();
 
         ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(
                 getApplicationContext())

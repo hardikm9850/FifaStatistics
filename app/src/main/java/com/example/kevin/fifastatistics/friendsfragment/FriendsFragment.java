@@ -33,6 +33,7 @@ public class FriendsFragment extends Fragment {
 
 //    private static final String ARG_COLUMN_COUNT = "column-count";
     private static final int mColumnCount = 2;
+    private static final String REQUESTS = "Requests";
 
     private RestClient client = RestClient.getInstance();
 
@@ -70,9 +71,15 @@ public class FriendsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_friends_list, container, false);
-        setAdapter(mUser.getFriends());
-//        new GetUsers().execute();
 
+        int viewToShow = getArguments().getInt("view", 0);
+        if (viewToShow == 0) {
+            setAdapter(mUser.getFriends());
+        }
+        else {
+            getActivity().setTitle(REQUESTS);
+            setAdapter(mUser.getIncomingRequests());
+        }
         return view;
     }
 
@@ -94,26 +101,11 @@ public class FriendsFragment extends Fragment {
     }
 
     @Override
-    public boolean onContextItemSelected(MenuItem item)
-    {
-        Log.i("FRIENDS", "Selected onContextItemSelected menu item#######################");
-        if (item.getItemId() == R.id.friend_requests) {
-            Log.i("FRIENDS", "Selected friends menu item#######################");
-            setAdapter(mUser.getIncomingRequests());
-            return false;
-        }
-        else {
-            return super.onOptionsItemSelected(item);
-        }
-    }
-
-    @Override
     public boolean onOptionsItemSelected (MenuItem item)
     {
-        Log.i("FRIENDS", "Selected onOptionsItemSelected menu item#######################");
         if (item.getItemId() == R.id.friend_requests) {
-            Log.i("FRIENDS", "Selected friends menu item#######################");
             setAdapter(mUser.getIncomingRequests());
+            getActivity().setTitle(REQUESTS);
             return true;
         }
         else {

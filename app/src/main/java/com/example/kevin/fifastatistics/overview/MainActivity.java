@@ -3,6 +3,7 @@ package com.example.kevin.fifastatistics.overview;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -32,8 +33,7 @@ import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 public class MainActivity
         extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
-                   FriendsFragment.OnListFragmentInteractionListener
-{
+        FriendsFragment.OnListFragmentInteractionListener {
     NavigationView navigationView = null;
     Toolbar toolbar = null;
 
@@ -42,6 +42,7 @@ public class MainActivity
     private static String title = "";
     private static boolean doShowSearchItem = false;
     private static boolean doShowFriendRequestsItem = false;
+    private static int incomingRequestsCount = 0;
     private static User currentUser;
     private static Context mContext;
     private static PreferenceHandler mHandler;
@@ -59,8 +60,7 @@ public class MainActivity
     // ---------------------------------------------------------------------------------------------
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mContext = getApplicationContext();
@@ -74,8 +74,13 @@ public class MainActivity
         mSearchView = (MaterialSearchView) findViewById(R.id.search_view);
         initializeSearchView();
 
+        if (currentUser.getIncomingRequests() != null) {
+            incomingRequestsCount = currentUser.getIncomingRequests().size();
+        }
+
         String menuFragment = getIntent().getStringExtra("fragment");
         menuFragment = (menuFragment == null) ? OVERVIEW : menuFragment;
+        Log.i(TAG, "Fragment: " + menuFragment);
         switch (menuFragment) {
             case (FRIENDS):
                 initializeFriendsFragment();
@@ -94,8 +99,7 @@ public class MainActivity
     }
 
     @Override
-    protected void onPause()
-    {
+    protected void onPause() {
         super.onPause();
         if (mSearchView.isSearchOpen()) {
             mSearchView.closeSearch();
@@ -103,8 +107,7 @@ public class MainActivity
     }
 
 
-    private void initializeImageLoader()
-    {
+    private void initializeImageLoader() {
         DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder()
                 .cacheOnDisk(true).cacheInMemory(true)
                 .imageScaleType(ImageScaleType.EXACTLY)
@@ -118,8 +121,7 @@ public class MainActivity
         ImageLoader.getInstance().init(config);
     }
 
-    private void initializeDrawer()
-    {
+    private void initializeDrawer() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -137,8 +139,7 @@ public class MainActivity
         toggle.syncState();
     }
 
-    private void initializeSearchView()
-    {
+    private void initializeSearchView() {
         mSearchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -185,8 +186,7 @@ public class MainActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
-        }
-        else if (mSearchView.isSearchOpen()) {
+        } else if (mSearchView.isSearchOpen()) {
             mSearchView.closeSearch();
         } else {
             super.onBackPressed();
@@ -194,8 +194,7 @@ public class MainActivity
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu)
-    {
+    public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main, menu);
 
         MenuItem searchItem = menu.findItem(R.id.action_search);
@@ -230,8 +229,7 @@ public class MainActivity
         int id = item.getItemId();
 
         String itemTitle = item.getTitle().toString();
-        if (title.equals(itemTitle))
-        {
+        if (title.equals(itemTitle)) {
             DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
             drawer.closeDrawer(GravityCompat.START);
             return true;
@@ -256,8 +254,7 @@ public class MainActivity
         return true;
     }
 
-    private void initializeMainFragment()
-    {
+    private void initializeMainFragment() {
         boolean invalidateOptions = false;
 
         if (doShowSearchItem) {
@@ -275,7 +272,7 @@ public class MainActivity
         OverviewFragment fragment = new OverviewFragment();
         toolbar.setTitle("Overview");
         title = "Overview";
-        android.support.v4.app.FragmentTransaction fragmentTransaction =
+        FragmentTransaction fragmentTransaction =
                 getSupportFragmentManager().beginTransaction();
 
         fragmentTransaction.replace(R.id.fragment_container, fragment);
@@ -285,29 +282,22 @@ public class MainActivity
     private void initializeSecondFragment() {
         SecondFragment fragment = new SecondFragment();
         toolbar.setTitle("Statistics");
-        android.support.v4.app.FragmentTransaction fragmentTransaction =
+        FragmentTransaction fragmentTransaction =
                 getSupportFragmentManager().beginTransaction();
 
         fragmentTransaction.replace(R.id.fragment_container, fragment);
         fragmentTransaction.commit();
     }
 
-    private void initializeFriendsFragment()
-    {
+    private void initializeFriendsFragment() {
         boolean invalidateOptions = false;
 
-        if (!doShowSearchItem)
-        {
+        if (!doShowSearchItem) {
             doShowSearchItem = true;
             invalidateOptions = true;
         }
 
-        int incomingRequests = 0;
-        if (currentUser.getIncomingRequests() != null) {
-            incomingRequests = currentUser.getIncomingRequests().size();
-        }
-
-        if (incomingRequests > 0) {
+        if (incomingRequestsCount > 0) {
             doShowFriendRequestsItem = true;
             invalidateOptions = true;
         }
@@ -316,20 +306,20 @@ public class MainActivity
             this.invalidateOptionsMenu();
         }
 
-
         FriendsFragment fragment = new FriendsFragment();
         toolbar.setTitle("Friends");
         title = "Friends";
 
+        int viewToShow = getIntent().getIntExtra("view", 0);
+        getIntent().removeExtra("view");
         Bundle bundle = new Bundle();
-        bundle.putInt("view", 0);
+        bundle.putInt("view", viewToShow);
         fragment.setArguments(bundle);
 
-        android.support.v4.app.FragmentTransaction fragmentTransaction =
+        FragmentTransaction fragmentTransaction =
                 getSupportFragmentManager().beginTransaction();
 
         fragmentTransaction.replace(R.id.fragment_container, fragment);
         fragmentTransaction.commit();
     }
-
 }

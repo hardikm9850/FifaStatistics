@@ -273,6 +273,13 @@ public class User {
         outgoingRequests.add(new Friend(id, name, imageUrl, level, registrationToken));
     }
 
+    public void deleteIncomingRequests()
+    {
+        if (incomingRequests != null) {
+            incomingRequests.clear();
+        }
+    }
+
     /**
      * Adds a Friend to the User's friends list.
      * @param id            The User's ID

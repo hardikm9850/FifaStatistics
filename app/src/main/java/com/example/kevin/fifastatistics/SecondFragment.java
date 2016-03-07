@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 
 import com.example.kevin.fifastatistics.restclient.RestJsonInterpreter;
 import com.example.kevin.fifastatistics.user.User;
+import com.example.kevin.fifastatistics.utils.PreferenceHandler;
 
 import java.util.ArrayList;
 
@@ -36,52 +37,12 @@ public class SecondFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_second, container, false);
-        new GetUsers().execute();
+
+        PreferenceHandler handler = PreferenceHandler.getInstance(getContext());
+        User user = handler.getUser();
+        user.deleteIncomingRequests();
+        handler.storeUser(user);
+
         return view;
-    }
-
-    /**
-     * Async task class to get json by making HTTP call
-     * */
-    private class GetUsers extends AsyncTask<Void, Void, Void> {
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            // Showing progress dialog
-            pDialog = new ProgressDialog(view.getContext());
-            pDialog.setMessage("Please wait...");
-            pDialog.setCancelable(false);
-            pDialog.show();
-
-        }
-
-        @Override
-        protected Void doInBackground(Void... arg0) {
-
-//            friendsList = reader.getUserList();
-
-            if (friendsList == null) {
-                Log.e("ServiceHandler", "Couldn't get any data from the url");
-                // Handle null friends list
-                // ...
-            }
-
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void result) {
-            super.onPostExecute(result);
-            // Dismiss the progress dialog
-            if (pDialog.isShowing())
-                pDialog.dismiss();
-            /**
-             * Updating parsed JSON data into ListView
-             * */
-//            Button button = (Button) view.findViewById(R.id.textView);
-//            button.setText(friendsList.get(0).getName());
-        }
-
     }
 }
