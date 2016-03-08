@@ -3,7 +3,9 @@ package com.example.kevin.fifastatistics.views;
 import android.app.Activity;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.widget.ImageView;
 
 import com.example.kevin.fifastatistics.R;
@@ -26,13 +28,16 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 public class FifaNavigationDrawer {
 
     private Drawer drawer;
+    private int previousPosition;
 
     public FifaNavigationDrawer(Toolbar toolbar,
                                 final User currentUser,
                                 int incomingRequestsCount,
                                 Activity activity)
     {
-        BadgeStyle badgeStyle = new BadgeStyle().withColorRes(R.color.colorAccent).withCornersDp(20);
+        BadgeStyle badgeStyle = new BadgeStyle()
+                .withColorRes(R.color.colorAccent)
+                .withCornersDp(20);
 
         PrimaryDrawerItem overviewItem = new PrimaryDrawerItem()
                 .withName(R.string.overview)
@@ -99,9 +104,33 @@ public class FifaNavigationDrawer {
                         settingsItem
                 )
                 .build();
+
+        previousPosition = drawer.getCurrentSelectedPosition();
     }
 
     public Drawer getDrawer() {
         return drawer;
+    }
+
+    /**
+     * Locks the navigation drawer
+     */
+    public void lock() {
+        drawer.getDrawerLayout().setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+    }
+
+    /**
+     * Unlocks the navigation drawer
+     */
+    public void unlock() {
+        drawer.getDrawerLayout().setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+    }
+
+    public int getPreviousSelectedPosition() {
+        return previousPosition;
+    }
+
+    public void setPreviousSelectedPosition(int position) {
+        previousPosition = position;
     }
 }

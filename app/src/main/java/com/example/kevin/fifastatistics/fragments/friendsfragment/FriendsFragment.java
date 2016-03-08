@@ -2,22 +2,28 @@ package com.example.kevin.fifastatistics.fragments.friendsfragment;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.kevin.fifastatistics.R;
+import com.example.kevin.fifastatistics.activities.MainActivity;
 import com.example.kevin.fifastatistics.network.RestClient;
 import com.example.kevin.fifastatistics.models.user.Friend;
 import com.example.kevin.fifastatistics.models.user.User;
 import com.example.kevin.fifastatistics.managers.SharedPreferencesManager;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -32,10 +38,11 @@ public class FriendsFragment extends Fragment {
 
 //    private static final String ARG_COLUMN_COUNT = "column-count";
     private static final int mColumnCount = 2;
+    private static final String TAG = "Friends Fragment";
     private static final String REQUESTS = "Requests";
+    private static MaterialSearchView mSearchView;
 
     private RestClient client = RestClient.getInstance();
-
     private OnListFragmentInteractionListener mListener;
     private ProgressDialog pDialog;
 
@@ -57,19 +64,24 @@ public class FriendsFragment extends Fragment {
 //    }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
 
         SharedPreferencesManager handler = SharedPreferencesManager.getInstance(getContext());
         mUser = handler.getUser();
 
+        setRetainInstance(true);
         setHasOptionsMenu(true);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+                             Bundle savedInstanceState)
+    {
         view = inflater.inflate(R.layout.fragment_friends_list, container, false);
+        mSearchView = (MaterialSearchView) getActivity().findViewById(R.id.search_view);
+        initializeSearchView();
 
         int viewToShow = getArguments().getInt("view", 0);
         if (viewToShow == 0) {
@@ -80,6 +92,15 @@ public class FriendsFragment extends Fragment {
             setAdapter(mUser.getIncomingRequests());
         }
         return view;
+    }
+
+    @Override
+    public void onDestroyView()
+    {
+        Log.i(TAG, "Destroying in friends fragment!!!!!");
+        view = null;
+        mSearchView = null;
+        super.onDestroyView();
     }
 
     @Override
@@ -100,6 +121,28 @@ public class FriendsFragment extends Fragment {
     }
 
     @Override
+    public void onPause()
+    {
+        super.onPause();
+        if (mSearchView.isSearchOpen()) {
+            mSearchView.closeSearch();
+        }
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater)
+    {
+        Log.i(TAG, "Creating options menu from fragment!");
+        inflater.inflate(R.menu.main, menu);
+
+        MenuItem searchItem = menu.findItem(R.id.action_search);
+        searchItem.setVisible(true);
+        mSearchView.setMenuItem(searchItem);
+
+        menu.findItem(R.id.friend_requests).setVisible(false);
+    }
+
+    @Override
     public boolean onOptionsItemSelected (MenuItem item)
     {
         if (item.getItemId() == R.id.friend_requests) {
@@ -112,14 +155,10 @@ public class FriendsFragment extends Fragment {
         }
     }
 
-    private void setAdapter(ArrayList<Friend> users)
+    public static void closeSearchView()
     {
-        if (view instanceof RecyclerView)
-        {
-            RecyclerView recyclerView = (RecyclerView) view;
-
-            recyclerView.setLayoutManager(new GridLayoutManager(view.getContext(), mColumnCount));
-            recyclerView.setAdapter(new MyFriendsRecyclerViewAdapter(users, mListener));
+        if (mSearchView.isSearchOpen()) {
+            mSearchView.closeSearch();
         }
     }
 
@@ -136,6 +175,54 @@ public class FriendsFragment extends Fragment {
     public interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
         void onListFragmentInteraction(Friend friend);
+    }
+
+    // TODO do in background
+    private void initializeSearchView() {
+        mSearchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                //Do some magic
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                //Do some magic
+                return false;
+            }
+        });
+
+        Log.i(TAG, "Setting on search view listener####");
+        mSearchView.setOnSearchViewListener(new MaterialSearchView.SearchViewListener() {
+            @Override
+            public void onSearchViewShown() {
+                MainActivity.lockNavigationDrawer();
+                Log.i(TAG, "Showing Search View!");
+            }
+
+            @Override
+            public void onSearchViewClosed() {
+                MainActivity.unlockNavigationDrawer();
+                Log.i(TAG, "Closing Search View!");
+            }
+        });
+
+        mSearchView.setVoiceSearch(false);
+        mSearchView.setHint("Search Users");
+        mSearchView.setHintTextColor(Color.LTGRAY);
+    }
+
+
+    private void setAdapter(ArrayList<Friend> users)
+    {
+        if (view instanceof RecyclerView)
+        {
+            RecyclerView recyclerView = (RecyclerView) view;
+
+            recyclerView.setLayoutManager(new GridLayoutManager(view.getContext(), mColumnCount));
+            recyclerView.setAdapter(new MyFriendsRecyclerViewAdapter(users, mListener));
+        }
     }
 
     /**

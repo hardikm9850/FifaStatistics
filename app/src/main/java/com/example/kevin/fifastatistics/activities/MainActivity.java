@@ -1,15 +1,11 @@
 package com.example.kevin.fifastatistics.activities;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.widget.DrawerLayout;
-import android.util.Log;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.util.Log;
 import android.view.View;
 
 import com.example.kevin.fifastatistics.R;
@@ -21,7 +17,6 @@ import com.example.kevin.fifastatistics.models.user.Friend;
 import com.example.kevin.fifastatistics.models.user.User;
 import com.example.kevin.fifastatistics.managers.SharedPreferencesManager;
 import com.example.kevin.fifastatistics.views.FifaNavigationDrawer;
-import com.miguelcatalan.materialsearchview.MaterialSearchView;
 import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.nostra13.universalimageloader.cache.memory.impl.WeakMemoryCache;
@@ -38,17 +33,10 @@ public class MainActivity
 
     // Properties
     private static final String TAG = "MainActivity";
-
-    private static boolean doShowSearchItem = false;
-    private static boolean doShowFriendRequestsItem = false;
     private static int incomingRequestsCount = 0;
-
     private static User mUser;
     private static Context mContext;
-    private static SharedPreferencesManager mPreferencesManager;
-    private static MaterialSearchView mSearchView;
     private static FifaNavigationDrawer mDrawer;
-
     // ---------------------------------------------------------------------------------------------
     // INITIALIZATION
     // ---------------------------------------------------------------------------------------------
@@ -61,13 +49,11 @@ public class MainActivity
         mContext = getApplicationContext();
 
         initializeImageLoader();
-        mPreferencesManager = SharedPreferencesManager.getInstance(mContext);
-        mUser = mPreferencesManager.getUser();
+        SharedPreferencesManager preferencesManager = SharedPreferencesManager.getInstance(mContext);
+        mUser = preferencesManager.getUser();
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        mSearchView = (MaterialSearchView) findViewById(R.id.search_view);
-        initializeSearchView();
 
         if (mUser.getIncomingRequests() != null) {
             incomingRequestsCount = mUser.getIncomingRequests().size();
@@ -77,7 +63,6 @@ public class MainActivity
 
         String menuFragment = getIntent().getStringExtra("fragment");
         menuFragment = (menuFragment == null) ? Constants.OVERVIEW_FRAGMENT : menuFragment;
-        Log.i(TAG, "Fragment: " + menuFragment);
         switch (menuFragment) {
             case (Constants.FRIENDS_FRAGMENT):
                 initializeFriendsFragment();
@@ -91,26 +76,32 @@ public class MainActivity
         }
     }
 
-    @Override
-    protected void onPause()
-    {
-        super.onPause();
-        if (mSearchView.isSearchOpen()) {
-            mSearchView.closeSearch();
-        }
-    }
-
+    /**
+     * Initialize the App's main Navigation Drawer
+     */
     private void initializeDrawer()
     {
+        Log.i(TAG, "Initializing drawer");
         mDrawer = new FifaNavigationDrawer(toolbar, mUser, incomingRequestsCount, this);
-        mDrawer.getDrawer().setOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
+        mDrawer.getDrawer().setOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener()
+        {
             @Override
-            public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
+            public boolean onItemClick(View view, int position, IDrawerItem drawerItem)
+            {
+                if (mDrawer.getPreviousSelectedPosition() == position) {
+                    mDrawer.setPreviousSelectedPosition(position);
+                    mDrawer.getDrawer().closeDrawer();
+                    return true;
+                }
+
+                mDrawer.setPreviousSelectedPosition(position);
                 if (position == 1) {
                     initializeMainFragment();
-                } else if (position == 2) {
+                }
+                else if (position == 2) {
                     initializeSecondFragment();
-                } else if (position == 3) {
+                }
+                else if (position == 3) {
                     initializeFriendsFragment();
                 }
                 return false;
@@ -118,6 +109,9 @@ public class MainActivity
         });
     }
 
+    /**
+     * Define the default Universal Image Loader Options
+     */
     private void initializeImageLoader()
     {
         DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder()
@@ -133,41 +127,6 @@ public class MainActivity
         ImageLoader.getInstance().init(config);
     }
 
-    private void initializeSearchView() {
-        mSearchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                //Do some magic
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                //Do some magic
-                return false;
-            }
-        });
-
-        Log.i(TAG, "Setting on search view listener####");
-        mSearchView.setOnSearchViewListener(new MaterialSearchView.SearchViewListener() {
-            @Override
-            public void onSearchViewShown() {
-                mDrawer.getDrawer().getDrawerLayout().setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
-                Log.i(TAG, "Showing Search View!");
-            }
-
-            @Override
-            public void onSearchViewClosed() {
-                mDrawer.getDrawer().getDrawerLayout().setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
-                Log.i(TAG, "Closing Search View!");
-            }
-        });
-
-        mSearchView.setVoiceSearch(false);
-        mSearchView.setHint("Search Users");
-        mSearchView.setHintTextColor(Color.LTGRAY);
-    }
-
     @Override
     public void onListFragmentInteraction(Friend friend) {
         System.out.println("Interacted");
@@ -180,61 +139,29 @@ public class MainActivity
     @Override
     public void onBackPressed()
     {
-        if (mSearchView.isSearchOpen()) {
-            mSearchView.closeSearch();
-        }
-        else {
-            super.onBackPressed();
-        }
+        FriendsFragment.closeSearchView();
+        super.onBackPressed();
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu)
+    public static void lockNavigationDrawer()
     {
-        getMenuInflater().inflate(R.menu.main, menu);
-
-        MenuItem searchItem = menu.findItem(R.id.action_search);
-        searchItem.setVisible(doShowSearchItem);
-        mSearchView.setMenuItem(searchItem);
-
-        MenuItem requestsItem = menu.findItem(R.id.friend_requests);
-        requestsItem.setVisible(doShowFriendRequestsItem);
-
-        return true;
+        mDrawer.lock();
     }
 
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        // Handle item selection
-//        switch (item.getItemId()) {
-//            case R.id.friend_requests:
-//
-//            default:
-//                return super.onOptionsItemSelected(item);
-//        }
-//    }
+    public static void unlockNavigationDrawer()
+    {
+        mDrawer.unlock();
+    }
 
     // ---------------------------------------------------------------------------------------------
     // FRAGMENT INITIALIZATION
     // ---------------------------------------------------------------------------------------------
 
-    private void initializeMainFragment() {
-        boolean invalidateOptions = false;
-
-        if (doShowSearchItem) {
-            doShowSearchItem = false;
-            invalidateOptions = true;
-        }
-        if (doShowFriendRequestsItem) {
-            doShowFriendRequestsItem = false;
-            invalidateOptions = true;
-        }
-        if (invalidateOptions) {
-            this.invalidateOptionsMenu();
-        }
-
+    private void initializeMainFragment()
+    {
         OverviewFragment fragment = new OverviewFragment();
         toolbar.setTitle(Constants.OVERVIEW_FRAGMENT);
+
         FragmentTransaction fragmentTransaction =
                 getSupportFragmentManager().beginTransaction();
 
@@ -252,23 +179,9 @@ public class MainActivity
         fragmentTransaction.commit();
     }
 
-    private void initializeFriendsFragment() {
-        boolean invalidateOptions = false;
-
-        if (!doShowSearchItem) {
-            doShowSearchItem = true;
-            invalidateOptions = true;
-        }
-
-        if (incomingRequestsCount > 0) {
-            doShowFriendRequestsItem = true;
-            invalidateOptions = true;
-        }
-
-        if (invalidateOptions) {
-            this.invalidateOptionsMenu();
-        }
-
+    private void initializeFriendsFragment()
+    {
+        Log.i(TAG, "initializing friends fragment######################");
         FriendsFragment fragment = new FriendsFragment();
         toolbar.setTitle(Constants.FRIENDS_FRAGMENT);
 
