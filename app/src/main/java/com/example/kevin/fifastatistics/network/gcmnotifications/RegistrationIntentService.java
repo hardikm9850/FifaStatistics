@@ -1,4 +1,4 @@
-package com.example.kevin.fifastatistics.gcm;
+package com.example.kevin.fifastatistics.network.gcmnotifications;
 
 import android.app.IntentService;
 import android.content.Intent;
@@ -6,7 +6,7 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 import com.example.kevin.fifastatistics.R;
-import com.example.kevin.fifastatistics.utils.PreferenceHandler;
+import com.example.kevin.fifastatistics.managers.SharedPreferencesManager;
 import com.google.android.gms.gcm.GcmPubSub;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.google.android.gms.iid.InstanceID;
@@ -28,7 +28,7 @@ public class RegistrationIntentService extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent)
     {
-        PreferenceHandler handler = PreferenceHandler.getInstance(this);
+        SharedPreferencesManager handler = SharedPreferencesManager.getInstance(this);
 
         try {
             // [START register_for_gcm]

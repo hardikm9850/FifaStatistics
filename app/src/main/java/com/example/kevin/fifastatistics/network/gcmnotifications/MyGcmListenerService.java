@@ -1,4 +1,4 @@
-package com.example.kevin.fifastatistics.gcm;
+package com.example.kevin.fifastatistics.network.gcmnotifications;
 
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -19,16 +19,16 @@ import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import com.example.kevin.fifastatistics.R;
-import com.example.kevin.fifastatistics.overview.MainActivity;
-import com.example.kevin.fifastatistics.user.User;
-import com.example.kevin.fifastatistics.utils.PreferenceHandler;
+import com.example.kevin.fifastatistics.activities.MainActivity;
+import com.example.kevin.fifastatistics.models.Constants;
+import com.example.kevin.fifastatistics.models.user.User;
+import com.example.kevin.fifastatistics.managers.SharedPreferencesManager;
 import com.google.android.gms.gcm.GcmListenerService;
 import com.nostra13.universalimageloader.cache.memory.impl.WeakMemoryCache;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.ImageScaleType;
-import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
 
 public class MyGcmListenerService extends GcmListenerService {
 
@@ -37,10 +37,8 @@ public class MyGcmListenerService extends GcmListenerService {
     private static final String IMAGE_URL = "imageUrl";
     private static final String TITLE = "gcm.notification.title";
     private static final String BODY = "gcm.notification.body";
-
     private static final String NEW_REQUEST = "New Friend Request";
-
-    private static final String DEFAULT_TITLE = "FIFA Statistics";
+    private static final String DEFAULT_TAG = "default";
     private static final String DEFAULT_BODY = "";
 
     /**
@@ -56,24 +54,20 @@ public class MyGcmListenerService extends GcmListenerService {
         Log.d(TAG, "From: " + from);
         initializeImageLoader();
 
-        if (from.startsWith("/topics/")) {
-            // message received from some topic.
-        } else {
-            // normal downstream message.
-        }
+//        if (from.startsWith("/topics/")) {
+//            // message received from some topic.
+//        } else {
+//            // normal downstream message.
+//        }
 
-        String tag = getTag(bundle);
-        Log.i(TAG, "tag: " + tag);
-        if (tag == null) {
-            return;
-        }
-        else if (tag.equals(NotificationTypesEnum.FRIEND_REQUEST.name()))
-        {
-            addFriendRequestToUser(bundle);
-            sendFriendRequestNotification(bundle);
-        }
-        else {
-            // TODO OTHER NOTIFICATIONS
+        String tag = (getTag(bundle) == null) ? DEFAULT_TAG : getTag(bundle);
+        switch (tag) {
+            case Constants.FRIEND_REQUEST_TAG :
+                addFriendRequestToUser(bundle);
+                sendFriendRequestNotification(bundle);
+                break;
+            default :
+                break;
         }
 
     }
@@ -89,7 +83,7 @@ public class MyGcmListenerService extends GcmListenerService {
         Bitmap largeIcon = imageLoader.loadImageSync(notification.getString(IMAGE_URL));
 
         Intent intent = new Intent(this, MainActivity.class);
-        intent.putExtra("fragment", "Friends");
+        intent.putExtra("fragment", Constants.FRIENDS_FRAGMENT);
         intent.putExtra("view", 1);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
@@ -126,7 +120,7 @@ public class MyGcmListenerService extends GcmListenerService {
 
     private void addFriendRequestToUser(Bundle data)
     {
-        PreferenceHandler handler = PreferenceHandler.getInstance(getApplicationContext());
+        SharedPreferencesManager handler = SharedPreferencesManager.getInstance(getApplicationContext());
         User user = handler.getUser();
 
         int level = Integer.parseInt(data.getString("level"));
@@ -138,13 +132,11 @@ public class MyGcmListenerService extends GcmListenerService {
 
     private static String getTag(Bundle data)
     {
-        try
-        {
+        try {
             return data.getString("tag");
         }
-        catch (NullPointerException e)
-        {
-            return null;
+        catch (NullPointerException e) {
+            return DEFAULT_TAG;
         }
     }
 

@@ -1,4 +1,4 @@
-package com.example.kevin.fifastatistics.friendsfragment;
+package com.example.kevin.fifastatistics.fragments.friendsfragment;
 
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -9,8 +9,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.kevin.fifastatistics.R;
-import com.example.kevin.fifastatistics.friendsfragment.FriendsFragment.OnListFragmentInteractionListener;
-import com.example.kevin.fifastatistics.user.Friend;
+import com.example.kevin.fifastatistics.fragments.friendsfragment.FriendsFragment.OnListFragmentInteractionListener;
+import com.example.kevin.fifastatistics.models.user.Friend;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
 

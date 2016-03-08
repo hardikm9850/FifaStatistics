@@ -1,9 +1,10 @@
-package com.example.kevin.fifastatistics.utils;
+package com.example.kevin.fifastatistics.managers;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import com.example.kevin.fifastatistics.user.User;
+import com.example.kevin.fifastatistics.models.user.User;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.google.gson.Gson;
 
@@ -12,14 +13,14 @@ import com.google.gson.Gson;
  * Implemented as a singleton. Application Context must be passed to the
  * instance when retrieving it.
  */
-public class PreferenceHandler
+public class SharedPreferencesManager
 {
-    private static PreferenceHandler instance = new PreferenceHandler();
+    private static SharedPreferencesManager instance = new SharedPreferencesManager();
     private SharedPreferences preferences;
     private SharedPreferences.Editor editor;
     private Context context;
 
-    public static PreferenceHandler getInstance(Context context)
+    public static SharedPreferencesManager getInstance(Context context)
     {
         instance.context = context;
         instance.preferences = context.getSharedPreferences(
@@ -27,7 +28,7 @@ public class PreferenceHandler
         return instance;
     }
 
-    private PreferenceHandler() {
+    private SharedPreferencesManager() {
     }
 
     /**
@@ -95,6 +96,7 @@ public class PreferenceHandler
         return new User(name, email, googleId, imageUrl);
     }
 
+    @SuppressLint("CommitPrefEdits")
     public void setCurrentUser(String name, String googleId, String email, String imageUrl)
     {
         editor = preferences.edit();
@@ -105,6 +107,7 @@ public class PreferenceHandler
         editor.commit();
     }
 
+    @SuppressLint("CommitPrefEdits")
     public void storeUser(User user)
     {
         editor = preferences.edit();
@@ -123,6 +126,7 @@ public class PreferenceHandler
         editor.apply();
     }
 
+    @SuppressLint("CommitPrefEdits")
     public void storeUser(JsonNode user)
     {
         editor = preferences.edit();

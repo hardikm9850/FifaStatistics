@@ -1,4 +1,4 @@
-package com.example.kevin.fifastatistics.user;
+package com.example.kevin.fifastatistics.models.user;
 
 import java.util.ArrayList;
 

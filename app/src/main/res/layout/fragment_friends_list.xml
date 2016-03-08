@@ -10,5 +10,5 @@
     android:layout_marginRight="16dp"
     android:paddingTop="?attr/actionBarSize"
     app:layoutManager="LinearLayoutManager"
-    tools:context=".friendsfragment.FriendsFragment"
+    tools:context=".fragments.friendsfragment.FriendsFragment"
     tools:listitem="@layout/fragment_friends" />

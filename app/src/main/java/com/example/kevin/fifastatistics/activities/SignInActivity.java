@@ -1,4 +1,4 @@
-package com.example.kevin.fifastatistics;
+package com.example.kevin.fifastatistics.activities;
 
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -10,11 +10,11 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
-import com.example.kevin.fifastatistics.gcm.RegistrationIntentService;
-import com.example.kevin.fifastatistics.overview.MainActivity;
-import com.example.kevin.fifastatistics.restclient.RestClient;
-import com.example.kevin.fifastatistics.user.User;
-import com.example.kevin.fifastatistics.utils.PreferenceHandler;
+import com.example.kevin.fifastatistics.R;
+import com.example.kevin.fifastatistics.network.gcmnotifications.RegistrationIntentService;
+import com.example.kevin.fifastatistics.network.RestClient;
+import com.example.kevin.fifastatistics.models.user.User;
+import com.example.kevin.fifastatistics.managers.SharedPreferencesManager;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -42,7 +42,7 @@ public class SignInActivity extends AppCompatActivity implements
     private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
     private static final int RC_SIGN_IN = 9001;
 
-    private PreferenceHandler handler;
+    private SharedPreferencesManager handler;
 
     private GoogleApiClient mGoogleApiClient;
     private TextView mStatusTextView;
@@ -51,7 +51,7 @@ public class SignInActivity extends AppCompatActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        handler = PreferenceHandler.getInstance(getApplicationContext());
+        handler = SharedPreferencesManager.getInstance(getApplicationContext());
         checkSignedIn();
         setContentView(R.layout.activity_login);
 

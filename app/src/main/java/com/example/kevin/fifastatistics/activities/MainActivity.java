@@ -1,4 +1,4 @@
-package com.example.kevin.fifastatistics.overview;
+package com.example.kevin.fifastatistics.activities;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -16,11 +16,13 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.example.kevin.fifastatistics.R;
-import com.example.kevin.fifastatistics.SecondFragment;
-import com.example.kevin.fifastatistics.friendsfragment.FriendsFragment;
-import com.example.kevin.fifastatistics.user.Friend;
-import com.example.kevin.fifastatistics.user.User;
-import com.example.kevin.fifastatistics.utils.PreferenceHandler;
+import com.example.kevin.fifastatistics.fragments.SecondFragment;
+import com.example.kevin.fifastatistics.fragments.friendsfragment.FriendsFragment;
+import com.example.kevin.fifastatistics.fragments.OverviewFragment;
+import com.example.kevin.fifastatistics.models.Constants;
+import com.example.kevin.fifastatistics.models.user.Friend;
+import com.example.kevin.fifastatistics.models.user.User;
+import com.example.kevin.fifastatistics.managers.SharedPreferencesManager;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 import com.mikepenz.materialdrawer.AccountHeader;
 import com.mikepenz.materialdrawer.AccountHeaderBuilder;
@@ -52,15 +54,8 @@ public class MainActivity
     private static int incomingRequestsCount = 0;
     private static User currentUser;
     private static Context mContext;
-    private static PreferenceHandler mHandler;
+    private static SharedPreferencesManager mHandler;
     private static MaterialSearchView mSearchView;
-
-    // Fragment Names
-    private static final String OVERVIEW = "Overview";
-    private static final String FRIENDS = "Friends";
-    private static final String STATISTICS = "Statistics";
-    private static final String STARRED = "Starred";
-    private static final String SETTINGS = "Settings";
 
     private static Drawer drawer;
 
@@ -76,7 +71,7 @@ public class MainActivity
         mContext = getApplicationContext();
 
         initializeImageLoader();
-        mHandler = PreferenceHandler.getInstance(mContext);
+        mHandler = SharedPreferencesManager.getInstance(mContext);
         currentUser = mHandler.getUser();
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -91,13 +86,13 @@ public class MainActivity
         initializeDrawer();
 
         String menuFragment = getIntent().getStringExtra("fragment");
-        menuFragment = (menuFragment == null) ? OVERVIEW : menuFragment;
+        menuFragment = (menuFragment == null) ? Constants.OVERVIEW_FRAGMENT : menuFragment;
         Log.i(TAG, "Fragment: " + menuFragment);
         switch (menuFragment) {
-            case (FRIENDS):
+            case (Constants.FRIENDS_FRAGMENT):
                 initializeFriendsFragment();
                 break;
-            case (OVERVIEW):
+            case (Constants.OVERVIEW_FRAGMENT):
                 initializeMainFragment();
                 break;
             default:
@@ -315,7 +310,7 @@ public class MainActivity
         }
 
         OverviewFragment fragment = new OverviewFragment();
-        toolbar.setTitle(OVERVIEW);
+        toolbar.setTitle(Constants.OVERVIEW_FRAGMENT);
         FragmentTransaction fragmentTransaction =
                 getSupportFragmentManager().beginTransaction();
 
@@ -325,7 +320,7 @@ public class MainActivity
 
     private void initializeSecondFragment() {
         SecondFragment fragment = new SecondFragment();
-        toolbar.setTitle(STATISTICS);
+        toolbar.setTitle(Constants.STATISTICS_FRAGMENT);
         FragmentTransaction fragmentTransaction =
                 getSupportFragmentManager().beginTransaction();
 
@@ -351,7 +346,7 @@ public class MainActivity
         }
 
         FriendsFragment fragment = new FriendsFragment();
-        toolbar.setTitle(FRIENDS);
+        toolbar.setTitle(Constants.FRIENDS_FRAGMENT);
 
         int viewToShow = getIntent().getIntExtra("view", 0);
         getIntent().removeExtra("view");

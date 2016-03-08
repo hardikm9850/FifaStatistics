@@ -1,9 +1,9 @@
-package com.example.kevin.fifastatistics.restclient;
+package com.example.kevin.fifastatistics.network;
 
 import android.util.Log;
 
-import com.example.kevin.fifastatistics.gcm.NotificationTypesEnum;
-import com.example.kevin.fifastatistics.user.User;
+import com.example.kevin.fifastatistics.models.Constants;
+import com.example.kevin.fifastatistics.models.user.User;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
@@ -130,7 +130,7 @@ public class RestClient
      * @param registrationToken The registration token of the user
      * @param imageUrl The imageUrl of the user
      * @return the JSON response
-     * @throws IOException If the creation failed
+     * @throws IOException If the creation failed (POST was unsuccessful)
      */
     public JsonNode createUser(String name, String googleId, String email,
                                String registrationToken, String imageUrl)
@@ -254,7 +254,7 @@ public class RestClient
         notification.put("body", currentUser.getName());
         notification.put("title", "New Friend Request");
 
-        data.put("tag", NotificationTypesEnum.FRIEND_REQUEST.name());
+        data.put("tag", Constants.FRIEND_REQUEST_TAG);
         data.put("name", currentUser.getName());
         data.put("id", currentUser.getId());
         data.put("imageUrl", currentUser.getImageUrl());

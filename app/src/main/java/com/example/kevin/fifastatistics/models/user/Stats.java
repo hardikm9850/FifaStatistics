@@ -1,4 +1,4 @@
-package com.example.kevin.fifastatistics.user;
+package com.example.kevin.fifastatistics.models.user;
 
 /**
  * <b>Class:</b> Stats <br><br>

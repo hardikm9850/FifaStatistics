@@ -1,4 +1,4 @@
-package com.example.kevin.fifastatistics.friendsfragment;
+package com.example.kevin.fifastatistics.fragments.friendsfragment;
 
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -7,17 +7,16 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.kevin.fifastatistics.R;
-import com.example.kevin.fifastatistics.restclient.RestClient;
-import com.example.kevin.fifastatistics.user.Friend;
-import com.example.kevin.fifastatistics.user.User;
-import com.example.kevin.fifastatistics.utils.PreferenceHandler;
+import com.example.kevin.fifastatistics.network.RestClient;
+import com.example.kevin.fifastatistics.models.user.Friend;
+import com.example.kevin.fifastatistics.models.user.User;
+import com.example.kevin.fifastatistics.managers.SharedPreferencesManager;
 import com.fasterxml.jackson.databind.JsonNode;
 
 import java.io.IOException;
@@ -61,7 +60,7 @@ public class FriendsFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        PreferenceHandler handler = PreferenceHandler.getInstance(getContext());
+        SharedPreferencesManager handler = SharedPreferencesManager.getInstance(getContext());
         mUser = handler.getUser();
 
         setHasOptionsMenu(true);

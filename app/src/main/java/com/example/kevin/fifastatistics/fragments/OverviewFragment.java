@@ -1,4 +1,4 @@
-package com.example.kevin.fifastatistics.overview;
+package com.example.kevin.fifastatistics.fragments;
 
 
 import android.os.Bundle;
