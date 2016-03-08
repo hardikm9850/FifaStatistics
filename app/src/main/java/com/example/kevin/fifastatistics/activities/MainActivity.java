@@ -2,8 +2,6 @@ package com.example.kevin.fifastatistics.activities;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
@@ -13,7 +11,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
 
 import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.fragments.SecondFragment;
@@ -23,18 +20,10 @@ import com.example.kevin.fifastatistics.models.Constants;
 import com.example.kevin.fifastatistics.models.user.Friend;
 import com.example.kevin.fifastatistics.models.user.User;
 import com.example.kevin.fifastatistics.managers.SharedPreferencesManager;
+import com.example.kevin.fifastatistics.views.FifaNavigationDrawer;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
-import com.mikepenz.materialdrawer.AccountHeader;
-import com.mikepenz.materialdrawer.AccountHeaderBuilder;
 import com.mikepenz.materialdrawer.Drawer;
-import com.mikepenz.materialdrawer.DrawerBuilder;
-import com.mikepenz.materialdrawer.holder.BadgeStyle;
-import com.mikepenz.materialdrawer.model.DividerDrawerItem;
-import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
-import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
-import com.mikepenz.materialdrawer.util.AbstractDrawerImageLoader;
-import com.mikepenz.materialdrawer.util.DrawerImageLoader;
 import com.nostra13.universalimageloader.cache.memory.impl.WeakMemoryCache;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -49,15 +38,16 @@ public class MainActivity
 
     // Properties
     private static final String TAG = "MainActivity";
+
     private static boolean doShowSearchItem = false;
     private static boolean doShowFriendRequestsItem = false;
     private static int incomingRequestsCount = 0;
-    private static User currentUser;
-    private static Context mContext;
-    private static SharedPreferencesManager mHandler;
-    private static MaterialSearchView mSearchView;
 
-    private static Drawer drawer;
+    private static User mUser;
+    private static Context mContext;
+    private static SharedPreferencesManager mPreferencesManager;
+    private static MaterialSearchView mSearchView;
+    private static FifaNavigationDrawer mDrawer;
 
     // ---------------------------------------------------------------------------------------------
     // INITIALIZATION
@@ -71,16 +61,16 @@ public class MainActivity
         mContext = getApplicationContext();
 
         initializeImageLoader();
-        mHandler = SharedPreferencesManager.getInstance(mContext);
-        currentUser = mHandler.getUser();
+        mPreferencesManager = SharedPreferencesManager.getInstance(mContext);
+        mUser = mPreferencesManager.getUser();
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         mSearchView = (MaterialSearchView) findViewById(R.id.search_view);
         initializeSearchView();
 
-        if (currentUser.getIncomingRequests() != null) {
-            incomingRequestsCount = currentUser.getIncomingRequests().size();
+        if (mUser.getIncomingRequests() != null) {
+            incomingRequestsCount = mUser.getIncomingRequests().size();
         }
 
         initializeDrawer();
@@ -112,86 +102,20 @@ public class MainActivity
 
     private void initializeDrawer()
     {
-        BadgeStyle badgeStyle = new BadgeStyle().withColorRes(R.color.colorAccent).withCornersDp(20);
-
-        PrimaryDrawerItem overviewItem = new PrimaryDrawerItem()
-                .withName(R.string.overview)
-                .withIcon(R.drawable.ic_home_black_24dp)
-                .withIconTintingEnabled(true);
-
-        PrimaryDrawerItem statisticsItem = new PrimaryDrawerItem()
-                .withName(R.string.statistics)
-                .withIcon(R.drawable.ic_assessment_black_24dp)
-                .withIconTintingEnabled(true);
-
-        PrimaryDrawerItem friendsItem = new PrimaryDrawerItem()
-                .withName(R.string.friends)
-                .withIcon(R.drawable.ic_group_black_24dp)
-                .withBadge(String.valueOf(incomingRequestsCount))
-                .withBadgeStyle(badgeStyle)
-                .withIdentifier(1)
-                .withIconTintingEnabled(true);
-
-        PrimaryDrawerItem starredItem = new PrimaryDrawerItem()
-                .withName(R.string.starred)
-                .withIcon(R.drawable.ic_star_black_24dp)
-                .withIconTintingEnabled(true);
-
-        PrimaryDrawerItem settingsItem = new PrimaryDrawerItem()
-                .withName(R.string.settings)
-                .withIcon(R.drawable.ic_settings_black_24dp)
-                .withIconTintingEnabled(true);
-
-        //initialize and create the image loader logic
-        DrawerImageLoader.init(new AbstractDrawerImageLoader() {
+        mDrawer = new FifaNavigationDrawer(toolbar, mUser, incomingRequestsCount, this);
+        mDrawer.getDrawer().setOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
             @Override
-            public void set(ImageView imageView, Uri uri, Drawable placeholder) {
-                ImageLoader imageLoader = ImageLoader.getInstance();
-                imageLoader.displayImage(currentUser.getImageUrl(), imageView);
-            }});
-
-        // Create the account header
-        AccountHeader headerResult = new AccountHeaderBuilder()
-                .withActivity(this)
-                .withHeaderBackground(R.drawable.header)
-                .addProfiles(
-                        new ProfileDrawerItem()
-                                .withName(currentUser.getName())
-                                .withEmail("FIFA Legend")
-                                .withIcon(currentUser.getImageUrl())
-                )
-                .build();
-
-        // Create the drawer
-        drawer = new DrawerBuilder()
-                .withActivity(this)
-                .withAccountHeader(headerResult)
-                .withActionBarDrawerToggle(true)
-                .withActionBarDrawerToggleAnimated(true)
-                .withToolbar(toolbar)
-                .addDrawerItems(
-                        overviewItem,
-                        statisticsItem,
-                        friendsItem,
-                        starredItem,
-                        new DividerDrawerItem(),
-                        settingsItem
-                )
-                .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
-                    @Override
-                    public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
-                        if (position == 1) {
-                            initializeMainFragment();
-                        } else if (position == 2) {
-                            initializeSecondFragment();
-                        } else if (position == 3) {
-                            initializeFriendsFragment();
-                        }
-
-                        return false;
-                    }
-                })
-                .build();
+            public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
+                if (position == 1) {
+                    initializeMainFragment();
+                } else if (position == 2) {
+                    initializeSecondFragment();
+                } else if (position == 3) {
+                    initializeFriendsFragment();
+                }
+                return false;
+            }
+        });
     }
 
     private void initializeImageLoader()
@@ -228,13 +152,13 @@ public class MainActivity
         mSearchView.setOnSearchViewListener(new MaterialSearchView.SearchViewListener() {
             @Override
             public void onSearchViewShown() {
-                drawer.getDrawerLayout().setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+                mDrawer.getDrawer().getDrawerLayout().setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
                 Log.i(TAG, "Showing Search View!");
             }
 
             @Override
             public void onSearchViewClosed() {
-                drawer.getDrawerLayout().setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+                mDrawer.getDrawer().getDrawerLayout().setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
                 Log.i(TAG, "Closing Search View!");
             }
         });
