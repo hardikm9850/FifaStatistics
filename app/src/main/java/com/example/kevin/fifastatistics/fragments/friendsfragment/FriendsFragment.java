@@ -36,6 +36,10 @@ import java.util.ArrayList;
  */
 public class FriendsFragment extends Fragment {
 
+    public static final String viewArgument = "view";
+    public static final int friendsView = 0;
+    public static final int requestsView = 1;
+
 //    private static final String ARG_COLUMN_COUNT = "column-count";
     private static final int mColumnCount = 2;
     private static final String TAG = "Friends Fragment";
@@ -53,15 +57,13 @@ public class FriendsFragment extends Fragment {
     public FriendsFragment() {
     }
 
-//    // TODO: Customize parameter initialization
-//    @SuppressWarnings("unused")
-//    public static FriendsFragment newInstance(int columnCount) {
-//        FriendsFragment fragment = new FriendsFragment();
-//        Bundle args = new Bundle();
-//        args.putInt(ARG_COLUMN_COUNT, columnCount);
-//        fragment.setArguments(args);
-//        return fragment;
-//    }
+    public static FriendsFragment newInstance(int view) {
+        FriendsFragment fragment = new FriendsFragment();
+        Bundle args = new Bundle();
+        args.putInt(viewArgument, view);
+        fragment.setArguments(args);
+        return fragment;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -83,12 +85,16 @@ public class FriendsFragment extends Fragment {
         mSearchView = (MaterialSearchView) getActivity().findViewById(R.id.search_view);
         initializeSearchView();
 
-        int viewToShow = getArguments().getInt("view", 0);
-        if (viewToShow == 0) {
+        int viewToShow = 0;
+        try {
+            viewToShow = getArguments().getInt(viewArgument, 0);
+        } catch (Exception e) {
+
+        }
+        if (viewToShow == friendsView) {
             setAdapter(mUser.getFriends());
         }
         else {
-            getActivity().setTitle(REQUESTS);
             setAdapter(mUser.getIncomingRequests());
         }
         return view;
@@ -124,8 +130,10 @@ public class FriendsFragment extends Fragment {
     public void onPause()
     {
         super.onPause();
-        if (mSearchView.isSearchOpen()) {
-            mSearchView.closeSearch();
+        if (mSearchView != null) {
+            if (mSearchView.isSearchOpen()) {
+                mSearchView.closeSearch();
+            }
         }
     }
 
@@ -142,18 +150,18 @@ public class FriendsFragment extends Fragment {
         menu.findItem(R.id.friend_requests).setVisible(false);
     }
 
-    @Override
-    public boolean onOptionsItemSelected (MenuItem item)
-    {
-        if (item.getItemId() == R.id.friend_requests) {
-            setAdapter(mUser.getIncomingRequests());
-            getActivity().setTitle(REQUESTS);
-            return true;
-        }
-        else {
-            return super.onOptionsItemSelected(item);
-        }
-    }
+//    @Override
+//    public boolean onOptionsItemSelected (MenuItem item)
+//    {
+//        if (item.getItemId() == R.id.friend_requests) {
+//            setAdapter(mUser.getIncomingRequests());
+//            getActivity().setTitle(REQUESTS);
+//            return true;
+//        }
+//        else {
+//            return super.onOptionsItemSelected(item);
+//        }
+//    }
 
     public static void closeSearchView()
     {
@@ -173,7 +181,6 @@ public class FriendsFragment extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnListFragmentInteractionListener {
-        // TODO: Update argument type and name
         void onListFragmentInteraction(Friend friend);
     }
 

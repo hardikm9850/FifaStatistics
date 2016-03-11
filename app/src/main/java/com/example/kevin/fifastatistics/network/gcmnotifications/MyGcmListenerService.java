@@ -83,8 +83,8 @@ public class MyGcmListenerService extends GcmListenerService {
         Bitmap largeIcon = imageLoader.loadImageSync(notification.getString(IMAGE_URL));
 
         Intent intent = new Intent(this, MainActivity.class);
-        intent.putExtra("fragment", Constants.FRIENDS_FRAGMENT);
-        intent.putExtra("view", 1);
+        intent.putExtra(MainActivity.FRAGMENT_EXTRA, Constants.FRIENDS_FRAGMENT);
+        intent.putExtra(MainActivity.PAGE_EXTRA, 1);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
                 PendingIntent.FLAG_ONE_SHOT);
