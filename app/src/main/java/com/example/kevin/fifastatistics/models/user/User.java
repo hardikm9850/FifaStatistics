@@ -1,5 +1,7 @@
 package com.example.kevin.fifastatistics.models.user;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.util.ArrayList;
 
 /**
@@ -15,6 +17,7 @@ import java.util.ArrayList;
  * @author Kevin Grant
  *
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class User {
 
     private String id;
@@ -37,39 +40,22 @@ public class User {
     private int level;
     private int experience;
 
-    public User(String id, String name, String email, String googleId, String imageUrl,
-                ArrayList<Friend> friends, ArrayList<Friend> incomingRequests,
-                ArrayList<Friend> outgoingRequests, Stats records,
-                Stats averages, ArrayList<MatchStub> matches,
-                ArrayList<SeriesStub> series, int matchWins, int matchLosses,
-                int seriesWins, int seriesLosses, int level, int experience)
-    {
-        this.id = id;
-        this.name = name;
-        this.email = email;
-        this.googleId = googleId;
-        this.imageUrl = imageUrl;
-        this.friends = friends;
-        this.incomingRequests = incomingRequests;
-        this.outgoingRequests = outgoingRequests;
-        this.records = records;
-        this.averages = averages;
-        this.matches = matches;
-        this.series = series;
-        this.matchWins = matchWins;
-        this.matchLosses = matchLosses;
-        this.seriesWins = seriesWins;
-        this.seriesLosses = seriesLosses;
-        this.level = level;
-        this.experience = experience;
-    }
-
     public User(String name, String email, String googleId, String imageUrl)
     {
         this.name = name;
         this.email = email;
         this.googleId = googleId;
         this.imageUrl = imageUrl;
+    }
+
+    public User(String name, String email, String googleId, String imageUrl,
+                String registrationToken)
+    {
+        this.name = name;
+        this.email = email;
+        this.googleId = googleId;
+        this.imageUrl = imageUrl;
+        this.registrationToken = registrationToken;
     }
 
     public User(String name, String email, String googleId, String registrationToken,
@@ -81,6 +67,10 @@ public class User {
         this.registrationToken = registrationToken;
         this.imageUrl = imageUrl;
         this.id = id;
+    }
+
+    public User() {
+
     }
 
     // ----------------------------------------------------------------------

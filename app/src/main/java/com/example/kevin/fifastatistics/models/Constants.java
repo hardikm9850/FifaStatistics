@@ -5,6 +5,15 @@ package com.example.kevin.fifastatistics.models;
  */
 public final class Constants
 {
+    public static final String APP_NAME = "FifaStatistics";
+
+    // REST
+    public static final String API_ENDPOINT =
+            "http://fifastatisticsapi.azurewebsites.net/";
+
+    public static final String NOTIFICATION_KEY =
+            "AIzaSyDjCHksoGamhWxeNsaDN-DW5v3p9IcJNFE";
+
     // NOTIFICATION TAGS
     public static final String FRIEND_REQUEST_TAG = "FRIEND_REQUEST";
     public static final String SERIES_ADDED_TAG   = "SERIES_ADDED";

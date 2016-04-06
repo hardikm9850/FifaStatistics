@@ -67,4 +67,10 @@
     <string name="server_client_id">433114915503-1tgpgppqctui1f3k7d6ollra1gcq3gq6.apps.googleusercontent.com</string>
     <string name="notification_key">AIzaSyDjCHksoGamhWxeNsaDN-DW5v3p9IcJNFE</string>
 
+    <!-- NOTIFICATIONS -->
+    <string name="new_friend_request">New friend request from</string>
+    <string name="new_friend_request_npe">New friend request</string>
+    <string name="notification_accept">ACCEPT</string>
+    <string name="notification_decline">DECLINE</string>
+
 </resources>

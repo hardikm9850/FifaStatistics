@@ -1,9 +1,22 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.google.gms.google-services'
+apply plugin: 'me.tatarka.retrolambda'
 
 android {
     compileSdkVersion 23
     buildToolsVersion "23.0.2"
+
+    // For Lambda expressions with Retrolambda
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    // For Jackson library, to avoid duplicate files error in gradle
+    packagingOptions {
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/NOTICE'
+    }
 
     defaultConfig {
         applicationId "com.example.kevin.fifastatistics"
@@ -32,14 +45,22 @@ dependencies {
     compile 'com.google.android.gms:play-services-auth:8.3.0'
     compile "com.google.android.gms:play-services-gcm:8.3.0"
 
+    // RX
+    compile 'io.reactivex:rxandroid:1.1.0'
+    compile 'io.reactivex:rxjava:1.1.2'
+
     // Images
     compile 'de.hdodenhof:circleimageview:2.0.0'
     compile 'com.h6ah4i.android.materialshadowninepatch:materialshadowninepatch:0.6.5'
     compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
 
     // API (HTTP, JSON)
-    compile 'com.fasterxml.jackson.core:jackson-databind:2.1.1'
+//    compile 'com.fasterxml.jackson.core:jackson-databind:2.1.1'
     compile 'com.squareup.okhttp3:okhttp:3.0.1'
+    compile 'com.squareup.retrofit2:adapter-rxjava:2.0.1'
+    compile 'com.squareup.retrofit2:converter-jackson:2.0.1'
+    compile 'com.squareup.retrofit2:retrofit:2.0.1'
+    compile 'com.squareup.okhttp3:logging-interceptor:3.0.1'
     compile 'com.google.code.gson:gson:2.5'
 
     // Search

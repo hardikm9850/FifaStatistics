@@ -1,9 +1,7 @@
 package com.example.kevin.fifastatistics.fragments.friendsfragment;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.Color;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
@@ -18,14 +16,11 @@ import android.view.ViewGroup;
 
 import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.activities.MainActivity;
-import com.example.kevin.fifastatistics.network.RestClient;
 import com.example.kevin.fifastatistics.models.user.Friend;
 import com.example.kevin.fifastatistics.models.user.User;
 import com.example.kevin.fifastatistics.managers.SharedPreferencesManager;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -40,18 +35,14 @@ public class FriendsFragment extends Fragment {
     public static final int friendsView = 0;
     public static final int requestsView = 1;
 
-//    private static final String ARG_COLUMN_COUNT = "column-count";
     private static final int mColumnCount = 2;
     private static final String TAG = "Friends Fragment";
     private static final String REQUESTS = "Requests";
     private static MaterialSearchView mSearchView;
 
-    private RestClient client = RestClient.getInstance();
     private OnListFragmentInteractionListener mListener;
-    private ProgressDialog pDialog;
 
     private User mUser;
-    private ArrayList<Friend> friendsList = new ArrayList<>();
     private View view = null;
 
     public FriendsFragment() {
@@ -85,12 +76,7 @@ public class FriendsFragment extends Fragment {
         mSearchView = (MaterialSearchView) getActivity().findViewById(R.id.search_view);
         initializeSearchView();
 
-        int viewToShow = 0;
-        try {
-            viewToShow = getArguments().getInt(viewArgument, 0);
-        } catch (Exception e) {
-
-        }
+        int viewToShow = getArguments().getInt(viewArgument, 0);
         if (viewToShow == friendsView) {
             setAdapter(mUser.getFriends());
         }
@@ -150,19 +136,6 @@ public class FriendsFragment extends Fragment {
         menu.findItem(R.id.friend_requests).setVisible(false);
     }
 
-//    @Override
-//    public boolean onOptionsItemSelected (MenuItem item)
-//    {
-//        if (item.getItemId() == R.id.friend_requests) {
-//            setAdapter(mUser.getIncomingRequests());
-//            getActivity().setTitle(REQUESTS);
-//            return true;
-//        }
-//        else {
-//            return super.onOptionsItemSelected(item);
-//        }
-//    }
-
     public static void closeSearchView()
     {
         if (mSearchView.isSearchOpen()) {
@@ -170,16 +143,6 @@ public class FriendsFragment extends Fragment {
         }
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
     public interface OnListFragmentInteractionListener {
         void onListFragmentInteraction(Friend friend);
     }
@@ -229,60 +192,6 @@ public class FriendsFragment extends Fragment {
 
             recyclerView.setLayoutManager(new GridLayoutManager(view.getContext(), mColumnCount));
             recyclerView.setAdapter(new MyFriendsRecyclerViewAdapter(users, mListener));
-        }
-    }
-
-    /**
-     * Async task class to get json by making HTTP call
-     * */
-    private class GetUsers extends AsyncTask<Void, Void, Void> {
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            // Showing progress dialog
-            pDialog = new ProgressDialog(view.getContext());
-            pDialog.setMessage("Please wait...");
-            pDialog.setCancelable(false);
-            pDialog.show();
-
-        }
-
-        @Override
-        protected Void doInBackground(Void... arg0) {
-
-            try
-            {
-                JsonNode users = client.getUsers();
-                int size = users.size();
-                JsonNode user;
-                for (int i = 0; i < size; i++)
-                {
-                    user = users.get(i);
-                    friendsList.add(new Friend(
-                            user.get("_links").get("self").get("href").asText(),
-                            user.get("name").asText(),
-                            user.get("imageUrl").asText(),
-                            user.get("level").asInt(),
-                            user.get("registrationToken").asText()));
-                }
-                return null;
-            }
-            catch (IOException e)
-            {
-                // TODO
-                return null;
-            }
-        }
-
-        @Override
-        protected void onPostExecute(Void result) {
-            super.onPostExecute(result);
-
-            if (pDialog.isShowing())
-                pDialog.dismiss();
-
-            setAdapter(friendsList);
         }
     }
 }

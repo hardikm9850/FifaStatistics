@@ -1,9 +1,11 @@
 package com.example.kevin.fifastatistics.network.gcmnotifications;
 
+import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -20,6 +22,7 @@ import android.util.Log;
 
 import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.activities.MainActivity;
+import com.example.kevin.fifastatistics.fragments.friendsfragment.FriendsFragment;
 import com.example.kevin.fifastatistics.models.Constants;
 import com.example.kevin.fifastatistics.models.user.User;
 import com.example.kevin.fifastatistics.managers.SharedPreferencesManager;
@@ -54,12 +57,6 @@ public class MyGcmListenerService extends GcmListenerService {
         Log.d(TAG, "From: " + from);
         initializeImageLoader();
 
-//        if (from.startsWith("/topics/")) {
-//            // message received from some topic.
-//        } else {
-//            // normal downstream message.
-//        }
-
         String tag = (getTag(bundle) == null) ? DEFAULT_TAG : getTag(bundle);
         switch (tag) {
             case Constants.FRIEND_REQUEST_TAG :
@@ -84,21 +81,26 @@ public class MyGcmListenerService extends GcmListenerService {
 
         Intent intent = new Intent(this, MainActivity.class);
         intent.putExtra(MainActivity.FRAGMENT_EXTRA, Constants.FRIENDS_FRAGMENT);
-        intent.putExtra(MainActivity.PAGE_EXTRA, 1);
+        intent.putExtra(MainActivity.PAGE_EXTRA, FriendsFragment.requestsView);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
                 PendingIntent.FLAG_ONE_SHOT);
 
-        // TODO HANDLE NPE
-        String title = NEW_REQUEST;
-        String body = DEFAULT_BODY;
-        try
-        {
-            title = notification.getString(TITLE);
-            body = notification.getString(BODY);
+        Intent declineRequestIntent = new Intent(this, FriendRequestDeclineService.class);
+        PendingIntent declineRequestPendingIntent = PendingIntent.getService(
+                this, 0, declineRequestIntent, PendingIntent.FLAG_ONE_SHOT);
+
+        Intent acceptRequestIntent = new Intent(this, FriendRequestAcceptService.class);
+        PendingIntent acceptRequestPendingIntent = PendingIntent.getService(
+                this, 0, acceptRequestIntent, PendingIntent.FLAG_ONE_SHOT);
+
+        Resources res = getResources();
+        String body = res.getString(R.string.new_friend_request);
+        try {
+            body += " " + notification.getString(BODY);
         }
-        catch (NullPointerException e)
-        {
+        catch (NullPointerException e) {
+            body = res.getString(R.string.new_friend_request_npe);
             Log.e(TAG, "NPE!");
         }
 
@@ -106,10 +108,19 @@ public class MyGcmListenerService extends GcmListenerService {
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
                 .setSmallIcon(R.mipmap.ic_launcher)
                 .setLargeIcon(getCircleBitmap(largeIcon))
-                .setContentTitle(title)
+                .setContentTitle(Constants.APP_NAME)
                 .setContentText(body)
                 .setAutoCancel(true)
                 .setSound(defaultSoundUri)
+                .addAction(
+                        R.drawable.ic_menu_share,
+                        res.getString(R.string.notification_accept),
+                        acceptRequestPendingIntent)
+                .addAction(
+                        R.drawable.ic_action_navigation_close,
+                        res.getString(R.string.notification_decline),
+                        declineRequestPendingIntent)
+                .setPriority(Notification.PRIORITY_HIGH)
                 .setContentIntent(pendingIntent);
 
         NotificationManager notificationManager =
@@ -127,7 +138,7 @@ public class MyGcmListenerService extends GcmListenerService {
         user.addIncomingRequest(
                 data.getString("name"), data.getString("id"), data.getString(IMAGE_URL),
                 level, data.getString("RegistrationToken"));
-        handler.storeUserAsync(user);
+        handler.storeUser(user);
     }
 
     private static String getTag(Bundle data)

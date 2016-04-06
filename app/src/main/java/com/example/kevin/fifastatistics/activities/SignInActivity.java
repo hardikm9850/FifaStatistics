@@ -1,9 +1,7 @@
 package com.example.kevin.fifastatistics.activities;
 
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -11,11 +9,11 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.example.kevin.fifastatistics.R;
+import com.example.kevin.fifastatistics.network.FifaApi;
+import com.example.kevin.fifastatistics.network.FifaApiInterface;
 import com.example.kevin.fifastatistics.network.gcmnotifications.RegistrationIntentService;
-import com.example.kevin.fifastatistics.network.RestClient;
 import com.example.kevin.fifastatistics.models.user.User;
 import com.example.kevin.fifastatistics.managers.SharedPreferencesManager;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -30,6 +28,11 @@ import com.google.android.gms.common.api.Status;
 
 import java.io.IOException;
 
+import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Func1;
+import rx.schedulers.Schedulers;
+
 /**
  * Activity to demonstrate basic retrieval of the Google user's ID, email address, and basic
  * profile.
@@ -42,7 +45,11 @@ public class SignInActivity extends AppCompatActivity implements
     private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
     private static final int RC_SIGN_IN = 9001;
 
-    private SharedPreferencesManager handler;
+    private boolean doCreateUser = false;
+
+    private static String mRegistrationToken;
+    private static SharedPreferencesManager handler;
+    private static FifaApiInterface api;
 
     private GoogleApiClient mGoogleApiClient;
     private TextView mStatusTextView;
@@ -90,14 +97,8 @@ public class SignInActivity extends AppCompatActivity implements
         OptionalPendingResult<GoogleSignInResult> opr = Auth.GoogleSignInApi.silentSignIn(mGoogleApiClient);
 
         showProgressDialog();
-        opr.setResultCallback(new ResultCallback<GoogleSignInResult>() {
-            @Override
-            public void onResult(GoogleSignInResult googleSignInResult) {
-                hideProgressDialog();
-                handleSignInResult(googleSignInResult);
-            }
-        });
 
+        opr.setResultCallback(this::handleSignInResult);
     }
 
     private void checkSignedIn()
@@ -125,10 +126,11 @@ public class SignInActivity extends AppCompatActivity implements
     private void handleSignInResult(GoogleSignInResult result) {
         Log.d(TAG, "handleSignInResult:" + result.isSuccess());
 
+        hideProgressDialog();
         if (result.isSuccess())
         {
             GoogleSignInAccount acct = result.getSignInAccount();
-            new GetOrCreateUser(this).execute(
+            getOrCreateUser(
                     acct.getDisplayName(), acct.getId(),
                     acct.getEmail(), acct.getPhotoUrl().toString());
         }
@@ -158,9 +160,11 @@ public class SignInActivity extends AppCompatActivity implements
 
     private void revokeAccess() {
         Auth.GoogleSignInApi.revokeAccess(mGoogleApiClient).setResultCallback(
-                new ResultCallback<Status>() {
+                new ResultCallback<Status>()
+                {
                     @Override
-                    public void onResult(Status status) {
+                    public void onResult(Status status)
+                    {
 
                     }
                 });
@@ -237,128 +241,87 @@ public class SignInActivity extends AppCompatActivity implements
         return true;
     }
 
-    /**
-     * Async task class to get json by making HTTP call
-     * */
-    private class GetOrCreateUser extends AsyncTask<String, String, Void>
+    private void getOrCreateUser(String name, String googleId, String email,
+                                 String imageUrl)
     {
-        private Context context;
-        private RestClient client = RestClient.getInstance();
-        boolean failedGet = false;
-        boolean failedCreate = false;
+        Log.i(TAG, "Beginning process");
+        startProcessDialog();
 
-        public GetOrCreateUser(Context context) {
-            this.context = context;
+        try {
+            getRegistrationToken();
+        } catch (IOException e) {
+            Log.e(TAG, e.getMessage());
+            return;
         }
 
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            mProgressDialog = new ProgressDialog(context);
-            mProgressDialog.setMessage("Loading...");
-            mProgressDialog.setCancelable(false);
-            mProgressDialog.show();
+        api = FifaApi.getService();
+
+        FifaApi.getService().getUserWithGoogleId(googleId)
+                .onErrorReturn(u -> createNewUser(name, email, googleId,
+                        imageUrl, mRegistrationToken))
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(this::handleGetUserResult);
+    }
+
+    private User createNewUser(String name, String email, String googleId,
+                               String imageUrl, String registrationToken)
+    {
+        doCreateUser = true;
+        return new User(name, email, googleId, imageUrl, registrationToken);
+    }
+
+
+    private void handleGetUserResult(User user)
+    {
+        Log.i(TAG, "BEGINNING HANDLING RESULT OF GET USER");
+
+        if (doCreateUser) {
+            Log.i(TAG, "CREATING USER");
+            api.createUser(user)
+                    .flatMap(response -> api.lookupUser(response.headers().get("Location")))
+                    .subscribeOn(Schedulers.newThread())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .doOnError(e -> Log.i(TAG, "ERROR: " + e.getMessage()))
+                    .subscribe(this::startMainActivity);
         }
-
-        @Override
-        protected Void doInBackground(final String... args) {
-
-            String name = args[0];
-            String googleId = args[1];
-            String email = args[2];
-            String imageUrl = args[3];
-            JsonNode user;
-            try
-            {
-                publishProgress("Attempting to retrieve user data...");
-                user = client.getUserWithGoogleId(googleId);
-            }
-            catch (IOException e)
-            {
-                failedGet = true;
-                return null;
-            }
-
-            if (user == null)
-            {
-                JsonNode json;
-                String registrationToken = null;
-                try
-                {
-                    publishProgress("Creating new user...");
-
-                    while (registrationToken == null)
-                    {
-                        if (!handler.getRegistrationFailed()) {
-                            registrationToken = handler.getRegistrationToken();
-                        } else {
-                            Log.e(TAG, "failed to retrieve registration token");
-                            throw new IOException();
-                        }
-                    }
-                    json = client.createUser(name, googleId, email, registrationToken, imageUrl);
-                    Log.d(TAG, "response: " + json);
-                }
-                catch (IOException e)
-                {
-                    failedCreate = true;
-                    return null;
-                }
-
-                try
-                {
-                    handler.setCurrentUser(name, googleId, email, imageUrl);
-                    handler.storeUser(new User(
-                            name, email, googleId, registrationToken, imageUrl,
-                            json.get("id").asText()));
-                    handler.setSignedIn(true);
-                }
-                catch (NullPointerException e)
-                {
-                    failedCreate = true;
-                    return null;
-                }
-            }
-            else
-            {
-                handler.storeUser(user);
-                handler.setSignedIn(true);
-            }
-
-            return null;
+        else {
+            Log.i(TAG, "NOT CREATING USER");
+            startMainActivity(user);
         }
+    }
 
-        @Override
-        protected void onProgressUpdate(String... args)
+
+    private void startProcessDialog()
+    {
+        mProgressDialog = new ProgressDialog(SignInActivity.this);
+        mProgressDialog.setMessage("Loading...");
+        mProgressDialog.setCancelable(false);
+        mProgressDialog.show();
+    }
+
+    // TODO change to observable
+    private void getRegistrationToken()
+            throws IOException
+    {
+        while (mRegistrationToken == null)
         {
-            mProgressDialog.setMessage(args[0]);
-        }
-
-        @Override
-        protected void onPostExecute(Void result) {
-            super.onPostExecute(result);
-
-            if (failedGet)
-            {
-                Log.e(TAG, "failed get!");
-                mProgressDialog.dismiss();
-                // TODO add little popup this saying this failed
-            }
-            else if (failedCreate)
-            {
-                Log.e(TAG, "failed create!");
-                mProgressDialog.dismiss();
-                // TODO add little popup this saying this failed
-            }
-            else
-            {
-                if (mProgressDialog.isShowing())
-                    mProgressDialog.dismiss();
-
-                Intent intent = new Intent(context, MainActivity.class);
-                startActivity(intent);
-                finish();
+            if (!handler.getRegistrationFailed()) {
+                mRegistrationToken = handler.getRegistrationToken();
+            } else {
+                Log.e(TAG, "failed to retrieve registration token");
+                throw new IOException();
             }
         }
+    }
+
+    private void startMainActivity(User user)
+    {
+        handler.storeUser(user);
+        handler.setSignedIn(true);
+        mProgressDialog.dismiss();
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        startActivity(intent);
+        finish();
     }
 }

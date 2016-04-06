@@ -6,7 +6,6 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -14,16 +13,16 @@ import android.util.Log;
 import android.view.View;
 
 import com.example.kevin.fifastatistics.R;
-import com.example.kevin.fifastatistics.fragments.SecondFragment;
 import com.example.kevin.fifastatistics.fragments.friendsfragment.FriendsFragment;
 import com.example.kevin.fifastatistics.fragments.OverviewFragment;
 import com.example.kevin.fifastatistics.models.Constants;
 import com.example.kevin.fifastatistics.models.user.Friend;
 import com.example.kevin.fifastatistics.models.user.User;
 import com.example.kevin.fifastatistics.managers.SharedPreferencesManager;
+import com.example.kevin.fifastatistics.network.FifaApi;
+import com.example.kevin.fifastatistics.network.FifaApiInterface;
 import com.example.kevin.fifastatistics.views.FifaNavigationDrawer;
-import com.mikepenz.materialdrawer.Drawer;
-import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
+import com.google.gson.Gson;
 import com.nostra13.universalimageloader.cache.memory.impl.WeakMemoryCache;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -32,6 +31,9 @@ import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 public class MainActivity
         extends AppCompatActivity
@@ -89,6 +91,8 @@ public class MainActivity
 
         initializeDrawer();
 
+        createUser();
+
         String menuFragment = getIntent().getStringExtra(FRAGMENT_EXTRA);
         getIntent().removeExtra(FRAGMENT_EXTRA);
         menuFragment = (menuFragment == null) ? Constants.OVERVIEW_FRAGMENT : menuFragment;
@@ -104,6 +108,27 @@ public class MainActivity
                 break;
         }
 
+    }
+
+    private void createUser()
+    {
+        User user = new User("Kevin", "kevingrant@gmail.com", "12345", "url.com", "1233213");
+
+        FifaApiInterface api = FifaApi.getService();
+
+        api.createUser(user)
+                .flatMap(response -> api.lookupUser(response.headers().get("Location")))
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnError(e -> Log.i("SECOND ACTIVITY", "ERROR: " + e.getMessage()))
+                .subscribe(this::logUser);
+    }
+
+    private void logUser(User user)
+    {
+        Gson gson = new Gson();
+        String json = gson.toJson(user);
+        Log.i("SECOND ACTIVITY", "USER: \n" + json);
     }
 
     // --------------------------------------------------------------
@@ -157,29 +182,25 @@ public class MainActivity
     {
         Log.i(TAG, "Initializing drawer");
         mDrawer = new FifaNavigationDrawer(toolbar, mUser, incomingRequestsCount, this);
-        mDrawer.getDrawer().setOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener()
-        {
-            @Override
-            public boolean onItemClick(View view, int position, IDrawerItem drawerItem)
-            {
-                if (mDrawer.getPreviousSelectedPosition() == position) {
-                    mDrawer.setPreviousSelectedPosition(position);
-                    mDrawer.getDrawer().closeDrawer();
-                    return true;
-                }
+        mDrawer.getDrawer().setOnDrawerItemClickListener((view, position, drawerItem) -> {
 
+            if (mDrawer.getPreviousSelectedPosition() == position) {
                 mDrawer.setPreviousSelectedPosition(position);
-                if (position == 1) {
-                    initializeMainFragment();
-                }
-                else if (position == 2) {
-                    initializeSecondFragment();
-                }
-                else if (position == 3) {
-                    initializeFriendsFragment();
-                }
-                return false;
+                mDrawer.getDrawer().closeDrawer();
+                return true;
             }
+
+            mDrawer.setPreviousSelectedPosition(position);
+            if (position == 1) {
+                initializeMainFragment();
+            }
+            else if (position == 2) {
+                initializeSecondFragment();
+            }
+            else if (position == 3) {
+                initializeFriendsFragment();
+            }
+            return false;
         });
     }
 
