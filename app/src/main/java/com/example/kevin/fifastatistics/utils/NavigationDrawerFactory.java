@@ -1,12 +1,13 @@
 package com.example.kevin.fifastatistics.utils;
 
-import android.app.Activity;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.support.v7.widget.Toolbar;
 import android.widget.ImageView;
 
 import com.example.kevin.fifastatistics.R;
+import com.example.kevin.fifastatistics.activities.FifaActivity;
+import com.example.kevin.fifastatistics.managers.FragmentManager;
 import com.example.kevin.fifastatistics.models.user.User;
 import com.mikepenz.materialdrawer.AccountHeader;
 import com.mikepenz.materialdrawer.AccountHeaderBuilder;
@@ -31,6 +32,7 @@ public class NavigationDrawerFactory
     private static final int BADGE_CORNER_RADIUS_DP = 20;
     private static final int FRIENDS_ITEM_IDENTIFIER = 1;
     private static int incomingRequestsCount = 0;
+    private static int previousDrawerPosition = -1;
 
     private static Drawer drawer;
     private static User currentUser;
@@ -51,7 +53,7 @@ public class NavigationDrawerFactory
      * @return the drawer
      */
     public static Drawer getDefaultDrawerInstance(
-            Activity activity, Toolbar toolbar, User user)
+            FifaActivity activity, Toolbar toolbar, User user)
     {
         if (drawer == null) {
             buildDrawer(activity, toolbar, user);
@@ -59,13 +61,15 @@ public class NavigationDrawerFactory
         return drawer;
     }
 
-    private static void buildDrawer(Activity activity, Toolbar toolbar, User user)
+    private static void buildDrawer(FifaActivity activity, Toolbar toolbar,
+                                    User user)
     {
         currentUser = user;
         setIncomingRequestsCount();
         initializeDrawerItems();
         initializeDrawerBanner(activity);
         initializeDrawer(activity, toolbar);
+        setOnDrawerItemClickListener(activity);
     }
 
     private static void setIncomingRequestsCount()
@@ -135,7 +139,7 @@ public class NavigationDrawerFactory
                 .withIconTintingEnabled(true);
     }
 
-    private static void initializeDrawerBanner(Activity activity)
+    private static void initializeDrawerBanner(FifaActivity activity)
     {
         initializeDrawerImageLoader();
         initializeProfileDrawerItem();
@@ -163,7 +167,7 @@ public class NavigationDrawerFactory
                 .withIcon(currentUser.getImageUrl());
     }
 
-    private static void initializeAccountHeader(Activity activity)
+    private static void initializeAccountHeader(FifaActivity activity)
     {
         headerResult = new AccountHeaderBuilder()
                 .withActivity(activity)
@@ -172,7 +176,7 @@ public class NavigationDrawerFactory
                 .build();
     }
 
-    private static void initializeDrawer(Activity activity, Toolbar toolbar)
+    private static void initializeDrawer(FifaActivity activity, Toolbar toolbar)
     {
         drawer = new DrawerBuilder()
                 .withActivity(activity)
@@ -189,5 +193,29 @@ public class NavigationDrawerFactory
                         settingsItem
                 )
                 .build();
+    }
+
+    private static void setOnDrawerItemClickListener(FifaActivity activity)
+    {
+        drawer.setOnDrawerItemClickListener((view, position, drawerItem) ->
+                handleDrawerItemClick(position, activity));
+    }
+
+    private static boolean handleDrawerItemClick(int position,
+                                                 FifaActivity activity)
+    {
+        if (position == previousDrawerPosition) {
+            drawer.closeDrawer();
+            return true;
+        }
+        previousDrawerPosition = position;
+
+        if (position == 1) {
+            FragmentManager.initializeMainFragment(activity);
+        }
+        else if (position == 3) {
+            FragmentManager.initializeFriendsFragment(activity);
+        }
+        return false;
     }
 }

@@ -5,14 +5,11 @@ import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.view.View;
 
 import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.fragments.friendsfragment.FriendsFragment;
-import com.example.kevin.fifastatistics.fragments.OverviewFragment;
+import com.example.kevin.fifastatistics.managers.FragmentManager;
 import com.example.kevin.fifastatistics.models.Constants;
 import com.example.kevin.fifastatistics.models.user.Friend;
 import com.example.kevin.fifastatistics.models.user.User;
@@ -27,7 +24,7 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 
 public class MainActivity
-        extends AppCompatActivity
+        extends FifaActivity
         implements FriendsFragment.OnListFragmentInteractionListener
 {
     public static final String PAGE_EXTRA = "page";
@@ -41,8 +38,6 @@ public class MainActivity
     private static ViewPagerAdapter mAdapter;
     private static TabLayout mTabLayout;
     private static ViewPager mViewPager;
-
-    private static int currentDrawerPosition = -1;
 
     // -------------------------------------------------------------------------
     // INITIALIZATION
@@ -88,45 +83,20 @@ public class MainActivity
 
     private void initializeDrawer()
     {
-        Log.i(TAG, "Initializing drawer");
-
         mDrawer = NavigationDrawerFactory.getDefaultDrawerInstance(
                 this, mToolbar, mUser);
-
-        mDrawer.setOnDrawerItemClickListener(
-                (view, position, drawerItem) -> handleDrawerItemClick(position));
     }
 
-    private boolean handleDrawerItemClick(int position)
-    {
-        if (currentDrawerPosition == position) {
-            mDrawer.closeDrawer();
-            return true;
-        }
-        mDrawer.getCurrentSelectedPosition()
-        currentDrawerPosition = position;
-
-        if (position == 1) {
-            initializeMainFragment();
-        }
-        else if (position == 2) {
-            initializeSecondFragment();
-        }
-        else if (position == 3) {
-            initializeFriendsFragment();
-        }
-        return false;
-    }
 
     private void initializeAppropriateFragment()
     {
         String fragment = getFragmentExtra();
         switch (fragment) {
             case (Constants.FRIENDS_FRAGMENT):
-                initializeFriendsFragment();
+                FragmentManager.initializeFriendsFragment(this);
                 break;
             case (Constants.OVERVIEW_FRAGMENT):
-                initializeMainFragment();
+                FragmentManager.initializeMainFragment(this);
                 break;
             default:
                 throw new IllegalStateException(fragment + " is not a valid" +
@@ -173,60 +143,34 @@ public class MainActivity
     // ---------------------------------------------------------------------------------------------
 
     @Override
-    public void onBackPressed()
-    {
+    public void onBackPressed() {
         FriendsFragment.closeSearchView();
         super.onBackPressed();
     }
 
-    public static void lockNavigationDrawer()
-    {
+    public static void lockNavigationDrawer() {
         mDrawer.getDrawerLayout().setDrawerLockMode(DrawerLayout
                 .LOCK_MODE_LOCKED_CLOSED);
     }
 
-    public static void unlockNavigationDrawer()
-    {
+    public static void unlockNavigationDrawer() {
         mDrawer.getDrawerLayout().setDrawerLockMode(DrawerLayout
                 .LOCK_MODE_UNLOCKED);
     }
 
-    // ---------------------------------------------------------------------------------------------
-    // FRAGMENT INITIALIZATION
-    // ---------------------------------------------------------------------------------------------
-
-    private void initializeMainFragment()
-    {
-        mToolbar.setTitle(Constants.OVERVIEW_FRAGMENT);
-        mAdapter.clear();
-        mAdapter.addFragment(new OverviewFragment(), Constants.OVERVIEW_FRAGMENT);
-        mAdapter.notifyDataSetChanged();
-        mTabLayout.setVisibility(View.GONE);
+    public Toolbar getToolbar() {
+        return mToolbar;
     }
 
-    private void initializeSecondFragment() {
-//        SecondFragment fragment = new SecondFragment();
-//        mToolbar.setTitle(Constants.STATISTICS_FRAGMENT);
-//        FragmentTransaction fragmentTransaction =
-//                getSupportFragmentManager().beginTransaction();
-//
-//        fragmentTransaction.replace(R.id.fragment_container, fragment);
-//        fragmentTransaction.commit();
+    public ViewPagerAdapter getViewPagerAdapter() {
+        return mAdapter;
     }
 
-    private void initializeFriendsFragment()
-    {
-        mToolbar.setTitle(Constants.FRIENDS_FRAGMENT);
+    public ViewPager getViewPager() {
+        return mViewPager;
+    }
 
-        mAdapter.clear();
-        mAdapter.addFragment(
-                FriendsFragment.newInstance(FriendsFragment.friendsView), Constants.FRIENDS_FRAGMENT);
-        mAdapter.addFragment(
-                FriendsFragment.newInstance(FriendsFragment.requestsView), "Requests");
-        mAdapter.notifyDataSetChanged();
-
-        mViewPager.setCurrentItem(getIntent().getIntExtra(PAGE_EXTRA, 0));
-        getIntent().removeExtra(PAGE_EXTRA);
-        mTabLayout.setVisibility(View.VISIBLE);
+    public TabLayout getTabLayout() {
+        return mTabLayout;
     }
 }
