@@ -40,37 +40,86 @@ public class User {
     private int level;
     private int experience;
 
-    public User(String name, String email, String googleId, String imageUrl)
-    {
-        this.name = name;
-        this.email = email;
-        this.googleId = googleId;
-        this.imageUrl = imageUrl;
-    }
-
-    public User(String name, String email, String googleId, String imageUrl,
-                String registrationToken)
-    {
-        this.name = name;
-        this.email = email;
-        this.googleId = googleId;
-        this.imageUrl = imageUrl;
-        this.registrationToken = registrationToken;
-    }
-
-    public User(String name, String email, String googleId, String registrationToken,
-                String imageUrl, String id)
-    {
-        this.name = name;
-        this.email = email;
-        this.googleId = googleId;
-        this.registrationToken = registrationToken;
-        this.imageUrl = imageUrl;
-        this.id = id;
-    }
-
     public User() {
 
+    }
+
+    private User(Builder builder)
+    {
+        this.id = builder.id;
+        this.name = builder.name;
+        this.email = builder.email;
+        this.googleId = builder.googleId;
+        this.registrationToken = builder.registrationToken;
+        this.imageUrl = builder.imageUrl;
+    }
+
+    public static class Builder
+    {
+        private String id;
+        private String name;
+        private String email;
+        private String googleId;
+        private String registrationToken;
+        private String imageUrl;
+
+        public Builder withId(String id)
+        {
+            this.id = id;
+            return this;
+        }
+
+        public Builder withName(String name)
+        {
+            this.name = name;
+            return this;
+        }
+
+        public Builder withEmail(String email)
+        {
+            this.email = email;
+            return this;
+        }
+
+        public Builder withGoogleId(String googleId)
+        {
+            this.googleId = googleId;
+            return this;
+        }
+
+        public Builder withRegistrationToken(String registrationToken)
+        {
+            this.registrationToken = registrationToken;
+            return this;
+        }
+
+        public Builder withImageUrl(String imageUrl)
+        {
+            this.imageUrl = imageUrl;
+            return this;
+        }
+
+        public User build()
+        {
+            throwExceptionIfPropertiesAreNull();
+            return new User(this);
+        }
+
+        private void throwExceptionIfPropertiesAreNull()
+        {
+            if (name == null) throwExceptionForProperty("name");
+            else if (email == null) throwExceptionForProperty("email");
+            else if (googleId == null) throwExceptionForProperty("googleId");
+            else if (imageUrl == null) throwExceptionForProperty("imageUrl");
+            else if (registrationToken == null) throwExceptionForProperty(
+                    "registrationToken");
+        }
+
+        private void throwExceptionForProperty(String propertyName)
+        {
+            throw new IllegalArgumentException("ERROR! " + propertyName +
+                    " cannot be null!");
+        }
     }
 
     // ----------------------------------------------------------------------
@@ -235,32 +284,24 @@ public class User {
 
     /**
      * Adds a FriendRequest to the User's incoming requests list.
-     * @param name          The name of the user
-     * @param id            The ID of the user
-     * @param imageUrl      The user's image URL
      */
-    public void addIncomingRequest(String name, String id, String imageUrl, int level,
-                                   String registrationToken)
+    public void addIncomingRequest(Friend friend)
     {
         if (incomingRequests == null) {
             incomingRequests = new ArrayList<>();
         }
-        incomingRequests.add(new Friend(id, name, imageUrl, level, registrationToken));
+        incomingRequests.add(friend);
     }
 
     /**
      * Adds a FriendRequest to the User's outgoing requests list.
-     * @param name          The name of the user
-     * @param id            The ID of the user
-     * @param imageUrl      The user's image URL
      */
-    public void addOutgoingRequest(String name, String id, String imageUrl, int level,
-                                   String registrationToken)
+    public void addOutgoingRequest(Friend friend)
     {
         if (outgoingRequests == null) {
             outgoingRequests = new ArrayList<>();
         }
-        outgoingRequests.add(new Friend(id, name, imageUrl, level, registrationToken));
+        outgoingRequests.add(friend);
     }
 
     public void deleteIncomingRequests()
@@ -268,23 +309,6 @@ public class User {
         if (incomingRequests != null) {
             incomingRequests.clear();
         }
-    }
-
-    /**
-     * Adds a Friend to the User's friends list.
-     * @param id            The User's ID
-     * @param name          The User's name
-     * @param imageUrl      The User's image URL
-     * @param level         The User's level
-     * @param registrationToken     The User's registration token
-     */
-    public void addFriend(String id, String name, String imageUrl,
-                          int level, String registrationToken)
-    {
-        if (friends == null) {
-            friends = new ArrayList<>();
-        }
-        friends.add(new Friend(id, name, imageUrl, level, registrationToken));
     }
 
     public void addFriend(Friend friend)

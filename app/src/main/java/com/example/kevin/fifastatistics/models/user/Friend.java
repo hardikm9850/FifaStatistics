@@ -16,22 +16,123 @@ package com.example.kevin.fifastatistics.models.user;
  */
 public class Friend
 {
-    public String id;
-    public String name;
-    public String imageUrl;
-    public String registrationToken;
-    public int level;
+    private String id;
+    private String name;
+    private String imageUrl;
+    private String registrationToken;
+    private int level;
 
-    public Friend(String id, String name, String imageUrl, int level, String registrationToken)
+    @SuppressWarnings("unused")
+    public Friend() {
+
+    }
+
+    private Friend(Builder builder)
     {
+        this.id = builder.id;
+        this.name = builder.name;
+        this.imageUrl = builder.imageUrl;
+        this.level = builder.level;
+        this.registrationToken = builder.registrationToken;
+    }
+
+    public static class Builder
+    {
+        private String id;
+        private String name;
+        private String imageUrl;
+        private String registrationToken;
+        private int level;
+
+        public Builder withId(String id)
+        {
+            this.id = id;
+            return this;
+        }
+
+        public Builder withName(String name)
+        {
+            this.name = name;
+            return this;
+        }
+
+        public Builder withImageUrl(String imageUrl)
+        {
+            this.imageUrl = imageUrl;
+            return this;
+        }
+
+        public Builder withRegistrationToken(String registrationToken)
+        {
+            this.registrationToken = registrationToken;
+            return this;
+        }
+
+        public Builder withLevel(int level)
+        {
+            this.level = level;
+            return this;
+        }
+
+        public Friend build()
+        {
+            throwExceptionIfPropertiesAreNull();
+            return new Friend(this);
+        }
+
+        private void throwExceptionIfPropertiesAreNull()
+        {
+            if (name == null) throwExceptionForProperty("name");
+            else if (id == null) throwExceptionForProperty("id");
+            else if (imageUrl == null) throwExceptionForProperty("imageUrl");
+            else if (registrationToken == null) throwExceptionForProperty(
+                    "registrationToken");
+        }
+
+        private void throwExceptionForProperty(String propertyName)
+        {
+            throw new IllegalArgumentException("ERROR! " + propertyName +
+                    " cannot be null!");
+        }
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
         this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
         this.name = name;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
-        this.level = level;
+    }
+
+    public String getRegistrationToken() {
+        return registrationToken;
+    }
+
+    public void setRegistrationToken(String registrationToken) {
         this.registrationToken = registrationToken;
     }
 
-    public Friend() {
+    public int getLevel() {
+        return level;
+    }
 
+    public void setLevel(int level) {
+        this.level = level;
     }
 }

@@ -87,26 +87,6 @@ public class SharedPreferencesManager
         editor.apply();
     }
 
-    public User getCurrentUser()
-    {
-        String name = preferences.getString(PreferenceNames.CURRENT_USER_NAME.name(), "");
-        String email = preferences.getString(PreferenceNames.CURRENT_USER_EMAIL.name(), "");
-        String imageUrl = preferences.getString(PreferenceNames.CURRENT_USER_IMAGE_URL.name(), "");
-        String googleId = preferences.getString(PreferenceNames.CURRENT_USER_GOOGLE_ID.name(), "");
-        return new User(name, email, googleId, imageUrl);
-    }
-
-    @SuppressLint("CommitPrefEdits")
-    public void setCurrentUser(String name, String googleId, String email, String imageUrl)
-    {
-        editor = preferences.edit();
-        editor.putString(PreferenceNames.CURRENT_USER_NAME.name(), name);
-        editor.putString(PreferenceNames.CURRENT_USER_EMAIL.name(), email);
-        editor.putString(PreferenceNames.CURRENT_USER_GOOGLE_ID.name(), googleId);
-        editor.putString(PreferenceNames.CURRENT_USER_IMAGE_URL.name(), imageUrl);
-        editor.commit();
-    }
-
     @SuppressLint("CommitPrefEdits")
     public void storeUser(User user)
     {
@@ -123,21 +103,6 @@ public class SharedPreferencesManager
         Gson gson = new Gson();
         String json = gson.toJson(user);
         editor.putString(PreferenceNames.CURRENT_USER.name(), json);
-        editor.apply();
-    }
-
-    @SuppressLint("CommitPrefEdits")
-    public void storeUser(JsonNode user)
-    {
-        editor = preferences.edit();
-        editor.putString(PreferenceNames.CURRENT_USER.name(), user.toString());
-        editor.commit();
-    }
-
-    public void storeUserAsync(JsonNode user)
-    {
-        editor = preferences.edit();
-        editor.putString(PreferenceNames.CURRENT_USER.name(), user.toString());
         editor.apply();
     }
 

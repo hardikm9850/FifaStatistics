@@ -3,10 +3,8 @@ package com.example.kevin.fifastatistics.activities;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -19,21 +17,14 @@ import com.example.kevin.fifastatistics.models.Constants;
 import com.example.kevin.fifastatistics.models.user.Friend;
 import com.example.kevin.fifastatistics.models.user.User;
 import com.example.kevin.fifastatistics.managers.SharedPreferencesManager;
-import com.example.kevin.fifastatistics.network.FifaApi;
-import com.example.kevin.fifastatistics.network.FifaApiInterface;
-import com.example.kevin.fifastatistics.views.FifaNavigationDrawer;
-import com.google.gson.Gson;
+import com.example.kevin.fifastatistics.utils.NavigationDrawerFactory;
+import com.example.kevin.fifastatistics.views.adapters.ViewPagerAdapter;
+import com.mikepenz.materialdrawer.Drawer;
 import com.nostra13.universalimageloader.cache.memory.impl.WeakMemoryCache;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.ImageScaleType;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 public class MainActivity
         extends AppCompatActivity
@@ -42,22 +33,20 @@ public class MainActivity
     public static final String PAGE_EXTRA = "page";
     public static final String FRAGMENT_EXTRA = "fragment";
 
-    private static Toolbar toolbar = null;
-
-    // Properties
     private static final String TAG = "MainActivity";
-    private static int incomingRequestsCount = 0;
+    private static Toolbar mToolbar = null;
     private static User mUser;
     private static Context mContext;
-
-    private static FifaNavigationDrawer mDrawer;
-    private static Adapter mAdapter;
+    private static Drawer mDrawer;
+    private static ViewPagerAdapter mAdapter;
     private static TabLayout mTabLayout;
     private static ViewPager mViewPager;
 
-    // ---------------------------------------------------------------------------------------------
+    private static int currentDrawerPosition = -1;
+
+    // -------------------------------------------------------------------------
     // INITIALIZATION
-    // ---------------------------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -66,37 +55,73 @@ public class MainActivity
         setContentView(R.layout.activity_main);
         mContext = getApplicationContext();
 
+        getUser();
         initializeImageLoader();
-        SharedPreferencesManager preferencesManager = SharedPreferencesManager.getInstance(mContext);
+        initializeToolbar();
+        initializeViewPager();
+        initializeDrawer();
+        initializeAppropriateFragment();
+    }
+
+    private void getUser()
+    {
+        SharedPreferencesManager preferencesManager =
+                SharedPreferencesManager.getInstance(mContext);
         mUser = preferencesManager.getUser();
+    }
 
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+    private void initializeToolbar()
+    {
+        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(mToolbar);
+    }
 
-        if (mUser.getIncomingRequests() != null) {
-            incomingRequestsCount = mUser.getIncomingRequests().size();
-        }
-
-        // --------------------------------------------------------
-        // ATTEMPT AT VIEW PAGER
-
-        mAdapter = new Adapter(getSupportFragmentManager());
+    private void initializeViewPager()
+    {
+        mAdapter = new ViewPagerAdapter(getSupportFragmentManager());
         mViewPager = (ViewPager) findViewById(R.id.viewpager);
         mViewPager.setAdapter(mAdapter);
 
         mTabLayout = (TabLayout) findViewById(R.id.tabs);
         mTabLayout.setupWithViewPager(mViewPager);
+    }
 
-        // --------------------------------------------------------
+    private void initializeDrawer()
+    {
+        Log.i(TAG, "Initializing drawer");
 
-        initializeDrawer();
+        mDrawer = NavigationDrawerFactory.getDefaultDrawerInstance(
+                this, mToolbar, mUser);
 
-        createUser();
+        mDrawer.setOnDrawerItemClickListener(
+                (view, position, drawerItem) -> handleDrawerItemClick(position));
+    }
 
-        String menuFragment = getIntent().getStringExtra(FRAGMENT_EXTRA);
-        getIntent().removeExtra(FRAGMENT_EXTRA);
-        menuFragment = (menuFragment == null) ? Constants.OVERVIEW_FRAGMENT : menuFragment;
-        switch (menuFragment) {
+    private boolean handleDrawerItemClick(int position)
+    {
+        if (currentDrawerPosition == position) {
+            mDrawer.closeDrawer();
+            return true;
+        }
+        mDrawer.getCurrentSelectedPosition()
+        currentDrawerPosition = position;
+
+        if (position == 1) {
+            initializeMainFragment();
+        }
+        else if (position == 2) {
+            initializeSecondFragment();
+        }
+        else if (position == 3) {
+            initializeFriendsFragment();
+        }
+        return false;
+    }
+
+    private void initializeAppropriateFragment()
+    {
+        String fragment = getFragmentExtra();
+        switch (fragment) {
             case (Constants.FRIENDS_FRAGMENT):
                 initializeFriendsFragment();
                 break;
@@ -104,104 +129,20 @@ public class MainActivity
                 initializeMainFragment();
                 break;
             default:
-                initializeMainFragment();
-                break;
-        }
-
-    }
-
-    private void createUser()
-    {
-        User user = new User("Kevin", "kevingrant@gmail.com", "12345", "url.com", "1233213");
-
-        FifaApiInterface api = FifaApi.getService();
-
-        api.createUser(user)
-                .flatMap(response -> api.lookupUser(response.headers().get("Location")))
-                .subscribeOn(Schedulers.newThread())
-                .observeOn(AndroidSchedulers.mainThread())
-                .doOnError(e -> Log.i("SECOND ACTIVITY", "ERROR: " + e.getMessage()))
-                .subscribe(this::logUser);
-    }
-
-    private void logUser(User user)
-    {
-        Gson gson = new Gson();
-        String json = gson.toJson(user);
-        Log.i("SECOND ACTIVITY", "USER: \n" + json);
-    }
-
-    // --------------------------------------------------------------
-    // ATTEMPT AT VIEW PAGER
-
-    static class Adapter extends FragmentStatePagerAdapter
-    {
-        private final List<Fragment> mFragments = new ArrayList<>();
-        private final List<String> mFragmentTitles = new ArrayList<>();
-
-        public Adapter(FragmentManager fm) {
-            super(fm);
-        }
-
-        public void addFragment(Fragment fragment, String title) {
-            mFragments.add(fragment);
-            mFragmentTitles.add(title);
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            return mFragments.get(position);
-        }
-
-        @Override
-        public int getCount() {
-            return mFragments.size();
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            return mFragmentTitles.get(position);
-        }
-
-        public int getItemPosition(Object item) {
-            return POSITION_NONE;
-        }
-
-        public void clear() {
-            mFragments.clear();
-            mFragmentTitles.clear();
+                throw new IllegalStateException(fragment + " is not a valid" +
+                        " fragment name!");
         }
     }
 
-    // --------------------------------------------------------------
-
-    /**
-     * Initialize the App's main Navigation Drawer
-     */
-    private void initializeDrawer()
+    private String getFragmentExtra()
     {
-        Log.i(TAG, "Initializing drawer");
-        mDrawer = new FifaNavigationDrawer(toolbar, mUser, incomingRequestsCount, this);
-        mDrawer.getDrawer().setOnDrawerItemClickListener((view, position, drawerItem) -> {
+        String fragment = getIntent().getStringExtra(FRAGMENT_EXTRA);
+        getIntent().removeExtra(FRAGMENT_EXTRA);
+        if (fragment == null) {
+            fragment = Constants.OVERVIEW_FRAGMENT;
+        }
 
-            if (mDrawer.getPreviousSelectedPosition() == position) {
-                mDrawer.setPreviousSelectedPosition(position);
-                mDrawer.getDrawer().closeDrawer();
-                return true;
-            }
-
-            mDrawer.setPreviousSelectedPosition(position);
-            if (position == 1) {
-                initializeMainFragment();
-            }
-            else if (position == 2) {
-                initializeSecondFragment();
-            }
-            else if (position == 3) {
-                initializeFriendsFragment();
-            }
-            return false;
-        });
+        return fragment;
     }
 
     /**
@@ -240,12 +181,14 @@ public class MainActivity
 
     public static void lockNavigationDrawer()
     {
-        mDrawer.lock();
+        mDrawer.getDrawerLayout().setDrawerLockMode(DrawerLayout
+                .LOCK_MODE_LOCKED_CLOSED);
     }
 
     public static void unlockNavigationDrawer()
     {
-        mDrawer.unlock();
+        mDrawer.getDrawerLayout().setDrawerLockMode(DrawerLayout
+                .LOCK_MODE_UNLOCKED);
     }
 
     // ---------------------------------------------------------------------------------------------
@@ -254,7 +197,7 @@ public class MainActivity
 
     private void initializeMainFragment()
     {
-        toolbar.setTitle(Constants.OVERVIEW_FRAGMENT);
+        mToolbar.setTitle(Constants.OVERVIEW_FRAGMENT);
         mAdapter.clear();
         mAdapter.addFragment(new OverviewFragment(), Constants.OVERVIEW_FRAGMENT);
         mAdapter.notifyDataSetChanged();
@@ -263,7 +206,7 @@ public class MainActivity
 
     private void initializeSecondFragment() {
 //        SecondFragment fragment = new SecondFragment();
-//        toolbar.setTitle(Constants.STATISTICS_FRAGMENT);
+//        mToolbar.setTitle(Constants.STATISTICS_FRAGMENT);
 //        FragmentTransaction fragmentTransaction =
 //                getSupportFragmentManager().beginTransaction();
 //
@@ -273,7 +216,7 @@ public class MainActivity
 
     private void initializeFriendsFragment()
     {
-        toolbar.setTitle(Constants.FRIENDS_FRAGMENT);
+        mToolbar.setTitle(Constants.FRIENDS_FRAGMENT);
 
         mAdapter.clear();
         mAdapter.addFragment(

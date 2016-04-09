@@ -10,7 +10,7 @@ import retrofit2.http.POST;
 /**
  * Created by Kevin on 4/1/2016.
  */
-public interface NotificationsApiInterface
+public interface NotificationsApi
 {
 // TODO
 

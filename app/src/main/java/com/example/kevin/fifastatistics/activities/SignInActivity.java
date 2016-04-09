@@ -9,8 +9,8 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.example.kevin.fifastatistics.R;
+import com.example.kevin.fifastatistics.network.FifaApiAdapter;
 import com.example.kevin.fifastatistics.network.FifaApi;
-import com.example.kevin.fifastatistics.network.FifaApiInterface;
 import com.example.kevin.fifastatistics.network.gcmnotifications.RegistrationIntentService;
 import com.example.kevin.fifastatistics.models.user.User;
 import com.example.kevin.fifastatistics.managers.SharedPreferencesManager;
@@ -28,9 +28,7 @@ import com.google.android.gms.common.api.Status;
 
 import java.io.IOException;
 
-import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 /**
@@ -49,7 +47,7 @@ public class SignInActivity extends AppCompatActivity implements
 
     private static String mRegistrationToken;
     private static SharedPreferencesManager handler;
-    private static FifaApiInterface api;
+    private static FifaApi api;
 
     private GoogleApiClient mGoogleApiClient;
     private TextView mStatusTextView;
@@ -254,9 +252,9 @@ public class SignInActivity extends AppCompatActivity implements
             return;
         }
 
-        api = FifaApi.getService();
+        api = FifaApiAdapter.getService();
 
-        FifaApi.getService().getUserWithGoogleId(googleId)
+        FifaApiAdapter.getService().getUserWithGoogleId(googleId)
                 .onErrorReturn(u -> createNewUser(name, email, googleId,
                         imageUrl, mRegistrationToken))
                 .subscribeOn(Schedulers.newThread())
@@ -268,7 +266,13 @@ public class SignInActivity extends AppCompatActivity implements
                                String imageUrl, String registrationToken)
     {
         doCreateUser = true;
-        return new User(name, email, googleId, imageUrl, registrationToken);
+        return new User.Builder()
+                .withName(name)
+                .withEmail(email)
+                .withGoogleId(googleId)
+                .withImageUrl(imageUrl)
+                .withRegistrationToken(registrationToken)
+                .build();
     }
 
 

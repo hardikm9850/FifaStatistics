@@ -41,13 +41,13 @@ public class MyFriendsRecyclerViewAdapter extends RecyclerView.Adapter<MyFriends
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mUsers.get(position);
-        holder.mNameView.setText(mUsers.get(position).name);
+        holder.mNameView.setText(mUsers.get(position).getName());
 
         Log.i("RECYCLER ADAPTER", "Setting USERS");
 
 //        new GetAndSetImageFromUrl(holder.mImageView).execute(mUsers.get(position).imageUrl);
         ImageLoader imageLoader = ImageLoader.getInstance();
-        imageLoader.displayImage(mUsers.get(position).imageUrl, holder.mImageView);
+        imageLoader.displayImage(mUsers.get(position).getImageUrl(), holder.mImageView);
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

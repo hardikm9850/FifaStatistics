@@ -24,6 +24,7 @@ import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.activities.MainActivity;
 import com.example.kevin.fifastatistics.fragments.friendsfragment.FriendsFragment;
 import com.example.kevin.fifastatistics.models.Constants;
+import com.example.kevin.fifastatistics.models.user.Friend;
 import com.example.kevin.fifastatistics.models.user.User;
 import com.example.kevin.fifastatistics.managers.SharedPreferencesManager;
 import com.google.android.gms.gcm.GcmListenerService;
@@ -131,13 +132,20 @@ public class MyGcmListenerService extends GcmListenerService {
 
     private void addFriendRequestToUser(Bundle data)
     {
-        SharedPreferencesManager handler = SharedPreferencesManager.getInstance(getApplicationContext());
+        SharedPreferencesManager handler = SharedPreferencesManager.getInstance(
+                getApplicationContext());
         User user = handler.getUser();
 
         int level = Integer.parseInt(data.getString("level"));
-        user.addIncomingRequest(
-                data.getString("name"), data.getString("id"), data.getString(IMAGE_URL),
-                level, data.getString("RegistrationToken"));
+        Friend friend = new Friend.Builder()
+                .withId(data.getString("id"))
+                .withImageUrl(data.getString(IMAGE_URL))
+                .withLevel(level)
+                .withName(data.getString("name"))
+                .withRegistrationToken(data.getString("RegistrationToken"))
+                .build();
+
+        user.addIncomingRequest(friend);
         handler.storeUser(user);
     }
 

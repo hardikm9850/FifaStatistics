@@ -20,7 +20,7 @@
     <string name="settings">Settings</string>
     <string name="starred">Starred</string>
     <string name="title_activity_login">Sign in</string>
-    <string name="fifa_legend">FIFA Legend</string>
+    <string name="drawer.fifa_legend">FIFA Legend</string>
 
     <!-- Strings related to login -->
     <!-- Sign-in status messages -->
