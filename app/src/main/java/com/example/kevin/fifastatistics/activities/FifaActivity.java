@@ -7,9 +7,6 @@ import android.support.v7.widget.Toolbar;
 
 import com.example.kevin.fifastatistics.views.adapters.ViewPagerAdapter;
 
-/**
- * Created by Kevin on 4/9/2016.
- */
 public abstract class FifaActivity extends AppCompatActivity
 {
     public abstract Toolbar getToolbar();

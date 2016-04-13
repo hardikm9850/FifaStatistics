@@ -1,5 +1,6 @@
 package com.example.kevin.fifastatistics.network;
 
+import com.example.kevin.fifastatistics.models.apiresponses.UserListResponse;
 import com.example.kevin.fifastatistics.models.user.User;
 
 import java.util.List;
@@ -32,7 +33,7 @@ public interface FifaApi
      * @return the User List Observable
      */
     @GET("users")
-    Observable<List<User>> getUsers();
+    Observable<UserListResponse> getUsers();
 
     /**
      * Lists all users with the specified name.
@@ -40,7 +41,17 @@ public interface FifaApi
      * @return the User List Observable
      */
     @GET("users/search/findByName")
-    Observable<List<User>> getUsersWithName(@Query("name") String name);
+    Observable<UserListResponse> getUsersWithName(@Query("name") String name);
+
+    /**
+     * Lists all users who have names starting with the specified name.
+     * <br> e.g. name=ke would return users with name 'Kevin', 'kelsey', etc.
+     * @param name the name being searched for
+     * @return the User List Observable
+     */
+    @GET("users/search/findByNameStartingWithIgnoreCase")
+    Observable<UserListResponse> getUsersWithNameStartingWith(
+            @Query("name") String name);
 
     /**
      * Find the user the with the specified googleId.

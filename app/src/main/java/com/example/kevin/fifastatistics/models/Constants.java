@@ -9,7 +9,7 @@ public final class Constants
 
     // REST
     public static final String FIFA_API_ENDPOINT =
-            "http://fifastatisticsapi.azurewebsites.net/";
+            "https://fifastatisticsapi.azurewebsites.net/";
 
     public static final String NOTIFICATIONS_API_ENDPOINT =
             "https://gcm-http.googleapis.com/gcm/send";

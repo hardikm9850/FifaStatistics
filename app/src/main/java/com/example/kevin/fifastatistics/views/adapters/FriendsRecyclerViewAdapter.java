@@ -1,4 +1,4 @@
-package com.example.kevin.fifastatistics.fragments.friendsfragment;
+package com.example.kevin.fifastatistics.views.adapters;
 
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.kevin.fifastatistics.R;
-import com.example.kevin.fifastatistics.fragments.friendsfragment.FriendsFragment.OnListFragmentInteractionListener;
+import com.example.kevin.fifastatistics.fragments.FriendsFragment.OnListFragmentInteractionListener;
 import com.example.kevin.fifastatistics.models.user.Friend;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -19,14 +19,16 @@ import java.util.ArrayList;
 /**
  * {@link RecyclerView.Adapter} that can display a {@link Friend} and makes a call to the
  * specified {@link OnListFragmentInteractionListener}.
- * TODO: Replace the implementation with code for your data type.
  */
-public class MyFriendsRecyclerViewAdapter extends RecyclerView.Adapter<MyFriendsRecyclerViewAdapter.ViewHolder> {
+public class FriendsRecyclerViewAdapter
+        extends RecyclerView.Adapter<FriendsRecyclerViewAdapter.ViewHolder> {
 
     private ArrayList<Friend> mUsers;
     private final OnListFragmentInteractionListener mListener;
 
-    public MyFriendsRecyclerViewAdapter(ArrayList<Friend> users, OnListFragmentInteractionListener listener) {
+    public FriendsRecyclerViewAdapter(ArrayList<Friend> users,
+                                      OnListFragmentInteractionListener
+                                              listener) {
         mUsers = users;
         mListener = listener;
     }
@@ -48,14 +50,11 @@ public class MyFriendsRecyclerViewAdapter extends RecyclerView.Adapter<MyFriends
 //        new GetAndSetImageFromUrl(holder.mImageView).execute(mUsers.get(position).imageUrl);
         ImageLoader imageLoader = ImageLoader.getInstance();
         imageLoader.displayImage(mUsers.get(position).getImageUrl(), holder.mImageView);
-        holder.mView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (null != mListener) {
+        holder.mView.setOnClickListener(view -> {
+                if (mListener != null) {
                     mListener.onListFragmentInteraction(holder.mItem);
                 }
-            }
-        });
+            });
     }
 
     @Override
@@ -66,6 +65,19 @@ public class MyFriendsRecyclerViewAdapter extends RecyclerView.Adapter<MyFriends
         else {
             return mUsers.size();
         }
+    }
+
+    public void replaceData(ArrayList<Friend> friends)
+    {
+        if (mUsers != null) {
+            mUsers.clear();
+            mUsers.addAll(friends);
+        }
+        else {
+            mUsers = friends;
+        }
+
+        notifyDataSetChanged();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

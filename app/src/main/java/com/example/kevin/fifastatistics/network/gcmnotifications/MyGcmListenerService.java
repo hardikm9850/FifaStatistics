@@ -22,7 +22,7 @@ import android.util.Log;
 
 import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.activities.MainActivity;
-import com.example.kevin.fifastatistics.fragments.friendsfragment.FriendsFragment;
+import com.example.kevin.fifastatistics.fragments.FriendsFragment;
 import com.example.kevin.fifastatistics.models.Constants;
 import com.example.kevin.fifastatistics.models.user.Friend;
 import com.example.kevin.fifastatistics.models.user.User;

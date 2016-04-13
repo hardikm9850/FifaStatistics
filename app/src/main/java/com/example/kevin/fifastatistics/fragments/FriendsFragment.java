@@ -1,4 +1,4 @@
-package com.example.kevin.fifastatistics.fragments.friendsfragment;
+package com.example.kevin.fifastatistics.fragments;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -19,9 +19,15 @@ import com.example.kevin.fifastatistics.activities.MainActivity;
 import com.example.kevin.fifastatistics.models.user.Friend;
 import com.example.kevin.fifastatistics.models.user.User;
 import com.example.kevin.fifastatistics.managers.SharedPreferencesManager;
+import com.example.kevin.fifastatistics.network.FifaApiAdapter;
+import com.example.kevin.fifastatistics.views.adapters
+        .FriendsRecyclerViewAdapter;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
 import java.util.ArrayList;
+
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
  * A fragment representing a list of users.
@@ -42,6 +48,9 @@ public class FriendsFragment extends Fragment {
 
     private OnListFragmentInteractionListener mListener;
 
+    private RecyclerView recyclerView;
+    private FriendsRecyclerViewAdapter adapter;
+    private ArrayList<Friend> friends;
     private User mUser;
     private View view = null;
 
@@ -61,11 +70,15 @@ public class FriendsFragment extends Fragment {
     {
         super.onCreate(savedInstanceState);
 
-        SharedPreferencesManager handler = SharedPreferencesManager.getInstance(getContext());
-        mUser = handler.getUser();
-
+        getUser();
         setRetainInstance(true);
         setHasOptionsMenu(true);
+    }
+
+    private void getUser()
+    {
+        SharedPreferencesManager handler = SharedPreferencesManager.getInstance(getContext());
+        mUser = handler.getUser();
     }
 
     @Override
@@ -73,9 +86,14 @@ public class FriendsFragment extends Fragment {
                              Bundle savedInstanceState)
     {
         view = inflater.inflate(R.layout.fragment_friends_list, container, false);
-        mSearchView = (MaterialSearchView) getActivity().findViewById(R.id.search_view);
         initializeSearchView();
+        setAdapterDataSource();
 
+        return view;
+    }
+
+    private void setAdapterDataSource()
+    {
         int viewToShow = getArguments().getInt(viewArgument, 0);
         if (viewToShow == friendsView) {
             setAdapter(mUser.getFriends());
@@ -83,7 +101,6 @@ public class FriendsFragment extends Fragment {
         else {
             setAdapter(mUser.getIncomingRequests());
         }
-        return view;
     }
 
     @Override
@@ -148,13 +165,25 @@ public class FriendsFragment extends Fragment {
     }
 
     // TODO do in background
-    private void initializeSearchView() {
+    private void initializeSearchView()
+    {
+        mSearchView = (MaterialSearchView) getActivity().findViewById(R.id.search_view);
         mSearchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                //Do some magic
+                if (friends == null) friends = new ArrayList<>();
+                mSearchView.closeSearch();
+                friends.clear();
+
+                FifaApiAdapter.getService().getUsersWithNameStartingWith(query)
+                        .map(response -> friends = response.getUsersAsFriends())
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(response -> adapter.replaceData(friends));
                 return false;
             }
+
+            // mSearchView.setSuggestions(response.getNames());
 
             @Override
             public boolean onQueryTextChange(String newText) {
@@ -186,12 +215,14 @@ public class FriendsFragment extends Fragment {
 
     private void setAdapter(ArrayList<Friend> users)
     {
+        friends = users;
         if (view instanceof RecyclerView)
         {
-            RecyclerView recyclerView = (RecyclerView) view;
+            recyclerView = (RecyclerView) view;
+            adapter = new FriendsRecyclerViewAdapter(friends, mListener);
 
             recyclerView.setLayoutManager(new GridLayoutManager(view.getContext(), mColumnCount));
-            recyclerView.setAdapter(new MyFriendsRecyclerViewAdapter(users, mListener));
+            recyclerView.setAdapter(adapter);
         }
     }
 }

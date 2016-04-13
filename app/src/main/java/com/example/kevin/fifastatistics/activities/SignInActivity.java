@@ -254,16 +254,15 @@ public class SignInActivity extends AppCompatActivity implements
 
         api = FifaApiAdapter.getService();
 
-        FifaApiAdapter.getService().getUserWithGoogleId(googleId)
-                .onErrorReturn(u -> createNewUser(name, email, googleId,
-                        imageUrl, mRegistrationToken))
-                .subscribeOn(Schedulers.newThread())
+        api.getUserWithGoogleId(googleId)
+                .onErrorReturn(u -> createNewUser(name, email, googleId, imageUrl))
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this::handleGetUserResult);
     }
 
     private User createNewUser(String name, String email, String googleId,
-                               String imageUrl, String registrationToken)
+                               String imageUrl)
     {
         doCreateUser = true;
         return new User.Builder()
@@ -271,7 +270,7 @@ public class SignInActivity extends AppCompatActivity implements
                 .withEmail(email)
                 .withGoogleId(googleId)
                 .withImageUrl(imageUrl)
-                .withRegistrationToken(registrationToken)
+                .withRegistrationToken(mRegistrationToken)
                 .build();
     }
 
@@ -284,7 +283,7 @@ public class SignInActivity extends AppCompatActivity implements
             Log.i(TAG, "CREATING USER");
             api.createUser(user)
                     .flatMap(response -> api.lookupUser(response.headers().get("Location")))
-                    .subscribeOn(Schedulers.newThread())
+                    .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .doOnError(e -> Log.i(TAG, "ERROR: " + e.getMessage()))
                     .subscribe(this::startMainActivity);

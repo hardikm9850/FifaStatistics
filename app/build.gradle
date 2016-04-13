@@ -65,6 +65,7 @@ dependencies {
 
     // Search
     compile 'com.miguelcatalan:materialsearchview:1.4.0'
+    compile 'com.lapism:searchview:2.2'
 
     // Navigation
     compile 'com.mikepenz:google-material-typeface:2.2.0.1.original@aar'

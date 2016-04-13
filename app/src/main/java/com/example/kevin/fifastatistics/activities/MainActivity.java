@@ -6,9 +6,10 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
 
 import com.example.kevin.fifastatistics.R;
-import com.example.kevin.fifastatistics.fragments.friendsfragment.FriendsFragment;
+import com.example.kevin.fifastatistics.fragments.FriendsFragment;
 import com.example.kevin.fifastatistics.managers.FragmentManager;
 import com.example.kevin.fifastatistics.models.Constants;
 import com.example.kevin.fifastatistics.models.user.Friend;
@@ -38,10 +39,6 @@ public class MainActivity
     private static ViewPagerAdapter mAdapter;
     private static TabLayout mTabLayout;
     private static ViewPager mViewPager;
-
-    // -------------------------------------------------------------------------
-    // INITIALIZATION
-    // -------------------------------------------------------------------------
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -115,9 +112,6 @@ public class MainActivity
         return fragment;
     }
 
-    /**
-     * Define the default Universal Image Loader Options
-     */
     private void initializeImageLoader()
     {
         DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder()
@@ -138,10 +132,6 @@ public class MainActivity
         System.out.println("Interacted");
     }
 
-    // ---------------------------------------------------------------------------------------------
-    // IMPLEMENTATION
-    // ---------------------------------------------------------------------------------------------
-
     @Override
     public void onBackPressed() {
         FriendsFragment.closeSearchView();
@@ -156,6 +146,14 @@ public class MainActivity
     public static void unlockNavigationDrawer() {
         mDrawer.getDrawerLayout().setDrawerLockMode(DrawerLayout
                 .LOCK_MODE_UNLOCKED);
+    }
+
+    public static void hideTabs() {
+        mTabLayout.setVisibility(View.GONE);
+    }
+
+    public static void showTabs() {
+        mTabLayout.setVisibility(View.VISIBLE);
     }
 
     public Toolbar getToolbar() {

@@ -2,6 +2,8 @@ package com.example.kevin.fifastatistics.network;
 
 import com.example.kevin.fifastatistics.models.Constants;
 
+import java.util.concurrent.TimeUnit;
+
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
@@ -13,6 +15,8 @@ import retrofit2.converter.jackson.JacksonConverterFactory;
  */
 public class FifaApiAdapter
 {
+    private static final int CONNECT_TIMEOUT_DURATION = 30;
+
     private static FifaApi api;
     private static HttpLoggingInterceptor loggingInterceptor;
     private static OkHttpClient httpClient;
@@ -44,6 +48,8 @@ public class FifaApiAdapter
     {
         httpClient = new OkHttpClient.Builder()
                 .addInterceptor(loggingInterceptor)
+                .connectTimeout(CONNECT_TIMEOUT_DURATION, TimeUnit.SECONDS)
+                .readTimeout(CONNECT_TIMEOUT_DURATION, TimeUnit.SECONDS)
                 .build();
     }
 

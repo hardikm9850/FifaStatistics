@@ -1,8 +1,11 @@
 package com.example.kevin.fifastatistics.models.user;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 
 /**
  * <b>Class:</b> User <br><br>
@@ -122,40 +125,20 @@ public class User {
         }
     }
 
-    // ----------------------------------------------------------------------
-    // GETTERS / SETTERS
-    // ----------------------------------------------------------------------
-
     public String getId() {
         return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public String getEmail() {
         return email;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
     public String getGoogleId() {
         return googleId;
-    }
-
-    public void setGoogleId(String googleId) {
-        this.googleId = googleId;
     }
 
     public String getRegistrationToken() {
@@ -178,88 +161,44 @@ public class User {
         return friends;
     }
 
-    public void setFriends(ArrayList<Friend> friends) {
-        this.friends = friends;
-    }
-
     public ArrayList<Friend> getIncomingRequests() {
         return incomingRequests;
-    }
-
-    public void setIncomingRequests(ArrayList<Friend> incomingRequests) {
-        this.incomingRequests = incomingRequests;
     }
 
     public ArrayList<Friend> getOutgoingRequests() {
         return outgoingRequests;
     }
 
-    public void setOutgoingRequests(ArrayList<Friend> outgoingRequests) {
-        this.outgoingRequests = outgoingRequests;
-    }
-
     public ArrayList<MatchStub> getMatches() {
         return matches;
-    }
-
-    public void setMatches(ArrayList<MatchStub> matches) {
-        this.matches = matches;
     }
 
     public ArrayList<SeriesStub> getSeries() {
         return series;
     }
 
-    public void setSeries(ArrayList<SeriesStub> series) {
-        this.series = series;
-    }
-
     public Stats getRecords() {
         return records;
-    }
-
-    public void setRecords(Stats records) {
-        this.records = records;
     }
 
     public Stats getAverages() {
         return averages;
     }
 
-    public void setAverages(Stats averages) {
-        this.averages = averages;
-    }
-
     public int getMatchWins() {
         return matchWins;
-    }
-
-    public void setMatchWins(int matchWins) {
-        this.matchWins = matchWins;
     }
 
     public int getMatchLosses() {
         return matchLosses;
     }
 
-    public void setMatchLosses(int matchLosses) {
-        this.matchLosses = matchLosses;
-    }
-
     public int getSeriesWins() {
         return seriesWins;
     }
 
-    public void setSeriesWins(int seriesWins) {
-        this.seriesWins = seriesWins;
-    }
-
     public int getSeriesLosses() {
         return seriesLosses;
-    }
-
-    public void setSeriesLosses(int seriesLosses) {
-        this.seriesLosses = seriesLosses;
     }
 
     public int getLevel() {
@@ -277,10 +216,6 @@ public class User {
     public void setExperience(int experience) {
         this.experience = experience;
     }
-
-    // ----------------------------------------------------------------------
-    // UTILITIES
-    // ----------------------------------------------------------------------
 
     /**
      * Adds a FriendRequest to the User's incoming requests list.
@@ -318,5 +253,4 @@ public class User {
         }
         friends.add(friend);
     }
-
 }

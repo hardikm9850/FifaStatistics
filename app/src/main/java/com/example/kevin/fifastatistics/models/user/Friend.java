@@ -27,6 +27,15 @@ public class Friend
 
     }
 
+    public Friend(User user)
+    {
+        this.id = user.getId();
+        this.name = user.getName();
+        this.imageUrl = user.getImageUrl();
+        this.level = user.getLevel();
+        this.registrationToken = user.getRegistrationToken();
+    }
+
     private Friend(Builder builder)
     {
         this.id = builder.id;
