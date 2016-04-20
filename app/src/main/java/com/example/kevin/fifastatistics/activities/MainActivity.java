@@ -1,6 +1,5 @@
 package com.example.kevin.fifastatistics.activities;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
@@ -10,19 +9,13 @@ import android.view.View;
 
 import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.fragments.FriendsFragment;
-import com.example.kevin.fifastatistics.managers.FragmentManager;
+import com.example.kevin.fifastatistics.managers.FragmentInitializationManager;
+import com.example.kevin.fifastatistics.managers.ImageLoaderManager;
 import com.example.kevin.fifastatistics.models.Constants;
 import com.example.kevin.fifastatistics.models.user.Friend;
-import com.example.kevin.fifastatistics.models.user.User;
-import com.example.kevin.fifastatistics.managers.SharedPreferencesManager;
 import com.example.kevin.fifastatistics.utils.NavigationDrawerFactory;
 import com.example.kevin.fifastatistics.views.adapters.ViewPagerAdapter;
 import com.mikepenz.materialdrawer.Drawer;
-import com.nostra13.universalimageloader.cache.memory.impl.WeakMemoryCache;
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
-import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 
 public class MainActivity
         extends FifaActivity
@@ -33,8 +26,6 @@ public class MainActivity
 
     private static final String TAG = "MainActivity";
     private static Toolbar mToolbar = null;
-    private static User mUser;
-    private static Context mContext;
     private static Drawer mDrawer;
     private static ViewPagerAdapter mAdapter;
     private static TabLayout mTabLayout;
@@ -45,21 +36,12 @@ public class MainActivity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mContext = getApplicationContext();
+        ImageLoaderManager.initializeDefaultImageLoader(this);
 
-        getUser();
-        initializeImageLoader();
         initializeToolbar();
         initializeViewPager();
         initializeDrawer();
         initializeAppropriateFragment();
-    }
-
-    private void getUser()
-    {
-        SharedPreferencesManager preferencesManager =
-                SharedPreferencesManager.getInstance(mContext);
-        mUser = preferencesManager.getUser();
     }
 
     private void initializeToolbar()
@@ -80,8 +62,7 @@ public class MainActivity
 
     private void initializeDrawer()
     {
-        mDrawer = NavigationDrawerFactory.getDefaultDrawerInstance(
-                this, mToolbar, mUser);
+        mDrawer = NavigationDrawerFactory.getDefaultDrawerInstance(this);
     }
 
 
@@ -90,10 +71,10 @@ public class MainActivity
         String fragment = getFragmentExtra();
         switch (fragment) {
             case (Constants.FRIENDS_FRAGMENT):
-                FragmentManager.initializeFriendsFragment(this);
+                FragmentInitializationManager.initializeFriendsFragment(this);
                 break;
             case (Constants.OVERVIEW_FRAGMENT):
-                FragmentManager.initializeMainFragment(this);
+                FragmentInitializationManager.initializeMainFragment(this);
                 break;
             default:
                 throw new IllegalStateException(fragment + " is not a valid" +
@@ -110,21 +91,6 @@ public class MainActivity
         }
 
         return fragment;
-    }
-
-    private void initializeImageLoader()
-    {
-        DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder()
-                .cacheOnDisk(true).cacheInMemory(true)
-                .imageScaleType(ImageScaleType.EXACTLY)
-                .build();
-
-        ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(mContext)
-                .defaultDisplayImageOptions(defaultOptions)
-                .memoryCache(new WeakMemoryCache())
-                .diskCacheSize(100 * 1024 * 1024).build();
-
-        ImageLoader.getInstance().init(config);
     }
 
     @Override

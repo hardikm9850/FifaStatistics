@@ -1,6 +1,6 @@
 package com.example.kevin.fifastatistics.network;
 
-import com.example.kevin.fifastatistics.models.Constants;
+import static com.example.kevin.fifastatistics.models.Constants.*;
 
 import java.util.concurrent.TimeUnit;
 
@@ -56,7 +56,7 @@ public class FifaApiAdapter
     private static void initializeRetrofitObject()
     {
         retrofit = new Retrofit.Builder()
-                .baseUrl(Constants.FIFA_API_ENDPOINT)
+                .baseUrl(FIFA_API_ENDPOINT)
                 .client(httpClient)
                 .addConverterFactory(JacksonConverterFactory.create())
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())

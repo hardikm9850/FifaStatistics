@@ -11,7 +11,7 @@ import com.example.kevin.fifastatistics.views.adapters.ViewPagerAdapter;
 /**
  * Manager for setting the current fragment.
  */
-public class FragmentManager
+public class FragmentInitializationManager
 {
     private static final String PAGE_EXTRA = "page";
 

@@ -3,8 +3,6 @@ package com.example.kevin.fifastatistics.network;
 import com.example.kevin.fifastatistics.models.apiresponses.UserListResponse;
 import com.example.kevin.fifastatistics.models.user.User;
 
-import java.util.List;
-
 import retrofit2.Response;
 import retrofit2.http.Body;
 import retrofit2.http.GET;

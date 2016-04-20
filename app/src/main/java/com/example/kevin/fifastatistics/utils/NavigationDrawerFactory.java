@@ -2,12 +2,12 @@ package com.example.kevin.fifastatistics.utils;
 
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.support.v7.widget.Toolbar;
 import android.widget.ImageView;
 
 import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.activities.FifaActivity;
-import com.example.kevin.fifastatistics.managers.FragmentManager;
+import com.example.kevin.fifastatistics.managers.FragmentInitializationManager;
+import com.example.kevin.fifastatistics.managers.SharedPreferencesManager;
 import com.example.kevin.fifastatistics.models.user.User;
 import com.mikepenz.materialdrawer.AccountHeader;
 import com.mikepenz.materialdrawer.AccountHeaderBuilder;
@@ -48,27 +48,42 @@ public class NavigationDrawerFactory
     /**
      * Gets the default drawer instance.
      * @param activity  The activity the drawer is being attached to
-     * @param toolbar   The activiy's toolbar
-     * @param user      The current user
      * @return the drawer
      */
     public static Drawer getDefaultDrawerInstance(
-            FifaActivity activity, Toolbar toolbar, User user)
+            FifaActivity activity)
     {
+        getUser(activity);
+        setIncomingRequestsCount();
+
         if (drawer == null) {
-            buildDrawer(activity, toolbar, user);
+            initializeActivityIndependentObjects();
         }
+        buildDrawer(activity);
+
         return drawer;
     }
 
-    private static void buildDrawer(FifaActivity activity, Toolbar toolbar,
-                                    User user)
+    private static void getUser(FifaActivity fa)
     {
-        currentUser = user;
-        setIncomingRequestsCount();
-        initializeDrawerItems();
+        SharedPreferencesManager pm = SharedPreferencesManager.getInstance(fa);
+        currentUser = pm.getUser();
+    }
+
+    private static void initializeActivityIndependentObjects()
+    {
+        initializeBadgeStyle();
+        initializeOverviewItem();
+        initializeSettingsItem();
+        initializeFriendsItem();
+        initializeStatisticsItem();
+        initializeStarredItem();
+    }
+
+    private static void buildDrawer(FifaActivity activity)
+    {
         initializeDrawerBanner(activity);
-        initializeDrawer(activity, toolbar);
+        initializeDrawer(activity);
         setOnDrawerItemClickListener(activity);
     }
 
@@ -77,16 +92,6 @@ public class NavigationDrawerFactory
         if (currentUser.getIncomingRequests() != null) {
             incomingRequestsCount = currentUser.getIncomingRequests().size();
         }
-    }
-
-    private static void initializeDrawerItems()
-    {
-        initializeBadgeStyle();
-        initializeOverviewItem();
-        initializeSettingsItem();
-        initializeFriendsItem();
-        initializeStatisticsItem();
-        initializeStarredItem();
     }
 
     private static void initializeBadgeStyle()
@@ -176,14 +181,14 @@ public class NavigationDrawerFactory
                 .build();
     }
 
-    private static void initializeDrawer(FifaActivity activity, Toolbar toolbar)
+    private static void initializeDrawer(FifaActivity activity)
     {
         drawer = new DrawerBuilder()
                 .withActivity(activity)
                 .withAccountHeader(headerResult)
                 .withActionBarDrawerToggle(true)
                 .withActionBarDrawerToggleAnimated(true)
-                .withToolbar(toolbar)
+                .withToolbar(activity.getToolbar())
                 .addDrawerItems(
                         overviewItem,
                         statisticsItem,
@@ -211,10 +216,10 @@ public class NavigationDrawerFactory
         previousDrawerPosition = position;
 
         if (position == 1) {
-            FragmentManager.initializeMainFragment(activity);
+            FragmentInitializationManager.initializeMainFragment(activity);
         }
         else if (position == 3) {
-            FragmentManager.initializeFriendsFragment(activity);
+            FragmentInitializationManager.initializeFriendsFragment(activity);
         }
         return false;
     }
