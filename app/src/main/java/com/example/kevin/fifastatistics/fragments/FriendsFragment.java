@@ -16,12 +16,14 @@ import android.view.ViewGroup;
 
 import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.activities.MainActivity;
+import com.example.kevin.fifastatistics.models.apiresponses.UserListResponse;
 import com.example.kevin.fifastatistics.models.user.Friend;
 import com.example.kevin.fifastatistics.models.user.User;
 import com.example.kevin.fifastatistics.managers.SharedPreferencesManager;
 import com.example.kevin.fifastatistics.network.FifaApiAdapter;
 import com.example.kevin.fifastatistics.views.adapters
         .FriendsRecyclerViewAdapter;
+import com.example.kevin.fifastatistics.views.adapters.SearchViewAdapter;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
 import java.util.ArrayList;
@@ -86,7 +88,14 @@ public class FriendsFragment extends Fragment {
                              Bundle savedInstanceState)
     {
         view = inflater.inflate(R.layout.fragment_friends_list, container, false);
-        initializeSearchView();
+        mSearchView = (MaterialSearchView) getActivity().findViewById(R.id.search_view);
+
+        FifaApiAdapter.getService().getUsers()
+                .map(UserListResponse::getUsers)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(this::initializeSearchView);
+
         setAdapterDataSource();
 
         return view;
@@ -165,25 +174,17 @@ public class FriendsFragment extends Fragment {
     }
 
     // TODO do in background
-    private void initializeSearchView()
+    private void initializeSearchView(ArrayList<User> users)
     {
-        mSearchView = (MaterialSearchView) getActivity().findViewById(R.id.search_view);
+        mSearchView.setAdapter(new SearchViewAdapter(getContext(), users));
         mSearchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 if (friends == null) friends = new ArrayList<>();
                 mSearchView.closeSearch();
-                friends.clear();
 
-                FifaApiAdapter.getService().getUsersWithNameStartingWith(query)
-                        .map(response -> friends = response.getUsersAsFriends())
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(response -> adapter.replaceData(friends));
                 return false;
             }
-
-            // mSearchView.setSuggestions(response.getNames());
 
             @Override
             public boolean onQueryTextChange(String newText) {
@@ -197,6 +198,7 @@ public class FriendsFragment extends Fragment {
             @Override
             public void onSearchViewShown() {
                 MainActivity.lockNavigationDrawer();
+                mSearchView.showSuggestions();
                 Log.i(TAG, "Showing Search View!");
             }
 

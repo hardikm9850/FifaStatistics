@@ -7,6 +7,7 @@ import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.ImageScaleType;
+import com.nostra13.universalimageloader.core.display.CircleBitmapDisplayer;
 
 public class ImageLoaderManager
 {
@@ -25,7 +26,7 @@ public class ImageLoaderManager
     public static void initializeNotificationsImageLoader(Context context)
     {
         DisplayImageOptions notificationOptions = new DisplayImageOptions.Builder()
-                .cacheOnDisk(false).cacheInMemory(true)
+                .cacheOnDisk(true).cacheInMemory(true)
                 .imageScaleType(ImageScaleType.EXACTLY)
                 .build();
 

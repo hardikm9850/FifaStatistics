@@ -45,9 +45,6 @@ public class FriendsRecyclerViewAdapter
         holder.mItem = mUsers.get(position);
         holder.mNameView.setText(mUsers.get(position).getName());
 
-        Log.i("RECYCLER ADAPTER", "Setting USERS");
-
-//        new GetAndSetImageFromUrl(holder.mImageView).execute(mUsers.get(position).imageUrl);
         ImageLoader imageLoader = ImageLoader.getInstance();
         imageLoader.displayImage(mUsers.get(position).getImageUrl(), holder.mImageView);
         holder.mView.setOnClickListener(view -> {
