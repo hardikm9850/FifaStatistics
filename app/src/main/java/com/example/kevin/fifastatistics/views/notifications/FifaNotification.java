@@ -3,6 +3,7 @@ package com.example.kevin.fifastatistics.views.notifications;
 import static com.example.kevin.fifastatistics.models.Constants.APP_NAME;
 
 import android.app.Notification;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.media.RingtoneManager;
@@ -19,13 +20,17 @@ public abstract class FifaNotification
     private static final String CONTENT_TITLE = APP_NAME;
     private static final Uri SOUND_URI = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
     private static final int SMALL_ICON = R.mipmap.ic_launcher;
+    private Context context;
 
-    private NotificationCompat.Builder notificationBuilder;
+    protected static final int NOTIFICATION_ID = 0;
 
-    public FifaNotification(Context context, Bundle notification)
+    protected NotificationCompat.Builder notificationBuilder;
+
+    public FifaNotification(Context c, Bundle notification)
     {
+        context = c;
         Bitmap userIcon = BitmapUtils.getCircleBitmap(getUserBitmap(notification));
-        buildNotification(context, userIcon);
+        buildAbstractNotification(userIcon);
     }
 
     private Bitmap getUserBitmap(Bundle notification)
@@ -34,7 +39,7 @@ public abstract class FifaNotification
         return imageLoader.loadImageSync(notification.getString("imageUrl"));
     }
 
-    private void buildNotification(Context context, Bitmap userIcon)
+    private void buildAbstractNotification(Bitmap userIcon)
     {
         notificationBuilder = new NotificationCompat.Builder(context)
                 .setSmallIcon(SMALL_ICON)
@@ -45,13 +50,15 @@ public abstract class FifaNotification
                 .setPriority(Notification.PRIORITY_HIGH);
     }
 
-    protected NotificationCompat.Builder getNotificationBuilder()
+    public void send()
     {
-        return notificationBuilder;
+        NotificationManager nm = (NotificationManager) context.getSystemService(
+                Context.NOTIFICATION_SERVICE);
+
+        nm.notify(NOTIFICATION_ID, notificationBuilder.build());
     }
 
+    public abstract void performPreSendActions();
     protected abstract void setContentText(Bundle notification);
     protected abstract void setContentIntent();
-
-    public abstract void send();
 }

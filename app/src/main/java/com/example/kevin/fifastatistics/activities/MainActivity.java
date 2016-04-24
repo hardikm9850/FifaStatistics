@@ -13,7 +13,7 @@ import com.example.kevin.fifastatistics.managers.FragmentInitializationManager;
 import com.example.kevin.fifastatistics.managers.ImageLoaderManager;
 import com.example.kevin.fifastatistics.models.Constants;
 import com.example.kevin.fifastatistics.models.user.Friend;
-import com.example.kevin.fifastatistics.utils.NavigationDrawerFactory;
+import com.example.kevin.fifastatistics.utils.factories.NavigationDrawerFactory;
 import com.example.kevin.fifastatistics.views.adapters.ViewPagerAdapter;
 import com.mikepenz.materialdrawer.Drawer;
 

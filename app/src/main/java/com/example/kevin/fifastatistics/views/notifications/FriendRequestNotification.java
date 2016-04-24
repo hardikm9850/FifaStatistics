@@ -1,41 +1,40 @@
 package com.example.kevin.fifastatistics.views.notifications;
 
-import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
-import android.support.v4.app.NotificationCompat;
 
 import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.activities.MainActivity;
 import com.example.kevin.fifastatistics.fragments.FriendsFragment;
+import com.example.kevin.fifastatistics.managers.SharedPreferencesManager;
 import com.example.kevin.fifastatistics.models.Constants;
+import com.example.kevin.fifastatistics.models.user.Friend;
+import com.example.kevin.fifastatistics.models.user.User;
 import com.example.kevin.fifastatistics.network.gcmnotifications.FriendRequestAcceptService;
 import com.example.kevin.fifastatistics.network.gcmnotifications.FriendRequestDeclineService;
 
 public class FriendRequestNotification extends FifaNotification
 {
-    private static final int NOTIFICATION_ID = 0;
-
-    private NotificationCompat.Builder notificationBuilder;
     private PendingIntent contentIntent;
     private PendingIntent acceptRequestPendingIntent;
     private PendingIntent declineRequestPendingIntent;
     private Context context;
+    private Bundle notificationData;
 
     public FriendRequestNotification(Context c, Bundle notification)
     {
         super(c, notification);
-        notificationBuilder = super.getNotificationBuilder();
 
+        notificationData = notification;
         context = c;
         initializeContentIntent();
         initializeDeclineRequestPendingIntent();
         initializeAcceptRequestPendingIntent();
 
-        buildNotification(notification);
+        buildNotification();
     }
 
     private void initializeContentIntent()
@@ -69,9 +68,9 @@ public class FriendRequestNotification extends FifaNotification
                 PendingIntent.FLAG_ONE_SHOT);
     }
 
-    private void buildNotification(Bundle notification)
+    private void buildNotification()
     {
-        setContentText(notification);
+        setContentText(notificationData);
         setContentIntent();
 
         Resources res = context.getResources();
@@ -123,11 +122,26 @@ public class FriendRequestNotification extends FifaNotification
     }
 
     @Override
-    public void send()
+    public void performPreSendActions()
     {
-        NotificationManager nm = (NotificationManager) context.getSystemService(
-                Context.NOTIFICATION_SERVICE);
+        addFriendRequestToUser();
+    }
 
-        nm.notify(NOTIFICATION_ID, notificationBuilder.build());
+    private void addFriendRequestToUser()
+    {
+        SharedPreferencesManager handler = SharedPreferencesManager.getInstance(context);
+        User user = handler.getUser();
+
+        int level = Integer.parseInt(notificationData.getString("level"));
+        Friend friend = new Friend.Builder()
+                .withId(notificationData.getString("id"))
+                .withImageUrl(notificationData.getString("imageUrl"))
+                .withLevel(level)
+                .withName(notificationData.getString("name"))
+                .withRegistrationToken(notificationData.getString("registrationToken"))
+                .build();
+
+        user.addIncomingRequest(friend);
+        handler.storeUser(user);
     }
 }
