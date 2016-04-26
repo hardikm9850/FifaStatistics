@@ -45,7 +45,6 @@ public class OverviewFragment extends Fragment {
         inflater.inflate(R.menu.main, menu);
 
         menu.findItem(R.id.action_search).setVisible(false);
-        menu.findItem(R.id.friend_requests).setVisible(false);
     }
 
 

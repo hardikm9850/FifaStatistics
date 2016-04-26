@@ -1,7 +1,6 @@
 package com.example.kevin.fifastatistics.fragments;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
@@ -13,6 +12,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.activities.MainActivity;
@@ -22,11 +22,17 @@ import com.example.kevin.fifastatistics.models.user.User;
 import com.example.kevin.fifastatistics.managers.SharedPreferencesManager;
 import com.example.kevin.fifastatistics.network.FifaApiAdapter;
 import com.example.kevin.fifastatistics.views.adapters.FriendsRecyclerViewAdapter;
-import com.example.kevin.fifastatistics.views.adapters.SearchViewAdapter;
-import com.miguelcatalan.materialsearchview.MaterialSearchView;
+
+
+import com.example.kevin.fifastatistics.views.adapters.SearchAdapter;
+import com.lapism.searchview.adapter.SearchItem;
+import com.lapism.searchview.view.SearchCodes;
+import com.lapism.searchview.view.SearchView;
 
 import java.util.ArrayList;
+import java.util.List;
 
+import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -45,7 +51,8 @@ public class FriendsFragment extends Fragment {
     private static final int mColumnCount = 2;
     private static final String TAG = "Friends Fragment";
     private static final String REQUESTS = "Requests";
-    private static MaterialSearchView mSearchView;
+    private static SearchView mSearchView;
+    private SearchAdapter mSearchAdapter;
 
     private OnListFragmentInteractionListener mListener;
 
@@ -54,6 +61,8 @@ public class FriendsFragment extends Fragment {
     private ArrayList<Friend> friends;
     private User mUser;
     private View view = null;
+
+    private boolean searchItemIsReady = false;
 
     public FriendsFragment() {
     }
@@ -87,17 +96,24 @@ public class FriendsFragment extends Fragment {
                              Bundle savedInstanceState)
     {
         view = inflater.inflate(R.layout.fragment_friends_list, container, false);
-        mSearchView = (MaterialSearchView) getActivity().findViewById(R.id.search_view);
+        mSearchView = (SearchView) getActivity().findViewById(R.id.searchView);
 
         FifaApiAdapter.getService().getUsers()
                 .map(UserListResponse::getUsers)
+                .flatMap(this::initializeSearchView)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(this::initializeSearchView);
+                .subscribe(b -> setSearchAdapterAndInvalidateMenu());
 
         setAdapterDataSource();
 
         return view;
+    }
+
+    private void setSearchAdapterAndInvalidateMenu()
+    {
+        mSearchView.setAdapter(mSearchAdapter);
+        getActivity().invalidateOptionsMenu();
     }
 
     private void setAdapterDataSource()
@@ -143,7 +159,7 @@ public class FriendsFragment extends Fragment {
         super.onPause();
         if (mSearchView != null) {
             if (mSearchView.isSearchOpen()) {
-                mSearchView.closeSearch();
+                mSearchView.hide(false);
             }
         }
     }
@@ -155,16 +171,25 @@ public class FriendsFragment extends Fragment {
         inflater.inflate(R.menu.main, menu);
 
         MenuItem searchItem = menu.findItem(R.id.action_search);
-        searchItem.setVisible(true);
-        mSearchView.setMenuItem(searchItem);
+        searchItem.setVisible(searchItemIsReady);
+    }
 
-        menu.findItem(R.id.friend_requests).setVisible(false);
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        if (item.getItemId() == R.id.action_search) {
+            Log.i(TAG, "showing search view!!!!");
+            mSearchView.show(true);
+            return true;
+        } else {
+            return super.onOptionsItemSelected(item);
+        }
     }
 
     public static void closeSearchView()
     {
         if (mSearchView.isSearchOpen()) {
-            mSearchView.closeSearch();
+            mSearchView.hide(true);
         }
     }
 
@@ -172,47 +197,56 @@ public class FriendsFragment extends Fragment {
         void onListFragmentInteraction(Friend friend);
     }
 
-    // TODO do in background
-    private void initializeSearchView(ArrayList<User> users)
+    private Observable<Boolean> initializeSearchView(ArrayList<User> users)
     {
-        mSearchView.setAdapter(new SearchViewAdapter(getContext(), users));
-        mSearchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
+        mSearchView.setStyle(SearchCodes.STYLE_MENU_ITEM_CLASSIC);
+        mSearchView.setVersion(SearchCodes.VERSION_MENU_ITEM);
+        mSearchView.setTheme(SearchCodes.THEME_LIGHT);
+        mSearchView.setDivider(true);
+        mSearchView.setAnimationDuration(300);
+        mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener()
+        {
             @Override
-            public boolean onQueryTextSubmit(String query) {
-                if (friends == null) friends = new ArrayList<>();
-                mSearchView.closeSearch();
-
+            public boolean onQueryTextSubmit(String query)
+            {
+                mSearchView.hide(false);
                 return false;
             }
 
             @Override
-            public boolean onQueryTextChange(String newText) {
-                //Do some magic
+            public boolean onQueryTextChange(String newText)
+            {
                 return false;
             }
         });
-
-        Log.i(TAG, "Setting on search view listener####");
-        mSearchView.setOnSearchViewListener(new MaterialSearchView.SearchViewListener() {
+        mSearchView.setOnSearchViewListener(new SearchView.SearchViewListener()
+        {
             @Override
             public void onSearchViewShown() {
+                Log.i(TAG, "Showing search view");
                 MainActivity.lockNavigationDrawer();
-                MainActivity.hideTabs();
-                mSearchView.showSuggestions();
-                Log.i(TAG, "Showing Search View!");
             }
 
             @Override
             public void onSearchViewClosed() {
                 MainActivity.unlockNavigationDrawer();
-                MainActivity.showTabs();
-                Log.i(TAG, "Closing Search View!");
             }
         });
 
-        mSearchView.setVoiceSearch(false);
+        List<SearchItem> mResultsList = new ArrayList<>();
+        List<SearchItem> mSuggestionsList = new ArrayList<>();
+        mSearchAdapter = new SearchAdapter(getContext(), mResultsList, mSuggestionsList, SearchCodes.THEME_LIGHT, users);
+        mSearchAdapter.setOnItemClickListener((view, position) -> {
+                mSearchView.hide(false);
+                TextView textView = (TextView) view.findViewById(R.id
+                        .textView_item_text);
+            });
+
+        mSearchView.setVoice(false);
         mSearchView.setHint("Search Users");
-        mSearchView.setHintTextColor(Color.LTGRAY);
+        searchItemIsReady = true;
+
+        return Observable.just(true);
     }
 
 

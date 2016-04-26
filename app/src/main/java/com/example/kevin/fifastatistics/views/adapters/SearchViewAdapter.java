@@ -108,7 +108,7 @@ public class SearchViewAdapter extends BaseAdapter implements Filterable {
         SuggestionsViewHolder viewHolder;
 
         if (convertView == null) {
-            convertView = inflater.inflate(R.layout.suggest_item, parent, false);
+//            convertView = inflater.inflate(R.layout.suggest_item, parent, false);
             viewHolder = new SuggestionsViewHolder(convertView);
             convertView.setTag(viewHolder);
         } else {
@@ -141,8 +141,8 @@ public class SearchViewAdapter extends BaseAdapter implements Filterable {
         ImageView imageView;
 
         public SuggestionsViewHolder(View convertView) {
-            textView = (TextView) convertView.findViewById(R.id.suggestion_text);
-            imageView = (ImageView) convertView.findViewById(R.id.suggestion_icon);
+//            textView = (TextView) convertView.findViewById(R.id.suggestion_text);
+//            imageView = (ImageView) convertView.findViewById(R.id.suggestion_icon);
         }
     }
 }

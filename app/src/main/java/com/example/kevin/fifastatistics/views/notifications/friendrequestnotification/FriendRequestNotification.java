@@ -117,7 +117,7 @@ public class FriendRequestNotification extends FifaNotification
     private void addDeclineRequestAction(Resources resources)
     {
         notificationBuilder.addAction(
-                R.drawable.ic_action_navigation_close,
+                R.drawable.search_ic_clear_black_24dp,
                 resources.getString(R.string.notification_decline),
                 declineRequestPendingIntent);
     }

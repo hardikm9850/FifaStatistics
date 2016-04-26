@@ -55,7 +55,6 @@ dependencies {
     compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
 
     // API (HTTP, JSON)
-//    compile 'com.fasterxml.jackson.core:jackson-databind:2.1.1'
     compile 'com.squareup.okhttp3:okhttp:3.0.1'
     compile 'com.squareup.retrofit2:adapter-rxjava:2.0.1'
     compile 'com.squareup.retrofit2:converter-jackson:2.0.1'
@@ -64,7 +63,8 @@ dependencies {
     compile 'com.google.code.gson:gson:2.5'
 
     // Search
-    compile 'com.miguelcatalan:materialsearchview:1.4.0'
+//    compile 'com.miguelcatalan:materialsearchview:1.4.0'
+    compile 'com.lapism:searchview:2.2'
 
     // Navigation
     compile 'com.mikepenz:google-material-typeface:2.2.0.1.original@aar'
