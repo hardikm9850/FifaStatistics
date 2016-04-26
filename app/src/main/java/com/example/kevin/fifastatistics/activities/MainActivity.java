@@ -11,20 +11,17 @@ import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.fragments.FriendsFragment;
 import com.example.kevin.fifastatistics.managers.FragmentInitializationManager;
 import com.example.kevin.fifastatistics.managers.ImageLoaderManager;
-import com.example.kevin.fifastatistics.models.Constants;
 import com.example.kevin.fifastatistics.models.user.Friend;
 import com.example.kevin.fifastatistics.utils.factories.NavigationDrawerFactory;
 import com.example.kevin.fifastatistics.views.adapters.ViewPagerAdapter;
 import com.mikepenz.materialdrawer.Drawer;
 
-public class MainActivity
-        extends FifaActivity
+public class MainActivity extends FifaActivity
         implements FriendsFragment.OnListFragmentInteractionListener
 {
     public static final String PAGE_EXTRA = "page";
     public static final String FRAGMENT_EXTRA = "fragment";
 
-    private static final String TAG = "MainActivity";
     private static Toolbar mToolbar = null;
     private static Drawer mDrawer;
     private static ViewPagerAdapter mAdapter;
@@ -41,7 +38,7 @@ public class MainActivity
         initializeToolbar();
         initializeViewPager();
         initializeDrawer();
-        initializeAppropriateFragment();
+        FragmentInitializationManager.initializeAppropriateFragment(this);
     }
 
     private void initializeToolbar()
@@ -63,34 +60,6 @@ public class MainActivity
     private void initializeDrawer()
     {
         mDrawer = NavigationDrawerFactory.getDefaultDrawerInstance(this);
-    }
-
-
-    private void initializeAppropriateFragment()
-    {
-        String fragment = getFragmentExtra();
-        switch (fragment) {
-            case (Constants.FRIENDS_FRAGMENT):
-                FragmentInitializationManager.initializeFriendsFragment(this);
-                break;
-            case (Constants.OVERVIEW_FRAGMENT):
-                FragmentInitializationManager.initializeMainFragment(this);
-                break;
-            default:
-                throw new IllegalStateException(fragment + " is not a valid" +
-                        " fragment name!");
-        }
-    }
-
-    private String getFragmentExtra()
-    {
-        String fragment = getIntent().getStringExtra(FRAGMENT_EXTRA);
-        getIntent().removeExtra(FRAGMENT_EXTRA);
-        if (fragment == null) {
-            fragment = Constants.OVERVIEW_FRAGMENT;
-        }
-
-        return fragment;
     }
 
     @Override

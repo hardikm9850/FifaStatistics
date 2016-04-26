@@ -18,7 +18,6 @@ import com.example.kevin.fifastatistics.models.user.User;
 
 import com.example.kevin.fifastatistics.utils.BitmapUtils;
 import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.assist.ImageSize;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,22 +34,17 @@ public class SearchViewAdapter extends BaseAdapter implements Filterable {
     private ArrayList<User> suggestions;
     private LayoutInflater inflater;
     private boolean ellipsize;
+    private int resultSize;
 
     private boolean isFirstFilterRun = true;
 
     public SearchViewAdapter(Context context, ArrayList<User> suggestions) {
         inflater = LayoutInflater.from(context);
         data = suggestions;
+        ellipsize = true;
+        resultSize = suggestions.size();
         this.suggestions = suggestions;
     }
-
-    public SearchViewAdapter(Context context, ArrayList<User> suggestions, boolean ellipsize) {
-        inflater = LayoutInflater.from(context);
-        data = suggestions;
-        this.suggestions = suggestions;
-        this.ellipsize = ellipsize;
-    }
-
 
     @Override
     public Filter getFilter() {
@@ -83,7 +77,8 @@ public class SearchViewAdapter extends BaseAdapter implements Filterable {
 
             @Override
             protected void publishResults(CharSequence constraint, FilterResults results) {
-                if (results.values != null) {
+                if (results.values != null && results.count != resultSize) {
+                    resultSize = results.count;
                     data = (ArrayList<User>) results.values;
                     notifyDataSetChanged();
                 }
@@ -123,11 +118,13 @@ public class SearchViewAdapter extends BaseAdapter implements Filterable {
         User user = (User) getItem(position);
         Log.i("ADAPTER", user.getName());
 
-        Observable.just(imageLoader.loadImageSync(user.getImageUrl()))
+        Observable.just(user.getImageUrl())
+                .map(imageLoader::loadImageSync)
                 .map(BitmapUtils::getCircleBitmap)
+                .map(b -> Bitmap.createScaledBitmap(b, 160, 160, false))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(b -> setImageView(b, viewHolder.imageView));
+                .subscribe(viewHolder.imageView::setImageBitmap);
 
         viewHolder.textView.setText(user.getName());
         if (ellipsize) {
@@ -136,11 +133,6 @@ public class SearchViewAdapter extends BaseAdapter implements Filterable {
         }
 
         return convertView;
-    }
-
-    private void setImageView(Bitmap bitmap, ImageView imageView)
-    {
-        imageView.setImageBitmap(Bitmap.createScaledBitmap(bitmap, 160, 160, false));
     }
 
     private class SuggestionsViewHolder {

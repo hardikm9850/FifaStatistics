@@ -1,4 +1,4 @@
-package com.example.kevin.fifastatistics.network.gcmnotifications;
+package com.example.kevin.fifastatistics.views.notifications.friendrequestnotification;
 
 import android.app.Service;
 import android.content.Intent;
@@ -32,7 +32,7 @@ public class FriendRequestAcceptService extends Service
     private void acceptFriendRequest()
     {
         Log.i(TAG, "Accepting request");
-        SharedPreferencesManager preferencesManager = SharedPreferencesManager.getInstance(getApplicationContext());
+        SharedPreferencesManager preferencesManager = SharedPreferencesManager.getInstance(this);
         User user = preferencesManager.getUser();
         int size = user.getIncomingRequests().size();
         user.addFriend(user.getIncomingRequests().get(size - 1));

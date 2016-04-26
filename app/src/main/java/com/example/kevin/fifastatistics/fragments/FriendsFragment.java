@@ -21,8 +21,7 @@ import com.example.kevin.fifastatistics.models.user.Friend;
 import com.example.kevin.fifastatistics.models.user.User;
 import com.example.kevin.fifastatistics.managers.SharedPreferencesManager;
 import com.example.kevin.fifastatistics.network.FifaApiAdapter;
-import com.example.kevin.fifastatistics.views.adapters
-        .FriendsRecyclerViewAdapter;
+import com.example.kevin.fifastatistics.views.adapters.FriendsRecyclerViewAdapter;
 import com.example.kevin.fifastatistics.views.adapters.SearchViewAdapter;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
@@ -198,6 +197,7 @@ public class FriendsFragment extends Fragment {
             @Override
             public void onSearchViewShown() {
                 MainActivity.lockNavigationDrawer();
+                MainActivity.hideTabs();
                 mSearchView.showSuggestions();
                 Log.i(TAG, "Showing Search View!");
             }
@@ -205,6 +205,7 @@ public class FriendsFragment extends Fragment {
             @Override
             public void onSearchViewClosed() {
                 MainActivity.unlockNavigationDrawer();
+                MainActivity.showTabs();
                 Log.i(TAG, "Closing Search View!");
             }
         });

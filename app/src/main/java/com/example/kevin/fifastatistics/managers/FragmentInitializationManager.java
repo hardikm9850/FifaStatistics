@@ -14,6 +14,39 @@ import com.example.kevin.fifastatistics.views.adapters.ViewPagerAdapter;
 public class FragmentInitializationManager
 {
     private static final String PAGE_EXTRA = "page";
+    private static final String FRAGMENT_EXTRA = "fragment";
+
+    /**
+     * Initializes the appropriate fragment, based on the fragment extra passed
+     * to the activity. If the extra is null, then the Overview fragment is
+     * initialized.
+     */
+    public static void initializeAppropriateFragment(FifaActivity activity)
+    {
+        String fragment = getFragmentExtra(activity);
+        switch (fragment) {
+            case (Constants.FRIENDS_FRAGMENT):
+                initializeFriendsFragment(activity);
+                break;
+            case (Constants.OVERVIEW_FRAGMENT):
+                initializeMainFragment(activity);
+                break;
+            default:
+                throw new IllegalStateException(fragment + " is not a valid" +
+                        " fragment name!");
+        }
+    }
+
+    private static String getFragmentExtra(FifaActivity activity)
+    {
+        String fragment = activity.getIntent().getStringExtra(FRAGMENT_EXTRA);
+        activity.getIntent().removeExtra(FRAGMENT_EXTRA);
+        if (fragment == null) {
+            fragment = Constants.OVERVIEW_FRAGMENT;
+        }
+
+        return fragment;
+    }
 
     public static void initializeMainFragment(FifaActivity activity)
     {
@@ -58,5 +91,4 @@ public class FragmentInitializationManager
         activity.getIntent().removeExtra(PAGE_EXTRA);
         activity.getTabLayout().setVisibility(View.VISIBLE);
     }
-
 }

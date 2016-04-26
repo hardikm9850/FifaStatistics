@@ -59,6 +59,7 @@ public abstract class FifaNotification
     }
 
     public abstract void performPreSendActions();
+
     protected abstract void setContentText(Bundle notification);
     protected abstract void setContentIntent();
 }

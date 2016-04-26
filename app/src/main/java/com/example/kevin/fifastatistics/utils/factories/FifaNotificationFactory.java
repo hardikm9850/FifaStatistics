@@ -5,7 +5,8 @@ import android.os.Bundle;
 
 import com.example.kevin.fifastatistics.models.Constants;
 import com.example.kevin.fifastatistics.views.notifications.FifaNotification;
-import com.example.kevin.fifastatistics.views.notifications.FriendRequestNotification;
+import com.example.kevin.fifastatistics.views.notifications.NullNotification;
+import com.example.kevin.fifastatistics.views.notifications.friendrequestnotification.FriendRequestNotification;
 
 public class FifaNotificationFactory
 {
@@ -22,7 +23,7 @@ public class FifaNotificationFactory
             case Constants.FRIEND_REQUEST_TAG :
                 return new FriendRequestNotification(context, bundle);
             default :
-                return new FriendRequestNotification(context, bundle);
+                return new NullNotification(context, bundle);
         }
     }
 

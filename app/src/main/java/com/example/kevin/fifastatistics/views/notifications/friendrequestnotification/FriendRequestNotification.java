@@ -1,4 +1,4 @@
-package com.example.kevin.fifastatistics.views.notifications;
+package com.example.kevin.fifastatistics.views.notifications.friendrequestnotification;
 
 import android.app.PendingIntent;
 import android.content.Context;
@@ -13,8 +13,9 @@ import com.example.kevin.fifastatistics.managers.SharedPreferencesManager;
 import com.example.kevin.fifastatistics.models.Constants;
 import com.example.kevin.fifastatistics.models.user.Friend;
 import com.example.kevin.fifastatistics.models.user.User;
-import com.example.kevin.fifastatistics.network.gcmnotifications.FriendRequestAcceptService;
-import com.example.kevin.fifastatistics.network.gcmnotifications.FriendRequestDeclineService;
+
+
+import com.example.kevin.fifastatistics.views.notifications.FifaNotification;
 
 public class FriendRequestNotification extends FifaNotification
 {

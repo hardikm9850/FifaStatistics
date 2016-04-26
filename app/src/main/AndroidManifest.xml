@@ -74,11 +74,11 @@
             android:name=".network.gcmnotifications.RegistrationIntentService"
             android:exported="false" />
         <service
-            android:name=".network.gcmnotifications.FriendRequestAcceptService"
+            android:name=".views.notifications.friendrequestnotification.FriendRequestAcceptService"
             android:enabled="true"
             android:exported="true" />
         <service
-            android:name=".network.gcmnotifications.FriendRequestDeclineService"
+            android:name=".views.notifications.friendrequestnotification.FriendRequestDeclineService"
             android:enabled="true"
             android:exported="true"> </service>
     </application>
