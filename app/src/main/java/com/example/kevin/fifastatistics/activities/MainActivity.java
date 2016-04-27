@@ -3,9 +3,7 @@ package com.example.kevin.fifastatistics.activities;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
-import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
 
 import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.fragments.FriendsFragment;
@@ -69,26 +67,15 @@ public class MainActivity extends FifaActivity
 
     @Override
     public void onBackPressed() {
-        FriendsFragment.closeSearchView();
+        if (FriendsFragment.isSearchOpen()) {
+            FriendsFragment.closeSearchView();
+            return;
+        }
         super.onBackPressed();
     }
 
-    public static void lockNavigationDrawer() {
-        mDrawer.getDrawerLayout().setDrawerLockMode(DrawerLayout
-                .LOCK_MODE_LOCKED_CLOSED);
-    }
-
-    public static void unlockNavigationDrawer() {
-        mDrawer.getDrawerLayout().setDrawerLockMode(DrawerLayout
-                .LOCK_MODE_UNLOCKED);
-    }
-
-    public static void hideTabs() {
-        mTabLayout.setVisibility(View.GONE);
-    }
-
-    public static void showTabs() {
-        mTabLayout.setVisibility(View.VISIBLE);
+    public Drawer getDrawer() {
+        return mDrawer;
     }
 
     public Toolbar getToolbar() {

@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Filter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.kevin.fifastatistics.models.user.User;
@@ -107,6 +108,7 @@ public class SearchAdapter extends com.lapism.searchview.adapter.SearchAdapter
         int start = mStartList.get(position);
         int end = start + mKeyLength;
 
+        viewHolder.icon_left.setScaleType(ImageView.ScaleType.CENTER_CROP);
         mImageLoader.displayImage(user.getImageUrl(), viewHolder.icon_left);
 
         if (mTheme == SearchCodes.THEME_LIGHT) {

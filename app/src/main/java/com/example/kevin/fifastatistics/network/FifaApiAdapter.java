@@ -15,7 +15,7 @@ import retrofit2.converter.jackson.JacksonConverterFactory;
  */
 public class FifaApiAdapter
 {
-    private static final int CONNECT_TIMEOUT_DURATION = 30;
+    private static final int CONNECT_TIMEOUT_DURATION = 45;
 
     private static FifaApi api;
     private static HttpLoggingInterceptor loggingInterceptor;

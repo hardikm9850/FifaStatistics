@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
 import com.example.kevin.fifastatistics.views.adapters.ViewPagerAdapter;
+import com.mikepenz.materialdrawer.Drawer;
 
 public abstract class FifaActivity extends AppCompatActivity
 {
@@ -13,4 +14,5 @@ public abstract class FifaActivity extends AppCompatActivity
     public abstract ViewPagerAdapter getViewPagerAdapter();
     public abstract ViewPager getViewPager();
     public abstract TabLayout getTabLayout();
+    public abstract Drawer getDrawer();
 }
