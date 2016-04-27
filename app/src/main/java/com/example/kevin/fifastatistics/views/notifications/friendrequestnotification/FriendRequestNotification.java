@@ -19,6 +19,7 @@ import com.example.kevin.fifastatistics.views.notifications.FifaNotification;
 
 public class FriendRequestNotification extends FifaNotification
 {
+    public static final int NOTIFICATION_ID = 0;
     private PendingIntent contentIntent;
     private PendingIntent acceptRequestPendingIntent;
     private PendingIntent declineRequestPendingIntent;
@@ -28,7 +29,7 @@ public class FriendRequestNotification extends FifaNotification
     public FriendRequestNotification(Context c, Bundle notification)
     {
         super(c, notification);
-
+        notificationId = NOTIFICATION_ID;
         notificationData = notification;
         context = c;
         initializeContentIntent();
@@ -46,7 +47,7 @@ public class FriendRequestNotification extends FifaNotification
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
         contentIntent = PendingIntent.getActivity(
-                context, NOTIFICATION_ID, intent, PendingIntent.FLAG_ONE_SHOT);
+                context, notificationId, intent, PendingIntent.FLAG_ONE_SHOT);
     }
 
     private void initializeAcceptRequestPendingIntent()
@@ -55,7 +56,7 @@ public class FriendRequestNotification extends FifaNotification
                 context, FriendRequestAcceptService.class);
 
         acceptRequestPendingIntent = PendingIntent.getService(
-                context, NOTIFICATION_ID, acceptRequestIntent,
+                context, notificationId, acceptRequestIntent,
                 PendingIntent.FLAG_ONE_SHOT);
     }
 
@@ -65,7 +66,7 @@ public class FriendRequestNotification extends FifaNotification
                 context, FriendRequestDeclineService.class);
 
         declineRequestPendingIntent = PendingIntent.getService(
-                context, NOTIFICATION_ID, declineRequestIntent,
+                context, notificationId, declineRequestIntent,
                 PendingIntent.FLAG_ONE_SHOT);
     }
 
@@ -109,7 +110,7 @@ public class FriendRequestNotification extends FifaNotification
     private void addAcceptRequestAction(Resources resources)
     {
         notificationBuilder.addAction(
-                R.drawable.ic_menu_share,
+                R.drawable.ic_check_black_24dp,
                 resources.getString(R.string.notification_accept),
                 acceptRequestPendingIntent);
     }
@@ -117,7 +118,7 @@ public class FriendRequestNotification extends FifaNotification
     private void addDeclineRequestAction(Resources resources)
     {
         notificationBuilder.addAction(
-                R.drawable.search_ic_clear_black_24dp,
+                R.drawable.ic_close_black_24dp,
                 resources.getString(R.string.notification_decline),
                 declineRequestPendingIntent);
     }

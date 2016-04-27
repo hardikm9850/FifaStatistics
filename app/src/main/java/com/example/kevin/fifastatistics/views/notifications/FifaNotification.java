@@ -22,9 +22,8 @@ public abstract class FifaNotification
     private static final int SMALL_ICON = R.mipmap.ic_launcher;
     private Context context;
 
-    protected static final int NOTIFICATION_ID = 0;
-
     protected NotificationCompat.Builder notificationBuilder;
+    protected int notificationId;
 
     public FifaNotification(Context c, Bundle notification)
     {
@@ -41,10 +40,11 @@ public abstract class FifaNotification
 
     private void buildAbstractNotification(Bitmap userIcon)
     {
-        notificationBuilder = new NotificationCompat.Builder(context)
+        notificationBuilder = FifaNotificationBuilder.getInstance(context)
                 .setSmallIcon(SMALL_ICON)
                 .setLargeIcon(userIcon)
                 .setContentTitle(CONTENT_TITLE)
+                .setOnlyAlertOnce(true)
                 .setAutoCancel(true)
                 .setSound(SOUND_URI)
                 .setPriority(Notification.PRIORITY_HIGH);
@@ -55,7 +55,7 @@ public abstract class FifaNotification
         NotificationManager nm = (NotificationManager) context.getSystemService(
                 Context.NOTIFICATION_SERVICE);
 
-        nm.notify(NOTIFICATION_ID, notificationBuilder.build());
+        nm.notify(notificationId, notificationBuilder.build());
     }
 
     public abstract void performPreSendActions();

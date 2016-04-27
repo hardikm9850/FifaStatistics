@@ -64,19 +64,6 @@ public class FriendsRecyclerViewAdapter
         }
     }
 
-    public void replaceData(ArrayList<Friend> friends)
-    {
-        if (mUsers != null) {
-            mUsers.clear();
-            mUsers.addAll(friends);
-        }
-        else {
-            mUsers = friends;
-        }
-
-        notifyDataSetChanged();
-    }
-
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
         public final TextView mNameView;

@@ -6,6 +6,7 @@ import com.example.kevin.fifastatistics.models.user.User;
 import retrofit2.Response;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.PATCH;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
@@ -90,6 +91,9 @@ public interface FifaApi
      */
     @GET
     Observable<User> lookupUser(@Url String url);
+
+    @PATCH("users/{id}")
+    Observable<User> patchUser(@Path("id") @Body String body);
 
 //    @POST
 //    @Headers("key: " + Constants.NOTIFICATION_KEY)

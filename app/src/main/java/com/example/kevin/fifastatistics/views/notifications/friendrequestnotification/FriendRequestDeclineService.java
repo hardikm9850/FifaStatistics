@@ -1,16 +1,22 @@
 package com.example.kevin.fifastatistics.views.notifications.friendrequestnotification;
 
+import android.app.NotificationManager;
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import com.example.kevin.fifastatistics.managers.SharedPreferencesManager;
 import com.example.kevin.fifastatistics.models.user.User;
+import com.example.kevin.fifastatistics.views.notifications
+        .FifaNotificationBuilder;
 
 public class FriendRequestDeclineService extends Service
 {
     private static final String TAG = "RequestDecline";
+    private static final long DELAY_AFTER_DECLINE_UNTIL_CANCEL_MS = 1300;
 
     public FriendRequestDeclineService()
     {
@@ -26,6 +32,7 @@ public class FriendRequestDeclineService extends Service
     public int onStartCommand(Intent intent, int flags, int startId)
     {
         declineFriendRequest();
+        updateAndClearNotification();
         return START_STICKY;
     }
 
@@ -37,5 +44,33 @@ public class FriendRequestDeclineService extends Service
         int size = user.getIncomingRequests().size();
         user.getIncomingRequests().remove(size - 1);
         preferencesManager.storeUser(user);
+    }
+
+    private void updateAndClearNotification()
+    {
+        NotificationManager nm = (NotificationManager) getSystemService(
+            Context.NOTIFICATION_SERVICE);
+
+        updateNotification(nm);
+        waitForCancelDelay();
+        nm.cancel(FriendRequestNotification.NOTIFICATION_ID);
+    }
+
+    private void updateNotification(NotificationManager nm)
+    {
+        NotificationCompat.Builder nb = FifaNotificationBuilder.getInstance(this)
+                .setContentText("Friend request declined");
+
+        nb.mActions.clear();
+        nm.notify(FriendRequestNotification.NOTIFICATION_ID, nb.build());
+    }
+
+    private void waitForCancelDelay()
+    {
+        try {
+            Thread.sleep(DELAY_AFTER_DECLINE_UNTIL_CANCEL_MS);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 }

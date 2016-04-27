@@ -216,7 +216,7 @@ public class NavigationDrawerFactory
         previousDrawerPosition = position;
 
         if (position == 1) {
-            FragmentInitializationManager.initializeMainFragment(activity);
+            FragmentInitializationManager.initializeOverviewFragment(activity);
         }
         else if (position == 3) {
             FragmentInitializationManager.initializeFriendsFragment(activity);

@@ -25,11 +25,13 @@ public class FragmentInitializationManager
     {
         String fragment = getFragmentExtra(activity);
         switch (fragment) {
+            case (Constants.OVERVIEW_FRAGMENT):
+                initializeOverviewFragment(activity);
+                activity.getDrawer().setStickyFooterSelectionAtPosition(0, false);
+                break;
             case (Constants.FRIENDS_FRAGMENT):
                 initializeFriendsFragment(activity);
-                break;
-            case (Constants.OVERVIEW_FRAGMENT):
-                initializeMainFragment(activity);
+                activity.getDrawer().setStickyFooterSelectionAtPosition(2, false);
                 break;
             default:
                 throw new IllegalStateException(fragment + " is not a valid" +
@@ -48,13 +50,13 @@ public class FragmentInitializationManager
         return fragment;
     }
 
-    public static void initializeMainFragment(FifaActivity activity)
+    public static void initializeOverviewFragment(FifaActivity activity)
     {
         activity.getToolbar().setTitle(Constants.OVERVIEW_FRAGMENT);
-        setMainFragmentTabState(activity);
+        setOverviewFragmentTabState(activity);
     }
 
-    private static void setMainFragmentTabState(FifaActivity activity)
+    private static void setOverviewFragmentTabState(FifaActivity activity)
     {
         activity.getViewPagerAdapter().clear();
         activity.getViewPagerAdapter().addFragment(new OverviewFragment(),
