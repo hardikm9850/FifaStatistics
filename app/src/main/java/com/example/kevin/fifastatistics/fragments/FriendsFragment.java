@@ -12,6 +12,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.models.apiresponses.UserListResponse;
@@ -20,6 +21,7 @@ import com.example.kevin.fifastatistics.models.user.User;
 import com.example.kevin.fifastatistics.managers.SharedPreferencesManager;
 import com.example.kevin.fifastatistics.network.FifaApiAdapter;
 import com.example.kevin.fifastatistics.utils.factories.SearchViewFactory;
+import com.example.kevin.fifastatistics.views.GridRecyclerView;
 import com.example.kevin.fifastatistics.views.adapters.FriendsRecyclerViewAdapter;
 import com.example.kevin.fifastatistics.views.adapters.SearchAdapter;
 
@@ -198,8 +200,8 @@ public class FriendsFragment extends Fragment {
 
     private void setAdapter(ArrayList<Friend> friends)
     {
-        if (view instanceof RecyclerView) {
-            RecyclerView recyclerView = (RecyclerView) view;
+        if (view instanceof GridRecyclerView) {
+            GridRecyclerView recyclerView = (GridRecyclerView) view;
             FriendsRecyclerViewAdapter adapter =
                     new FriendsRecyclerViewAdapter(friends, mListener);
 

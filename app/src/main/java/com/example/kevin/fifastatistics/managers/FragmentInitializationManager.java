@@ -30,6 +30,7 @@ public class FragmentInitializationManager
                 activity.getDrawer().setStickyFooterSelectionAtPosition(0, false);
                 break;
             case (Constants.FRIENDS_FRAGMENT):
+                activity.getDrawer().closeDrawer();
                 initializeFriendsFragment(activity);
                 activity.getDrawer().setStickyFooterSelectionAtPosition(2, false);
                 break;

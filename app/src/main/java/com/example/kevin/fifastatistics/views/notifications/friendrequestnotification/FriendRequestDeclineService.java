@@ -10,8 +10,7 @@ import android.util.Log;
 
 import com.example.kevin.fifastatistics.managers.SharedPreferencesManager;
 import com.example.kevin.fifastatistics.models.user.User;
-import com.example.kevin.fifastatistics.views.notifications
-        .FifaNotificationBuilder;
+import com.example.kevin.fifastatistics.views.notifications.GlobalNotificationBuilder;
 
 public class FriendRequestDeclineService extends Service
 {
@@ -58,7 +57,7 @@ public class FriendRequestDeclineService extends Service
 
     private void updateNotification(NotificationManager nm)
     {
-        NotificationCompat.Builder nb = FifaNotificationBuilder.getInstance(this)
+        NotificationCompat.Builder nb = GlobalNotificationBuilder.getInstance(this)
                 .setContentText("Friend request declined");
 
         nb.mActions.clear();

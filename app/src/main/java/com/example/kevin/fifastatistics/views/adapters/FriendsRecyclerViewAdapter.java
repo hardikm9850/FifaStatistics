@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.kevin.fifastatistics.R;
+import com.example.kevin.fifastatistics.fragments.FriendsFragment;
 import com.example.kevin.fifastatistics.fragments.FriendsFragment.OnListFragmentInteractionListener;
 import com.example.kevin.fifastatistics.models.user.Friend;
 
@@ -46,7 +47,8 @@ public class FriendsRecyclerViewAdapter
         holder.mNameView.setText(mUsers.get(position).getName());
 
         ImageLoader imageLoader = ImageLoader.getInstance();
-        imageLoader.displayImage(mUsers.get(position).getImageUrl(), holder.mImageView);
+        imageLoader.displayImage(mUsers.get(position).getImageUrl(), holder
+                .mImageView);
         holder.mView.setOnClickListener(view -> {
                 if (mListener != null) {
                     mListener.onListFragmentInteraction(holder.mItem);

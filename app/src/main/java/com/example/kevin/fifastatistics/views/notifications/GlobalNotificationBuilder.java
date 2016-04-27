@@ -6,7 +6,7 @@ import android.support.v4.app.NotificationCompat;
 /**
  * Provides a single instance of a notification builder.
  */
-public class FifaNotificationBuilder
+public class GlobalNotificationBuilder
 {
     private static NotificationCompat.Builder builder;
 

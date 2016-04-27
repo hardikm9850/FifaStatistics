@@ -13,26 +13,22 @@ public class NullNotification extends FifaNotification
     }
 
     @Override
-    public void performPreSendActions()
-    {
+    public void performPreSendActions() {
         // do nothing
     }
 
     @Override
-    public void send()
-    {
+    public void send() {
         // do nothing
     }
 
     @Override
-    protected void setContentText(Bundle notification)
-    {
+    protected void setContentText(Bundle notification) {
         // do nothing
     }
 
     @Override
-    protected void setContentIntent()
-    {
+    protected void setContentIntent() {
         // do nothing
     }
 }

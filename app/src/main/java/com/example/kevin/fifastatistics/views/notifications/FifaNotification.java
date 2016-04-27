@@ -22,13 +22,14 @@ public abstract class FifaNotification
     private static final int SMALL_ICON = R.mipmap.ic_launcher;
     private Context context;
 
+    protected static int notificationId;
     protected NotificationCompat.Builder notificationBuilder;
-    protected int notificationId;
 
     public FifaNotification(Context c, Bundle notification)
     {
         context = c;
-        Bitmap userIcon = BitmapUtils.getCircleBitmap(getUserBitmap(notification));
+        Bitmap userIcon = BitmapUtils.getCircleBitmap(getUserBitmap
+                (notification));
         buildAbstractNotification(userIcon);
     }
 
@@ -40,7 +41,7 @@ public abstract class FifaNotification
 
     private void buildAbstractNotification(Bitmap userIcon)
     {
-        notificationBuilder = FifaNotificationBuilder.getInstance(context)
+        notificationBuilder = GlobalNotificationBuilder.getInstance(context)
                 .setSmallIcon(SMALL_ICON)
                 .setLargeIcon(userIcon)
                 .setContentTitle(CONTENT_TITLE)
