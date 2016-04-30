@@ -16,7 +16,7 @@ import com.example.kevin.fifastatistics.R;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class OverviewFragment extends Fragment {
+public class OverviewFragment extends Fragment implements FifaFragment{
 
 
     public OverviewFragment() {
@@ -47,5 +47,8 @@ public class OverviewFragment extends Fragment {
         menu.findItem(R.id.action_search).setVisible(false);
     }
 
-
+    @Override
+    public boolean handleBackPress() {
+        return false;
+    }
 }

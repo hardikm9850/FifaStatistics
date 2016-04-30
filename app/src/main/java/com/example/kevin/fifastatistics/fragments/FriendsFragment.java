@@ -4,7 +4,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -12,7 +11,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
 
 import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.models.apiresponses.UserListResponse;
@@ -39,7 +37,7 @@ import rx.schedulers.Schedulers;
  * Activities containing this fragment MUST implement the {@link OnListFragmentInteractionListener}
  * interface.
  */
-public class FriendsFragment extends Fragment {
+public class FriendsFragment extends Fragment implements FifaFragment{
 
     public static final String viewArgument = "view";
     public static final int friendsView = 0;
@@ -48,8 +46,8 @@ public class FriendsFragment extends Fragment {
     private static final String TAG = "Friends Fragment";
     private static final int mColumnCount = 2;
 
-    private static SearchView mSearchView;
-    private static SearchAdapter mSearchAdapter;
+    private SearchView mSearchView;
+    private SearchAdapter mSearchAdapter;
 
     private OnListFragmentInteractionListener mListener;
     private User mUser;
@@ -184,14 +182,15 @@ public class FriendsFragment extends Fragment {
         }
     }
 
-    public static boolean isSearchOpen()
+    @Override
+    public boolean handleBackPress()
     {
-        return mSearchView.isSearchOpen();
-    }
-
-    public static void closeSearchView()
-    {
-        mSearchView.hide(true);
+        if (mSearchView != null && mSearchView.isSearchOpen()) {
+            mSearchView.hide(true);
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public interface OnListFragmentInteractionListener {

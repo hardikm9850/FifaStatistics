@@ -3,6 +3,7 @@ package com.example.kevin.fifastatistics.managers;
 import android.view.View;
 
 import com.example.kevin.fifastatistics.activities.FifaActivity;
+import com.example.kevin.fifastatistics.fragments.FifaFragment;
 import com.example.kevin.fifastatistics.fragments.OverviewFragment;
 import com.example.kevin.fifastatistics.fragments.FriendsFragment;
 import com.example.kevin.fifastatistics.models.Constants;
@@ -27,12 +28,10 @@ public class FragmentInitializationManager
         switch (fragment) {
             case (Constants.OVERVIEW_FRAGMENT):
                 initializeOverviewFragment(activity);
-                activity.getDrawer().setStickyFooterSelectionAtPosition(0, false);
                 break;
             case (Constants.FRIENDS_FRAGMENT):
                 activity.getDrawer().closeDrawer();
                 initializeFriendsFragment(activity);
-                activity.getDrawer().setStickyFooterSelectionAtPosition(2, false);
                 break;
             default:
                 throw new IllegalStateException(fragment + " is not a valid" +
@@ -59,11 +58,14 @@ public class FragmentInitializationManager
 
     private static void setOverviewFragmentTabState(FifaActivity activity)
     {
+        OverviewFragment overviewFragment = new OverviewFragment();
         activity.getViewPagerAdapter().clear();
-        activity.getViewPagerAdapter().addFragment(new OverviewFragment(),
+        activity.getViewPagerAdapter().addFragment(overviewFragment,
                 Constants.OVERVIEW_FRAGMENT);
         activity.getViewPagerAdapter().notifyDataSetChanged();
         activity.getTabLayout().setVisibility(View.GONE);
+
+        activity.setCurrentFragment(overviewFragment);
     }
 
     public static void initializeFriendsFragment(FifaActivity activity)
@@ -88,10 +90,13 @@ public class FragmentInitializationManager
 
     private static void setFriendsFragmentTabState(FifaActivity activity)
     {
-        activity.getViewPager().setCurrentItem(
-                activity.getIntent().getIntExtra(PAGE_EXTRA, 0));
+        int currentPage = activity.getIntent().getIntExtra(PAGE_EXTRA, 0);
+        activity.getViewPager().setCurrentItem(currentPage);
 
         activity.getIntent().removeExtra(PAGE_EXTRA);
         activity.getTabLayout().setVisibility(View.VISIBLE);
+
+        activity.setCurrentFragment(
+                (FifaFragment) activity.getViewPagerAdapter().getItem(currentPage));
     }
 }

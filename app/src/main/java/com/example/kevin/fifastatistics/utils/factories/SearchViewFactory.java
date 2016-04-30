@@ -1,5 +1,6 @@
 package com.example.kevin.fifastatistics.utils.factories;
 
+
 import android.content.Context;
 import android.support.v4.widget.DrawerLayout;
 import android.widget.TextView;
