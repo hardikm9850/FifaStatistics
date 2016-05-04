@@ -18,7 +18,7 @@ import com.example.kevin.fifastatistics.models.user.Friend;
 import com.example.kevin.fifastatistics.models.user.User;
 import com.example.kevin.fifastatistics.managers.SharedPreferencesManager;
 import com.example.kevin.fifastatistics.network.FifaApiAdapter;
-import com.example.kevin.fifastatistics.utils.factories.SearchViewFactory;
+import com.example.kevin.fifastatistics.utils.externalfactories.SearchViewFactory;
 import com.example.kevin.fifastatistics.views.GridRecyclerView;
 import com.example.kevin.fifastatistics.views.adapters.FriendsRecyclerViewAdapter;
 import com.example.kevin.fifastatistics.views.adapters.SearchAdapter;

@@ -3,7 +3,7 @@ package com.example.kevin.fifastatistics.network.gcmnotifications;
 import android.os.Bundle;
 
 import com.example.kevin.fifastatistics.managers.ImageLoaderManager;
-import com.example.kevin.fifastatistics.utils.factories.FifaNotificationFactory;
+import com.example.kevin.fifastatistics.views.notifications.FifaNotificationFactory;
 import com.example.kevin.fifastatistics.views.notifications.FifaNotification;
 import com.google.android.gms.gcm.GcmListenerService;
 
@@ -20,7 +20,7 @@ public class MyGcmListenerService extends GcmListenerService {
     {
         FifaNotification n = FifaNotificationFactory.createNotification(this, bundle);
         n.performPreSendActions();
-        n.send();
+        n.finalizeAndSend();
     }
 
 }

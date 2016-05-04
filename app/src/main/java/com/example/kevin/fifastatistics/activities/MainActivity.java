@@ -12,7 +12,7 @@ import com.example.kevin.fifastatistics.fragments.FriendsFragment;
 import com.example.kevin.fifastatistics.managers.FragmentInitializationManager;
 import com.example.kevin.fifastatistics.managers.ImageLoaderManager;
 import com.example.kevin.fifastatistics.models.user.Friend;
-import com.example.kevin.fifastatistics.utils.factories.NavigationDrawerFactory;
+import com.example.kevin.fifastatistics.utils.externalfactories.NavigationDrawerFactory;
 import com.example.kevin.fifastatistics.views.adapters.ViewPagerAdapter;
 import com.mikepenz.materialdrawer.Drawer;
 
@@ -94,11 +94,6 @@ public class MainActivity extends FifaActivity
     }
 
     @Override
-    public Toolbar getToolbar() {
-        return mToolbar;
-    }
-
-    @Override
     public ViewPagerAdapter getViewPagerAdapter() {
         return mAdapter;
     }
@@ -106,6 +101,11 @@ public class MainActivity extends FifaActivity
     @Override
     public ViewPager getViewPager() {
         return mViewPager;
+    }
+
+    @Override
+    public Toolbar getToolbar() {
+        return mToolbar;
     }
 
     @Override

@@ -1,4 +1,4 @@
-package com.example.kevin.fifastatistics.utils.factories;
+package com.example.kevin.fifastatistics.utils.externalfactories;
 
 
 import android.content.Context;
@@ -19,7 +19,7 @@ import java.util.Collections;
 public class SearchViewFactory
 {
     private static final int THEME_TYPE = SearchCodes.THEME_LIGHT;
-    private static final int ANIMATION_DURATION = 300;
+    private static final int ANIMATION_DURATION = 240;
     private static SearchView mSearchView;
     private static Context mContext;
 

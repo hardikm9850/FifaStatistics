@@ -35,7 +35,7 @@ public class FriendRequestAcceptService extends Service
         cancelNotification();
         startActivity();
 
-        return START_STICKY;
+        return START_NOT_STICKY;
     }
 
     private void acceptFriendRequest()

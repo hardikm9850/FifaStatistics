@@ -1,4 +1,4 @@
-package com.example.kevin.fifastatistics.utils.factories;
+package com.example.kevin.fifastatistics.utils.externalfactories;
 
 import android.graphics.drawable.Drawable;
 import android.net.Uri;

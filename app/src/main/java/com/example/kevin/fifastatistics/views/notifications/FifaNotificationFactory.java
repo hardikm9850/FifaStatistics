@@ -1,11 +1,9 @@
-package com.example.kevin.fifastatistics.utils.factories;
+package com.example.kevin.fifastatistics.views.notifications;
 
 import android.content.Context;
 import android.os.Bundle;
 
 import com.example.kevin.fifastatistics.models.Constants;
-import com.example.kevin.fifastatistics.views.notifications.FifaNotification;
-import com.example.kevin.fifastatistics.views.notifications.NullNotification;
 import com.example.kevin.fifastatistics.views.notifications.friendrequestnotification.FriendRequestNotification;
 
 public class FifaNotificationFactory
@@ -31,8 +29,7 @@ public class FifaNotificationFactory
     {
         try {
             return data.getString("tag");
-        }
-        catch (NullPointerException e) {
+        } catch (NullPointerException e) {
             return DEFAULT_TAG;
         }
     }

@@ -20,27 +20,30 @@ public abstract class FifaNotification
     private static final String CONTENT_TITLE = APP_NAME;
     private static final Uri SOUND_URI = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
     private static final int SMALL_ICON = R.mipmap.ic_launcher;
+
     private Context context;
+    private Bundle notification;
 
     protected static int notificationId;
     protected NotificationCompat.Builder notificationBuilder;
 
-    public FifaNotification(Context c, Bundle notification)
+    public FifaNotification(Context context, Bundle notification)
     {
-        context = c;
-        Bitmap userIcon = BitmapUtils.getCircleBitmap(getUserBitmap
-                (notification));
-        buildAbstractNotification(userIcon);
+        this.context = context;
+        this.notification = notification;
+        buildAbstractNotification();
     }
 
-    private Bitmap getUserBitmap(Bundle notification)
+    private Bitmap getUserBitmap()
     {
         ImageLoader imageLoader = ImageLoader.getInstance();
         return imageLoader.loadImageSync(notification.getString("imageUrl"));
     }
 
-    private void buildAbstractNotification(Bitmap userIcon)
+    private void buildAbstractNotification()
     {
+        Bitmap userIcon = BitmapUtils.getCircleBitmap(getUserBitmap());
+
         notificationBuilder = GlobalNotificationBuilder.getInstance(context)
                 .setSmallIcon(SMALL_ICON)
                 .setLargeIcon(userIcon)
@@ -51,8 +54,11 @@ public abstract class FifaNotification
                 .setPriority(Notification.PRIORITY_HIGH);
     }
 
-    public void send()
+    public final void finalizeAndSend()
     {
+        setContentText(notification);
+        setContentIntent();
+
         NotificationManager nm = (NotificationManager) context.getSystemService(
                 Context.NOTIFICATION_SERVICE);
 

@@ -32,7 +32,8 @@ public class FriendRequestDeclineService extends Service
     {
         declineFriendRequest();
         updateAndClearNotification();
-        return START_STICKY;
+
+        return START_NOT_STICKY;
     }
 
     private void declineFriendRequest()
