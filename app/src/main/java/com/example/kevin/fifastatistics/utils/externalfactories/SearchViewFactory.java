@@ -9,7 +9,7 @@ import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.activities.FifaActivity;
 import com.example.kevin.fifastatistics.fragments.FriendsFragment;
 import com.example.kevin.fifastatistics.models.user.User;
-import com.example.kevin.fifastatistics.views.adapters.SearchAdapter;
+import com.example.kevin.fifastatistics.views.adapters.SearchViewAdapter;
 import com.lapism.searchview.view.SearchCodes;
 import com.lapism.searchview.view.SearchView;
 
@@ -85,7 +85,7 @@ public class SearchViewFactory
     private static void initializeAdapter(FriendsFragment fragment,
                                           ArrayList<User> users)
     {
-        SearchAdapter adapter = new SearchAdapter(mContext, Collections.emptyList(),
+        SearchViewAdapter adapter = new SearchViewAdapter(mContext, Collections.emptyList(),
                 Collections.emptyList(), THEME_TYPE, users);
 
         adapter.setOnItemClickListener((view, position) -> {

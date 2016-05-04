@@ -19,7 +19,7 @@ public class OverviewFragmentInitializer extends FragmentInitializer
     }
 
     @Override
-    public void setToolbarTitle()
+    public void setActivityTitle()
     {
         activity.setTitle(Constants.OVERVIEW_FRAGMENT);
     }
@@ -36,7 +36,7 @@ public class OverviewFragmentInitializer extends FragmentInitializer
     }
 
     @Override
-    public void initializeTabLayout()
+    public void prepareTabLayout()
     {
         activity.getTabLayout().setVisibility(View.GONE);
     }

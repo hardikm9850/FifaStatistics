@@ -12,9 +12,9 @@ public abstract class FragmentInitializer
      * etc. for the fragment that will be displayed.
      */
     public final void beginInitialization() {
-        setToolbarTitle();
+        setActivityTitle();
         initializeViewPagerFragments();
-        initializeTabLayout();
+        prepareTabLayout();
         setCurrentFragmentForActivity();
     }
 
@@ -22,7 +22,7 @@ public abstract class FragmentInitializer
      * Set the title of the activity's toolbar to what is appropriate for the
      * specified fragment.
      */
-    protected abstract void setToolbarTitle();
+    protected abstract void setActivityTitle();
 
     /**
      * Initialize the fragments that will be present in the activity's ViewPager,
@@ -34,7 +34,7 @@ public abstract class FragmentInitializer
      * Set the state of the Tab Layout (The starting page, whether it's visible,
      * etc.)
      */
-    protected abstract void initializeTabLayout();
+    protected abstract void prepareTabLayout();
 
     /**
      * Sets the reference to the currently displayed fragment in the given

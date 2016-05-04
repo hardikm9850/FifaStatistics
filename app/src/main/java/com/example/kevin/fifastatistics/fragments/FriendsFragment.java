@@ -21,7 +21,7 @@ import com.example.kevin.fifastatistics.network.FifaApiAdapter;
 import com.example.kevin.fifastatistics.utils.externalfactories.SearchViewFactory;
 import com.example.kevin.fifastatistics.views.GridRecyclerView;
 import com.example.kevin.fifastatistics.views.adapters.FriendsRecyclerViewAdapter;
-import com.example.kevin.fifastatistics.views.adapters.SearchAdapter;
+import com.example.kevin.fifastatistics.views.adapters.SearchViewAdapter;
 
 import com.lapism.searchview.view.SearchView;
 
@@ -47,7 +47,7 @@ public class FriendsFragment extends Fragment implements FifaFragment{
     private static final int mColumnCount = 2;
 
     private SearchView mSearchView;
-    private SearchAdapter mSearchAdapter;
+    private SearchViewAdapter mSearchAdapter;
 
     private OnListFragmentInteractionListener mListener;
     private User mUser;
@@ -209,7 +209,7 @@ public class FriendsFragment extends Fragment implements FifaFragment{
         }
     }
 
-    public void setSearchAdapter(SearchAdapter adapter)
+    public void setSearchAdapter(SearchViewAdapter adapter)
     {
         mSearchAdapter = adapter;
     }

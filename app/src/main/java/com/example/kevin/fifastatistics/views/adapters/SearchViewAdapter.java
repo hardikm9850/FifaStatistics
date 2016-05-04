@@ -1,148 +1,166 @@
 package com.example.kevin.fifastatistics.views.adapters;
 
 import android.content.Context;
-import android.graphics.Bitmap;
+import android.media.ThumbnailUtils;
+import android.support.v4.content.ContextCompat;
+import android.text.Spannable;
 import android.text.TextUtils;
-import android.util.Log;
+import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.Filter;
-import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.models.user.User;
-
 import com.example.kevin.fifastatistics.utils.BitmapUtils;
+import com.lapism.searchview.R;
+import com.lapism.searchview.adapter.SearchItem;
+import com.lapism.searchview.view.SearchCodes;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-public class SearchViewAdapter extends BaseAdapter implements Filterable {
 
-    private static final ImageLoader imageLoader = ImageLoader.getInstance();
+public class SearchViewAdapter extends com.lapism.searchview.adapter.SearchAdapter
+{
 
-    private ArrayList<User> data;
-    private ArrayList<User> suggestions;
-    private LayoutInflater inflater;
-    private boolean ellipsize;
-    private int resultSize;
+    private final List<Integer> mStartList = new ArrayList<>();
+    private final Context mContext;
+    private final int mTheme;
+    private List<User> mSearchList;
+    private List<User> mDataList = new ArrayList<>();
+    private OnItemClickListener mItemClickListener;
+    private ImageLoader mImageLoader = ImageLoader.getInstance();
+    private int mKeyLength = 0;
 
-    private boolean isFirstFilterRun = true;
+    public SearchViewAdapter(Context context, List<SearchItem> searchList,
+                             List<SearchItem> dataList, int theme,
+                             ArrayList<User> users) {
+        super(context, searchList, dataList, theme);
+        this.mContext = context;
+        this.mSearchList =  new ArrayList<>();
+        this.mDataList = users;
+        this.mTheme = theme;
+    }
 
-    public SearchViewAdapter(Context context, ArrayList<User> suggestions) {
-        inflater = LayoutInflater.from(context);
-        data = suggestions;
-        ellipsize = true;
-        resultSize = suggestions.size();
-        this.suggestions = suggestions;
+    @Override
+    public int getItemViewType(int position) {
+        return position;
     }
 
     @Override
     public Filter getFilter() {
-        Filter filter = new Filter() {
+        return new Filter() {
             @Override
             protected FilterResults performFiltering(CharSequence constraint) {
                 FilterResults filterResults = new FilterResults();
                 if (!TextUtils.isEmpty(constraint)) {
-
-                    // Retrieve the autocomplete results.
                     List<User> searchData = new ArrayList<>();
 
-                    for (User user : suggestions) {
-                        if (user.getName().toLowerCase().startsWith(constraint.toString().toLowerCase())) {
+                    mStartList.clear();
+                    String key = constraint.toString().toLowerCase(Locale.getDefault());
+
+                    for (User user : mDataList) {
+                        String string = user.getName().toLowerCase(Locale
+                                .getDefault());
+                        if (string.contains(key)) {
                             searchData.add(user);
+                            mStartList.add(string.indexOf(key));
+                            mKeyLength = key.length();
                         }
                     }
-
-                    // Assign the data to the FilterResults
                     filterResults.values = searchData;
                     filterResults.count = searchData.size();
-                    isFirstFilterRun = false;
-                }
-                else if (!isFirstFilterRun) {
-                    filterResults.values = suggestions;
-                    filterResults.count = suggestions.size();
                 }
                 return filterResults;
             }
 
             @Override
             protected void publishResults(CharSequence constraint, FilterResults results) {
-                if (results.values != null && results.count != resultSize) {
-                    resultSize = results.count;
-                    data = (ArrayList<User>) results.values;
+                if (results.values != null) {
+                    mSearchList.clear();
+                    List<?> result = (List<?>) results.values;
+                    for (Object object : result) {
+                        if (object instanceof User) {
+                            mSearchList.add((User) object);
+                        }
+                    }
                     notifyDataSetChanged();
                 }
             }
         };
-        return filter;
     }
 
     @Override
-    public int getCount() {
-        return data.size();
+    public ResultViewHolder onCreateViewHolder(final ViewGroup parent, int viewType) {
+        final LayoutInflater mInflater = LayoutInflater.from(parent.getContext());
+        final View sView = mInflater.inflate(R.layout.search_item, parent, false);
+
+        return new ResultViewHolder(sView);
     }
 
     @Override
-    public Object getItem(int position) {
-        return data.get(position);
-    }
+    public void onBindViewHolder(ResultViewHolder viewHolder, int position) {
+        User user = mSearchList.get(position);
 
-    @Override
-    public long getItemId(int position) {
-        return position;
-    }
+        int start = mStartList.get(position);
+        int end = start + mKeyLength;
 
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+        viewHolder.icon_left.setScaleType(ImageView.ScaleType.CENTER_CROP);
+        setIcon(user.getImageUrl(), viewHolder.icon_left);
 
-        SuggestionsViewHolder viewHolder;
+        viewHolder.text.setText(user.getName(), TextView.BufferType.SPANNABLE);
+        Spannable s = (Spannable) viewHolder.text.getText();
 
-        if (convertView == null) {
-//            convertView = inflater.inflate(R.layout.suggest_item, parent, false);
-            viewHolder = new SuggestionsViewHolder(convertView);
-            convertView.setTag(viewHolder);
-        } else {
-            viewHolder = (SuggestionsViewHolder) convertView.getTag();
+        if (mTheme == SearchCodes.THEME_LIGHT) {
+            bindViewHolderForLightTheme(viewHolder, s, start, end);
         }
+        else if (mTheme == SearchCodes.THEME_DARK) {
+            bindViewHolderForDarkTheme(viewHolder, s, start, end);
+        }
+    }
 
-        User user = (User) getItem(position);
-        Log.i("ADAPTER", user.getName());
+    private void bindViewHolderForLightTheme(ResultViewHolder viewHolder,
+                                             Spannable s, int start, int end) {
 
-        Observable.just(user.getImageUrl())
-                .map(imageLoader::loadImageSync)
+        viewHolder.text.setTextColor(ContextCompat.getColor(
+                mContext, R.color.search_light_text));
+
+        s.setSpan(new ForegroundColorSpan(ContextCompat.getColor(
+                        mContext, R.color.search_light_text_highlight)),
+                start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+    }
+
+    private void bindViewHolderForDarkTheme(ResultViewHolder viewHolder,
+                                            Spannable s, int start, int end) {
+        viewHolder.text.setTextColor(ContextCompat.getColor(
+                mContext, R.color.search_dark_text));
+
+        s.setSpan(new ForegroundColorSpan(ContextCompat.getColor(
+                        mContext, R.color.search_dark_text_highlight)),
+                start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+    }
+
+    private void setIcon(String imageUrl, ImageView icon) {
+        Observable.just(imageUrl)
+                .map(mImageLoader::loadImageSync)
+                .map(b -> ThumbnailUtils.extractThumbnail(b, 150, 150, ThumbnailUtils.OPTIONS_RECYCLE_INPUT))
                 .map(BitmapUtils::getCircleBitmap)
-                .map(b -> Bitmap.createScaledBitmap(b, 160, 160, false))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(viewHolder.imageView::setImageBitmap);
-
-        viewHolder.textView.setText(user.getName());
-        if (ellipsize) {
-            viewHolder.textView.setSingleLine();
-            viewHolder.textView.setEllipsize(TextUtils.TruncateAt.END);
-        }
-
-        return convertView;
+                .subscribe(icon::setImageBitmap);
     }
 
-    private class SuggestionsViewHolder {
-
-        TextView textView;
-        ImageView imageView;
-
-        public SuggestionsViewHolder(View convertView) {
-//            textView = (TextView) convertView.findViewById(R.id.suggestion_text);
-//            imageView = (ImageView) convertView.findViewById(R.id.suggestion_icon);
-        }
+    @Override
+    public int getItemCount() {
+        return mSearchList.size();
     }
 }

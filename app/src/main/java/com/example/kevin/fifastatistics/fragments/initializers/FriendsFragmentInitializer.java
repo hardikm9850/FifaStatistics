@@ -22,7 +22,7 @@ public class FriendsFragmentInitializer extends FragmentInitializer
     }
 
     @Override
-    public void setToolbarTitle() {
+    public void setActivityTitle() {
         activity.setTitle(Constants.FRIENDS_FRAGMENT);
     }
 
@@ -41,15 +41,11 @@ public class FriendsFragmentInitializer extends FragmentInitializer
     }
 
     @Override
-    public void initializeTabLayout() {
+    public void prepareTabLayout() {
         activity.getViewPager().setCurrentItem(currentPage);
         activity.getIntent().removeExtra(PAGE_EXTRA);
 
         activity.getTabLayout().setVisibility(View.VISIBLE);
-
-        activity.setCurrentFragment(
-                (FifaFragment) activity.getViewPagerAdapter().getItem
-                        (currentPage));
     }
 
     @Override
