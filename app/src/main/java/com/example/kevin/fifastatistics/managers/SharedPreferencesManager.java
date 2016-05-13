@@ -29,7 +29,6 @@ public class SharedPreferencesManager
     @SuppressWarnings("ConstantConditions")
     public static void initialize(Context context) {
         if (preferences == null) {
-            Log.i("PREFERENCES ","Getting preferences!");
             preferences = context.getSharedPreferences(PREFERENCES, Context.MODE_PRIVATE);
         }
     }

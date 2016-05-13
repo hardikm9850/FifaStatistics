@@ -69,9 +69,8 @@ public class SearchViewAdapter extends com.lapism.searchview.adapter.SearchAdapt
                     String key = constraint.toString().toLowerCase(Locale.getDefault());
 
                     for (User user : mDataList) {
-                        String string = user.getName().toLowerCase(Locale
-                                .getDefault());
-                        if (string.contains(key)) {
+                        String string = user.getName().toLowerCase(Locale.getDefault());
+                        if (string.startsWith(key)) {
                             searchData.add(user);
                             mStartList.add(string.indexOf(key));
                             mKeyLength = key.length();
