@@ -9,13 +9,11 @@ import com.google.android.gms.gcm.GcmListenerService;
 public class MyGcmListenerService extends GcmListenerService {
 
     @Override
-    public void onMessageReceived(String from, Bundle bundle)
-    {
+    public void onMessageReceived(String from, Bundle bundle) {
         createAndSendNotification(bundle);
     }
 
-    private void createAndSendNotification(Bundle bundle)
-    {
+    private void createAndSendNotification(Bundle bundle) {
         FifaNotification n = FifaNotificationFactory.createNotification(this, bundle);
         n.build();
     }

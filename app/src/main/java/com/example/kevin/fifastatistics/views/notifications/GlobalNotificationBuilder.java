@@ -1,6 +1,5 @@
 package com.example.kevin.fifastatistics.views.notifications;
 
-import android.content.Context;
 import android.support.v4.app.NotificationCompat;
 
 import com.example.kevin.fifastatistics.FifaApplication;

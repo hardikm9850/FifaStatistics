@@ -21,7 +21,6 @@ public class SearchViewFactory
     private static final int THEME_TYPE = SearchCodes.THEME_LIGHT;
     private static final int ANIMATION_DURATION = 240;
     private static SearchView mSearchView;
-    private static Context mContext;
 
     /**
      * Creates a search view that searches for users, and initializes the
@@ -31,7 +30,6 @@ public class SearchViewFactory
     public static SearchView createUserSearchView(FriendsFragment fragment,
             ArrayList<User> users)
     {
-        mContext = fragment.getActivity();
         FifaActivity activity = (FifaActivity) fragment.getActivity();
         mSearchView = (SearchView) activity.findViewById(R.id.searchView);
 
@@ -85,8 +83,10 @@ public class SearchViewFactory
     private static void initializeAdapter(FriendsFragment fragment,
                                           ArrayList<User> users)
     {
-        SearchViewAdapter adapter = new SearchViewAdapter(mContext, Collections.emptyList(),
-                Collections.emptyList(), THEME_TYPE, users);
+        SearchViewAdapter adapter = new SearchViewAdapter(fragment.getActivity(),
+                Collections.emptyList(),
+                Collections.emptyList(),
+                THEME_TYPE, users);
 
         adapter.setOnItemClickListener((view, position) -> {
             mSearchView.hide(false);
