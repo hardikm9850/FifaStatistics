@@ -10,7 +10,6 @@ import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.fragments.FifaFragment;
 import com.example.kevin.fifastatistics.fragments.FriendsFragment;
 import com.example.kevin.fifastatistics.managers.FragmentInitializationManager;
-import com.example.kevin.fifastatistics.managers.ImageLoaderManager;
 import com.example.kevin.fifastatistics.models.user.Friend;
 import com.example.kevin.fifastatistics.utils.externalfactories.NavigationDrawerFactory;
 import com.example.kevin.fifastatistics.views.adapters.ViewPagerAdapter;
@@ -34,7 +33,6 @@ public class MainActivity extends FifaActivity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        ImageLoaderManager.initializeDefaultImageLoader(this);
 
         initializeToolbar();
         initializeViewPager();
@@ -65,8 +63,7 @@ public class MainActivity extends FifaActivity
         mTabLayout.setupWithViewPager(mViewPager);
     }
 
-    private void initializeDrawer()
-    {
+    private void initializeDrawer() {
         mDrawer = NavigationDrawerFactory.getDefaultDrawerInstance(this);
     }
 
@@ -77,7 +74,7 @@ public class MainActivity extends FifaActivity
 
     @Override
     public void onBackPressed() {
-        if (currentFragment.handleBackPress()) {
+        if (currentFragment.handledBackPress()) {
             return;
         }
         super.onBackPressed();

@@ -37,7 +37,7 @@ import rx.schedulers.Schedulers;
  * Activities containing this fragment MUST implement the {@link OnListFragmentInteractionListener}
  * interface.
  */
-public class FriendsFragment extends Fragment implements FifaFragment{
+public class FriendsFragment extends Fragment implements FifaFragment {
 
     public static final String viewArgument = "view";
     public static final int friendsView = 0;
@@ -70,15 +70,9 @@ public class FriendsFragment extends Fragment implements FifaFragment{
     {
         super.onCreate(savedInstanceState);
 
-        getUser();
+        mUser = SharedPreferencesManager.getUser();
         setRetainInstance(true);
         setHasOptionsMenu(true);
-    }
-
-    private void getUser()
-    {
-        SharedPreferencesManager handler = SharedPreferencesManager.getInstance(getContext());
-        mUser = handler.getUser();
     }
 
     @Override
@@ -183,7 +177,7 @@ public class FriendsFragment extends Fragment implements FifaFragment{
     }
 
     @Override
-    public boolean handleBackPress()
+    public boolean handledBackPress()
     {
         if (mSearchView != null && mSearchView.isSearchOpen()) {
             mSearchView.hide(true);

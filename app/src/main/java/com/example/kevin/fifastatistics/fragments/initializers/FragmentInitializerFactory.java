@@ -11,9 +11,9 @@ public class FragmentInitializerFactory
     private static final String FRAGMENT_EXTRA = "fragment";
 
     /**
-     * Initializes the appropriate fragment, based on the fragment extra passed
-     * to the activity. If the extra is null, then the Overview fragment is
-     * initialized.
+     * Creates an initializer for the appropriate fragment, based on the
+     * fragment extra passed to the activity. If the extra is null, then an
+     * {@link OverviewFragmentInitializer} is returned.
      */
     public static FragmentInitializer createFragmentInitializer(FifaActivity activity)
     {

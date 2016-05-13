@@ -48,7 +48,7 @@ public class OverviewFragment extends Fragment implements FifaFragment{
     }
 
     @Override
-    public boolean handleBackPress() {
+    public boolean handledBackPress() {
         return false;
     }
 }

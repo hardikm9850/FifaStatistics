@@ -19,6 +19,7 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:name="FifaApplication"
         android:supportsRtl="true">
         <activity
             android:name=".activities.SignInActivity"
@@ -76,11 +77,11 @@
         <service
             android:name=".views.notifications.friendrequestnotification.FriendRequestAcceptService"
             android:enabled="true"
-            android:exported="true" />
+            android:exported="false" />
         <service
             android:name=".views.notifications.friendrequestnotification.FriendRequestDeclineService"
             android:enabled="true"
-            android:exported="true"> </service>
+            android:exported="false"> </service>
     </application>
 
 </manifest>

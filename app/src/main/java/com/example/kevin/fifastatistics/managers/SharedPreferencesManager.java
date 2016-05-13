@@ -3,127 +3,108 @@ package com.example.kevin.fifastatistics.managers;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 import com.example.kevin.fifastatistics.models.user.User;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.google.gson.Gson;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.io.IOException;
 
 /**
- * Utility class for handling all Shared Preference needs.
- * Implemented as a singleton. Application Context must be passed to the
- * instance when retrieving it.
+ * Utility for handling all Shared Preference needs. Any requests to Shared
+ * Preferences should be delegated to this class.
  */
 public class SharedPreferencesManager
 {
-    private static SharedPreferencesManager instance = new SharedPreferencesManager();
-    private SharedPreferences preferences;
-    private SharedPreferences.Editor editor;
-    private Context context;
+    private static final String PREFERENCES = "PREFERENCES";
+    private static final String SIGNED_IN = "SIGNED_IN";
+    private static final String SENT_TOKEN_TO_SERVER = "SENT_TOKEN_TO_SERVER";
+    private static final String REGISTRATION_FAILED = "REGISTRATION_FAILED";
+    private static final String REGISTRATION_TOKEN = "REGISTRATION_TOKEN";
+    private static final String CURRENT_USER = "CURRENT_USER";
 
-    public static SharedPreferencesManager getInstance(Context context)
-    {
-        instance.context = context;
-        instance.preferences = context.getSharedPreferences(
-                PreferenceNames.PREFERENCES.name(), Context.MODE_PRIVATE);
-        return instance;
-    }
+    private static SharedPreferences preferences;
+    private static SharedPreferences.Editor editor;
 
-    private SharedPreferencesManager() {
+    @SuppressWarnings("ConstantConditions")
+    public static void initialize(Context context) {
+        if (preferences == null) {
+            Log.i("PREFERENCES ","Getting preferences!");
+            preferences = context.getSharedPreferences(PREFERENCES, Context.MODE_PRIVATE);
+        }
     }
 
     /**
      * Returns true if the user is currently signed in to their Google account, false otherwise
      */
-    public boolean isSignedIn()
-    {
-        return preferences.getBoolean(PreferenceNames.SIGNED_IN.name(), false);
+    public static boolean isSignedIn() {
+        return preferences.getBoolean(SIGNED_IN, false);
     }
 
     /**
-     * Sets the SIGNED_IN value in shared preferences. Should be set to true if logged in to Google
-     * account, and false if not.
-     * @param signedIn  Whether or not the user is signed in
+     * Set whether or not the user is signed in.
      */
-    public void setSignedIn(boolean signedIn)
+    public static void setSignedIn(boolean signedIn)
     {
         editor = preferences.edit();
-        editor.putBoolean(PreferenceNames.SIGNED_IN.name(), signedIn);
+        editor.putBoolean(SIGNED_IN, signedIn);
         editor.apply();
     }
 
-    public boolean didSendRegistrationToken()
-    {
-        return preferences.getBoolean(PreferenceNames.SENT_TOKEN_TO_SERVER.name(), false);
+    public static boolean didSendRegistrationToken() {
+        return preferences.getBoolean(SENT_TOKEN_TO_SERVER, false);
     }
 
-    public void setDidSendRegistrationToken(boolean didSendToken)
-    {
+    public static void setDidSendRegistrationToken(boolean didSendToken) {
         editor = preferences.edit();
-        editor.putBoolean(PreferenceNames.SENT_TOKEN_TO_SERVER.name(), didSendToken);
+        editor.putBoolean(SENT_TOKEN_TO_SERVER, didSendToken);
         editor.apply();
     }
 
-    public String getRegistrationToken()
-    {
-        return preferences.getString(PreferenceNames.REGISTRATION_TOKEN.name(), null);
+    public static String getRegistrationToken() {
+        return preferences.getString(REGISTRATION_TOKEN, null);
     }
 
-    public void setRegistrationToken(String registrationToken)
-    {
+    public static void setRegistrationToken(String registrationToken) {
         editor = preferences.edit();
-        editor.putString(PreferenceNames.REGISTRATION_TOKEN.name(), registrationToken);
+        editor.putString(REGISTRATION_TOKEN, registrationToken);
         editor.apply();
     }
 
-    public boolean getRegistrationFailed()
-    {
-        return preferences.getBoolean(PreferenceNames.REGISTRATION_FAILED.name(), false);
+    /**
+     * True if the retrieval of the registration token failed.
+     */
+    public static boolean getRegistrationFailed() {
+        return preferences.getBoolean(REGISTRATION_FAILED, false);
     }
 
-    public void setRegistrationFailed(boolean registrationFailed)
-    {
+    public static void setRegistrationFailed(boolean registrationFailed) {
         editor = preferences.edit();
-        editor.putBoolean(PreferenceNames.REGISTRATION_FAILED.name(), registrationFailed);
+        editor.putBoolean(REGISTRATION_FAILED, registrationFailed);
         editor.apply();
     }
 
     @SuppressLint("CommitPrefEdits")
-    public void storeUser(User user)
-    {
+    public static void storeUser(User user) {
         editor = preferences.edit();
-        Gson gson = new Gson();
-        String json = gson.toJson(user);
-        editor.putString(PreferenceNames.CURRENT_USER.name(), json);
+        editor.putString(CURRENT_USER, user.toString());
         editor.commit();
     }
 
-    public void storeUserAsync(User user)
-    {
+    public static void storeUserAsync(User user) {
         editor = preferences.edit();
-        Gson gson = new Gson();
-        String json = gson.toJson(user);
-        editor.putString(PreferenceNames.CURRENT_USER.name(), json);
+        editor.putString(CURRENT_USER, user.toString());
         editor.apply();
     }
 
-    public User getUser()
-    {
-        Gson gson = new Gson();
-        String user = preferences.getString(PreferenceNames.CURRENT_USER.name(), null);
-        return gson.fromJson(user, User.class);
-    }
-
-    private enum PreferenceNames
-    {
-        PREFERENCES,          // String, Default Shared Preference name
-        SIGNED_IN,            // Boolean, true if user is signed in to Google
-        CURRENT_USER_NAME,    // String, the current signed in user's name
-        CURRENT_USER_EMAIL,   // String
-        SENT_TOKEN_TO_SERVER, // Boolean, true if registration token successfully sent to server
-        REGISTRATION_FAILED,
-        REGISTRATION_TOKEN,
-        CURRENT_USER_IMAGE_URL,
-        CURRENT_USER_GOOGLE_ID,
-        CURRENT_USER,
+    public static User getUser() {
+        ObjectMapper mapper = new ObjectMapper();
+        String user = preferences.getString(CURRENT_USER, null);
+        try {
+            return mapper.readValue(user, User.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
     }
 }

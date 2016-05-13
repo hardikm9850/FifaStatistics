@@ -53,7 +53,7 @@ public class NavigationDrawerFactory
     public static Drawer getDefaultDrawerInstance(
             FifaActivity activity)
     {
-        getUser(activity);
+        currentUser = SharedPreferencesManager.getUser();
         setIncomingRequestsCount();
 
         if (drawer == null) {
@@ -62,12 +62,6 @@ public class NavigationDrawerFactory
         buildDrawer(activity);
 
         return drawer;
-    }
-
-    private static void getUser(FifaActivity fa)
-    {
-        SharedPreferencesManager pm = SharedPreferencesManager.getInstance(fa);
-        currentUser = pm.getUser();
     }
 
     private static void initializeActivityIndependentObjects()

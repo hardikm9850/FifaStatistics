@@ -10,5 +10,5 @@ public interface FifaFragment
      * @return false if the activity should continue with onBackPress actions,
      *         true otherwise.
      */
-    boolean handleBackPress();
+    boolean handledBackPress();
 }

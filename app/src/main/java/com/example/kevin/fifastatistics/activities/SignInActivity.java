@@ -46,7 +46,6 @@ public class SignInActivity extends AppCompatActivity implements
     private boolean doCreateUser = false;
 
     private static String mRegistrationToken;
-    private static SharedPreferencesManager handler;
     private static FifaApi api;
 
     private GoogleApiClient mGoogleApiClient;
@@ -56,7 +55,6 @@ public class SignInActivity extends AppCompatActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        handler = SharedPreferencesManager.getInstance(getApplicationContext());
         checkSignedIn();
         setContentView(R.layout.activity_login);
 
@@ -101,7 +99,7 @@ public class SignInActivity extends AppCompatActivity implements
 
     private void checkSignedIn()
     {
-        if (handler.isSignedIn())
+        if (SharedPreferencesManager.isSignedIn())
         {
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
@@ -145,27 +143,12 @@ public class SignInActivity extends AppCompatActivity implements
     }
 
     private void signOut() {
-        Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(
-                new ResultCallback<Status>() {
-                    @Override
-                    public void onResult(Status status) {
-                        // [START_EXCLUDE]
-                        // [END_EXCLUDE]
-                    }
-                });
-        handler.setSignedIn(false);
+        Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(status -> {/*TODO*/});
+        SharedPreferencesManager.setSignedIn(false);
     }
 
     private void revokeAccess() {
-        Auth.GoogleSignInApi.revokeAccess(mGoogleApiClient).setResultCallback(
-                new ResultCallback<Status>()
-                {
-                    @Override
-                    public void onResult(Status status)
-                    {
-
-                    }
-                });
+        Auth.GoogleSignInApi.revokeAccess(mGoogleApiClient).setResultCallback(status -> {/*TODO*/});
     }
 
     @Override
@@ -309,8 +292,8 @@ public class SignInActivity extends AppCompatActivity implements
     {
         while (mRegistrationToken == null)
         {
-            if (!handler.getRegistrationFailed()) {
-                mRegistrationToken = handler.getRegistrationToken();
+            if (!SharedPreferencesManager.getRegistrationFailed()) {
+                mRegistrationToken = SharedPreferencesManager.getRegistrationToken();
             } else {
                 Log.e(TAG, "failed to retrieve registration token");
                 throw new IOException();
@@ -320,8 +303,8 @@ public class SignInActivity extends AppCompatActivity implements
 
     private void startMainActivity(User user)
     {
-        handler.storeUser(user);
-        handler.setSignedIn(true);
+        SharedPreferencesManager.storeUser(user);
+        SharedPreferencesManager.setSignedIn(true);
         mProgressDialog.dismiss();
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
         startActivity(intent);

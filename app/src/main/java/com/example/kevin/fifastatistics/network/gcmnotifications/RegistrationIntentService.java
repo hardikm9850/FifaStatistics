@@ -28,8 +28,6 @@ public class RegistrationIntentService extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent)
     {
-        SharedPreferencesManager handler = SharedPreferencesManager.getInstance(this);
-
         try {
             // [START register_for_gcm]
             // Initially this call goes out to the network to retrieve the token, subsequent calls
@@ -44,7 +42,7 @@ public class RegistrationIntentService extends IntentService {
             Log.i(TAG, "GCM Registration Token: " + token);
 
             // TODO: Implement this method to send any registration to your app's servers.
-            handler.setRegistrationToken(token);
+            SharedPreferencesManager.setRegistrationToken(token);
 
             // Subscribe to topic channels
             subscribeTopics(token);
@@ -52,7 +50,7 @@ public class RegistrationIntentService extends IntentService {
             // You should store a boolean that indicates whether the generated token has been
             // sent to your server. If the boolean is false, send the token to your server,
             // otherwise your server should have already received the token.
-            handler.setDidSendRegistrationToken(true);
+            SharedPreferencesManager.setDidSendRegistrationToken(true);
             // [END register_for_gcm]
         }
         catch (Exception e)
@@ -60,8 +58,8 @@ public class RegistrationIntentService extends IntentService {
             Log.d(TAG, "Failed to complete token refresh", e);
             // If an exception happens while fetching the new token or updating our registration data
             // on a third-party server, this ensures that we'll attempt the update at a later time.
-            handler.setRegistrationFailed(true);
-            handler.setDidSendRegistrationToken(false);
+            SharedPreferencesManager.setRegistrationFailed(true);
+            SharedPreferencesManager.setDidSendRegistrationToken(false);
         }
         // Notify UI that registration has completed, so the progress indicator can be hidden.
         Intent registrationComplete = new Intent(REGISTRATION_COMPLETE);

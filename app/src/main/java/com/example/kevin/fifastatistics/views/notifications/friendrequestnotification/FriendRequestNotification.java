@@ -130,8 +130,7 @@ public class FriendRequestNotification extends FifaNotification
 
     private void addFriendRequestToUser()
     {
-        SharedPreferencesManager handler = SharedPreferencesManager.getInstance(context);
-        User user = handler.getUser();
+        User user = SharedPreferencesManager.getUser();
 
         int level = Integer.parseInt(notificationData.getString("level"));
         Friend friend = new Friend.Builder()
@@ -143,6 +142,6 @@ public class FriendRequestNotification extends FifaNotification
                 .build();
 
         user.addIncomingRequest(friend);
-        handler.storeUser(user);
+        SharedPreferencesManager.storeUser(user);
     }
 }

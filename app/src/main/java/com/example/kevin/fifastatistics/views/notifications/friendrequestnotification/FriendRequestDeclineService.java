@@ -39,11 +39,10 @@ public class FriendRequestDeclineService extends Service
     private void declineFriendRequest()
     {
         Log.i(TAG, "Declining request");
-        SharedPreferencesManager preferencesManager = SharedPreferencesManager.getInstance(this);
-        User user = preferencesManager.getUser();
+        User user = SharedPreferencesManager.getUser();
         int size = user.getIncomingRequests().size();
         user.getIncomingRequests().remove(size - 1);
-        preferencesManager.storeUser(user);
+        SharedPreferencesManager.storeUser(user);
     }
 
     private void updateAndClearNotification()

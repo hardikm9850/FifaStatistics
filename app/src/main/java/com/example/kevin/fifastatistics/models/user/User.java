@@ -2,6 +2,9 @@ package com.example.kevin.fifastatistics.models.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -253,4 +256,19 @@ public class User {
         }
         friends.add(friend);
     }
+
+    /**
+     * Serializes the user to JSON format.
+     */
+    @Override
+    public String toString() {
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            return mapper.writeValueAsString(this);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
+    }
+
 }
