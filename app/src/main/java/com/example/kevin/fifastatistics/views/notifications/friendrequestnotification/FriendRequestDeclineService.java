@@ -57,7 +57,7 @@ public class FriendRequestDeclineService extends Service
 
     private void updateNotification(NotificationManager nm)
     {
-        NotificationCompat.Builder nb = GlobalNotificationBuilder.getInstance(this)
+        NotificationCompat.Builder nb = GlobalNotificationBuilder.getInstance()
                 .setContentText("Friend request declined");
 
         nb.mActions.clear();

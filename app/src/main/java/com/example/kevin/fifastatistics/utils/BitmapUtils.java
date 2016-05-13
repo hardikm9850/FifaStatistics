@@ -9,6 +9,8 @@ import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.RectF;
 
+import com.nostra13.universalimageloader.core.ImageLoader;
+
 public class BitmapUtils
 {
     public static Bitmap getCircleBitmap(Bitmap bitmap)
@@ -33,5 +35,15 @@ public class BitmapUtils
         bitmap.recycle();
 
         return output;
+    }
+
+    public static Bitmap getBitmapFromUrl(String url) {
+        ImageLoader imageLoader = ImageLoader.getInstance();
+        return imageLoader.loadImageSync(url);
+    }
+
+    public static Bitmap getCircleBitmapFromUrl(String url) {
+        Bitmap bitmap = getBitmapFromUrl(url);
+        return getCircleBitmap(bitmap);
     }
 }

@@ -8,12 +8,11 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.media.RingtoneManager;
 import android.net.Uri;
-import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 
 import com.example.kevin.fifastatistics.R;
+import com.example.kevin.fifastatistics.models.notificationbundles.NotificationBundle;
 import com.example.kevin.fifastatistics.utils.BitmapUtils;
-import com.nostra13.universalimageloader.core.ImageLoader;
 
 public abstract class FifaNotification
 {
@@ -22,29 +21,38 @@ public abstract class FifaNotification
     private static final int SMALL_ICON = R.mipmap.ic_launcher;
 
     private Context context;
-    private Bundle notification;
+    private NotificationCompat.Builder notificationBuilder;
 
-    protected static int notificationId;
-    protected NotificationCompat.Builder notificationBuilder;
-
-    public FifaNotification(Context context, Bundle notification)
-    {
+    public FifaNotification(Context context) {
         this.context = context;
-        this.notification = notification;
-        buildAbstractNotification();
+        notificationBuilder = GlobalNotificationBuilder.getInstance();
     }
 
-    private Bitmap getUserBitmap()
-    {
-        ImageLoader imageLoader = ImageLoader.getInstance();
-        return imageLoader.loadImageSync(notification.getString("imageUrl"));
+    public final void build() {
+        NotificationBundle nb = getNotificationBundle();
+        setDefaultNotificationSettings(nb);
+        setContentText();
+        setContentIntent();
+        addActions();
+        performPreSendActions();
+
+        int notificationId = getNotificationId();
+        send(notificationId);
     }
 
-    private void buildAbstractNotification()
-    {
-        Bitmap userIcon = BitmapUtils.getCircleBitmap(getUserBitmap());
+    /**
+     * Retrieve the specialized NotificationBundle from the subclass.
+     */
+    protected abstract NotificationBundle getNotificationBundle();
 
-        notificationBuilder = GlobalNotificationBuilder.getInstance(context)
+    /**
+     * Sets default settings such as the icons, the title, and alert settings.
+     */
+    protected void setDefaultNotificationSettings(NotificationBundle nb)
+    {
+        Bitmap userIcon = BitmapUtils.getCircleBitmapFromUrl(nb.getImageUrl());
+
+        notificationBuilder
                 .setSmallIcon(SMALL_ICON)
                 .setLargeIcon(userIcon)
                 .setContentTitle(CONTENT_TITLE)
@@ -54,19 +62,43 @@ public abstract class FifaNotification
                 .setPriority(Notification.PRIORITY_HIGH);
     }
 
-    public final void finalizeAndSend()
-    {
-        setContentText(notification);
-        setContentIntent();
+    /**
+     * Sets the context text for the notification.
+     */
+    protected abstract void setContentText();
 
-        NotificationManager nm = (NotificationManager) context.getSystemService(
-                Context.NOTIFICATION_SERVICE);
+    /**
+     * Sets the content intent that will be launched when the notification is
+     * tapped.
+     */
+    protected abstract void setContentIntent();
+
+    /**
+     * Adds any extra actions to the notification (not required). This is a
+     * 'hook' in the {@link #build()} template method.
+     */
+    protected void addActions() {}
+
+    /**
+     * Performs actions that should be sent prior to the notification being sent
+     * (e.g.,
+     */
+    protected abstract void performPreSendActions();
+
+    /**
+     * Retrieves the notification id from the subclass, and uses it when sending
+     * the notification.
+     */
+    protected abstract int getNotificationId();
+
+    /**
+     * Sends the notification. Can optionally be overriden by a subclass (e.g.,
+     * the NullNotification class, so no notification sends).
+     */
+    protected void send(int notificationId) {
+        NotificationManager nm = (NotificationManager)
+                context.getSystemService(Context.NOTIFICATION_SERVICE);
 
         nm.notify(notificationId, notificationBuilder.build());
     }
-
-    public abstract void performPreSendActions();
-
-    protected abstract void setContentText(Bundle notification);
-    protected abstract void setContentIntent();
 }

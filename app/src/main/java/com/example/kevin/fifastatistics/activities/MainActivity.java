@@ -46,6 +46,7 @@ public class MainActivity extends FifaActivity
         setSupportActionBar(mToolbar);
     }
 
+    @SuppressWarnings("ConstantConditions")
     private void initializeViewPager()
     {
         mAdapter = new ViewPagerAdapter(getSupportFragmentManager());
@@ -69,7 +70,7 @@ public class MainActivity extends FifaActivity
 
     @Override
     public void onListFragmentInteraction(Friend friend) {
-        System.out.println("Interacted");
+
     }
 
     @Override

@@ -21,7 +21,7 @@ public class FifaNotificationFactory
             case Constants.FRIEND_REQUEST_TAG :
                 return new FriendRequestNotification(context, bundle);
             default :
-                return new NullNotification(context, bundle);
+                return new NullNotification(context);
         }
     }
 

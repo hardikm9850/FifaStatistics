@@ -17,8 +17,7 @@ public class MyGcmListenerService extends GcmListenerService {
     private void createAndSendNotification(Bundle bundle)
     {
         FifaNotification n = FifaNotificationFactory.createNotification(this, bundle);
-        n.performPreSendActions();
-        n.finalizeAndSend();
+        n.build();
     }
 
 }
