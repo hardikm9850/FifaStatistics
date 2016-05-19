@@ -13,7 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.kevin.fifastatistics.R;
-import com.example.kevin.fifastatistics.models.apiresponses.UserListResponse;
+import com.example.kevin.fifastatistics.models.apiresponses.ListResponse;
 import com.example.kevin.fifastatistics.models.user.Friend;
 import com.example.kevin.fifastatistics.models.user.User;
 import com.example.kevin.fifastatistics.managers.SharedPreferencesManager;
@@ -83,7 +83,7 @@ public class FriendsFragment extends Fragment implements FifaFragment {
         mSearchView = (SearchView) getActivity().findViewById(R.id.searchView);
 
         FifaApiAdapter.getService().getUsers()
-                .map(UserListResponse::getUsers)
+                .map(ListResponse::getItems)
                 .flatMap(this::initializeSearchView)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
