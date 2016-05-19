@@ -1,13 +1,12 @@
 package com.example.kevin.fifastatistics.utils.externalfactories;
 
-
-import android.content.Context;
 import android.support.v4.widget.DrawerLayout;
 import android.widget.TextView;
 
 import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.activities.FifaActivity;
 import com.example.kevin.fifastatistics.fragments.FriendsFragment;
+import com.example.kevin.fifastatistics.models.SearchAdapterSearchViewPair;
 import com.example.kevin.fifastatistics.models.user.User;
 import com.example.kevin.fifastatistics.views.adapters.SearchViewAdapter;
 import com.lapism.searchview.view.SearchCodes;
@@ -20,43 +19,49 @@ public class SearchViewFactory
 {
     private static final int THEME_TYPE = SearchCodes.THEME_LIGHT;
     private static final int ANIMATION_DURATION = 240;
-    private static SearchView mSearchView;
 
     /**
-     * Creates a search view that searches for users, and initializes the
-     * adapter. The adapter is not set to the search view; that must be done
-     * externally.
+     * Returns a pair consisting of the SearchView and the SearchViewAdapter.
+     * <p>
+     * A pair of the two is returned rather than just the SearchView with the
+     * adapter already set in order to facilitate initialization in a non-UI
+     * thread.
+     * the setAdapter() method of SearchView includes a call to startFilter(),
+     * which must be performed on the UI Thread. Therefore, setting the adapter
+     * here and attempting to initialize the SearchView in the background would
+     * result in an exception.
      */
-    public static SearchView createUserSearchView(FriendsFragment fragment,
+    public static SearchAdapterSearchViewPair createUserSearchViewPair(
+            FriendsFragment fragment,
             ArrayList<User> users)
     {
         FifaActivity activity = (FifaActivity) fragment.getActivity();
-        mSearchView = (SearchView) activity.findViewById(R.id.searchView);
+        SearchView searchView = (SearchView) activity.findViewById(R.id.searchView);
 
-        setBasicSearchViewProperties();
-        setSearchViewListeners(activity);
-        initializeAdapter(fragment, users);
+        setBasicSearchViewProperties(searchView);
+        setSearchViewListeners(activity, searchView);
+        SearchViewAdapter adapter = initializeAdapter(fragment, users, searchView);
 
-        return mSearchView;
+        return new SearchAdapterSearchViewPair(searchView, adapter);
     }
 
-    private static void setBasicSearchViewProperties()
+    private static void setBasicSearchViewProperties(SearchView searchView)
     {
-        mSearchView.setStyle(SearchCodes.STYLE_MENU_ITEM_CLASSIC);
-        mSearchView.setVersion(SearchCodes.VERSION_MENU_ITEM);
-        mSearchView.setTheme(THEME_TYPE);
-        mSearchView.setDivider(true);
-        mSearchView.setAnimationDuration(ANIMATION_DURATION);
-        mSearchView.setVoice(false);
-        mSearchView.setHint("Search Users");
+        searchView.setStyle(SearchCodes.STYLE_MENU_ITEM_CLASSIC);
+        searchView.setVersion(SearchCodes.VERSION_MENU_ITEM);
+        searchView.setTheme(THEME_TYPE);
+        searchView.setDivider(true);
+        searchView.setAnimationDuration(ANIMATION_DURATION);
+        searchView.setVoice(false);
+        searchView.setHint("Search Users");
     }
 
-    private static void setSearchViewListeners(FifaActivity activity)
+    private static void setSearchViewListeners(FifaActivity activity, SearchView searchView)
     {
-        mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                mSearchView.hide(false);
+                searchView.hide(false);
                 return false;
             }
 
@@ -65,7 +70,7 @@ public class SearchViewFactory
                 return false;
             }
         });
-        mSearchView.setOnSearchViewListener(new SearchView.SearchViewListener() {
+        searchView.setOnSearchViewListener(new SearchView.SearchViewListener() {
             @Override
             public void onSearchViewShown() {
                 activity.getDrawer().getDrawerLayout().setDrawerLockMode(
@@ -80,8 +85,9 @@ public class SearchViewFactory
         });
     }
 
-    private static void initializeAdapter(FriendsFragment fragment,
-                                          ArrayList<User> users)
+    private static SearchViewAdapter initializeAdapter(FriendsFragment fragment,
+                                                       ArrayList<User> users,
+                                                       SearchView searchView)
     {
         SearchViewAdapter adapter = new SearchViewAdapter(fragment.getActivity(),
                 Collections.emptyList(),
@@ -89,11 +95,11 @@ public class SearchViewFactory
                 THEME_TYPE, users);
 
         adapter.setOnItemClickListener((view, position) -> {
-            mSearchView.hide(false);
+            searchView.hide(false);
             TextView textView = (TextView) view.findViewById(R.id
                     .textView_item_text);
         });
 
-        fragment.setSearchAdapter(adapter);
+        return adapter;
     }
 }

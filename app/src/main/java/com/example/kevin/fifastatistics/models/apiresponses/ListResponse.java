@@ -26,8 +26,8 @@ import java.util.Map;
  */
 @SuppressWarnings("unused")
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class ListResponse<T>
-{
+public class ListResponse<T> {
+
     @JsonProperty("_embedded")
     private Embedded<T> embedded;
 
@@ -35,6 +35,10 @@ public class ListResponse<T>
         return embedded.getItems();
     }
 
+    /**
+     * Handles any name for the results ("users", "matches", "series", etc.) by
+     * using @JsonAnySetter to map the results to the 'items' property.
+     */
     public static class Embedded<T> {
 
         private String name;

@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.kevin.fifastatistics.R;
+import com.example.kevin.fifastatistics.models.SearchAdapterSearchViewPair;
 import com.example.kevin.fifastatistics.models.apiresponses.ListResponse;
 import com.example.kevin.fifastatistics.models.user.Friend;
 import com.example.kevin.fifastatistics.models.user.User;
@@ -21,7 +22,6 @@ import com.example.kevin.fifastatistics.network.FifaApiAdapter;
 import com.example.kevin.fifastatistics.utils.externalfactories.SearchViewFactory;
 import com.example.kevin.fifastatistics.views.GridRecyclerView;
 import com.example.kevin.fifastatistics.views.adapters.FriendsRecyclerViewAdapter;
-import com.example.kevin.fifastatistics.views.adapters.SearchViewAdapter;
 
 import com.lapism.searchview.view.SearchView;
 
@@ -47,8 +47,6 @@ public class FriendsFragment extends Fragment implements FifaFragment {
     private static final int mColumnCount = 2;
 
     private SearchView mSearchView;
-    private SearchViewAdapter mSearchAdapter;
-
     private OnListFragmentInteractionListener mListener;
     private User mUser;
     private View view = null;
@@ -87,22 +85,24 @@ public class FriendsFragment extends Fragment implements FifaFragment {
                 .flatMap(this::initializeSearchView)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(b -> setSearchAdapterAndInvalidateMenu());
+                .subscribe(this::setSearchAdapterAndInvalidateMenu);
 
         setAdapterDataSource();
 
         return view;
     }
 
-    private Observable<Boolean> initializeSearchView(ArrayList<User> users)
+    private Observable<SearchAdapterSearchViewPair> initializeSearchView(
+            ArrayList<User> users)
     {
-        mSearchView = SearchViewFactory.createUserSearchView(this, users);
-        return Observable.just(true);
+        SearchAdapterSearchViewPair pair = SearchViewFactory.createUserSearchViewPair(this, users);
+        return Observable.just(pair);
     }
 
-    private void setSearchAdapterAndInvalidateMenu()
+    private void setSearchAdapterAndInvalidateMenu(SearchAdapterSearchViewPair pair)
     {
-        mSearchView.setAdapter(mSearchAdapter);
+        mSearchView = pair.getSearchView();
+        mSearchView.setAdapter(pair.getAdapter());
 
         searchItemIsReady = true;
         getActivity().invalidateOptionsMenu();
@@ -201,10 +201,5 @@ public class FriendsFragment extends Fragment implements FifaFragment {
             recyclerView.setLayoutManager(new GridLayoutManager(view.getContext(), mColumnCount));
             recyclerView.setAdapter(adapter);
         }
-    }
-
-    public void setSearchAdapter(SearchViewAdapter adapter)
-    {
-        mSearchAdapter = adapter;
     }
 }
