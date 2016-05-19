@@ -2,6 +2,8 @@ package com.example.kevin.fifastatistics.models.user;
 
 import java.util.ArrayList;
 
+import lombok.Getter;
+
 /**
  * <b>Class:</b> SeriesStub <br><br>
  * <b>Description:</b> <br>
@@ -19,13 +21,16 @@ import java.util.ArrayList;
  * @author Kevin
  *
  */
+@Getter
 public class SeriesStub {
 
-    public String id;
-    public String opponent;
-    public String date;
-    public ArrayList<MatchSummary> matches;
-    public boolean didWin;
+    private static final int MAX_GAMES_IN_SERIES = 7;
+
+    private String id;
+    private String opponent;
+    private String date;
+    private ArrayList<MatchSummary> matches;
+    private boolean didWin;
 
     public SeriesStub(String id, String opponent, String date,
                       ArrayList<MatchSummary> matches, boolean didWin) {
@@ -47,7 +52,7 @@ public class SeriesStub {
         if (matches == null) {
             matches = new ArrayList<>();
         }
-        else if (matches.size() == 7) {
+        else if (matches.size() == MAX_GAMES_IN_SERIES) {
             return;
         }
 

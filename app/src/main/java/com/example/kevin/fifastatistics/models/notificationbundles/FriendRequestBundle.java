@@ -4,9 +4,12 @@ import android.os.Bundle;
 
 import com.example.kevin.fifastatistics.models.user.Friend;
 
+import lombok.Getter;
+
 /**
  * Created by Kevin on 5/12/2016.
  */
+@Getter
 public class FriendRequestBundle implements NotificationBundle
 {
     private String body;
@@ -18,25 +21,13 @@ public class FriendRequestBundle implements NotificationBundle
         body = bundle.getString("gcm.notification.body");
         tag = bundle.getString("tag");
 
-        friend = new Friend.Builder()
-                .withId(bundle.getString("id"))
-                .withImageUrl(bundle.getString("imageUrl"))
-                .withLevel(Integer.parseInt(bundle.getString("level")))
-                .withName(bundle.getString("name"))
-                .withRegistrationToken(bundle.getString("registrationToken"))
+        friend = Friend.builder()
+                .id(bundle.getString("id"))
+                .imageUrl(bundle.getString("imageUrl"))
+                .level(Integer.parseInt(bundle.getString("level")))
+                .name(bundle.getString("name"))
+                .registrationToken(bundle.getString("registrationToken"))
                 .build();
-    }
-
-    public String getBody() {
-        return body;
-    }
-
-    public String getTag() {
-        return tag;
-    }
-
-    public Friend getFriend() {
-        return friend;
     }
 
     @Override

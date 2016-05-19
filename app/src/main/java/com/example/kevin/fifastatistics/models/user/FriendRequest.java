@@ -1,5 +1,9 @@
 package com.example.kevin.fifastatistics.models.user;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  * <b>Class:</b> FriendRequest <br><br>
  * <b>Description:</b> <br>
@@ -13,44 +17,12 @@ package com.example.kevin.fifastatistics.models.user;
  * @author Kevin Grant
  *
  */
+@AllArgsConstructor
+@Getter
+@Setter
 public class FriendRequest {
 
     private String id;
     private String name;
     private String imageUrl;
-
-    public FriendRequest(String id, String name, String imageUrl)
-    {
-        this.id = id;
-        this.name = name;
-        this.imageUrl = imageUrl;
-    }
-
-    public FriendRequest() {
-
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getImageUrl() {
-        return imageUrl;
-    }
-
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
-    }
 }

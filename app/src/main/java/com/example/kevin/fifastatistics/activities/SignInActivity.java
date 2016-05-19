@@ -248,12 +248,12 @@ public class SignInActivity extends AppCompatActivity implements
                                String imageUrl)
     {
         doCreateUser = true;
-        return new User.Builder()
-                .withName(name)
-                .withEmail(email)
-                .withGoogleId(googleId)
-                .withImageUrl(imageUrl)
-                .withRegistrationToken(mRegistrationToken)
+        return User.builder()
+                .name(name)
+                .email(email)
+                .googleId(googleId)
+                .imageUrl(imageUrl)
+                .registrationToken(mRegistrationToken)
                 .build();
     }
 

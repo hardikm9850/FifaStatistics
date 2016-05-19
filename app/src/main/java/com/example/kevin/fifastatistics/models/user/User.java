@@ -1,14 +1,16 @@
 package com.example.kevin.fifastatistics.models.user;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.gson.Gson;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
+
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * <b>Class:</b> User <br><br>
@@ -23,15 +25,21 @@ import java.util.Collections;
  * @author Kevin Grant
  *
  */
+@JsonDeserialize(builder = User.UserBuilder.class)
 @JsonIgnoreProperties(ignoreUnknown = true)
+@Builder
+@Getter
 public class User {
+
+    @Setter private String registrationToken;
+    @Setter private String imageUrl;
+    @Setter private int level;
+    @Setter private int experience;
 
     private String id;
     private String name;
     private String email;
     private String googleId;
-    private String registrationToken;
-    private String imageUrl;
     private ArrayList<Friend> friends;
     private ArrayList<Friend> incomingRequests;
     private ArrayList<Friend> outgoingRequests;
@@ -43,203 +51,29 @@ public class User {
     private int matchLosses;
     private int seriesWins;
     private int seriesLosses;
-    private int level;
-    private int experience;
 
-    public User() {
-
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    @JsonPOJOBuilder(withPrefix = "")
+    public static final class UserBuilder {
     }
 
-    private User(Builder builder)
-    {
-        this.id = builder.id;
-        this.name = builder.name;
-        this.email = builder.email;
-        this.googleId = builder.googleId;
-        this.registrationToken = builder.registrationToken;
-        this.imageUrl = builder.imageUrl;
+    public void addIncomingRequest(Friend friend) {
+        addFriendToList(friend, incomingRequests);
     }
 
-    public static class Builder
-    {
-        private String id;
-        private String name;
-        private String email;
-        private String googleId;
-        private String registrationToken;
-        private String imageUrl;
+    public void addOutgoingRequest(Friend friend) {
+        addFriendToList(friend, outgoingRequests);
+    }
 
-        public Builder withId(String id)
-        {
-            this.id = id;
-            return this;
+    public void addFriend(Friend friend) {
+        addFriendToList(friend, friends);
+    }
+
+    private void addFriendToList(Friend friend, ArrayList<Friend> list) {
+        if (list == null) {
+            list = new ArrayList<>();
         }
-
-        public Builder withName(String name)
-        {
-            this.name = name;
-            return this;
-        }
-
-        public Builder withEmail(String email)
-        {
-            this.email = email;
-            return this;
-        }
-
-        public Builder withGoogleId(String googleId)
-        {
-            this.googleId = googleId;
-            return this;
-        }
-
-        public Builder withRegistrationToken(String registrationToken)
-        {
-            this.registrationToken = registrationToken;
-            return this;
-        }
-
-        public Builder withImageUrl(String imageUrl)
-        {
-            this.imageUrl = imageUrl;
-            return this;
-        }
-
-        public User build()
-        {
-            throwExceptionIfPropertiesAreNull();
-            return new User(this);
-        }
-
-        private void throwExceptionIfPropertiesAreNull()
-        {
-            if (name == null) throwExceptionForProperty("name");
-            else if (email == null) throwExceptionForProperty("email");
-            else if (googleId == null) throwExceptionForProperty("googleId");
-            else if (imageUrl == null) throwExceptionForProperty("imageUrl");
-            else if (registrationToken == null) throwExceptionForProperty(
-                    "registrationToken");
-        }
-
-        private void throwExceptionForProperty(String propertyName)
-        {
-            throw new IllegalArgumentException("ERROR! " + propertyName +
-                    " cannot be null!");
-        }
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public String getGoogleId() {
-        return googleId;
-    }
-
-    public String getRegistrationToken() {
-        return registrationToken;
-    }
-
-    public void setRegistrationToken(String registrationToken) {
-        this.registrationToken = registrationToken;
-    }
-
-    public String getImageUrl() {
-        return imageUrl;
-    }
-
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
-    }
-
-    public ArrayList<Friend> getFriends() {
-        return friends;
-    }
-
-    public ArrayList<Friend> getIncomingRequests() {
-        return incomingRequests;
-    }
-
-    public ArrayList<Friend> getOutgoingRequests() {
-        return outgoingRequests;
-    }
-
-    public ArrayList<MatchStub> getMatches() {
-        return matches;
-    }
-
-    public ArrayList<SeriesStub> getSeries() {
-        return series;
-    }
-
-    public Stats getRecords() {
-        return records;
-    }
-
-    public Stats getAverages() {
-        return averages;
-    }
-
-    public int getMatchWins() {
-        return matchWins;
-    }
-
-    public int getMatchLosses() {
-        return matchLosses;
-    }
-
-    public int getSeriesWins() {
-        return seriesWins;
-    }
-
-    public int getSeriesLosses() {
-        return seriesLosses;
-    }
-
-    public int getLevel() {
-        return level;
-    }
-
-    public void setLevel(int level) {
-        this.level = level;
-    }
-
-    public int getExperience() {
-        return experience;
-    }
-
-    public void setExperience(int experience) {
-        this.experience = experience;
-    }
-
-    /**
-     * Adds a FriendRequest to the User's incoming requests list.
-     */
-    public void addIncomingRequest(Friend friend)
-    {
-        if (incomingRequests == null) {
-            incomingRequests = new ArrayList<>();
-        }
-        incomingRequests.add(friend);
-    }
-
-    /**
-     * Adds a FriendRequest to the User's outgoing requests list.
-     */
-    public void addOutgoingRequest(Friend friend)
-    {
-        if (outgoingRequests == null) {
-            outgoingRequests = new ArrayList<>();
-        }
-        outgoingRequests.add(friend);
+        list.add(friend);
     }
 
     public void deleteIncomingRequests()
@@ -247,14 +81,6 @@ public class User {
         if (incomingRequests != null) {
             incomingRequests.clear();
         }
-    }
-
-    public void addFriend(Friend friend)
-    {
-        if (friends == null) {
-            friends = new ArrayList<>();
-        }
-        friends.add(friend);
     }
 
     /**
@@ -270,5 +96,4 @@ public class User {
             throw new RuntimeException(e);
         }
     }
-
 }

@@ -1,5 +1,7 @@
 package com.example.kevin.fifastatistics.models.user;
 
+import lombok.Getter;
+
 /**
  * <b>Class:</b> MatchStub <br><br>
  * <b>Description:</b> <br>
@@ -18,6 +20,7 @@ package com.example.kevin.fifastatistics.models.user;
  * @author Kevin
  *
  */
+@Getter
 public class MatchStub {
 
     private String id;
@@ -35,53 +38,5 @@ public class MatchStub {
         this.goalsFor = goalsFor;
         this.goalsAgainst = goalsAgainst;
         this.didWin = didWin;
-    }
-
-    public boolean didWin() {
-        return didWin;
-    }
-
-    public void setWin(boolean didWin) {
-        this.didWin = didWin;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getOpponent() {
-        return opponent;
-    }
-
-    public void setOpponent(String opponent) {
-        this.opponent = opponent;
-    }
-
-    public String getDate() {
-        return date;
-    }
-
-    public void setDate(String date) {
-        this.date = date;
-    }
-
-    public int getGoalsFor() {
-        return goalsFor;
-    }
-
-    public void setGoalsFor(int goalsFor) {
-        this.goalsFor = goalsFor;
-    }
-
-    public int getGoalsAgainst() {
-        return goalsAgainst;
-    }
-
-    public void setGoalsAgainst(int goalsAgainst) {
-        this.goalsAgainst = goalsAgainst;
     }
 }
