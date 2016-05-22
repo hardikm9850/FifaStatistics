@@ -2,12 +2,12 @@ package com.example.kevin.fifastatistics.utils.externalfactories;
 
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.util.Log;
 import android.widget.ImageView;
 
 import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.activities.FifaActivity;
-import com.example.kevin.fifastatistics.managers.FragmentInitializationManager;
+import com.example.kevin.fifastatistics.fragments.initializers.FragmentInitializer;
+import com.example.kevin.fifastatistics.fragments.initializers.FragmentInitializerFactory;
 import com.example.kevin.fifastatistics.managers.SharedPreferencesManager;
 import com.example.kevin.fifastatistics.models.user.User;
 import com.example.kevin.fifastatistics.network.FifaApiAdapter;
@@ -207,23 +207,27 @@ public class NavigationDrawerFactory
             }
             previousDrawerPosition = position;
 
-            if (position == 1) {
-                FragmentInitializationManager.initializeOverviewFragment(activity);
-            }
-            else if (position == 3) {
-                FragmentInitializationManager.initializeFriendsFragment(activity);
-            }
-            else if (position == 4) {
-                currentUser.deleteIncomingRequests();
-                currentUser.deleteFriends();
-                SharedPreferencesManager.storeUser(currentUser);
-            }
-            else if (position == 6) {
-                Log.i("DRAWER", "position: " + position);
-                FifaApiAdapter.getService().updateUser(currentUser.getId(), currentUser)
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe();
+            FragmentInitializer initializer;
+            switch (position) {
+                case 1 :
+                    initializer = FragmentInitializerFactory.createOverviewFragmentInitializer(activity);
+                    initializer.beginInitialization();
+                    break;
+                case 3 :
+                    initializer = FragmentInitializerFactory.createFriendsFragmentInitializer(activity);
+                    initializer.beginInitialization();
+                    break;
+                case 4 :
+                    currentUser.deleteIncomingRequests();
+                    currentUser.deleteFriends();
+                    SharedPreferencesManager.storeUser(currentUser);
+                    break;
+                case 6 :
+                    FifaApiAdapter.getService().updateUser(currentUser.getId(), currentUser)
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe();
+                    break;
             }
             return false;
         });

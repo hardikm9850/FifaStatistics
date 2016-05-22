@@ -9,7 +9,8 @@ import android.util.Log;
 import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.fragments.FifaFragment;
 import com.example.kevin.fifastatistics.fragments.FriendsFragment;
-import com.example.kevin.fifastatistics.managers.FragmentInitializationManager;
+import com.example.kevin.fifastatistics.fragments.initializers.FragmentInitializer;
+import com.example.kevin.fifastatistics.fragments.initializers.FragmentInitializerFactory;
 import com.example.kevin.fifastatistics.models.user.Friend;
 import com.example.kevin.fifastatistics.utils.externalfactories.NavigationDrawerFactory;
 import com.example.kevin.fifastatistics.views.adapters.ViewPagerAdapter;
@@ -37,7 +38,7 @@ public class MainActivity extends FifaActivity
         initializeToolbar();
         initializeViewPager();
         initializeDrawer();
-        FragmentInitializationManager.initializeAppropriateFragment(this);
+        initializeFragment();
     }
 
     private void initializeToolbar()
@@ -66,6 +67,11 @@ public class MainActivity extends FifaActivity
 
     private void initializeDrawer() {
         mDrawer = NavigationDrawerFactory.getDefaultDrawerInstance(this);
+    }
+
+    private void initializeFragment() {
+        FragmentInitializer initializer = FragmentInitializerFactory.createFragmentInitializer(this);
+        initializer.beginInitialization();
     }
 
     @Override

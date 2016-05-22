@@ -7,7 +7,7 @@ import com.example.kevin.fifastatistics.models.user.Friend;
 import lombok.Getter;
 
 /**
- * Created by Kevin on 5/12/2016.
+ * Model of notification bundle that is received from Friend Requests.
  */
 @Getter
 public class FriendRequestBundle implements NotificationBundle
@@ -16,6 +16,7 @@ public class FriendRequestBundle implements NotificationBundle
     private String tag;
     private Friend friend;
 
+    @SuppressWarnings("ConstantConditions")
     public FriendRequestBundle(Bundle bundle) {
 
         body = bundle.getString("gcm.notification.body");
