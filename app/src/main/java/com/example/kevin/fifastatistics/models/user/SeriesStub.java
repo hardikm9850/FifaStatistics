@@ -27,15 +27,15 @@ public class SeriesStub {
     private static final int MAX_GAMES_IN_SERIES = 7;
 
     private String id;
-    private String opponent;
+    private String opponentName;
     private String date;
     private ArrayList<MatchSummary> matches;
     private boolean didWin;
 
-    public SeriesStub(String id, String opponent, String date,
+    public SeriesStub(String id, String opponentName, String date,
                       ArrayList<MatchSummary> matches, boolean didWin) {
         this.id = id;
-        this.opponent = opponent;
+        this.opponentName = opponentName;
         this.date = date;
         this.matches = matches;
         this.didWin = didWin;

@@ -8,6 +8,7 @@ import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.PATCH;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 import retrofit2.http.Url;
@@ -92,8 +93,11 @@ public interface FifaApi
     @GET
     Observable<User> lookupUser(@Url String url);
 
+    @PUT("users/{id}")
+    Observable<User> updateUser(@Path("id") String id, @Body User user);
+
     @PATCH("users/{id}")
-    Observable<User> patchUser(@Path("id") @Body String body);
+    Observable<User> patchUser(@Path("id") String id, @Body String body);
 
 //    @POST
 //    @Headers("key: " + Constants.NOTIFICATION_KEY)

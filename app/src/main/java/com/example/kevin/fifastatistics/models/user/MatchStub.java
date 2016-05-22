@@ -12,8 +12,8 @@ import lombok.Getter;
  * <li> <b>id</b>, a reference to the full Match object represented by this MatchStub
  * <li> <b>opponent</b>, the name of the User the match was against
  * <li> <b>date</b>, the date the match was on
- * <li> <b>goalsFor</b>, the goals scored by the user
- * <li> <b>goalsAgainst</b>, the goals scored by the opponent
+ * <li> <b>goalsWinner</b>, the goals scored by the user
+ * <li> <b>goalsLoser</b>, the goals scored by the opponent
  * <li> <b>won</b>, true if the user won, false otherwise
  * </ul>
  * @version 1.0
@@ -24,19 +24,17 @@ import lombok.Getter;
 public class MatchStub {
 
     private String id;
-    private String opponent;
+    private String winnerId;
     private String date;
-    private int goalsFor;
-    private int goalsAgainst;
-    private boolean didWin;
+    private int goalsWinner;
+    private int goalsLoser;
 
-    public MatchStub(String id, String opponent, String date,
-                     int goalsFor, int goalsAgainst, boolean didWin) {
+    public MatchStub(String id, String winnerId, String date,
+                     int goalsWinner, int goalsLoser, boolean didWin) {
         this.id = id;
-        this.opponent = opponent;
+        this.winnerId = winnerId;
         this.date = date;
-        this.goalsFor = goalsFor;
-        this.goalsAgainst = goalsAgainst;
-        this.didWin = didWin;
+        this.goalsWinner = goalsWinner;
+        this.goalsLoser = goalsLoser;
     }
 }

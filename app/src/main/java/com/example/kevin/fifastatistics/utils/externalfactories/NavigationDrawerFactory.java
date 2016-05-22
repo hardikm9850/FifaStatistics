@@ -2,6 +2,7 @@ package com.example.kevin.fifastatistics.utils.externalfactories;
 
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.util.Log;
 import android.widget.ImageView;
 
 import com.example.kevin.fifastatistics.R;
@@ -9,6 +10,8 @@ import com.example.kevin.fifastatistics.activities.FifaActivity;
 import com.example.kevin.fifastatistics.managers.FragmentInitializationManager;
 import com.example.kevin.fifastatistics.managers.SharedPreferencesManager;
 import com.example.kevin.fifastatistics.models.user.User;
+import com.example.kevin.fifastatistics.network.FifaApi;
+import com.example.kevin.fifastatistics.network.FifaApiAdapter;
 import com.mikepenz.materialdrawer.AccountHeader;
 import com.mikepenz.materialdrawer.AccountHeaderBuilder;
 import com.mikepenz.materialdrawer.Drawer;
@@ -20,6 +23,9 @@ import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
 import com.mikepenz.materialdrawer.util.AbstractDrawerImageLoader;
 import com.mikepenz.materialdrawer.util.DrawerImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoader;
+
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
  * Factory class for building instances of the navigation drawer. Since the
@@ -214,6 +220,18 @@ public class NavigationDrawerFactory
         }
         else if (position == 3) {
             FragmentInitializationManager.initializeFriendsFragment(activity);
+        }
+        else if (position == 4) {
+            currentUser.deleteIncomingRequests();
+            currentUser.deleteFriends();
+            SharedPreferencesManager.storeUser(currentUser);
+        }
+        else if (position == 6) {
+            Log.i("DRAWER", "position: " + position);
+            FifaApiAdapter.getService().updateUser(currentUser.getId(), currentUser)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe();
         }
         return false;
     }

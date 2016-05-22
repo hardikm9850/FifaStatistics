@@ -83,6 +83,13 @@ public class User {
         }
     }
 
+    public void deleteFriends()
+    {
+        if (friends != null) {
+            friends.clear();
+        }
+    }
+
     /**
      * Serializes the user to JSON format.
      */
