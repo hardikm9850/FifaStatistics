@@ -116,6 +116,6 @@ public class FriendRequestNotification extends FifaNotification
     private void addFriendRequestToUser() {
         User user = SharedPreferencesManager.getUser();
         user.addIncomingRequest(friendRequestBundle.getFriend());
-        SharedPreferencesManager.storeUser(user);
+        SharedPreferencesManager.storeUserSync(user);
     }
 }

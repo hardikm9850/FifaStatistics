@@ -3,7 +3,6 @@ package com.example.kevin.fifastatistics.managers;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.util.Log;
 
 import com.example.kevin.fifastatistics.models.user.User;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -84,13 +83,13 @@ public class SharedPreferencesManager
     }
 
     @SuppressLint("CommitPrefEdits")
-    public static void storeUser(User user) {
+    public static void storeUserSync(User user) {
         editor = preferences.edit();
         editor.putString(CURRENT_USER, user.toString());
         editor.commit();
     }
 
-    public static void storeUserAsync(User user) {
+    public static void storeUser(User user) {
         editor = preferences.edit();
         editor.putString(CURRENT_USER, user.toString());
         editor.apply();

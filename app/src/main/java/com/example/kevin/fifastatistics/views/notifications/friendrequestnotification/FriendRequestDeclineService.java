@@ -42,7 +42,7 @@ public class FriendRequestDeclineService extends Service
         User user = SharedPreferencesManager.getUser();
         int size = user.getIncomingRequests().size();
         user.getIncomingRequests().remove(size - 1);
-        SharedPreferencesManager.storeUser(user);
+        SharedPreferencesManager.storeUserSync(user);
     }
 
     private void updateAndClearNotification()

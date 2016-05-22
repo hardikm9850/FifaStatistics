@@ -23,8 +23,6 @@ import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.OptionalPendingResult;
-import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.common.api.Status;
 
 import java.io.IOException;
 
@@ -303,7 +301,7 @@ public class SignInActivity extends AppCompatActivity implements
 
     private void startMainActivity(User user)
     {
-        SharedPreferencesManager.storeUser(user);
+        SharedPreferencesManager.storeUserSync(user);
         SharedPreferencesManager.setSignedIn(true);
         mProgressDialog.dismiss();
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);

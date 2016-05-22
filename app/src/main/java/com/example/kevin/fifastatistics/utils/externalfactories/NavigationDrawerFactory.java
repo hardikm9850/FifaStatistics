@@ -10,7 +10,6 @@ import com.example.kevin.fifastatistics.activities.FifaActivity;
 import com.example.kevin.fifastatistics.managers.FragmentInitializationManager;
 import com.example.kevin.fifastatistics.managers.SharedPreferencesManager;
 import com.example.kevin.fifastatistics.models.user.User;
-import com.example.kevin.fifastatistics.network.FifaApi;
 import com.example.kevin.fifastatistics.network.FifaApiAdapter;
 import com.mikepenz.materialdrawer.AccountHeader;
 import com.mikepenz.materialdrawer.AccountHeaderBuilder;

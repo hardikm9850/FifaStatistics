@@ -30,7 +30,7 @@ public class SecondFragment extends Fragment {
 //        SharedPreferencesManager handler = SharedPreferencesManager.getInstance(getContext());
 //        User user = handler.getUser();
 //        user.deleteIncomingRequests();
-//        handler.storeUser(user);
+//        handler.storeUserSync(user);
 //
 
         return view;

@@ -45,7 +45,7 @@ public class FriendRequestAcceptService extends Service
         int size = user.getIncomingRequests().size();
         user.addFriend(user.getIncomingRequests().get(size - 1));
         user.getIncomingRequests().remove(size - 1);
-        SharedPreferencesManager.storeUser(user);
+        SharedPreferencesManager.storeUserSync(user);
     }
 
     private void cancelNotification()

@@ -58,22 +58,23 @@ public class User {
     }
 
     public void addIncomingRequest(Friend friend) {
-        addFriendToList(friend, incomingRequests);
+        incomingRequests = addFriendToList(friend, incomingRequests);
     }
 
     public void addOutgoingRequest(Friend friend) {
-        addFriendToList(friend, outgoingRequests);
+        outgoingRequests = addFriendToList(friend, outgoingRequests);
     }
 
     public void addFriend(Friend friend) {
-        addFriendToList(friend, friends);
+        friends = addFriendToList(friend, friends);
     }
 
-    private void addFriendToList(Friend friend, ArrayList<Friend> list) {
+    private ArrayList<Friend> addFriendToList(Friend friend, ArrayList<Friend> list) {
         if (list == null) {
             list = new ArrayList<>();
         }
         list.add(friend);
+        return list;
     }
 
     public void deleteIncomingRequests()
