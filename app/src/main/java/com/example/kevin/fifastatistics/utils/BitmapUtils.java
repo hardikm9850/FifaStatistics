@@ -32,8 +32,6 @@ public class BitmapUtils
         paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
         canvas.drawBitmap(bitmap, rect, rect, paint);
 
-        bitmap.recycle();
-
         return output;
     }
 
@@ -45,5 +43,11 @@ public class BitmapUtils
     public static Bitmap getCircleBitmapFromUrl(String url) {
         Bitmap bitmap = getBitmapFromUrl(url);
         return getCircleBitmap(bitmap);
+    }
+
+    public static Bitmap getBlankBitmap(int width, int height) {
+        Bitmap image = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+        image.eraseColor(android.graphics.Color.WHITE);
+        return image;
     }
 }

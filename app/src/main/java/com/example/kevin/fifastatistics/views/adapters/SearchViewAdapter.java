@@ -1,11 +1,13 @@
 package com.example.kevin.fifastatistics.views.adapters;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.media.ThumbnailUtils;
 import android.support.v4.content.ContextCompat;
 import android.text.Spannable;
 import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,6 +33,7 @@ import rx.schedulers.Schedulers;
 
 public class SearchViewAdapter extends com.lapism.searchview.adapter.SearchAdapter
 {
+    private static final int IMAGE_SIZE = 150;
 
     private final List<Integer> mStartList = new ArrayList<>();
     private final Context mContext;
@@ -151,7 +154,8 @@ public class SearchViewAdapter extends com.lapism.searchview.adapter.SearchAdapt
     private void setIcon(String imageUrl, ImageView icon) {
         Observable.just(imageUrl)
                 .map(mImageLoader::loadImageSync)
-                .map(b -> ThumbnailUtils.extractThumbnail(b, 150, 150, ThumbnailUtils.OPTIONS_RECYCLE_INPUT))
+                .map(b -> ThumbnailUtils.extractThumbnail(b, IMAGE_SIZE, IMAGE_SIZE))
+                .map(b -> b == null ? BitmapUtils.getBlankBitmap(IMAGE_SIZE, IMAGE_SIZE) : b)
                 .map(BitmapUtils::getCircleBitmap)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

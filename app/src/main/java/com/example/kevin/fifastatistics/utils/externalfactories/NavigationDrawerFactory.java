@@ -39,7 +39,6 @@ public class NavigationDrawerFactory
     private static int incomingRequestsCount = 0;
     private static int previousDrawerPosition = -1;
 
-    private static Drawer drawer;
     private static User currentUser;
     private static BadgeStyle badgeStyle;
     private static ProfileDrawerItem profileDrawerItem;
@@ -48,7 +47,6 @@ public class NavigationDrawerFactory
     private static PrimaryDrawerItem friendsItem;
     private static PrimaryDrawerItem starredItem;
     private static PrimaryDrawerItem settingsItem;
-    private static AccountHeader headerResult;
 
     /**
      * Gets the default drawer instance.
@@ -61,12 +59,10 @@ public class NavigationDrawerFactory
         currentUser = SharedPreferencesManager.getUser();
         setIncomingRequestsCount();
 
-        if (drawer == null) {
+        if (starredItem == null) {
             initializeActivityIndependentObjects();
         }
-        buildDrawer(activity);
-
-        return drawer;
+        return buildDrawer(activity);
     }
 
     private static void initializeActivityIndependentObjects()
@@ -79,11 +75,13 @@ public class NavigationDrawerFactory
         initializeStarredItem();
     }
 
-    private static void buildDrawer(FifaActivity activity)
+    private static Drawer buildDrawer(FifaActivity activity)
     {
-        initializeDrawerBanner(activity);
-        initializeDrawer(activity);
-        setOnDrawerItemClickListener(activity);
+        AccountHeader header = initializeDrawerBanner(activity);
+        Drawer drawer = initializeDrawer(activity, header);
+        setOnDrawerItemClickListener(activity, drawer);
+
+        return drawer;
     }
 
     private static void setIncomingRequestsCount()
@@ -122,8 +120,8 @@ public class NavigationDrawerFactory
                 .withName(R.string.friends)
                 .withIcon(R.drawable.ic_group_black_24dp)
                 .withBadge(String.valueOf(incomingRequestsCount))
-                .withBadgeStyle(badgeStyle)
-                .withIdentifier(FRIENDS_ITEM_IDENTIFIER)
+                 .withBadgeStyle(badgeStyle)
+                 .withIdentifier(FRIENDS_ITEM_IDENTIFIER)
                 .withIconTintingEnabled(true);
     }
 
@@ -143,11 +141,11 @@ public class NavigationDrawerFactory
                 .withIconTintingEnabled(true);
     }
 
-    private static void initializeDrawerBanner(FifaActivity activity)
+    private static AccountHeader initializeDrawerBanner(FifaActivity activity)
     {
         initializeDrawerImageLoader();
         initializeProfileDrawerItem();
-        initializeAccountHeader(activity);
+        return initializeAccountHeader(activity);
     }
 
     private static void initializeDrawerImageLoader()
@@ -171,20 +169,20 @@ public class NavigationDrawerFactory
                 .withIcon(currentUser.getImageUrl());
     }
 
-    private static void initializeAccountHeader(FifaActivity activity)
+    private static AccountHeader initializeAccountHeader(FifaActivity activity)
     {
-        headerResult = new AccountHeaderBuilder()
+        return new AccountHeaderBuilder()
                 .withActivity(activity)
                 .withHeaderBackground(R.drawable.header)
                 .addProfiles(profileDrawerItem)
                 .build();
     }
 
-    private static void initializeDrawer(FifaActivity activity)
+    private static Drawer initializeDrawer(FifaActivity activity, AccountHeader header)
     {
-        drawer = new DrawerBuilder()
+        return new DrawerBuilder()
                 .withActivity(activity)
-                .withAccountHeader(headerResult)
+                .withAccountHeader(header)
                 .withActionBarDrawerToggle(true)
                 .withActionBarDrawerToggleAnimated(true)
                 .withToolbar(activity.getToolbar())
@@ -199,39 +197,35 @@ public class NavigationDrawerFactory
                 .build();
     }
 
-    private static void setOnDrawerItemClickListener(FifaActivity activity)
+    private static void setOnDrawerItemClickListener(FifaActivity activity, Drawer drawer)
     {
         drawer.setOnDrawerItemClickListener((view, position, drawerItem) ->
-                handleDrawerItemClick(position, activity));
-    }
+        {
+            if (position == previousDrawerPosition) {
+                drawer.closeDrawer();
+                return true;
+            }
+            previousDrawerPosition = position;
 
-    private static boolean handleDrawerItemClick(int position,
-                                                 FifaActivity activity)
-    {
-        if (position == previousDrawerPosition) {
-            drawer.closeDrawer();
-            return true;
-        }
-        previousDrawerPosition = position;
-
-        if (position == 1) {
-            FragmentInitializationManager.initializeOverviewFragment(activity);
-        }
-        else if (position == 3) {
-            FragmentInitializationManager.initializeFriendsFragment(activity);
-        }
-        else if (position == 4) {
-            currentUser.deleteIncomingRequests();
-            currentUser.deleteFriends();
-            SharedPreferencesManager.storeUser(currentUser);
-        }
-        else if (position == 6) {
-            Log.i("DRAWER", "position: " + position);
-            FifaApiAdapter.getService().updateUser(currentUser.getId(), currentUser)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe();
-        }
-        return false;
+            if (position == 1) {
+                FragmentInitializationManager.initializeOverviewFragment(activity);
+            }
+            else if (position == 3) {
+                FragmentInitializationManager.initializeFriendsFragment(activity);
+            }
+            else if (position == 4) {
+                currentUser.deleteIncomingRequests();
+                currentUser.deleteFriends();
+                SharedPreferencesManager.storeUser(currentUser);
+            }
+            else if (position == 6) {
+                Log.i("DRAWER", "position: " + position);
+                FifaApiAdapter.getService().updateUser(currentUser.getId(), currentUser)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe();
+            }
+            return false;
+        });
     }
 }
