@@ -4,7 +4,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -14,7 +13,7 @@ import android.view.ViewGroup;
 
 import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.models.SearchAdapterSearchViewPair;
-import com.example.kevin.fifastatistics.models.apiresponses.ListResponse;
+import com.example.kevin.fifastatistics.models.apiresponses.ApiListResponse;
 import com.example.kevin.fifastatistics.models.user.Friend;
 import com.example.kevin.fifastatistics.models.user.User;
 import com.example.kevin.fifastatistics.managers.SharedPreferencesManager;
@@ -32,8 +31,10 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 /**
- * A fragment representing a list of users.
- * <p/>
+ * A fragment representing a list of players.
+ * <p>
+ * Implements the {@link FifaFragment} interface, as all fragments in this project should.
+ * <p>
  * Activities containing this fragment MUST implement the {@link OnListFragmentInteractionListener}
  * interface.
  */
@@ -64,8 +65,7 @@ public class FriendsFragment extends Fragment implements FifaFragment {
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState)
-    {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         mUser = SharedPreferencesManager.getUser();
@@ -75,32 +75,30 @@ public class FriendsFragment extends Fragment implements FifaFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState)
-    {
+                             Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_friends_list, container, false);
         mSearchView = (SearchView) getActivity().findViewById(R.id.searchView);
 
+        beginSearchViewInitialization();
+        setAdapterDataSource();
+        return view;
+    }
+
+    private void beginSearchViewInitialization() {
         FifaApiAdapter.getService().getUsers()
-                .map(ListResponse::getItems)
+                .map(ApiListResponse::getItems)
                 .flatMap(this::initializeSearchView)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this::setSearchAdapterAndInvalidateMenu);
-
-        setAdapterDataSource();
-
-        return view;
     }
 
-    private Observable<SearchAdapterSearchViewPair> initializeSearchView(
-            ArrayList<User> users)
-    {
+    private Observable<SearchAdapterSearchViewPair> initializeSearchView(ArrayList<User> users) {
         SearchAdapterSearchViewPair pair = SearchViewFactory.createUserSearchViewPair(this, users);
         return Observable.just(pair);
     }
 
-    private void setSearchAdapterAndInvalidateMenu(SearchAdapterSearchViewPair pair)
-    {
+    private void setSearchAdapterAndInvalidateMenu(SearchAdapterSearchViewPair pair) {
         mSearchView = pair.getSearchView();
         mSearchView.setAdapter(pair.getAdapter());
 
@@ -108,20 +106,17 @@ public class FriendsFragment extends Fragment implements FifaFragment {
         getActivity().invalidateOptionsMenu();
     }
 
-    private void setAdapterDataSource()
-    {
+    private void setAdapterDataSource() {
         int viewToShow = getArguments().getInt(viewArgument, 0);
         if (viewToShow == friendsView) {
             setAdapter(mUser.getFriends());
-        }
-        else {
+        } else {
             setAdapter(mUser.getIncomingRequests());
         }
     }
 
     @Override
-    public void onDestroyView()
-    {
+    public void onDestroyView() {
         view = null;
         mSearchView = null;
         super.onDestroyView();
@@ -145,20 +140,15 @@ public class FriendsFragment extends Fragment implements FifaFragment {
     }
 
     @Override
-    public void onPause()
-    {
+    public void onPause() {
         super.onPause();
-        if (mSearchView != null) {
-            if (mSearchView.isSearchOpen()) {
-                mSearchView.hide(false);
-            }
+        if (mSearchView != null && mSearchView.isSearchOpen()) {
+            mSearchView.hide(false);
         }
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater)
-    {
-        Log.i(TAG, "Creating options menu from fragment!");
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.main, menu);
 
         MenuItem searchItem = menu.findItem(R.id.action_search);
@@ -166,8 +156,7 @@ public class FriendsFragment extends Fragment implements FifaFragment {
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item)
-    {
+    public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_search) {
             mSearchView.show(true);
             return true;
@@ -177,8 +166,7 @@ public class FriendsFragment extends Fragment implements FifaFragment {
     }
 
     @Override
-    public boolean handledBackPress()
-    {
+    public boolean handledBackPress() {
         if (mSearchView != null && mSearchView.isSearchOpen()) {
             mSearchView.hide(true);
             return true;
@@ -191,12 +179,10 @@ public class FriendsFragment extends Fragment implements FifaFragment {
         void onListFragmentInteraction(Friend friend);
     }
 
-    private void setAdapter(ArrayList<Friend> friends)
-    {
+    private void setAdapter(ArrayList<Friend> friends) {
         if (view instanceof GridRecyclerView) {
             GridRecyclerView recyclerView = (GridRecyclerView) view;
-            FriendsRecyclerViewAdapter adapter =
-                    new FriendsRecyclerViewAdapter(friends, mListener);
+            FriendsRecyclerViewAdapter adapter = new FriendsRecyclerViewAdapter(friends, mListener);
 
             recyclerView.setLayoutManager(new GridLayoutManager(view.getContext(), mColumnCount));
             recyclerView.setAdapter(adapter);

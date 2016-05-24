@@ -1,6 +1,6 @@
 package com.example.kevin.fifastatistics.network;
 
-import com.example.kevin.fifastatistics.models.apiresponses.ListResponse;
+import com.example.kevin.fifastatistics.models.apiresponses.ApiListResponse;
 import com.example.kevin.fifastatistics.models.user.User;
 
 import retrofit2.Response;
@@ -33,7 +33,7 @@ public interface FifaApi
      * @return the User List Observable
      */
     @GET("users")
-    Observable<ListResponse<User>> getUsers();
+    Observable<ApiListResponse<User>> getUsers();
 
     /**
      * Lists all users with the specified name.
@@ -41,7 +41,7 @@ public interface FifaApi
      * @return the User List Observable
      */
     @GET("users/search/findByName")
-    Observable<ListResponse<User>> getUsersWithName(@Query("name") String name);
+    Observable<ApiListResponse<User>> getUsersWithName(@Query("name") String name);
 
     /**
      * Lists all users who have names starting with the specified name.
@@ -50,7 +50,7 @@ public interface FifaApi
      * @return the User List Observable
      */
     @GET("users/search/findByNameStartingWithIgnoreCase")
-    Observable<ListResponse<User>> getUsersWithNameStartingWith(
+    Observable<ApiListResponse<User>> getUsersWithNameStartingWith(
             @Query("name") String name);
 
     /**

@@ -9,8 +9,8 @@ import com.example.kevin.fifastatistics.fragments.FifaFragment;
 import com.example.kevin.fifastatistics.views.adapters.ViewPagerAdapter;
 import com.mikepenz.materialdrawer.Drawer;
 
-public abstract class FifaActivity extends AppCompatActivity
-{
+public abstract class FifaActivity extends AppCompatActivity {
+
     public abstract Toolbar getToolbar();
     public abstract ViewPagerAdapter getViewPagerAdapter();
     public abstract ViewPager getViewPager();

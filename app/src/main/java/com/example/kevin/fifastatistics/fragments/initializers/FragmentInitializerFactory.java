@@ -4,10 +4,13 @@ import com.example.kevin.fifastatistics.activities.FifaActivity;
 import com.example.kevin.fifastatistics.models.Constants;
 
 /**
- * Created by Kevin on 5/3/2016.
+ * Factory for generating fragment initializers.
+ * <p>
+ * Use the {@link #createFragmentInitializer(FifaActivity)} method to create an initializer based
+ * on the activity's Extras.
  */
-public class FragmentInitializerFactory
-{
+public class FragmentInitializerFactory {
+
     private static final String FRAGMENT_EXTRA = "fragment";
 
     /**
@@ -15,8 +18,7 @@ public class FragmentInitializerFactory
      * fragment extra passed to the activity. If the extra is null, then an
      * {@link OverviewFragmentInitializer} is returned.
      */
-    public static FragmentInitializer createFragmentInitializer(FifaActivity activity)
-    {
+    public static FragmentInitializer createFragmentInitializer(FifaActivity activity) {
         String fragment = getFragmentExtra(activity);
         switch (fragment) {
             case (Constants.OVERVIEW_FRAGMENT):
@@ -25,29 +27,22 @@ public class FragmentInitializerFactory
                 activity.getDrawer().closeDrawer();
                 return new FriendsFragmentInitializer(activity);
             default:
-                throw new IllegalStateException(fragment + " is not a valid" +
-                        " fragment name!");
+                throw new IllegalStateException(fragment + " is not a valid fragment name!");
         }
     }
 
-    private static String getFragmentExtra(FifaActivity activity)
-    {
+    private static String getFragmentExtra(FifaActivity activity) {
         String extra = activity.getIntent().getStringExtra(FRAGMENT_EXTRA);
         activity.getIntent().removeExtra(FRAGMENT_EXTRA);
-        if (extra == null) {
-            extra = Constants.OVERVIEW_FRAGMENT;
-        }
 
-        return extra;
+        return extra == null ? Constants.OVERVIEW_FRAGMENT : extra;
     }
 
-    public static FragmentInitializer createFriendsFragmentInitializer(
-            FifaActivity activity) {
+    public static FragmentInitializer createFriendsFragmentInitializer(FifaActivity activity) {
         return new FriendsFragmentInitializer(activity);
     }
 
-    public static FragmentInitializer createOverviewFragmentInitializer(
-            FifaActivity activity) {
+    public static FragmentInitializer createOverviewFragmentInitializer(FifaActivity activity) {
         return new OverviewFragmentInitializer(activity);
     }
 }

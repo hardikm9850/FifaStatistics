@@ -9,7 +9,10 @@ import com.example.kevin.fifastatistics.models.Constants;
 import com.example.kevin.fifastatistics.views.adapters.ViewPagerAdapter;
 
 /**
- * Created by Kevin on 5/3/2016.
+ * Implementation of the abstract FragmentInitializer class for FriendFragments.
+ * <p>
+ * See {@link FragmentInitializer} and {@link FriendsFragment} for more detailed information on
+ * those classes.
  */
 public class FriendsFragmentInitializer extends FragmentInitializer
 {

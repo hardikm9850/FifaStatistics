@@ -14,7 +14,7 @@ import java.util.Map;
  * <pre>
  * {@code
  * "_embedded": {
- *   "<items>": [
+ *   "items": [
  *      {
  *          ... // list of items
  *      }
@@ -26,11 +26,15 @@ import java.util.Map;
  */
 @SuppressWarnings("unused")
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class ListResponse<T> {
+public class ApiListResponse<T> {
 
     @JsonProperty("_embedded")
     private Embedded<T> embedded;
 
+    /**
+     * Retrieve the list of items from the response.
+     * @return  an ArrayList of items, with type specified by the class's generic type
+     */
     public ArrayList<T> getItems() {
         return embedded.getItems();
     }

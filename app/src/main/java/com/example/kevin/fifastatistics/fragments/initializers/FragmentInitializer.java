@@ -1,10 +1,12 @@
 package com.example.kevin.fifastatistics.fragments.initializers;
 
 /**
- * Created by Kevin on 5/3/2016.
+ * Prepares the activity for the fragment that will be displayed.
+ * For example, it sets the activity title, sets the tab layout state, and initializes the
+ * fragments in the activity's view pager.
  */
-public abstract class FragmentInitializer
-{
+public abstract class FragmentInitializer {
+
     protected static final String PAGE_EXTRA = "page";
 
     /**

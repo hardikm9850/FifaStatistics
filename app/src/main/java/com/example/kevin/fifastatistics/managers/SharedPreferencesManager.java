@@ -10,11 +10,16 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 
 /**
- * Utility for handling all Shared Preference needs. Any requests to Shared
- * Preferences should be delegated to this class.
+ * Utility for handling all Shared Preference needs. Any requests to Shared Preferences should be
+ * delegated to this class.
+ * <p>
+ * All methods write to SharedPreferences asynchronously, unless they are suffixed with 'Sync'.
+ * <p>
+ * Ensure that {@link #initialize(Context)} is called in the onCreate() method of
+ * {@link com.example.kevin.fifastatistics.FifaApplication} before this class is used.
  */
-public class SharedPreferencesManager
-{
+public class SharedPreferencesManager {
+
     private static final String PREFERENCES = "PREFERENCES";
     private static final String SIGNED_IN = "SIGNED_IN";
     private static final String SENT_TOKEN_TO_SERVER = "SENT_TOKEN_TO_SERVER";
@@ -25,6 +30,11 @@ public class SharedPreferencesManager
     private static SharedPreferences preferences;
     private static SharedPreferences.Editor editor;
 
+    /**
+     * Initializes the SharedPreferences with an application context. This method must be called
+     * prior to calling any other public methods.
+     * @param context   the application context
+     */
     @SuppressWarnings("ConstantConditions")
     public static void initialize(Context context) {
         if (preferences == null) {
@@ -42,8 +52,7 @@ public class SharedPreferencesManager
     /**
      * Set whether or not the user is signed in.
      */
-    public static void setSignedIn(boolean signedIn)
-    {
+    public static void setSignedIn(boolean signedIn) {
         editor = preferences.edit();
         editor.putBoolean(SIGNED_IN, signedIn);
         editor.apply();
@@ -82,6 +91,12 @@ public class SharedPreferencesManager
         editor.apply();
     }
 
+    /**
+     * Synchronously stores the current user to shared preferences.
+     * <p>
+     * {@link #storeUser(User)} should be used in most cases rather than this method.
+     * @param user  The current user
+     */
     @SuppressLint("CommitPrefEdits")
     public static void storeUserSync(User user) {
         editor = preferences.edit();
@@ -89,12 +104,20 @@ public class SharedPreferencesManager
         editor.commit();
     }
 
+    /**
+     * Stores the current user to shared preferences.
+     * @param user  The current user
+     */
     public static void storeUser(User user) {
         editor = preferences.edit();
         editor.putString(CURRENT_USER, user.toString());
         editor.apply();
     }
 
+    /**
+     * Retrieves the current user from Shared Preferences.
+     * @return  the curernt user
+     */
     public static User getUser() {
         ObjectMapper mapper = new ObjectMapper();
         String user = preferences.getString(CURRENT_USER, null);
