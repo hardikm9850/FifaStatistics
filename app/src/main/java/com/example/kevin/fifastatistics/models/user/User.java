@@ -20,10 +20,6 @@ import lombok.Setter;
  * matches, etc. <br>
  * There shall only ever be one instance of a user per googleId (two users
  * cannot be shared by a single Google account).
- *
- * @version 1.0
- * @author Kevin Grant
- *
  */
 @JsonDeserialize(builder = User.UserBuilder.class)
 @JsonIgnoreProperties(ignoreUnknown = true)

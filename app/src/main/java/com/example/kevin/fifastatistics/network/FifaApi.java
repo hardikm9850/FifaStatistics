@@ -83,18 +83,23 @@ public interface FifaApi
 
     /**
      * Looks up the User at the specified URL. Should be used to retrieve a
-     * user after calling {@link #createUser(User)}.
+     * user after calling {@link #createUser(User)} or {@link #updateUser(String, User)}.
      * @param url   The URL where the user can be found. This should be specified
      *              by <code>response.headers().get("Location")</code>, where
-     *              <code>response</code> is the response of a call to
-     *              <code>createUser()</code>.
+     *              <code>response</code> is the response of a call to createUser() or updateUser().
      * @return The User Observable
      */
     @GET
     Observable<User> lookupUser(@Url String url);
 
+    /**
+     * Make a PUT request to the server to update the specified user.
+     * @param id    The user's ID
+     * @param user  The user to be updated
+     * @return the Retrofit response. The desired code is 204 No Content.
+     */
     @PUT("users/{id}")
-    Observable<User> updateUser(@Path("id") String id, @Body User user);
+    Observable<Response<Void>> updateUser(@Path("id") String id, @Body User user);
 
     @PATCH("users/{id}")
     Observable<User> patchUser(@Path("id") String id, @Body String body);

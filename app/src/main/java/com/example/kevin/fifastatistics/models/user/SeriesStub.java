@@ -2,6 +2,7 @@ package com.example.kevin.fifastatistics.models.user;
 
 import java.util.ArrayList;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 /**
@@ -21,6 +22,7 @@ import lombok.Getter;
  * @author Kevin
  *
  */
+@AllArgsConstructor
 @Getter
 public class SeriesStub {
 
@@ -31,15 +33,6 @@ public class SeriesStub {
     private String date;
     private ArrayList<MatchSummary> matches;
     private boolean didWin;
-
-    public SeriesStub(String id, String opponentName, String date,
-                      ArrayList<MatchSummary> matches, boolean didWin) {
-        this.id = id;
-        this.opponentName = opponentName;
-        this.date = date;
-        this.matches = matches;
-        this.didWin = didWin;
-    }
 
     /**
      * Adds a new Match Summary to the series.
@@ -62,17 +55,12 @@ public class SeriesStub {
     /**
      * A short summary of each match in the series.
      */
+    @AllArgsConstructor
     private class MatchSummary {
 
         public int goalsFor;
         public int goalsAgainst;
         public boolean didWin;
-
-        public MatchSummary(int goalsFor, int goalsAgainst, boolean didWin) {
-            this.goalsFor = goalsFor;
-            this.goalsAgainst = goalsAgainst;
-            this.didWin = didWin;
-        }
     }
 
 

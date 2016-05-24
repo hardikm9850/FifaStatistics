@@ -10,10 +10,10 @@ import lombok.Getter;
  * associated with a user or Series object, and the related full Match object can be
  * accessed through the 'id' property. It defines only a few traits: <ul>
  * <li> <b>id</b>, a reference to the full Match object represented by this MatchStub
- * <li> <b>opponent</b>, the name of the User the match was against
+ * <li> <b>winnerId</b>, the ID of the winner of the match
  * <li> <b>date</b>, the date the match was on
- * <li> <b>goalsWinner</b>, the goals scored by the user
- * <li> <b>goalsLoser</b>, the goals scored by the opponent
+ * <li> <b>goalsWinner</b>, the goals scored by the winner
+ * <li> <b>goalsLoser</b>, the goals scored by the loser
  * <li> <b>won</b>, true if the user won, false otherwise
  * </ul>
  * @version 1.0
