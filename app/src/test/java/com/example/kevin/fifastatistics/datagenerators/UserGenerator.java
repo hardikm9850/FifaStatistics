@@ -6,13 +6,23 @@ import com.example.kevin.fifastatistics.models.user.SeriesStub;
 import com.example.kevin.fifastatistics.models.user.User;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Random;
 
 public class UserGenerator {
 
-    public static User generateUser() {
+    public static final int NULL_REQUESTS_LIST = 1;
 
-        Random rand = new Random();
+    private static int[] requestIndexes = new int[5];
+    private static Random rand;
+
+    public static User generateUser() {
+        return generateUser(null);
+    }
+
+    public static User generateUser(int... options) {
+        setArgsArray(options);
+        rand = new Random();
         String name = NameGenerator.generateRandomFullName();
         String id = IdGenerator.getRandomId();
 
@@ -24,8 +34,8 @@ public class UserGenerator {
                 .registrationToken(IdGenerator.getRandomIdWithDashes())
                 .imageUrl(ImageUrlGenerator.generateValidImageUrl())
                 .friends(generateFriendsList(rand.nextInt(10) + 1))
-                .incomingRequests(generateFriendsList(rand.nextInt(3)))
-                .outgoingRequests(generateFriendsList(rand.nextInt(2)))
+                .incomingRequests(getRequestsList())
+                .outgoingRequests(getRequestsList())
                 .records(StatsGenerator.generateStats())
                 .averages(StatsGenerator.generateStats())
                 .matches(generateMatchList(id, rand.nextInt(5) + 1))
@@ -38,6 +48,22 @@ public class UserGenerator {
                 .experience(rand.nextInt(100000))
                 .build();
     }
+
+    private static void setArgsArray(int[] options) {
+        if (options == null) {
+            Arrays.fill(requestIndexes, 0);
+            return;
+        }
+        for (int i : options) {
+            requestIndexes[i] = 1;
+        }
+    }
+
+    private static ArrayList<Friend> getRequestsList() {
+        return (requestIndexes[NULL_REQUESTS_LIST] == 1) ? null : generateFriendsList(rand.nextInt(2));
+
+    }
+
 
     private static ArrayList<Friend> generateFriendsList(int count) {
         ArrayList<Friend> friends = new ArrayList<>();
