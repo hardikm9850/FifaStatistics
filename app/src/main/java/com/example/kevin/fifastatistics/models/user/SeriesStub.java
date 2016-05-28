@@ -1,28 +1,22 @@
 package com.example.kevin.fifastatistics.models.user;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
+
 import java.util.ArrayList;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 
 /**
- * <b>Class:</b> SeriesStub <br><br>
- * <b>Description:</b> <br>
  * The SeriesStub class is meant to act as a 'stub' of a Series, and should exist
- * only within instances of a User object. It is used as the series associated
- * with a User object, and the related full Series object can be accessed through
- * the 'id' property. It defines only a few traits: <ul>
- * <li> <b>id</b>, a reference to the full Series object represented by this SeriesStub
- * <li> <b>opponent</b>, the name of the User the series was against
- * <li> <b>date</b>, the date the series started on
- * <li> <b>matches</b>, A short summary of each match in the series
- * <li> <b>didWin</b>, true if the user won the series, false otherwise
- * </ul>
- * @version 1.0
- * @author Kevin
- *
+ * only within instances of a User object.
+ * It is used as the series associated with a User object, and the related full Series object can
+ * be accessed through the 'id' property.
  */
-@AllArgsConstructor
+@JsonDeserialize(builder = SeriesStub.SeriesStubBuilder.class)
+@Builder
 @Getter
 public class SeriesStub {
 
@@ -33,6 +27,10 @@ public class SeriesStub {
     private String date;
     private ArrayList<MatchSummary> matches;
     private boolean didWin;
+
+    @JsonPOJOBuilder(withPrefix = "")
+    public static final class SeriesStubBuilder {
+    }
 
     /**
      * Adds a new Match Summary to the series.
@@ -56,11 +54,12 @@ public class SeriesStub {
      * A short summary of each match in the series.
      */
     @AllArgsConstructor
-    private class MatchSummary {
+    @Getter
+    public static class MatchSummary {
 
-        public int goalsFor;
-        public int goalsAgainst;
-        public boolean didWin;
+        private int goalsFor;
+        private int goalsAgainst;
+        private boolean didWin;
     }
 
 
