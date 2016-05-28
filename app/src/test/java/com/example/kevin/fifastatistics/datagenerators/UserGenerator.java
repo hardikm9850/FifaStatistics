@@ -28,7 +28,7 @@ public class UserGenerator {
                 .outgoingRequests(generateFriendsList(rand.nextInt(2)))
                 .records(StatsGenerator.generateStats())
                 .averages(StatsGenerator.generateStats())
-                .matches(generateMatchList(id, rand.nextInt(5)))
+                .matches(generateMatchList(id, rand.nextInt(5) + 1))
                 .series(generateSeriesList(rand.nextInt(4) + 1))
                 .matchWins(rand.nextInt(100))
                 .matchLosses(rand.nextInt(100))

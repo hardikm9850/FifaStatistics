@@ -13,8 +13,8 @@ public class MatchStubGenerator {
 
         Date today = new Date();
         Random goals = new Random();
-        int goalsWinner = goals.nextInt(MAX_GOALS) + 1;
-        int goalsLoser = goals.nextInt(MAX_GOALS) + 1;
+        int goalsWinner = goals.nextInt(MAX_GOALS + 1);
+        int goalsLoser = (goalsWinner == 0) ? 0 : goals.nextInt(goalsWinner + 1);
 
         return MatchStub.builder()
                 .matchId(IdGenerator.getRandomId())

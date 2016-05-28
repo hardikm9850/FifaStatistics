@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 /**
  * The SeriesStub class is meant to act as a 'stub' of a Series, and should exist
@@ -54,6 +55,7 @@ public class SeriesStub {
      * A short summary of each match in the series.
      */
     @AllArgsConstructor
+    @NoArgsConstructor
     @Getter
     public static class MatchSummary {
 
