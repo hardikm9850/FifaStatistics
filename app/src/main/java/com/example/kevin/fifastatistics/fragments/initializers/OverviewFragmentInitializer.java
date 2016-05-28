@@ -15,7 +15,7 @@ import com.example.kevin.fifastatistics.models.Constants;
  */
 public class OverviewFragmentInitializer extends FragmentInitializer {
 
-    FifaActivity activity;
+    private FifaActivity activity;
 
     public OverviewFragmentInitializer(FifaActivity activity) {
         this.activity = activity;

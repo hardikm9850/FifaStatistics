@@ -16,8 +16,8 @@ import com.example.kevin.fifastatistics.views.adapters.ViewPagerAdapter;
  */
 public class FriendsFragmentInitializer extends FragmentInitializer
 {
-    FifaActivity activity;
-    int currentPage;
+    private FifaActivity activity;
+    private int currentPage;
 
     public FriendsFragmentInitializer(FifaActivity activity) {
         this.activity = activity;

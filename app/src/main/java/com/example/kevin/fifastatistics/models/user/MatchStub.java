@@ -1,5 +1,10 @@
 package com.example.kevin.fifastatistics.models.user;
 
+import com.example.kevin.fifastatistics.models.match.Penalties;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
+
+import lombok.Builder;
 import lombok.Getter;
 
 /**
@@ -20,21 +25,19 @@ import lombok.Getter;
  * @author Kevin
  *
  */
+@JsonDeserialize(builder = MatchStub.MatchStubBuilder.class)
+@Builder
 @Getter
 public class MatchStub {
 
-    private String id;
+    private String matchId;
     private String winnerId;
     private String date;
     private int goalsWinner;
     private int goalsLoser;
+    private Penalties penalties;
 
-    public MatchStub(String id, String winnerId, String date,
-                     int goalsWinner, int goalsLoser, boolean didWin) {
-        this.id = id;
-        this.winnerId = winnerId;
-        this.date = date;
-        this.goalsWinner = goalsWinner;
-        this.goalsLoser = goalsLoser;
+    @JsonPOJOBuilder(withPrefix = "")
+    public static final class MatchStubBuilder {
     }
 }
