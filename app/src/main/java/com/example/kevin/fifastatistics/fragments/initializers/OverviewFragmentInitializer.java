@@ -1,5 +1,6 @@
 package com.example.kevin.fifastatistics.fragments.initializers;
 
+import android.graphics.Color;
 import android.view.View;
 
 import com.example.kevin.fifastatistics.activities.FifaActivity;

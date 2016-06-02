@@ -20,7 +20,7 @@ android {
 
     defaultConfig {
         applicationId "com.example.kevin.fifastatistics"
-        minSdkVersion 19
+        minSdkVersion 21
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"
@@ -65,11 +65,13 @@ dependencies {
     compile 'com.squareup.okhttp3:logging-interceptor:3.0.1'
     compile 'com.google.code.gson:gson:2.5'
 
+    // Graphs
+    compile 'com.diogobernardino:williamchart:2.2'
+
     // Search
-//    compile 'com.miguelcatalan:materialsearchview:1.4.0'
     compile 'com.lapism:searchview:2.2'
 
-    // Navigation
+    // Navigation Drawer
     compile 'com.mikepenz:google-material-typeface:2.2.0.1.original@aar'
     compile 'com.mikepenz:iconics-core:2.5.8@aar'
     compile('com.mikepenz:materialdrawer:5.1.1@aar') {

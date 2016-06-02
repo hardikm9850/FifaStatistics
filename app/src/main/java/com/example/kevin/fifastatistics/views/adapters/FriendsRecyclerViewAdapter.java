@@ -26,12 +26,14 @@ public class FriendsRecyclerViewAdapter
 
     private ArrayList<Friend> mUsers;
     private final OnListFragmentInteractionListener mListener;
+    private ImageLoader imageLoader;
 
     public FriendsRecyclerViewAdapter(ArrayList<Friend> users,
                                       OnListFragmentInteractionListener
                                               listener) {
         mUsers = users;
         mListener = listener;
+        imageLoader = ImageLoader.getInstance();
     }
 
     @Override
@@ -46,9 +48,7 @@ public class FriendsRecyclerViewAdapter
         holder.mItem = mUsers.get(position);
         holder.mNameView.setText(mUsers.get(position).getName());
 
-        ImageLoader imageLoader = ImageLoader.getInstance();
-        imageLoader.displayImage(mUsers.get(position).getImageUrl(), holder
-                .mImageView);
+        imageLoader.displayImage(mUsers.get(position).getImageUrl(), holder.mImageView);
         holder.mView.setOnClickListener(view -> {
                 if (mListener != null) {
                     mListener.onListFragmentInteraction(holder.mItem);

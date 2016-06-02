@@ -21,7 +21,7 @@ public class UserTest {
 
     @BeforeClass
     public static void oneTimeSetUp() {
-        LOGGER.setLevel(Level.SEVERE);
+        LOGGER.setLevel(Level.WARNING);
     }
 
     @Before

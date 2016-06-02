@@ -128,7 +128,8 @@ public class NavigationDrawerFactory
     private static void initializeStarredItem()
     {
         starredItem = new PrimaryDrawerItem()
-                .withName(R.string.starred)
+//                .withName(R.string.starred)
+                .withName("GET from server")
                 .withIcon(R.drawable.ic_star_black_24dp)
                 .withIconTintingEnabled(true);
     }
@@ -136,7 +137,8 @@ public class NavigationDrawerFactory
     private static void initializeSettingsItem()
     {
         settingsItem = new PrimaryDrawerItem()
-                .withName(R.string.settings)
+//                .withName(R.string.settings)
+                .withName("PUT to server")
                 .withIcon(R.drawable.ic_settings_black_24dp)
                 .withIconTintingEnabled(true);
     }
@@ -218,9 +220,10 @@ public class NavigationDrawerFactory
                     initializer.beginInitialization();
                     break;
                 case 4 :
-                    currentUser.deleteIncomingRequests();
-                    currentUser.deleteFriends();
-                    SharedPreferencesManager.storeUser(currentUser);
+                    FifaApiAdapter.getService().getUser(currentUser.getId())
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(SharedPreferencesManager::storeUser);
                     break;
                 case 6 :
                     FifaApiAdapter.getService().updateUser(currentUser.getId(), currentUser)

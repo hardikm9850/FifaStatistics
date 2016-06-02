@@ -100,7 +100,7 @@ public class SignInActivity extends AppCompatActivity implements
     public void onDestroy() {
         super.onDestroy();
         mStatusTextView = null;
-        mProgressDialog.dismiss();
+        hideProgressDialog();
         mProgressDialog = null;
     }
 

@@ -10,7 +10,7 @@
         android:id="@+id/user_image"
         android:layout_width="130dp"
         android:layout_height="130dp"
-        app:civ_border_width="2dp"
+        app:civ_border_width="@dimen/civ_border_width"
         app:civ_border_color="#FFFFFF"
         android:src="@android:color/white"
         android:layout_gravity="center_horizontal"/>
