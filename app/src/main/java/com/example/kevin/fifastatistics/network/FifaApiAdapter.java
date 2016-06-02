@@ -18,9 +18,6 @@ public class FifaApiAdapter
     private static final int CONNECT_TIMEOUT_DURATION = 45;
 
     private static FifaApi api;
-    private static HttpLoggingInterceptor loggingInterceptor;
-    private static OkHttpClient httpClient;
-    private static Retrofit retrofit;
 
     public static FifaApi getService()
     {
@@ -32,30 +29,31 @@ public class FifaApiAdapter
 
     private static void initializeFifaApi()
     {
-        initializeLoggingInterceptor();
-        initializeHttpClient();
-        initializeRetrofitObject();
+        HttpLoggingInterceptor loggingInterceptor = initializeLoggingInterceptor();
+        OkHttpClient httpClient = initializeHttpClient(loggingInterceptor);
+        Retrofit retrofit = initializeRetrofitObject(httpClient);
         api = retrofit.create(FifaApi.class);
     }
 
-    private static void initializeLoggingInterceptor()
+    private static HttpLoggingInterceptor initializeLoggingInterceptor()
     {
-        loggingInterceptor = new HttpLoggingInterceptor();
+        HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
         loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+        return loggingInterceptor;
     }
 
-    private static void initializeHttpClient()
+    private static OkHttpClient initializeHttpClient(HttpLoggingInterceptor interceptor)
     {
-        httpClient = new OkHttpClient.Builder()
-                .addInterceptor(loggingInterceptor)
+        return new OkHttpClient.Builder()
+                .addInterceptor(interceptor)
                 .connectTimeout(CONNECT_TIMEOUT_DURATION, TimeUnit.SECONDS)
                 .readTimeout(CONNECT_TIMEOUT_DURATION, TimeUnit.SECONDS)
                 .build();
     }
 
-    private static void initializeRetrofitObject()
+    private static Retrofit initializeRetrofitObject(OkHttpClient httpClient)
     {
-        retrofit = new Retrofit.Builder()
+        return new Retrofit.Builder()
                 .baseUrl(FIFA_API_ENDPOINT)
                 .client(httpClient)
                 .addConverterFactory(JacksonConverterFactory.create())

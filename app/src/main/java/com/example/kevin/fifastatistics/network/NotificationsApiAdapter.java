@@ -9,14 +9,11 @@ import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.jackson.JacksonConverterFactory;
 
 /**
- * Created by Kevin on 4/8/2016.
+ * Adapter class to interact with the GCM Notifications API.
  */
 public class NotificationsApiAdapter
 {
     private static NotificationsApi api;
-    private static HttpLoggingInterceptor loggingInterceptor;
-    private static OkHttpClient httpClient;
-    private static Retrofit retrofit;
 
     public static NotificationsApi getService()
     {
@@ -28,28 +25,29 @@ public class NotificationsApiAdapter
 
     private static void initializeNotificationsApi()
     {
-        initializeLoggingInterceptor();
-        initializeHttpClient();
-        initializeRetrofitObject();
+        HttpLoggingInterceptor loggingInterceptor = initializeLoggingInterceptor();
+        OkHttpClient httpClient = initializeHttpClient(loggingInterceptor);
+        Retrofit retrofit = initializeRetrofitObject(httpClient);
         api = retrofit.create(NotificationsApi.class);
     }
 
-    private static void initializeLoggingInterceptor()
+    private static HttpLoggingInterceptor initializeLoggingInterceptor()
     {
-        loggingInterceptor = new HttpLoggingInterceptor();
+        HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
         loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+        return loggingInterceptor;
     }
 
-    private static void initializeHttpClient()
+    private static OkHttpClient initializeHttpClient(HttpLoggingInterceptor loggingInterceptor)
     {
-        httpClient = new OkHttpClient.Builder()
+        return new OkHttpClient.Builder()
                 .addInterceptor(loggingInterceptor)
                 .build();
     }
 
-    private static void initializeRetrofitObject()
+    private static Retrofit initializeRetrofitObject(OkHttpClient httpClient)
     {
-        retrofit = new Retrofit.Builder()
+        return new Retrofit.Builder()
                 .baseUrl(Constants.NOTIFICATIONS_API_ENDPOINT)
                 .client(httpClient)
                 .addConverterFactory(JacksonConverterFactory.create())

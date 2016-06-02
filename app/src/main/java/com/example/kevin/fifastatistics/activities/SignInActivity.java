@@ -54,6 +54,7 @@ public class SignInActivity extends AppCompatActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         checkSignedIn();
+//        _debugging_setUserToAccount();
         setContentView(R.layout.activity_login);
 
         if (checkPlayServices()) {
@@ -95,6 +96,15 @@ public class SignInActivity extends AppCompatActivity implements
         opr.setResultCallback(this::handleSignInResult);
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mStatusTextView = null;
+        mProgressDialog.dismiss();
+        mProgressDialog = null;
+    }
+
+
     private void checkSignedIn()
     {
         if (SharedPreferencesManager.isSignedIn())
@@ -103,6 +113,17 @@ public class SignInActivity extends AppCompatActivity implements
             startActivity(intent);
             finish();
         }
+    }
+
+    private void _debugging_setUserToAccount() {
+        FifaApiAdapter.getService().getUser("574f8e739866cc5dd8f75f9c")
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(user -> {
+                    SharedPreferencesManager.storeUser(user);
+                    SharedPreferencesManager.setSignedIn(true);
+                    checkSignedIn();
+                });
     }
 
     @Override
