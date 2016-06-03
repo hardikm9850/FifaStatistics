@@ -5,7 +5,7 @@
               android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/bar_chart_text_view"
+        android:id="@+id/stats_chart_title"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_marginTop="10dp"
@@ -13,12 +13,14 @@
         android:textSize="20sp"
         android:textStyle="bold"/>
 
-    <com.db.chart.view.BarChartView
+    <com.db.chart.view.HorizontalStackBarChartView
         xmlns:chart="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/stats_chart_view"
+        android:id="@+id/stats_chart"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="2dp"
         chart:chart_axisColor="#30547d99">
-    </com.db.chart.view.BarChartView>
+    </com.db.chart.view.HorizontalStackBarChartView>
 
 </LinearLayout>

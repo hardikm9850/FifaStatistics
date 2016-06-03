@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.db.chart.view.BarChartView;
 import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.managers.SharedPreferencesManager;
+import com.example.kevin.fifastatistics.models.user.Stats;
 import com.example.kevin.fifastatistics.models.user.User;
 import com.example.kevin.fifastatistics.views.adapters.chartviewpagers.BarChartViewPagerAdapter;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -55,10 +56,10 @@ public class OverviewFragment extends Fragment implements FifaFragment{
         ImageLoader.getInstance().displayImage(mUser.getImageUrl(), profileImage);
 
         ViewPager chartPager = (ViewPager) view.findViewById(R.id.stats_card_view_pager);
-        ArrayList<BarChartView> charts = new ArrayList<>();
-        charts.add(new BarChartView(getContext()));
-        charts.add(new BarChartView(getContext()));
-        chartPager.setAdapter(new BarChartViewPagerAdapter(getContext(), charts));
+        ArrayList<Stats> stats = new ArrayList<>();
+        stats.add(mUser.getAverages());
+        stats.add(mUser.getRecords());
+        chartPager.setAdapter(new BarChartViewPagerAdapter(getContext(), stats));
         chartPager.setCurrentItem(0);
 
         return view;

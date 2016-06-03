@@ -54,7 +54,7 @@ public class SignInActivity extends AppCompatActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         checkSignedIn();
-//        _debugging_setUserToAccount();
+        _debugging_setUserToAccount();
         setContentView(R.layout.activity_login);
 
         if (checkPlayServices()) {
@@ -116,7 +116,7 @@ public class SignInActivity extends AppCompatActivity implements
     }
 
     private void _debugging_setUserToAccount() {
-        FifaApiAdapter.getService().getUser("574f8e739866cc5dd8f75f9c")
+        FifaApiAdapter.getService().getUser("5704926828878a8c6266cba2")
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(user -> {

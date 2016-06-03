@@ -5,8 +5,7 @@ import android.support.v4.view.PagerAdapter;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.db.chart.view.BarChartView;
-import com.db.chart.view.ChartView;
+import com.example.kevin.fifastatistics.models.user.Stats;
 
 import java.util.ArrayList;
 
@@ -17,16 +16,16 @@ import java.util.ArrayList;
 public abstract class ChartViewPagerAdapter extends PagerAdapter {
 
     protected Context mContext;
-    protected ArrayList<BarChartView> charts;
+    protected ArrayList<Stats> stats;
 
-    public ChartViewPagerAdapter(Context context, ArrayList<BarChartView> charts) {
+    public ChartViewPagerAdapter(Context context, ArrayList<Stats> stats) {
         mContext = context;
-        this.charts = charts;
+        this.stats = stats;
     }
 
     @Override
     public int getCount() {
-        return charts.size();
+        return stats.size();
     }
 
     @Override
