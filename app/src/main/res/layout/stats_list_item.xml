@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/stats_list_item_height">
+
+    <ProgressBar
+        android:id="@+id/stats_progress_bar"
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginBottom="@dimen/activity_vertical_margin"
+        android:layout_marginTop="5dp"
+        android:layout_alignParentBottom="true"
+        android:progressTint="@color/accent"/>
+
+    <TextView
+        android:id="@+id/stat_for_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_above="@id/stats_progress_bar"
+        android:layout_alignParentLeft="true"
+        android:textColor="@color/white"/>
+
+    <TextView
+        android:id="@+id/stat_against_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:layout_above="@id/stats_progress_bar"
+        android:layout_alignParentRight="true"
+        android:textColor="@color/white"/>
+
+    <TextView
+        android:id="@+id/stat_title_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_above="@id/stats_progress_bar"/>
+
+</RelativeLayout>

@@ -1,19 +1,12 @@
 package com.example.kevin.fifastatistics.views.adapters.chartviewpagers;
 
 import android.content.Context;
-import android.graphics.Color;
-import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
-import com.db.chart.Tools;
-import com.db.chart.model.BarSet;
-import com.db.chart.view.BarChartView;
-import com.db.chart.view.XController;
-import com.db.chart.view.YController;
-import com.db.chart.view.animation.Animation;
 import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.models.user.Stats;
+import com.example.kevin.fifastatistics.models.user.User;
 import com.example.kevin.fifastatistics.views.charts.StatsChartView;
 
 import java.util.ArrayList;
@@ -23,7 +16,7 @@ import java.util.ArrayList;
  */
 public class BarChartViewPagerAdapter extends ChartViewPagerAdapter {
 
-    public BarChartViewPagerAdapter(Context context, ArrayList<Stats> stats) {
+    public BarChartViewPagerAdapter(Context context, ArrayList<User.StatsPair> stats) {
         super(context, stats);
     }
 

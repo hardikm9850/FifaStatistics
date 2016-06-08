@@ -1,5 +1,6 @@
 package com.example.kevin.fifastatistics.models.user;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 
@@ -19,21 +20,53 @@ import lombok.Setter;
 @Builder
 public class Stats {
 
-    private int goalsFor;
-    private int goalsAgainst;
-    private int shotsFor;
-    private int shotsAgainst;
+    @JsonIgnore
+    private static final String[] names =
+            {
+                "Goals", "Shots", "Shots On Target", "Possession (%)", "Tackles", "Fouls",
+                "Yellow Cards", "Red Cards", "Offsides", "Injuries", "Shot Accuracy (%)",
+                "Pass Accuracy (%)"
+            };
+
+    private int goals;
+    private int shots;
     private int shotsOnTarget;
     private int possession;
-    private int tacklesFor;
-    private int tacklesAgainst;
+    private int tackles;
     private int fouls;
+    private int yellowCards;
     private int redCards;
     private int offsides;
+    private int injuries;
     private int shotAccuracy;
     private int passAccuracy;
 
     @JsonPOJOBuilder(withPrefix = "")
     public static final class StatsBuilder {
+    }
+
+    /**
+     * Get the number of items that statistics represents.
+     * @return the number of items
+     */
+    public static int size() {
+        return 12;
+    }
+
+    /**
+     * Get the set of names representing the items.
+     * @return an array of the names
+     */
+    public static String[] nameSet() {
+        return names;
+    }
+
+    /**
+     * Build the set of values that correlates with the nameSet.
+     * @return an array of the values.
+     */
+    public int[] buildValueSet() {
+        return new int[] {goals, shots, shotsOnTarget, possession, tackles, fouls, yellowCards,
+                redCards, offsides, injuries, shotAccuracy, passAccuracy};
     }
 }

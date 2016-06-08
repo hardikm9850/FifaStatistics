@@ -8,8 +8,10 @@ import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 
 import java.util.ArrayList;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
@@ -41,8 +43,8 @@ public class User {
     private ArrayList<Friend> outgoingRequests;
     private ArrayList<MatchStub> matches;
     private ArrayList<SeriesStub> series;
-    private Stats records;
-    private Stats averages;
+    private StatsPair records;
+    private StatsPair averages;
     private int matchWins;
     private int matchLosses;
     private int seriesWins;
@@ -111,4 +113,15 @@ public class User {
         }
     }
 
+    /**
+     * A pair of Stats objects, one representing stats 'for' the user, and one representing stats
+     * 'against' the user.
+     */
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Getter
+    public static class StatsPair {
+        private Stats statsFor;
+        private Stats statsAgainst;
+    }
 }

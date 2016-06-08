@@ -13,14 +13,12 @@
         android:textSize="20sp"
         android:textStyle="bold"/>
 
-    <com.db.chart.view.HorizontalStackBarChartView
-        xmlns:chart="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/stats_chart"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/stats_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginLeft="12dp"
-        android:layout_marginRight="2dp"
-        chart:chart_axisColor="#30547d99">
-    </com.db.chart.view.HorizontalStackBarChartView>
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin">
+    </android.support.v7.widget.RecyclerView>
 
 </LinearLayout>

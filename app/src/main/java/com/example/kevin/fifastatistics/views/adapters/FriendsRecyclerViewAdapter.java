@@ -1,7 +1,6 @@
 package com.example.kevin.fifastatistics.views.adapters;
 
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,7 +8,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.kevin.fifastatistics.R;
-import com.example.kevin.fifastatistics.fragments.FriendsFragment;
 import com.example.kevin.fifastatistics.fragments.FriendsFragment.OnListFragmentInteractionListener;
 import com.example.kevin.fifastatistics.models.user.Friend;
 

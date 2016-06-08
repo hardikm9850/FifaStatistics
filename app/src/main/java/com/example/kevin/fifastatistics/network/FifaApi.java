@@ -44,7 +44,7 @@ public interface FifaApi
     Observable<ApiListResponse<User>> getUsersWithName(@Query("name") String name);
 
     /**
-     * Lists all users who have names starting with the specified name.
+     * Lists all users who have nameSet starting with the specified name.
      * <br> e.g. name=ke would return users with name 'Kevin', 'kelsey', etc.
      * @param name the name being searched for
      * @return the User List Observable
