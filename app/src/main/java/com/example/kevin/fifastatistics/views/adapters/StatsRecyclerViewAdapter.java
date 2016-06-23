@@ -8,8 +8,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.kevin.fifastatistics.R;
-import com.example.kevin.fifastatistics.models.user.Stats;
-import com.example.kevin.fifastatistics.models.user.User;
+import com.example.kevin.fifastatistics.models.databasemodels.user.Stats;
+import com.example.kevin.fifastatistics.models.databasemodels.user.User;
 
 /**
  * Created by kevin on 2016-06-07.

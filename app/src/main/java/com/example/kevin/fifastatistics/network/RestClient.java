@@ -3,7 +3,7 @@ package com.example.kevin.fifastatistics.network;
 import android.util.Log;
 
 import com.example.kevin.fifastatistics.models.Constants;
-import com.example.kevin.fifastatistics.models.user.User;
+import com.example.kevin.fifastatistics.models.databasemodels.user.User;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;

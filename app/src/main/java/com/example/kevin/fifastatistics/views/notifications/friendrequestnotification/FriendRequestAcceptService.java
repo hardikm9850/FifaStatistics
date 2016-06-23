@@ -12,7 +12,7 @@ import com.example.kevin.fifastatistics.activities.MainActivity;
 import com.example.kevin.fifastatistics.fragments.FriendsFragment;
 import com.example.kevin.fifastatistics.managers.SharedPreferencesManager;
 import com.example.kevin.fifastatistics.models.Constants;
-import com.example.kevin.fifastatistics.models.user.User;
+import com.example.kevin.fifastatistics.models.databasemodels.user.User;
 
 public class FriendRequestAcceptService extends Service
 {

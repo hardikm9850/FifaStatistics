@@ -1,9 +1,9 @@
 package com.example.kevin.fifastatistics.datagenerators;
 
-import com.example.kevin.fifastatistics.models.user.Friend;
-import com.example.kevin.fifastatistics.models.user.MatchStub;
-import com.example.kevin.fifastatistics.models.user.SeriesStub;
-import com.example.kevin.fifastatistics.models.user.User;
+import com.example.kevin.fifastatistics.models.databasemodels.user.Friend;
+import com.example.kevin.fifastatistics.models.databasemodels.user.MatchStub;
+import com.example.kevin.fifastatistics.models.databasemodels.user.SeriesStub;
+import com.example.kevin.fifastatistics.models.databasemodels.user.User;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -36,8 +36,8 @@ public class UserGenerator {
                 .friends(generateFriendsList(rand.nextInt(10) + 1))
                 .incomingRequests(getRequestsList())
                 .outgoingRequests(getRequestsList())
-                .records(StatsGenerator.generateStats())
-                .averages(StatsGenerator.generateStats())
+                .records(StatsGenerator.generateStatsPair())
+                .averages(StatsGenerator.generateStatsPair())
                 .matches(generateMatchList(id, rand.nextInt(5) + 1))
                 .series(generateSeriesList(rand.nextInt(4) + 1))
                 .matchWins(rand.nextInt(100))

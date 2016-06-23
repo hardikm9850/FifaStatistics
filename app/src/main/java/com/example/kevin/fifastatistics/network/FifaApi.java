@@ -1,7 +1,7 @@
 package com.example.kevin.fifastatistics.network;
 
 import com.example.kevin.fifastatistics.models.apiresponses.ApiListResponse;
-import com.example.kevin.fifastatistics.models.user.User;
+import com.example.kevin.fifastatistics.models.databasemodels.user.User;
 
 import retrofit2.Response;
 import retrofit2.http.Body;

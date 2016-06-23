@@ -2,7 +2,7 @@ package com.example.kevin.fifastatistics.models.notificationbundles;
 
 import android.os.Bundle;
 
-import com.example.kevin.fifastatistics.models.user.Friend;
+import com.example.kevin.fifastatistics.models.databasemodels.user.Friend;
 
 import lombok.Getter;
 

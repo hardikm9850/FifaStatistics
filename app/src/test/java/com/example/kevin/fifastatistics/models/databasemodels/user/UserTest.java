@@ -1,4 +1,4 @@
-package com.example.kevin.fifastatistics.models.user;
+package com.example.kevin.fifastatistics.models.databasemodels.user;
 
 import com.example.kevin.fifastatistics.datagenerators.FriendGenerator;
 import com.example.kevin.fifastatistics.datagenerators.UserGenerator;

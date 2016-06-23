@@ -1,7 +1,7 @@
 package com.example.kevin.fifastatistics.datagenerators;
 
 
-import com.example.kevin.fifastatistics.models.match.Penalties;
+import com.example.kevin.fifastatistics.models.databasemodels.match.Penalties;
 
 import java.util.Random;
 

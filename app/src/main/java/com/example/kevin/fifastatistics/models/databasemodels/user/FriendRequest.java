@@ -1,4 +1,6 @@
-package com.example.kevin.fifastatistics.models.user;
+package com.example.kevin.fifastatistics.models.databasemodels.user;
+
+import com.example.kevin.fifastatistics.models.databasemodels.DatabaseModel;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

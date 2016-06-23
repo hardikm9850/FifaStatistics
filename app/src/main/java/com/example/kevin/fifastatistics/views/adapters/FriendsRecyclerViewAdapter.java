@@ -9,7 +9,7 @@ import android.widget.TextView;
 
 import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.fragments.FriendsFragment.OnListFragmentInteractionListener;
-import com.example.kevin.fifastatistics.models.user.Friend;
+import com.example.kevin.fifastatistics.models.databasemodels.user.Friend;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
 

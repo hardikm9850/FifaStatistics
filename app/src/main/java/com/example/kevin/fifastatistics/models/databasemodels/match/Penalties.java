@@ -1,4 +1,4 @@
-package com.example.kevin.fifastatistics.models.match;
+package com.example.kevin.fifastatistics.models.databasemodels.match;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

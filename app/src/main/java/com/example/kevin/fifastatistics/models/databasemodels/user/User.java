@@ -1,5 +1,6 @@
-package com.example.kevin.fifastatistics.models.user;
+package com.example.kevin.fifastatistics.models.databasemodels.user;
 
+import com.example.kevin.fifastatistics.models.databasemodels.DatabaseModel;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -27,7 +28,7 @@ import lombok.Setter;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Builder
 @Getter
-public class User {
+public class User extends DatabaseModel {
 
     @Setter private String registrationToken;
     @Setter private String imageUrl;

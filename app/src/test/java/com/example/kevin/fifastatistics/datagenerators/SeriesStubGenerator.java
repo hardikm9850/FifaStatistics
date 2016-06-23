@@ -1,7 +1,7 @@
 package com.example.kevin.fifastatistics.datagenerators;
 
-import com.example.kevin.fifastatistics.models.user.SeriesStub;
-import com.example.kevin.fifastatistics.models.user.SeriesStub.MatchSummary;
+import com.example.kevin.fifastatistics.models.databasemodels.user.SeriesStub;
+import com.example.kevin.fifastatistics.models.databasemodels.user.SeriesStub.MatchSummary;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Random;

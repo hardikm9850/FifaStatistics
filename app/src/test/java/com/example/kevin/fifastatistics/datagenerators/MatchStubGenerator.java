@@ -1,6 +1,6 @@
 package com.example.kevin.fifastatistics.datagenerators;
 
-import com.example.kevin.fifastatistics.models.user.MatchStub;
+import com.example.kevin.fifastatistics.models.databasemodels.user.MatchStub;
 
 import java.util.Date;
 import java.util.Random;

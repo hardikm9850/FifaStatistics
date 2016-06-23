@@ -1,4 +1,4 @@
-package com.example.kevin.fifastatistics.models.user;
+package com.example.kevin.fifastatistics.models.databasemodels.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;

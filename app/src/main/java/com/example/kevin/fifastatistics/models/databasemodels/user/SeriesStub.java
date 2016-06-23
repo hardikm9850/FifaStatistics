@@ -1,5 +1,6 @@
-package com.example.kevin.fifastatistics.models.user;
+package com.example.kevin.fifastatistics.models.databasemodels.user;
 
+import com.example.kevin.fifastatistics.models.databasemodels.DatabaseModel;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 
@@ -19,7 +20,7 @@ import lombok.NoArgsConstructor;
 @JsonDeserialize(builder = SeriesStub.SeriesStubBuilder.class)
 @Builder
 @Getter
-public class SeriesStub {
+public class SeriesStub extends DatabaseModel {
 
     private static final int MAX_GAMES_IN_SERIES = 7;
 

@@ -5,12 +5,10 @@ import android.graphics.Color;
 import android.os.Handler;
 
 import com.db.chart.Tools;
-import com.db.chart.model.BarSet;
 import com.db.chart.view.HorizontalBarChartView;
 import com.db.chart.view.XController;
 import com.db.chart.view.YController;
-import com.db.chart.view.animation.Animation;
-import com.example.kevin.fifastatistics.models.user.Stats;
+import com.example.kevin.fifastatistics.models.databasemodels.user.Stats;
 
 /**
  * Created by kevin on 2016-06-02.

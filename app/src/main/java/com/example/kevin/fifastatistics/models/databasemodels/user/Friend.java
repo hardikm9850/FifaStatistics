@@ -1,5 +1,6 @@
-package com.example.kevin.fifastatistics.models.user;
+package com.example.kevin.fifastatistics.models.databasemodels.user;
 
+import com.example.kevin.fifastatistics.models.databasemodels.DatabaseModel;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 
@@ -14,7 +15,7 @@ import lombok.Setter;
 @JsonDeserialize(builder = Friend.FriendBuilder.class)
 @Builder
 @Getter
-public class Friend
+public class Friend extends DatabaseModel
 {
     private String id;
     private String name;

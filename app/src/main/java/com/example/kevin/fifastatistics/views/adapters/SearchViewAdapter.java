@@ -1,13 +1,11 @@
 package com.example.kevin.fifastatistics.views.adapters;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.media.ThumbnailUtils;
 import android.support.v4.content.ContextCompat;
 import android.text.Spannable;
 import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +13,7 @@ import android.widget.Filter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.kevin.fifastatistics.models.user.User;
+import com.example.kevin.fifastatistics.models.databasemodels.user.User;
 import com.example.kevin.fifastatistics.utils.BitmapUtils;
 import com.lapism.searchview.R;
 import com.lapism.searchview.adapter.SearchItem;

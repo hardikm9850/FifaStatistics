@@ -1,6 +1,6 @@
-package com.example.kevin.fifastatistics.models.user;
+package com.example.kevin.fifastatistics.models.databasemodels.user;
 
-import com.example.kevin.fifastatistics.models.match.Penalties;
+import com.example.kevin.fifastatistics.models.databasemodels.match.Penalties;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 

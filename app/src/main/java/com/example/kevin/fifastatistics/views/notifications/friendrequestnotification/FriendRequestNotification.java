@@ -14,7 +14,7 @@ import com.example.kevin.fifastatistics.managers.SharedPreferencesManager;
 import com.example.kevin.fifastatistics.models.Constants;
 import com.example.kevin.fifastatistics.models.notificationbundles.FriendRequestBundle;
 import com.example.kevin.fifastatistics.models.notificationbundles.NotificationBundle;
-import com.example.kevin.fifastatistics.models.user.User;
+import com.example.kevin.fifastatistics.models.databasemodels.user.User;
 import com.example.kevin.fifastatistics.views.notifications.FifaNotification;
 import com.example.kevin.fifastatistics.views.notifications.GlobalNotificationBuilder;
 

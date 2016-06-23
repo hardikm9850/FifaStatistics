@@ -2,7 +2,7 @@ package com.example.kevin.fifastatistics.datagenerators;
 
 import java.util.Random;
 
-import com.example.kevin.fifastatistics.models.user.Friend;
+import com.example.kevin.fifastatistics.models.databasemodels.user.Friend;
 
 public class FriendGenerator {
 
