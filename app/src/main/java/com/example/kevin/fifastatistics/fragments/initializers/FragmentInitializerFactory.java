@@ -1,7 +1,12 @@
 package com.example.kevin.fifastatistics.fragments.initializers;
 
 import com.example.kevin.fifastatistics.activities.FifaActivity;
+import com.example.kevin.fifastatistics.managers.SharedPreferencesManager;
 import com.example.kevin.fifastatistics.models.Constants;
+import com.example.kevin.fifastatistics.network.FifaApiAdapter;
+
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
  * Factory for generating fragment initializers.
@@ -22,10 +27,9 @@ public class FragmentInitializerFactory {
         String fragment = getFragmentExtra(activity);
         switch (fragment) {
             case (Constants.OVERVIEW_FRAGMENT):
-                return new OverviewFragmentInitializer(activity);
+                return new OverviewFragmentInitializer();
             case (Constants.FRIENDS_FRAGMENT):
-                activity.getDrawer().closeDrawer();
-                return new FriendsFragmentInitializer(activity);
+                return new FriendsFragmentInitializer();
             default:
                 throw new IllegalStateException(fragment + " is not a valid fragment name!");
         }
@@ -38,11 +42,33 @@ public class FragmentInitializerFactory {
         return extra == null ? Constants.OVERVIEW_FRAGMENT : extra;
     }
 
-    public static FragmentInitializer createFriendsFragmentInitializer(FifaActivity activity) {
-        return new FriendsFragmentInitializer(activity);
+    public static FragmentInitializer createFragmentInitializer(int drawerPosition) {
+        switch (drawerPosition) {
+            case 1:
+                return FragmentInitializerFactory.createOverviewFragmentInitializer();
+            case 3:
+                return FragmentInitializerFactory.createFriendsFragmentInitializer();
+            case 4:
+                FifaApiAdapter.getService().getUser(SharedPreferencesManager.getUser().getId())
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(SharedPreferencesManager::storeUser);
+                break;
+            case 6:
+                FifaApiAdapter.getService().updateUser(SharedPreferencesManager.getUser().getId(), SharedPreferencesManager.getUser())
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe();
+                break;
+        }
+        return FragmentInitializerFactory.createOverviewFragmentInitializer();
     }
 
-    public static FragmentInitializer createOverviewFragmentInitializer(FifaActivity activity) {
-        return new OverviewFragmentInitializer(activity);
+    public static FragmentInitializer createFriendsFragmentInitializer() {
+        return new FriendsFragmentInitializer();
+    }
+
+    public static FragmentInitializer createOverviewFragmentInitializer() {
+        return new OverviewFragmentInitializer();
     }
 }

@@ -1,5 +1,6 @@
 package com.example.kevin.fifastatistics.fragments.initializers;
 
+import android.support.design.widget.TabLayout;
 import android.view.View;
 
 import com.example.kevin.fifastatistics.activities.FifaActivity;
@@ -16,22 +17,13 @@ import com.example.kevin.fifastatistics.views.adapters.ViewPagerAdapter;
  */
 public class FriendsFragmentInitializer extends FragmentInitializer
 {
-    private FifaActivity activity;
-    private int currentPage;
-
-    public FriendsFragmentInitializer(FifaActivity activity) {
-        this.activity = activity;
-        currentPage = activity.getIntent().getIntExtra(PAGE_EXTRA, 0);
-    }
-
     @Override
-    public void setActivityTitle() {
+    public void setActivityTitle(FifaActivity activity) {
         activity.setTitle(Constants.FRIENDS_FRAGMENT);
     }
 
     @Override
-    public void initializeViewPagerFragments() {
-        ViewPagerAdapter adapter = activity.getViewPagerAdapter();
+    public void changeAdapterDataSet(ViewPagerAdapter adapter) {
         adapter.clear();
         adapter.addFragment(
                 FriendsFragment.newInstance(FriendsFragment.friendsView),
@@ -44,16 +36,7 @@ public class FriendsFragmentInitializer extends FragmentInitializer
     }
 
     @Override
-    public void prepareTabLayout() {
-        activity.getViewPager().setCurrentItem(currentPage);
-        activity.getIntent().removeExtra(PAGE_EXTRA);
-
-        activity.getTabLayout().setVisibility(View.VISIBLE);
-    }
-
-    @Override
-    public void setCurrentFragmentForActivity() {
-        activity.setCurrentFragment(
-                (FifaFragment) activity.getViewPagerAdapter().getItem(currentPage));
+    public void setTabLayoutVisibility(TabLayout tabLayout) {
+        tabLayout.setVisibility(View.VISIBLE);
     }
 }

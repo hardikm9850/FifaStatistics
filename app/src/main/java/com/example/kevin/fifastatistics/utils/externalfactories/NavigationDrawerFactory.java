@@ -79,7 +79,6 @@ public class NavigationDrawerFactory
     {
         AccountHeader header = initializeDrawerBanner(activity);
         Drawer drawer = initializeDrawer(activity, header);
-        setOnDrawerItemClickListener(activity, drawer);
 
         return drawer;
     }
@@ -197,42 +196,5 @@ public class NavigationDrawerFactory
                         settingsItem
                 )
                 .build();
-    }
-
-    private static void setOnDrawerItemClickListener(FifaActivity activity, Drawer drawer)
-    {
-        drawer.setOnDrawerItemClickListener((view, position, drawerItem) ->
-        {
-            if (position == previousDrawerPosition) {
-                drawer.closeDrawer();
-                return true;
-            }
-            previousDrawerPosition = position;
-
-            FragmentInitializer initializer;
-            switch (position) {
-                case 1 :
-                    initializer = FragmentInitializerFactory.createOverviewFragmentInitializer(activity);
-                    initializer.beginInitialization();
-                    break;
-                case 3 :
-                    initializer = FragmentInitializerFactory.createFriendsFragmentInitializer(activity);
-                    initializer.beginInitialization();
-                    break;
-                case 4 :
-                    FifaApiAdapter.getService().getUser(currentUser.getId())
-                            .subscribeOn(Schedulers.io())
-                            .observeOn(AndroidSchedulers.mainThread())
-                            .subscribe(SharedPreferencesManager::storeUser);
-                    break;
-                case 6 :
-                    FifaApiAdapter.getService().updateUser(currentUser.getId(), currentUser)
-                            .subscribeOn(Schedulers.io())
-                            .observeOn(AndroidSchedulers.mainThread())
-                            .subscribe();
-                    break;
-            }
-            return false;
-        });
     }
 }

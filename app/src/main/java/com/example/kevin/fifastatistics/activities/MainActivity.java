@@ -1,7 +1,6 @@
 package com.example.kevin.fifastatistics.activities;
 
 import android.os.Bundle;
-import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
@@ -32,6 +31,8 @@ public class MainActivity extends FifaActivity
     private TabLayout mTabLayout;
     private ViewPager mViewPager;
     private FifaFragment currentFragment;
+
+    private int currentDrawerPosition;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,11 +68,33 @@ public class MainActivity extends FifaActivity
 
     private void initializeDrawer() {
         mDrawer = NavigationDrawerFactory.getDefaultDrawerInstance(this);
+        mDrawer.setOnDrawerItemClickListener((view, position, drawerItem) -> {
+            if (position == currentDrawerPosition) {
+                mDrawer.closeDrawer();
+                return true;
+            } else {
+                currentDrawerPosition = position;
+                FragmentInitializer initializer = FragmentInitializerFactory
+                        .createFragmentInitializer(currentDrawerPosition);
+                prepareActivityForFragments(initializer);
+                return false;
+            }
+        });
     }
 
     private void initializeFragment() {
         FragmentInitializer initializer = FragmentInitializerFactory.createFragmentInitializer(this);
-        initializer.beginInitialization();
+        prepareActivityForFragments(initializer);
+    }
+
+    private void prepareActivityForFragments(FragmentInitializer initializer) {
+        initializer.setActivityTitle(this);
+        initializer.changeAdapterDataSet(mAdapter);
+        initializer.setTabLayoutVisibility(mTabLayout);
+
+        int currentPage = getIntent().getIntExtra(PAGE_EXTRA, 0);
+        mViewPager.setCurrentItem(currentPage);
+        currentFragment = (FifaFragment) mAdapter.getItem(currentPage);
     }
 
     @Override
@@ -88,32 +111,12 @@ public class MainActivity extends FifaActivity
     }
 
     @Override
-    public void setCurrentFragment(FifaFragment fragment) {
-        currentFragment = fragment;
-    }
-
-    @Override
-    public Drawer getDrawer() {
-        return mDrawer;
-    }
-
-    @Override
-    public ViewPagerAdapter getViewPagerAdapter() {
-        return mAdapter;
-    }
-
-    @Override
-    public ViewPager getViewPager() {
-        return mViewPager;
-    }
-
-    @Override
     public Toolbar getToolbar() {
         return mToolbar;
     }
 
     @Override
-    public TabLayout getTabLayout() {
-        return mTabLayout;
+    public Drawer getDrawer() {
+        return mDrawer;
     }
 }

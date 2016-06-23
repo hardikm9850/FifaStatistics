@@ -1,12 +1,14 @@
 package com.example.kevin.fifastatistics.fragments.initializers;
 
 import android.graphics.Color;
+import android.support.design.widget.TabLayout;
 import android.view.View;
 
 import com.example.kevin.fifastatistics.activities.FifaActivity;
 import com.example.kevin.fifastatistics.fragments.FifaFragment;
 import com.example.kevin.fifastatistics.fragments.OverviewFragment;
 import com.example.kevin.fifastatistics.models.Constants;
+import com.example.kevin.fifastatistics.views.adapters.ViewPagerAdapter;
 
 /**
  * Implementation of the abstract FragmentInitializer class for OverviewFragments.
@@ -16,34 +18,20 @@ import com.example.kevin.fifastatistics.models.Constants;
  */
 public class OverviewFragmentInitializer extends FragmentInitializer {
 
-    private FifaActivity activity;
-
-    public OverviewFragmentInitializer(FifaActivity activity) {
-        this.activity = activity;
-    }
-
     @Override
-    public void setActivityTitle() {
+    public void setActivityTitle(FifaActivity activity) {
         activity.setTitle(Constants.OVERVIEW_FRAGMENT);
     }
 
     @Override
-    public void initializeViewPagerFragments() {
-        activity.getViewPagerAdapter().clear();
-        activity.getViewPagerAdapter().addFragment(
-                new OverviewFragment(),
-                Constants.OVERVIEW_FRAGMENT);
-
-        activity.getViewPagerAdapter().notifyDataSetChanged();
+    public void changeAdapterDataSet(ViewPagerAdapter adapter) {
+        adapter.clear();
+        adapter.addFragment(new OverviewFragment(), Constants.OVERVIEW_FRAGMENT);
+        adapter.notifyDataSetChanged();
     }
 
     @Override
-    public void prepareTabLayout() {
-        activity.getTabLayout().setVisibility(View.GONE);
-    }
-
-    @Override
-    public void setCurrentFragmentForActivity() {
-        activity.setCurrentFragment((FifaFragment) activity.getViewPagerAdapter().getItem(0));
+    public void setTabLayoutVisibility(TabLayout tabLayout) {
+        tabLayout.setVisibility(View.GONE);
     }
 }
