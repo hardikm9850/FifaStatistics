@@ -55,8 +55,8 @@ public class OverviewFragment extends Fragment implements FifaFragment{
 
         ViewPager chartPager = (ViewPager) view.findViewById(R.id.stats_card_view_pager);
         ArrayList<User.StatsPair> stats = new ArrayList<>();
-        stats.add(mUser.getAverages());
-        stats.add(mUser.getRecords());
+        stats.add(mUser.getAverageStats());
+        stats.add(mUser.getRecordStats());
         chartPager.setAdapter(new BarChartViewPagerAdapter(getContext(), stats));
         chartPager.setCurrentItem(0);
 

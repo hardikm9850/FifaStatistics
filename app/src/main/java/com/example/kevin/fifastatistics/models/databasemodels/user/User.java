@@ -1,9 +1,9 @@
 package com.example.kevin.fifastatistics.models.databasemodels.user;
 
 import com.example.kevin.fifastatistics.models.databasemodels.DatabaseModel;
+import com.example.kevin.fifastatistics.models.databasemodels.user.records.UserRecords;
+import com.example.kevin.fifastatistics.utils.SerializationUtils;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 
@@ -44,12 +44,10 @@ public class User extends DatabaseModel {
     private ArrayList<Friend> outgoingRequests;
     private ArrayList<MatchStub> matches;
     private ArrayList<SeriesStub> series;
-    private StatsPair records;
-    private StatsPair averages;
-    private int matchWins;
-    private int matchLosses;
-    private int seriesWins;
-    private int seriesLosses;
+    private StatsPair recordStats;
+    private StatsPair averageStats;
+    private UserRecords matchRecords;
+    private UserRecords seriesRecords;
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     @JsonPOJOBuilder(withPrefix = "")
@@ -95,23 +93,7 @@ public class User extends DatabaseModel {
      */
     @Override
     public String toString() {
-        ObjectMapper mapper = new ObjectMapper();
-        try {
-            return mapper.writeValueAsString(this);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-            throw new RuntimeException(e);
-        }
-    }
-
-    public String toFormattedString() {
-        ObjectMapper mapper = new ObjectMapper();
-        try {
-            return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(this);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-            throw new RuntimeException(e);
-        }
+        return SerializationUtils.toJson(this);
     }
 
     /**

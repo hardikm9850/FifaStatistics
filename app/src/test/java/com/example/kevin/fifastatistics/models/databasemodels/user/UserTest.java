@@ -2,6 +2,7 @@ package com.example.kevin.fifastatistics.models.databasemodels.user;
 
 import com.example.kevin.fifastatistics.datagenerators.FriendGenerator;
 import com.example.kevin.fifastatistics.datagenerators.UserGenerator;
+import com.example.kevin.fifastatistics.utils.SerializationUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.junit.After;
@@ -37,7 +38,7 @@ public class UserTest {
     @Test
     public void user_SerializationTest() {
         try {
-            String s = user.toFormattedString();
+            String s = SerializationUtils.toFormattedJson(user);
             LOGGER.warning("User: ");
             LOGGER.warning(s);
         } catch (RuntimeException e) {
