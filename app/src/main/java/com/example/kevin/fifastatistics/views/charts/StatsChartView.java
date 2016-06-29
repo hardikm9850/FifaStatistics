@@ -22,14 +22,12 @@ public class StatsChartView extends LinearLayout {
     private final TextView title;
     private final RecyclerView statsList;
 
-    private float[] valuesAgainst;
-
     public StatsChartView(Context c, AttributeSet attributeSet) {
         super(c, attributeSet);
         mContext = c;
 
         LayoutInflater inflater = (LayoutInflater) c.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        inflater.inflate(R.layout.stats_chart_view_layout, this);
+        inflater.inflate(R.layout.stats_list_view_layout, this);
 
         title = (TextView) findViewById(R.id.stats_chart_title);
         statsList = (RecyclerView) findViewById(R.id.stats_recycler_view);

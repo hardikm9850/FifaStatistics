@@ -14,12 +14,12 @@ public class SerializationUtils {
 
     /**
      * Serializes an object to a JSON String.
-     * @param t    The object to serialize
+     * @param value    The object to serialize
      * @return the JSON string
      */
-    public static <T> String toJson(T t) {
+    public static <T> String toJson(T value) {
         try {
-            return mapper.writeValueAsString(t);
+            return mapper.writeValueAsString(value);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
             throw new RuntimeException(e);
@@ -28,12 +28,12 @@ public class SerializationUtils {
 
     /**
      * Serializes an object to a pretty-printed JSON String
-     * @param t    The object to serialize
+     * @param value    The object to serialize
      * @return the formatted JSON string
      */
-    public static <T> String toFormattedJson(T t) {
+    public static <T> String toFormattedJson(T value) {
         try {
-            return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(t);
+            return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(value);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
             throw new RuntimeException(e);

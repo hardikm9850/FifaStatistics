@@ -46,23 +46,15 @@ public class Stats {
     }
 
     /**
-     * Get the number of items that statistics represents.
-     * @return the number of items
-     */
-    public static int size() {
-        return 12;
-    }
-
-    /**
      * Get the set of names representing the items.
      * @return an array of the names
      */
-    public static String[] nameSet() {
-        return names;
+    public static String[] getNameSet() {
+        return names.clone();
     }
 
     /**
-     * Build the set of values that correlates with the nameSet.
+     * Build the set of values that correlates with the names returned by {@link #getNameSet()}.
      * @return an array of the values.
      */
     public int[] buildValueSet() {

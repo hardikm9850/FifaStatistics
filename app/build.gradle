@@ -25,6 +25,21 @@ android {
         versionCode 1
         versionName "1.0"
     }
+
+    // Enables subdirectories in the layout folder
+    sourceSets {
+        main {
+            res.srcDirs = [
+                    'src/main/res/layouts/shared',
+                    'src/main/res/layouts/useroverview',
+                    'src/main/res/layouts/fragments',
+                    'src/main/res/layouts/activities',
+                    'src/main/res/layouts',
+                    'src/main/res'
+            ]
+        }
+    }
+
     buildTypes {
         release {
             minifyEnabled false

@@ -40,12 +40,12 @@ public class StatsRecyclerViewAdapter extends RecyclerView.Adapter<StatsRecycler
         holder.mProgressBar.setProgress(percent);
         holder.mStatFor.setText(String.valueOf(vf));
         holder.mStatAgainst.setText(String.valueOf(va));
-        holder.mTitle.setText(Stats.nameSet()[position]);
+        holder.mTitle.setText(Stats.getNameSet()[position]);
     }
 
     @Override
     public int getItemCount() {
-        return Stats.size();
+        return valuesFor.length;
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

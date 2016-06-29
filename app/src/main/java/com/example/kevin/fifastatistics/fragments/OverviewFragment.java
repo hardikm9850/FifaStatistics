@@ -45,7 +45,7 @@ public class OverviewFragment extends Fragment implements FifaFragment{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_user_overview, container, false);
+        View view = inflater.inflate(R.layout.fragment_overview, container, false);
 
         TextView name = (TextView) view.findViewById(R.id.user_header_name_text);
         name.setText(mUser.getName());
@@ -53,7 +53,7 @@ public class OverviewFragment extends Fragment implements FifaFragment{
         ImageView profileImage = (ImageView) view.findViewById(R.id.user_header_profile_image);
         ImageLoader.getInstance().displayImage(mUser.getImageUrl(), profileImage);
 
-        ViewPager chartPager = (ViewPager) view.findViewById(R.id.stats_card_view_pager);
+        ViewPager chartPager = (ViewPager) view.findViewById(R.id.card_view_pager);
         ArrayList<User.StatsPair> stats = new ArrayList<>();
         stats.add(mUser.getAverageStats());
         stats.add(mUser.getRecordStats());
