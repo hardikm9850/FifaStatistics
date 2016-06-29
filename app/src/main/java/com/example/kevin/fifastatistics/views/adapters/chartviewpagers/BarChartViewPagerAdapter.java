@@ -6,7 +6,7 @@ import android.view.ViewGroup;
 
 import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
-import com.example.kevin.fifastatistics.views.charts.StatsChartView;
+import com.example.kevin.fifastatistics.views.cards.StatsCardView;
 
 import java.util.ArrayList;
 
@@ -22,15 +22,15 @@ public class BarChartViewPagerAdapter extends ChartViewPagerAdapter {
     @Override
     public Object instantiateItem(ViewGroup collection, int position) {
         LayoutInflater inflater = LayoutInflater.from(mContext);
-        StatsChartView chartView =
-                (StatsChartView) inflater.inflate(R.layout.stats_chart_view, collection, false);
+        StatsCardView chartView =
+                (StatsCardView) inflater.inflate(R.layout.stats_chart_view, collection, false);
         chartView.setTitle((position == 0) ? "Averages" : "Records");
         chartView.setChartData(stats.get(position));
         collection.addView(chartView);
         return chartView;
     }
 
-    private void setChartAnimation(StatsChartView chartView) {
+    private void setChartAnimation(StatsCardView chartView) {
 
 
 //        int[] order = {1, 0, 2, 3};

@@ -29,6 +29,8 @@
             android:textSize="20sp"
             android:textStyle="bold"/>
 
+        <include layout="@layout/divisor"></include>
+
         <include
             layout="@layout/user_overview_data"
             android:layout_width="match_parent"

@@ -16,6 +16,7 @@ import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.managers.SharedPreferencesManager;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
 import com.example.kevin.fifastatistics.views.adapters.chartviewpagers.BarChartViewPagerAdapter;
+import com.example.kevin.fifastatistics.views.cards.RecordsCardView;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.util.ArrayList;
@@ -52,6 +53,10 @@ public class OverviewFragment extends Fragment implements FifaFragment{
 
         ImageView profileImage = (ImageView) view.findViewById(R.id.user_header_profile_image);
         ImageLoader.getInstance().displayImage(mUser.getImageUrl(), profileImage);
+
+        RecordsCardView rcv = (RecordsCardView) view.findViewById(R.id.recordscardview);
+        rcv.setMatchRecords(mUser.getMatchRecords());
+        rcv.setSeriesRecords(mUser.getSeriesRecords());
 
         ViewPager chartPager = (ViewPager) view.findViewById(R.id.card_view_pager);
         ArrayList<User.StatsPair> stats = new ArrayList<>();

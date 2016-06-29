@@ -54,7 +54,7 @@ public class SignInActivity extends AppCompatActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         checkSignedIn();
-        _debugging_setUserToAccount();
+//        _debugging_setUserToAccount();
         setContentView(R.layout.activity_login);
 
         if (checkPlayServices()) {
