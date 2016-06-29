@@ -16,7 +16,7 @@
     <!-- Card view properties -->
     <dimen name="card_corner_radius">4dp</dimen>
     <dimen name="card_header_height">40dp</dimen>
-    <dimen name="card_header_text_size">20sp</dimen>
+    <dimen name="card_header_text_size">15sp</dimen>
 
     <!-- Records Card View -->
     <dimen name="record_value_item_height">50dp</dimen>
