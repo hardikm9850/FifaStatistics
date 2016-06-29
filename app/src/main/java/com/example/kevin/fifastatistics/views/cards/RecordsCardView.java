@@ -1,7 +1,6 @@
 package com.example.kevin.fifastatistics.views.cards;
 
 import android.content.Context;
-import android.support.v7.widget.CardView;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -57,7 +56,7 @@ public class RecordsCardView extends LinearLayout {
 
     private void setHeaderText(RelativeLayout layout, String title) {
         View header = layout.findViewById(R.id.header);
-        TextView headerTitle = (TextView) header.findViewById(R.id.header_text);
+        TextView headerTitle = (TextView) header.findViewById(R.id.header_left_text);
         headerTitle.setText(title);
     }
 
