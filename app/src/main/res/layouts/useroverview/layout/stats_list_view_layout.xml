@@ -10,8 +10,13 @@
         android:layout_height="40dp"
         android:layout_marginTop="10dp"
         android:layout_marginLeft="10dp"
-        android:textSize="20sp"
+        android:layout_gravity="center_vertical"
+        android:textSize="15sp"
         android:textStyle="bold"/>
+
+    <include
+        layout="@layout/card_view_header"
+        android:id="@+id/header" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/stats_recycler_view"

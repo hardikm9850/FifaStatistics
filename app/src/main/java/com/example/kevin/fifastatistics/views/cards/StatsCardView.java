@@ -5,6 +5,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -32,6 +33,13 @@ public class StatsCardView extends LinearLayout {
         statsList.setLayoutManager(new LinearLayoutManager(c));
         statsList.setHasFixedSize(true);
         statsList.setNestedScrollingEnabled(false);
+
+        View header = findViewById(R.id.header);
+        TextView headerLeft = (TextView) header.findViewById(R.id.header_left_text);
+        headerLeft.setText("You");
+
+        TextView headerRight = (TextView) header.findViewById(R.id.header_right_text);
+        headerRight.setText("Opp");
     }
 
     public void setTitle(String text) {

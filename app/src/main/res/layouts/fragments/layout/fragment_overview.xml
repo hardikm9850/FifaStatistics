@@ -34,8 +34,7 @@
         <include
             layout="@layout/user_overview_data"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="@dimen/activity_vertical_margin">
+            android:layout_height="match_parent">
         </include>
 
     </LinearLayout>
