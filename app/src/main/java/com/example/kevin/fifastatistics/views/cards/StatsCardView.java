@@ -19,8 +19,14 @@ import com.example.kevin.fifastatistics.views.adapters.StatsRecyclerViewAdapter;
  */
 public class StatsCardView extends LinearLayout {
 
+    private static final String DEFAULT_LEFT_HEADER_TEXT = "You";
+    private static final String DEFAULT_RIGHT_HEADER_TEXT = "Opp";
+
     private final TextView title;
     private final RecyclerView statsList;
+
+    private TextView leftHeader;
+    private TextView rightHeader;
 
     public StatsCardView(Context c, AttributeSet attributeSet) {
         super(c, attributeSet);
@@ -35,15 +41,23 @@ public class StatsCardView extends LinearLayout {
         statsList.setNestedScrollingEnabled(false);
 
         View header = findViewById(R.id.header);
-        TextView headerLeft = (TextView) header.findViewById(R.id.header_left_text);
-        headerLeft.setText("You");
+        leftHeader = (TextView) header.findViewById(R.id.header_left_text);
+        rightHeader = (TextView) header.findViewById(R.id.header_right_text);
 
-        TextView headerRight = (TextView) header.findViewById(R.id.header_right_text);
-        headerRight.setText("Opp");
+        leftHeader.setText(DEFAULT_LEFT_HEADER_TEXT);
+        rightHeader.setText(DEFAULT_RIGHT_HEADER_TEXT);
     }
 
     public void setTitle(String text) {
         title.setText(text);
+    }
+
+    public void setLeftHeaderText(String text) {
+        leftHeader.setText(text);
+    }
+
+    public void setRightHeaderText(String text) {
+        rightHeader.setText(text);
     }
 
     public void setChartData(User.StatsPair stats) {
