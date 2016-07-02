@@ -69,19 +69,6 @@ public class UserTest {
     }
 
     @Test
-    public void user_addIncomingRequest_nullList_Test() {
-        Friend friend = FriendGenerator.generateFriend();
-        user = UserGenerator.generateUser(UserGenerator.NULL_REQUESTS_LIST);
-
-        Assert.assertNull(user.getIncomingRequests());
-
-        user.addIncomingRequest(friend);
-
-        Assert.assertEquals("Incoming Request was not added to list!",
-                1, user.getIncomingRequests().size());
-    }
-
-    @Test
     public void user_addOutgoingRequestTest() {
         Friend friend = FriendGenerator.generateFriend();
         int previousSize = user.getOutgoingRequests().size();

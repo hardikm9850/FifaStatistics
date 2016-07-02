@@ -1,10 +1,7 @@
 package com.example.kevin.fifastatistics.models.databasemodels.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 
-import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -14,10 +11,8 @@ import lombok.Setter;
  * The Stats class represents all of the User's main statistics, and should only exist
  * within instances of User objects. All of its properties are ints.
  */
-@JsonDeserialize(builder = Stats.StatsBuilder.class)
 @Getter
 @Setter
-@Builder
 public class Stats {
 
     @JsonIgnore
@@ -40,10 +35,6 @@ public class Stats {
     private int injuries;
     private int shotAccuracy;
     private int passAccuracy;
-
-    @JsonPOJOBuilder(withPrefix = "")
-    public static final class StatsBuilder {
-    }
 
     /**
      * Get the set of names representing the items.

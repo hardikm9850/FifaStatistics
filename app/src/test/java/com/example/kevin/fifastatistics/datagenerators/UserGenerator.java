@@ -24,27 +24,12 @@ public class UserGenerator {
         setArgsArray(options);
         rand = new Random();
         String name = NameGenerator.generateRandomFullName();
-        String id = IdGenerator.getRandomId();
 
-        return User.builder()
-                .id(id)
-                .email(EmailGenerator.generateEmailFromNameWithNumbers(name))
-                .googleId(IdGenerator.getRandomId())
-                .name(name)
-                .registrationToken(IdGenerator.getRandomIdWithDashes())
-                .imageUrl(ImageUrlGenerator.generateValidImageUrl())
-                .friends(generateFriendsList(rand.nextInt(10) + 1))
-                .incomingRequests(getRequestsList())
-                .outgoingRequests(getRequestsList())
-                .recordStats(StatsGenerator.generateStatsPair())
-                .averageStats(StatsGenerator.generateStatsPair())
-                .matches(generateMatchList(id, rand.nextInt(5) + 1))
-                .series(generateSeriesList(rand.nextInt(4) + 1))
-                .matchRecords(RecordsGenerator.generateRecords(85))
-                .seriesRecords(RecordsGenerator.generateRecords(22))
-                .level(rand.nextInt(20))
-                .experience(rand.nextInt(100000))
-                .build();
+        return new User(
+                name,
+                EmailGenerator.generateEmailFromNameWithNumbers(name),
+                IdGenerator.getRandomId(),
+                ImageUrlGenerator.generateValidImageUrl());
     }
 
     private static void setArgsArray(int[] options) {

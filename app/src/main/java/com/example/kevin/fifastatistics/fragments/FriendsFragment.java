@@ -12,19 +12,18 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.kevin.fifastatistics.R;
+import com.example.kevin.fifastatistics.managers.SharedPreferencesManager;
 import com.example.kevin.fifastatistics.models.SearchAdapterSearchViewPair;
 import com.example.kevin.fifastatistics.models.apiresponses.ApiListResponse;
 import com.example.kevin.fifastatistics.models.databasemodels.user.Friend;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
-import com.example.kevin.fifastatistics.managers.SharedPreferencesManager;
 import com.example.kevin.fifastatistics.network.FifaApiAdapter;
 import com.example.kevin.fifastatistics.utils.externalfactories.SearchViewFactory;
 import com.example.kevin.fifastatistics.views.GridRecyclerView;
 import com.example.kevin.fifastatistics.views.adapters.FriendsRecyclerViewAdapter;
-
 import com.lapism.searchview.view.SearchView;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
@@ -93,7 +92,8 @@ public class FriendsFragment extends Fragment implements FifaFragment {
                 .subscribe(this::setSearchAdapterAndInvalidateMenu);
     }
 
-    private Observable<SearchAdapterSearchViewPair> initializeSearchView(ArrayList<User> users) {
+    private Observable<SearchAdapterSearchViewPair> initializeSearchView(List<User> users) {
+        users.remove(mUser);
         SearchAdapterSearchViewPair pair = SearchViewFactory.createUserSearchViewPair(this, users);
         return Observable.just(pair);
     }
@@ -179,7 +179,7 @@ public class FriendsFragment extends Fragment implements FifaFragment {
         void onListFragmentInteraction(Friend friend);
     }
 
-    private void setAdapter(ArrayList<Friend> friends) {
+    private void setAdapter(List<Friend> friends) {
         if (view instanceof GridRecyclerView) {
             GridRecyclerView recyclerView = (GridRecyclerView) view;
             FriendsRecyclerViewAdapter adapter = new FriendsRecyclerViewAdapter(friends, mListener);

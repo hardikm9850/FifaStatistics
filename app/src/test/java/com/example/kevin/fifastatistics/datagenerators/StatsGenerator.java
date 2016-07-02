@@ -15,20 +15,21 @@ public class StatsGenerator {
     }
 
     private static Stats generateStats() {
-        return Stats.builder()
-                .goals(randomInt(4))
-                .shots(randomInt(14))
-                .shotsOnTarget(randomInt(10))
-                .possession(randomInt(40, 60))
-                .tackles(randomInt(8))
-                .fouls(randomInt(4))
-                .yellowCards(randomInt(5))
-                .redCards(randomInt(2))
-                .offsides(randomInt(7))
-                .injuries(2)
-                .shotAccuracy(randomInt(10,100))
-                .passAccuracy(randomInt(40, 90))
-                .build();
+        Stats stats = new Stats();
+        stats.setGoals(randomInt(4));
+        stats.setShots(randomInt(14));
+        stats.setShotsOnTarget(randomInt(10));
+        stats.setPossession(randomInt(40, 60));
+        stats.setTackles(randomInt(8));
+        stats.setFouls(randomInt(4));
+        stats.setYellowCards(randomInt(5));
+        stats.setRedCards(randomInt(2));
+        stats.setOffsides(randomInt(7));
+        stats.setInjuries(2);
+        stats.setShotAccuracy(randomInt(10,100));
+        stats.setPassAccuracy(randomInt(40, 90));
+
+        return stats;
     }
 
     private static int randomInt(int lowerBound, int upperBound) {

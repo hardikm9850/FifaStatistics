@@ -10,10 +10,9 @@ import android.widget.TextView;
 import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.fragments.FriendsFragment.OnListFragmentInteractionListener;
 import com.example.kevin.fifastatistics.models.databasemodels.user.Friend;
-
 import com.nostra13.universalimageloader.core.ImageLoader;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * {@link RecyclerView.Adapter} that can display a {@link Friend} and makes a call to the
@@ -22,13 +21,11 @@ import java.util.ArrayList;
 public class FriendsRecyclerViewAdapter
         extends RecyclerView.Adapter<FriendsRecyclerViewAdapter.ViewHolder> {
 
-    private ArrayList<Friend> mUsers;
+    private List<Friend> mUsers;
     private final OnListFragmentInteractionListener mListener;
     private ImageLoader imageLoader;
 
-    public FriendsRecyclerViewAdapter(ArrayList<Friend> users,
-                                      OnListFragmentInteractionListener
-                                              listener) {
+    public FriendsRecyclerViewAdapter(List<Friend> users, OnListFragmentInteractionListener listener) {
         mUsers = users;
         mListener = listener;
         imageLoader = ImageLoader.getInstance();

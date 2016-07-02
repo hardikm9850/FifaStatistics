@@ -54,7 +54,7 @@ public class SignInActivity extends AppCompatActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         checkSignedIn();
-        _debugging_setUserToAccount();
+//        _debugging_setUserToAccount();
         setContentView(R.layout.activity_login);
 
         if (checkPlayServices()) {
@@ -265,17 +265,12 @@ public class SignInActivity extends AppCompatActivity implements
                 .subscribe(this::handleGetUserResult);
     }
 
-    private User createNewUser(String name, String email, String googleId,
-                               String imageUrl)
-    {
+    private User createNewUser(String name, String email, String googleId, String imageUrl) {
         doCreateUser = true;
-        return User.builder()
-                .name(name)
-                .email(email)
-                .googleId(googleId)
-                .imageUrl(imageUrl)
-                .registrationToken(mRegistrationToken)
-                .build();
+        User user = new User(name, email, googleId, imageUrl);
+        user.setRegistrationToken(mRegistrationToken);
+
+        return user;
     }
 
 

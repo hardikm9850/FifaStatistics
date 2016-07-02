@@ -4,8 +4,8 @@ import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -35,7 +35,7 @@ public class ApiListResponse<T> {
      * Retrieve the list of items from the response.
      * @return  an ArrayList of items, with type specified by the class's generic type
      */
-    public ArrayList<T> getItems() {
+    public List<T> getItems() {
         return embedded.getItems();
     }
 
@@ -46,14 +46,14 @@ public class ApiListResponse<T> {
     public static class Embedded<T> {
 
         private String name;
-        private Map<String, ArrayList<T>> items = new HashMap<>();
+        private Map<String, List<T>> items = new HashMap<>();
 
-        public ArrayList<T> getItems() {
+        public List<T> getItems() {
             return items.get(name);
         }
 
         @JsonAnySetter
-        public void setItems(String name, ArrayList<T> results) {
+        public void setItems(String name, List<T> results) {
             this.name = name;
             items.put(name, results);
         }

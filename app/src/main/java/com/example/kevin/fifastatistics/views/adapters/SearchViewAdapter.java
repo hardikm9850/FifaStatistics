@@ -44,7 +44,7 @@ public class SearchViewAdapter extends com.lapism.searchview.adapter.SearchAdapt
 
     public SearchViewAdapter(Context context, List<SearchItem> searchList,
                              List<SearchItem> dataList, int theme,
-                             ArrayList<User> users) {
+                             List<User> users) {
         super(context, searchList, dataList, theme);
         this.mContext = context;
         this.mSearchList =  new ArrayList<>();

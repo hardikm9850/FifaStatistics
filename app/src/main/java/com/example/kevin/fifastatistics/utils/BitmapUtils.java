@@ -11,9 +11,12 @@ import android.graphics.RectF;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
 
+import lombok.experimental.UtilityClass;
+
 /**
  * Utility class for bitmap operations.
  */
+@UtilityClass
 public class BitmapUtils
 {
     /**

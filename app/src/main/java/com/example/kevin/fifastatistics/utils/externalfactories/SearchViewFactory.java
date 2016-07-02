@@ -12,8 +12,8 @@ import com.example.kevin.fifastatistics.views.adapters.SearchViewAdapter;
 import com.lapism.searchview.view.SearchCodes;
 import com.lapism.searchview.view.SearchView;
 
-import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 public class SearchViewFactory
 {
@@ -33,7 +33,7 @@ public class SearchViewFactory
      */
     public static SearchAdapterSearchViewPair createUserSearchViewPair(
             FriendsFragment fragment,
-            ArrayList<User> users)
+            List<User> users)
     {
         FifaActivity activity = (FifaActivity) fragment.getActivity();
         SearchView searchView = (SearchView) activity.findViewById(R.id.searchView);
@@ -86,7 +86,7 @@ public class SearchViewFactory
     }
 
     private static SearchViewAdapter initializeAdapter(FriendsFragment fragment,
-                                                       ArrayList<User> users,
+                                                       List<User> users,
                                                        SearchView searchView)
     {
         SearchViewAdapter adapter = new SearchViewAdapter(fragment.getActivity(),

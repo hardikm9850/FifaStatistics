@@ -5,9 +5,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 
+import lombok.experimental.UtilityClass;
+
 /**
  * Utility class for serializing and deserializing objects from and to JSON.
  */
+@UtilityClass
 public class SerializationUtils {
 
     private static final ObjectMapper mapper = new ObjectMapper();
