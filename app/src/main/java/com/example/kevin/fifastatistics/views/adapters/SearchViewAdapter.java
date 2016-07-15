@@ -16,11 +16,11 @@ import android.widget.TextView;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
 import com.example.kevin.fifastatistics.utils.BitmapUtils;
 import com.lapism.searchview.R;
-import com.lapism.searchview.adapter.SearchItem;
 import com.lapism.searchview.view.SearchCodes;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
@@ -42,10 +42,8 @@ public class SearchViewAdapter extends com.lapism.searchview.adapter.SearchAdapt
     private ImageLoader mImageLoader = ImageLoader.getInstance();
     private int mKeyLength = 0;
 
-    public SearchViewAdapter(Context context, List<SearchItem> searchList,
-                             List<SearchItem> dataList, int theme,
-                             List<User> users) {
-        super(context, searchList, dataList, theme);
+    public SearchViewAdapter(Context context, int theme, List<User> users) {
+        super(context, Collections.emptyList(), Collections.emptyList(), theme);
         this.mContext = context;
         this.mSearchList =  new ArrayList<>();
         this.mDataList = users;

@@ -17,9 +17,9 @@ public abstract class DatabaseModel {
      * A DatabaseModel object is considered equal to another if their ID's are the same.
      */
     @Override
-    public boolean equals(Object object) {
-        if (object instanceof  DatabaseModel) {
-            DatabaseModel model = (DatabaseModel) object;
+    public boolean equals(Object o) {
+        if (o instanceof  DatabaseModel) {
+            DatabaseModel model = (DatabaseModel) o;
             if (model.getId().equals(getId())) {
                 return true;
             }

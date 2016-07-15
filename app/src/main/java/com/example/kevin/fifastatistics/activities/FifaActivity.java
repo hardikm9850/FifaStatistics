@@ -8,5 +8,5 @@ import com.mikepenz.materialdrawer.Drawer;
 public abstract class FifaActivity extends AppCompatActivity {
 
     public abstract Toolbar getToolbar();
-    public abstract Drawer getDrawer();
+    public abstract void setNavigationLocked(boolean locked);
 }

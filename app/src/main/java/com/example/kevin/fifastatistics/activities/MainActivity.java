@@ -11,9 +11,8 @@ import com.example.kevin.fifastatistics.fragments.FriendsFragment;
 import com.example.kevin.fifastatistics.fragments.initializers.FragmentInitializer;
 import com.example.kevin.fifastatistics.fragments.initializers.FragmentInitializerFactory;
 import com.example.kevin.fifastatistics.models.databasemodels.user.Friend;
-import com.example.kevin.fifastatistics.utils.externalfactories.NavigationDrawerFactory;
+import com.example.kevin.fifastatistics.views.wrappers.FifaNavigationDrawer;
 import com.example.kevin.fifastatistics.views.adapters.ViewPagerAdapter;
-import com.mikepenz.materialdrawer.Drawer;
 
 /**
  * The application's main activity class that is loaded on launch, so long as the user is signed in.
@@ -26,7 +25,7 @@ public class MainActivity extends FifaActivity
     public static final String FRAGMENT_EXTRA = "fragment";
 
     private Toolbar mToolbar;
-    private Drawer mDrawer;
+    private FifaNavigationDrawer mDrawer;
     private ViewPagerAdapter mAdapter;
     private TabLayout mTabLayout;
     private ViewPager mViewPager;
@@ -67,7 +66,7 @@ public class MainActivity extends FifaActivity
     }
 
     private void initializeDrawer() {
-        mDrawer = NavigationDrawerFactory.getDefaultDrawerInstance(this);
+        mDrawer = FifaNavigationDrawer.getInstance(this);
         mDrawer.setOnDrawerItemClickListener((view, position, drawerItem) -> {
             if (position == currentDrawerPosition) {
                 mDrawer.closeDrawer();
@@ -116,7 +115,7 @@ public class MainActivity extends FifaActivity
     }
 
     @Override
-    public Drawer getDrawer() {
-        return mDrawer;
+    public void setNavigationLocked(boolean locked) {
+        mDrawer.setLocked(locked);
     }
 }

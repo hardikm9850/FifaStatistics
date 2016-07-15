@@ -12,16 +12,15 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.kevin.fifastatistics.R;
+import com.example.kevin.fifastatistics.activities.FifaActivity;
 import com.example.kevin.fifastatistics.managers.SharedPreferencesManager;
-import com.example.kevin.fifastatistics.models.SearchAdapterSearchViewPair;
 import com.example.kevin.fifastatistics.models.apiresponses.ApiListResponse;
 import com.example.kevin.fifastatistics.models.databasemodels.user.Friend;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
 import com.example.kevin.fifastatistics.network.FifaApiAdapter;
-import com.example.kevin.fifastatistics.utils.externalfactories.SearchViewFactory;
+import com.example.kevin.fifastatistics.views.wrappers.FifaSearchView;
 import com.example.kevin.fifastatistics.views.GridRecyclerView;
 import com.example.kevin.fifastatistics.views.adapters.FriendsRecyclerViewAdapter;
-import com.lapism.searchview.view.SearchView;
 
 import java.util.List;
 
@@ -42,14 +41,12 @@ public class FriendsFragment extends Fragment implements FifaFragment {
     public static final String viewArgument = "view";
     public static final int friendsView = 0;
     public static final int requestsView = 1;
-
-    private static final String TAG = "Friends Fragment";
     private static final int mColumnCount = 2;
 
-    private SearchView mSearchView;
+    private FifaSearchView mSearchView;
     private OnListFragmentInteractionListener mListener;
     private User mUser;
-    private View view = null;
+    private View mView = null;
     private boolean searchItemIsReady = false;
 
     public FriendsFragment() {
@@ -73,14 +70,12 @@ public class FriendsFragment extends Fragment implements FifaFragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_friends_list, container, false);
-        mSearchView = (SearchView) getActivity().findViewById(R.id.searchView);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        mView = inflater.inflate(R.layout.fragment_friends_list, container, false);
 
         beginSearchViewInitialization();
         setAdapterDataSource();
-        return view;
+        return mView;
     }
 
     private void beginSearchViewInitialization() {
@@ -89,21 +84,17 @@ public class FriendsFragment extends Fragment implements FifaFragment {
                 .flatMap(this::initializeSearchView)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(this::setSearchAdapterAndInvalidateMenu);
+                .subscribe(sv -> {
+                    mSearchView.attachAdapter();
+                    searchItemIsReady = true;
+                    getActivity().invalidateOptionsMenu();
+                });
     }
 
-    private Observable<SearchAdapterSearchViewPair> initializeSearchView(List<User> users) {
+    private Observable<FifaSearchView> initializeSearchView(List<User> users) {
         users.remove(mUser);
-        SearchAdapterSearchViewPair pair = SearchViewFactory.createUserSearchViewPair(this, users);
-        return Observable.just(pair);
-    }
-
-    private void setSearchAdapterAndInvalidateMenu(SearchAdapterSearchViewPair pair) {
-        mSearchView = pair.getSearchView();
-        mSearchView.setAdapter(pair.getAdapter());
-
-        searchItemIsReady = true;
-        getActivity().invalidateOptionsMenu();
+        mSearchView = FifaSearchView.getInstance((FifaActivity) getActivity(), users);
+        return Observable.just(mSearchView);
     }
 
     private void setAdapterDataSource() {
@@ -117,7 +108,7 @@ public class FriendsFragment extends Fragment implements FifaFragment {
 
     @Override
     public void onDestroyView() {
-        view = null;
+        mView = null;
         mSearchView = null;
         super.onDestroyView();
     }
@@ -180,11 +171,11 @@ public class FriendsFragment extends Fragment implements FifaFragment {
     }
 
     private void setAdapter(List<Friend> friends) {
-        if (view instanceof GridRecyclerView) {
-            GridRecyclerView recyclerView = (GridRecyclerView) view;
+        if (mView instanceof GridRecyclerView) {
+            GridRecyclerView recyclerView = (GridRecyclerView) mView;
             FriendsRecyclerViewAdapter adapter = new FriendsRecyclerViewAdapter(friends, mListener);
 
-            recyclerView.setLayoutManager(new GridLayoutManager(view.getContext(), mColumnCount));
+            recyclerView.setLayoutManager(new GridLayoutManager(mView.getContext(), mColumnCount));
             recyclerView.setAdapter(adapter);
         }
     }
