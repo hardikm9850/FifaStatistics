@@ -1,5 +1,6 @@
 package com.example.kevin.fifastatistics.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
@@ -11,6 +12,7 @@ import com.example.kevin.fifastatistics.fragments.FriendsFragment;
 import com.example.kevin.fifastatistics.fragments.initializers.FragmentInitializer;
 import com.example.kevin.fifastatistics.fragments.initializers.FragmentInitializerFactory;
 import com.example.kevin.fifastatistics.models.databasemodels.user.Friend;
+import com.example.kevin.fifastatistics.utils.IntentFactory;
 import com.example.kevin.fifastatistics.views.wrappers.FifaNavigationDrawer;
 import com.example.kevin.fifastatistics.views.adapters.ViewPagerAdapter;
 
@@ -98,12 +100,13 @@ public class MainActivity extends FifaActivity
 
     @Override
     public void onListFragmentInteraction(Friend friend) {
-
+        Intent intent = IntentFactory.createPlayerActivityIntent(this, friend);
+        startActivity(intent);
     }
 
     @Override
     public void onBackPressed() {
-        if (currentFragment.handledBackPress()) {
+        if (currentFragment.handleBackPress()) {
             return;
         }
         super.onBackPressed();

@@ -31,11 +31,7 @@
 
         <include layout="@layout/divisor"></include>
 
-        <include
-            layout="@layout/user_overview_data"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-        </include>
+        <include layout="@layout/user_overview_data"></include>
 
     </LinearLayout>
 </ScrollView>

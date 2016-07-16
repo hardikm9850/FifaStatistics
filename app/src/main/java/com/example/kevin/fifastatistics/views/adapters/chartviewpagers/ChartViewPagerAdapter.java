@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
 
-import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -16,9 +16,9 @@ import java.util.ArrayList;
 public abstract class ChartViewPagerAdapter extends PagerAdapter {
 
     protected Context mContext;
-    protected ArrayList<User.StatsPair> stats;
+    protected List<User.StatsPair> stats;
 
-    public ChartViewPagerAdapter(Context context, ArrayList<User.StatsPair> stats) {
+    public ChartViewPagerAdapter(Context context, List<User.StatsPair> stats) {
         mContext = context;
         this.stats = stats;
     }

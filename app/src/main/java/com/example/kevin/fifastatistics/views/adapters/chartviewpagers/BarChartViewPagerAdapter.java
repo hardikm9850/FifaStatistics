@@ -8,14 +8,14 @@ import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
 import com.example.kevin.fifastatistics.views.cards.StatsCardView;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Implementation of ChartViewPagerAdapter for BarCharts.
  */
 public class BarChartViewPagerAdapter extends ChartViewPagerAdapter {
 
-    public BarChartViewPagerAdapter(Context context, ArrayList<User.StatsPair> stats) {
+    public BarChartViewPagerAdapter(Context context, List<User.StatsPair> stats) {
         super(context, stats);
     }
 

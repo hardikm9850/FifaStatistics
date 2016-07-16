@@ -1,40 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.kevin.fifastatistics">
+          package="com.example.kevin.fifastatistics">
 
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE"/>
 
     <!-- To auto-complete the email text field in the login form with the user's emails -->
-    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
-    <uses-permission android:name="android.permission.READ_PROFILE" />
-    <uses-permission android:name="android.permission.READ_CONTACTS" />
-    <uses-permission android:name="android.permission.USE_CREDENTIALS" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
+    <uses-permission android:name="android.permission.READ_PROFILE"/>
+    <uses-permission android:name="android.permission.READ_CONTACTS"/>
+    <uses-permission android:name="android.permission.USE_CREDENTIALS"/>
+    <uses-permission android:name="android.permission.VIBRATE"/>
 
     <application
+        android:name=".FifaApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:name="FifaApplication"
         android:supportsRtl="true">
+
         <activity
             android:name=".activities.SignInActivity"
             android:label="@string/title_activity_login"
             android:theme="@style/MaterialDrawerTheme.ActionBar">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.MAIN"/>
 
-                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+
         <activity
             android:name=".activities.MainActivity"
             android:label="@string/app_name"
-            android:theme="@style/MaterialDrawerTheme" />
+            android:theme="@style/MaterialDrawerTheme">
+        </activity>
+
+        <activity
+            android:name=".activities.PlayerActivty"
+            android:label="@string/title_activity_player_activty"
+            android:theme="@style/MaterialDrawerTheme">
+        </activity>
 
         <!-- [START gcm_receiver] -->
         <receiver
@@ -42,9 +52,9 @@
             android:exported="true"
             android:permission="com.google.android.c2dm.permission.SEND">
             <intent-filter>
-                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+                <action android:name="com.google.android.c2dm.intent.RECEIVE"/>
 
-                <category android:name="gcm.play.android.samples.com.gcmquickstart" />
+                <category android:name="gcm.play.android.samples.com.gcmquickstart"/>
             </intent-filter>
         </receiver>
         <!-- [END gcm_receiver] -->
@@ -55,7 +65,7 @@
             android:name=".network.gcmnotifications.MyGcmListenerService"
             android:exported="false">
             <intent-filter>
-                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+                <action android:name="com.google.android.c2dm.intent.RECEIVE"/>
             </intent-filter>
         </service>
         <!-- [END gcm_listener] -->
@@ -66,22 +76,24 @@
             android:name=".network.gcmnotifications.MyInstanceIDListenerService"
             android:exported="false">
             <intent-filter>
-                <action android:name="com.google.android.gms.iid.InstanceID" />
+                <action android:name="com.google.android.gms.iid.InstanceID"/>
             </intent-filter>
         </service>
         <!-- [END instanceId_listener] -->
 
         <service
             android:name=".network.gcmnotifications.RegistrationIntentService"
-            android:exported="false" />
+            android:exported="false"/>
         <service
             android:name=".views.notifications.friendrequestnotification.FriendRequestAcceptService"
             android:enabled="true"
-            android:exported="false" />
+            android:exported="false"/>
         <service
             android:name=".views.notifications.friendrequestnotification.FriendRequestDeclineService"
             android:enabled="true"
-            android:exported="false"> </service>
+            android:exported="false">
+        </service>
+
     </application>
 
 </manifest>

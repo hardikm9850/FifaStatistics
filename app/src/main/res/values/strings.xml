@@ -73,4 +73,7 @@
     <string name="notification_accept">ACCEPT</string>
     <string name="notification_decline">DECLINE</string>
 
+    <!-- PLAYER ACTIVITY -->
+    <string name="title_activity_player_activty">Player Activity</string>
+
 </resources>

@@ -4,7 +4,6 @@ import android.support.design.widget.TabLayout;
 import android.view.View;
 
 import com.example.kevin.fifastatistics.activities.FifaActivity;
-import com.example.kevin.fifastatistics.fragments.FifaFragment;
 import com.example.kevin.fifastatistics.fragments.FriendsFragment;
 import com.example.kevin.fifastatistics.models.Constants;
 import com.example.kevin.fifastatistics.views.adapters.ViewPagerAdapter;

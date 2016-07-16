@@ -3,7 +3,6 @@ package com.example.kevin.fifastatistics.fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -15,12 +14,8 @@ import android.widget.TextView;
 import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.managers.SharedPreferencesManager;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
-import com.example.kevin.fifastatistics.views.adapters.chartviewpagers.BarChartViewPagerAdapter;
-import com.example.kevin.fifastatistics.views.cards.RecordsCardView;
+import com.example.kevin.fifastatistics.views.UserOverview;
 import com.nostra13.universalimageloader.core.ImageLoader;
-
-import java.util.ArrayList;
-
 
 /**
  * A simple {@link Fragment} subclass.
@@ -54,16 +49,8 @@ public class OverviewFragment extends Fragment implements FifaFragment{
         ImageView profileImage = (ImageView) view.findViewById(R.id.user_header_profile_image);
         ImageLoader.getInstance().displayImage(mUser.getImageUrl(), profileImage);
 
-        RecordsCardView rcv = (RecordsCardView) view.findViewById(R.id.recordscardview);
-        rcv.setMatchRecords(mUser.getMatchRecords());
-        rcv.setSeriesRecords(mUser.getSeriesRecords());
-
-        ViewPager chartPager = (ViewPager) view.findViewById(R.id.card_view_pager);
-        ArrayList<User.StatsPair> stats = new ArrayList<>();
-        stats.add(mUser.getAverageStats());
-        stats.add(mUser.getRecordStats());
-        chartPager.setAdapter(new BarChartViewPagerAdapter(getContext(), stats));
-        chartPager.setCurrentItem(0);
+        UserOverview overview = (UserOverview) view.findViewById(R.id.useroverviewdata);
+        overview.setUser(mUser);
 
         return view;
     }
@@ -76,7 +63,7 @@ public class OverviewFragment extends Fragment implements FifaFragment{
     }
 
     @Override
-    public boolean handledBackPress() {
+    public boolean handleBackPress() {
         return false;
     }
 }

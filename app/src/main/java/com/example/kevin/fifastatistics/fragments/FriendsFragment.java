@@ -41,6 +41,7 @@ public class FriendsFragment extends Fragment implements FifaFragment {
     public static final String viewArgument = "view";
     public static final int friendsView = 0;
     public static final int requestsView = 1;
+
     private static final int mColumnCount = 2;
 
     private FifaSearchView mSearchView;
@@ -157,7 +158,7 @@ public class FriendsFragment extends Fragment implements FifaFragment {
     }
 
     @Override
-    public boolean handledBackPress() {
+    public boolean handleBackPress() {
         if (mSearchView != null && mSearchView.isSearchOpen()) {
             mSearchView.hide(true);
             return true;

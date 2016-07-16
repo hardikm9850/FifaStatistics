@@ -1,6 +1,7 @@
 package com.example.kevin.fifastatistics.models.databasemodels.user;
 
 import com.example.kevin.fifastatistics.models.databasemodels.DatabaseModel;
+import com.example.kevin.fifastatistics.utils.SerializationUtils;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 
@@ -17,9 +18,9 @@ import lombok.Setter;
 @Getter
 public class Friend extends DatabaseModel
 {
-    private String id;
-    private String name;
-    private String imageUrl;
+    private final String id;
+    private final String name;
+    private final String imageUrl;
     private int level;
 
     @Setter
@@ -28,4 +29,10 @@ public class Friend extends DatabaseModel
     @JsonPOJOBuilder(withPrefix = "")
     public static final class FriendBuilder {
     }
+
+    @Override
+    public String toString() {
+        return SerializationUtils.toJson(this);
+    }
+
 }
