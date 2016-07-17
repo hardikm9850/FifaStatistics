@@ -7,11 +7,13 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.widget.ImageView;
 
 import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.fragments.SecondFragment;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
 import com.example.kevin.fifastatistics.views.adapters.ViewPagerAdapter;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 public class PlayerActivty extends AppCompatActivity {
 
@@ -39,6 +41,9 @@ public class PlayerActivty extends AppCompatActivity {
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        ImageView userImage = (ImageView) findViewById(R.id.user_image);
+        ImageLoader.getInstance().displayImage(getIntent().getStringExtra(IMAGE_URL_EXTRA), userImage);
     }
 
     @SuppressWarnings("ConstantConditions")
