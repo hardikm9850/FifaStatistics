@@ -2,7 +2,6 @@ package com.example.kevin.fifastatistics.activities;
 
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.NavUtils;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -10,16 +9,25 @@ import android.view.MenuItem;
 import android.widget.ImageView;
 
 import com.example.kevin.fifastatistics.R;
+import com.example.kevin.fifastatistics.fragments.FriendsFragment;
 import com.example.kevin.fifastatistics.fragments.SecondFragment;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
 import com.example.kevin.fifastatistics.views.adapters.ViewPagerAdapter;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
-public class PlayerActivty extends AppCompatActivity {
+public class PlayerActivty extends FifaActivity {
 
+    /** The name of the user. */
     public static final String NAME_EXTRA = "name";
+
+    /** The image URL of the user. */
     public static final String IMAGE_URL_EXTRA = "imageurl";
+
+    /** The ID of the user. */
     public static final String ID_EXTRA = "id";
+
+    /** Whether or not the user is a friend of the current user. */
+    public static final String FRIEND_EXTRA = "isFriend";
 
     private User mUser;
     private Toolbar mToolbar;
@@ -37,6 +45,7 @@ public class PlayerActivty extends AppCompatActivity {
         initializeTabs();
     }
 
+    @SuppressWarnings("ConstantConditions")
     private void initializeToolbar() {
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
@@ -68,4 +77,13 @@ public class PlayerActivty extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public Toolbar getToolbar() {
+        return mToolbar;
+    }
+
+    @Override
+    public void setNavigationLocked(boolean locked) {
+
+    }
 }

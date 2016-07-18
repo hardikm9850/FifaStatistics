@@ -11,39 +11,46 @@
         android:id="@+id/appBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        android:fitsSystemWindows="true" >
 
         <android.support.design.widget.CollapsingToolbarLayout
             android:id="@+id/collapsing_toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:contentScrim="?attr/colorPrimary"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed">
+            app:contentScrim="@color/transparent"
+            app:expandedTitleGravity="center_vertical"
+            app:expandedTitleMarginStart="140dp"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed"
+            android:fitsSystemWindows="true" >
 
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-                app:layout_collapseMode="parallax">
-
-                <de.hdodenhof.circleimageview.CircleImageView
-                    xmlns:app="http://schemas.android.com/apk/res-auto"
-                    android:id="@+id/user_image"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    android:layout_marginTop="@dimen/activity_vertical_margin"
-                    android:layout_marginLeft="20dp"
-                    android:layout_gravity="center_vertical"
-                    app:civ_border_width="@dimen/civ_border_width"
-                    app:civ_border_color="#FFFFFF" />
-
-            </FrameLayout>
+            <de.hdodenhof.circleimageview.CircleImageView
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/user_image"
+                android:layout_width="@dimen/user_image_height"
+                android:layout_height="@dimen/user_image_height"
+                android:layout_marginTop="60dp"
+                android:layout_marginLeft="20dp"
+                app:layout_collapseMode="parallax"
+                app:layout_collapseParallaxMultiplier="0.5"
+                app:layout_scrollFlags="scroll|enterAlways"
+                android:minHeight="@dimen/player_image_small_width"
+                android:minWidth="@dimen/player_image_small_width"
+                app:civ_border_width="@dimen/civ_border_width"
+                app:civ_border_color="#FFFFFF"/>
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-                app:layout_collapseMode="pin"/>
+                app:layout_collapseMode="pin">
+
+                <Space
+                    android:layout_width="@dimen/player_image_small_width"
+                    android:layout_height="@dimen/player_image_small_width" />
+
+            </android.support.v7.widget.Toolbar>
 
         </android.support.design.widget.CollapsingToolbarLayout>
 

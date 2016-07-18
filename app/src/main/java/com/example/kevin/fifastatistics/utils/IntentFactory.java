@@ -13,6 +13,7 @@ public class IntentFactory {
         intent.putExtra(PlayerActivty.NAME_EXTRA, friend.getName());
         intent.putExtra(PlayerActivty.ID_EXTRA, friend.getId());
         intent.putExtra(PlayerActivty.IMAGE_URL_EXTRA, friend.getImageUrl());
+        intent.putExtra(PlayerActivty.FRIEND_EXTRA, true);
 
         return intent;
     }
