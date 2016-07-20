@@ -1,8 +1,6 @@
 package com.example.kevin.fifastatistics.views.wrappers;
 
 import android.content.Intent;
-import android.util.Log;
-import android.widget.TextView;
 
 import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.activities.FifaActivity;
