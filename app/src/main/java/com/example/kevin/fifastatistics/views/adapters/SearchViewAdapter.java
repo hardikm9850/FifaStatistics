@@ -38,7 +38,6 @@ public class SearchViewAdapter extends com.lapism.searchview.adapter.SearchAdapt
     private final int mTheme;
     private List<User> mSearchList;
     private List<User> mDataList = new ArrayList<>();
-    private OnItemClickListener mItemClickListener;
     private ImageLoader mImageLoader = ImageLoader.getInstance();
     private int mKeyLength = 0;
 
@@ -161,5 +160,9 @@ public class SearchViewAdapter extends com.lapism.searchview.adapter.SearchAdapt
     @Override
     public int getItemCount() {
         return mSearchList.size();
+    }
+
+    public User getUserAtPosition(int position) {
+        return mSearchList.get(position);
     }
 }

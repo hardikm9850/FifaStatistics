@@ -1,10 +1,13 @@
 package com.example.kevin.fifastatistics.views.wrappers;
 
+import android.content.Intent;
+import android.util.Log;
 import android.widget.TextView;
 
 import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.activities.FifaActivity;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
+import com.example.kevin.fifastatistics.utils.IntentFactory;
 import com.example.kevin.fifastatistics.views.adapters.SearchViewAdapter;
 import com.lapism.searchview.view.SearchCodes;
 import com.lapism.searchview.view.SearchView;
@@ -104,8 +107,11 @@ public class FifaSearchView {
         SearchViewAdapter adapter = new SearchViewAdapter(activity, THEME_TYPE, users);
 
         adapter.setOnItemClickListener((view, position) -> {
-            mSearchView.hide(false);
-            TextView textView = (TextView) view.findViewById(R.id.textView_item_text);
+            // TODO determine whether friend or not
+            mSearchView.hide(true);
+            User user = adapter.getUserAtPosition(position);
+            Intent intent = IntentFactory.createPlayerActivityIntent(activity, user);
+            activity.startActivity(intent);
         });
         return adapter;
     }
