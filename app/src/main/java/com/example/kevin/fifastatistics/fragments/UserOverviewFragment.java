@@ -18,13 +18,13 @@ import com.example.kevin.fifastatistics.views.UserOverview;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 /**
- * A simple {@link Fragment} subclass.
+ * The main overview fragment for the current user.
  */
-public class OverviewFragment extends Fragment implements FifaFragment{
+public class UserOverviewFragment extends Fragment implements FifaFragment {
 
     private User mUser;
 
-    public OverviewFragment() {
+    public UserOverviewFragment() {
         // Required empty public constructor
     }
 
@@ -39,20 +39,24 @@ public class OverviewFragment extends Fragment implements FifaFragment{
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_overview, container, false);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_user_overview, container, false);
+        initializeHeader(view);
+        initializeContent(view);
+        return view;
+    }
 
+    private void initializeHeader(View view) {
         TextView name = (TextView) view.findViewById(R.id.user_header_name_text);
         name.setText(mUser.getName());
 
         ImageView profileImage = (ImageView) view.findViewById(R.id.user_header_profile_image);
         ImageLoader.getInstance().displayImage(mUser.getImageUrl(), profileImage);
+    }
 
+    private void initializeContent(View view) {
         UserOverview overview = (UserOverview) view.findViewById(R.id.useroverviewdata);
         overview.setUser(mUser);
-
-        return view;
     }
 
     @Override

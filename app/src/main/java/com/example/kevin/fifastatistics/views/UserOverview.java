@@ -20,6 +20,8 @@ public class UserOverview extends LinearLayout {
     private final ViewPager mStatsViewPager;
     private final Context mContext;
 
+    private String mUserame;
+
     public UserOverview(Context c, AttributeSet attributeSet) {
         super(c, attributeSet);
 
@@ -31,6 +33,15 @@ public class UserOverview extends LinearLayout {
         mContext = c;
     }
 
+    /**
+     * Used for setting the value of the left title of the Stats View Pager content to the
+     * name of the user, rather than its default value. This MUST be called before {@link
+     * #setUser(User), or it will have no effect.
+     */
+    public void setUserame(String name) {
+        mUserame = name;
+    }
+
     public void setUser(User user) {
         mRecordsCardView.setMatchRecords(user.getMatchRecords());
         mRecordsCardView.setSeriesRecords(user.getSeriesRecords());
@@ -38,7 +49,7 @@ public class UserOverview extends LinearLayout {
         List<User.StatsPair> stats = new ArrayList<>();
         stats.add(user.getAverageStats());
         stats.add(user.getRecordStats());
-        mStatsViewPager.setAdapter(new BarChartViewPagerAdapter(mContext, stats));
+        mStatsViewPager.setAdapter(new BarChartViewPagerAdapter(mContext, stats, mUserame));
         mStatsViewPager.setCurrentItem(0);
     }
 }

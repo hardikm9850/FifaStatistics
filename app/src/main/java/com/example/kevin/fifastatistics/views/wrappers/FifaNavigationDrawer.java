@@ -113,7 +113,7 @@ public class FifaNavigationDrawer {
 
     private PrimaryDrawerItem initializeFriendsItem(BadgeStyle style, int incomingRequestsCount) {
         return new PrimaryDrawerItem()
-                .withName(R.string.friends)
+                .withName(R.string.players)
                 .withIcon(R.drawable.ic_group_black_24dp)
                 .withBadge(String.valueOf(incomingRequestsCount))
                 .withBadgeStyle(style)

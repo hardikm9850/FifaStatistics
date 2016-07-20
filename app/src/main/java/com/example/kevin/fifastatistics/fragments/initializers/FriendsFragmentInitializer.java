@@ -18,7 +18,7 @@ public class FriendsFragmentInitializer extends FragmentInitializer
 {
     @Override
     public void setActivityTitle(FifaActivity activity) {
-        activity.setTitle(Constants.FRIENDS_FRAGMENT);
+        activity.setTitle("Players");
     }
 
     @Override
@@ -29,7 +29,7 @@ public class FriendsFragmentInitializer extends FragmentInitializer
                 Constants.FRIENDS_FRAGMENT);
         adapter.addFragment(
                 FriendsFragment.newInstance(FriendsFragment.requestsView),
-                "Requests");
+                "Friend Requests");
 
         adapter.notifyDataSetChanged();
     }

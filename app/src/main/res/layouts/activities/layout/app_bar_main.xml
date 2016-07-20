@@ -39,7 +39,7 @@
             android:layout_gravity="bottom"
             android:visibility="gone"
             android:animateLayoutChanges="true"
-            app:tabMaxWidth="0dp" />
+            app:tabMode="scrollable" />
 
     </android.support.design.widget.AppBarLayout>
 

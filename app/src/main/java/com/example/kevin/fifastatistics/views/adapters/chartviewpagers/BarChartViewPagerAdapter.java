@@ -15,17 +15,30 @@ import java.util.List;
  */
 public class BarChartViewPagerAdapter extends ChartViewPagerAdapter {
 
-    public BarChartViewPagerAdapter(Context context, List<User.StatsPair> stats) {
+    private String mUserName;
+
+    /**
+     * @param userName Value to set for the left header text of the StatsCardView. Set as null if
+     *                 you want the default value to be used.
+     */
+    public BarChartViewPagerAdapter(Context context, List<User.StatsPair> stats, String userName) {
         super(context, stats);
+        this.mUserName = userName;
     }
 
     @Override
     public Object instantiateItem(ViewGroup collection, int position) {
         LayoutInflater inflater = LayoutInflater.from(mContext);
-        StatsCardView chartView =
-                (StatsCardView) inflater.inflate(R.layout.stats_chart_view, collection, false);
+        StatsCardView chartView = (StatsCardView) inflater.inflate(
+                R.layout.stats_chart_view, collection, false);
+
         chartView.setTitle((position == 0) ? "Averages" : "Records");
         chartView.setChartData(stats.get(position));
+
+        if (mUserName != null) {
+            chartView.setLeftHeaderText(mUserName);
+        }
+
         collection.addView(chartView);
         return chartView;
     }

@@ -21,7 +21,7 @@ import com.example.kevin.fifastatistics.views.adapters.ViewPagerAdapter;
  * If the user is not signed in, then {@link SignInActivity} will be launched.
  */
 public class MainActivity extends FifaActivity
-        implements FriendsFragment.OnListFragmentInteractionListener {
+        implements FriendsFragment.FriendsFragmentInteractionListener {
 
     public static final String PAGE_EXTRA = "page";
     public static final String FRAGMENT_EXTRA = "fragment";
@@ -99,7 +99,7 @@ public class MainActivity extends FifaActivity
     }
 
     @Override
-    public void onListFragmentInteraction(Friend friend) {
+    public void onFriendsFragmentInteraction(Friend friend) {
         Intent intent = IntentFactory.createPlayerActivityIntent(this, friend);
         startActivity(intent);
     }

@@ -33,7 +33,7 @@ import rx.schedulers.Schedulers;
  * <p>
  * Implements the {@link FifaFragment} interface, as all fragments in this project should.
  * <p>
- * Activities containing this fragment MUST implement the {@link OnListFragmentInteractionListener}
+ * Activities containing this fragment MUST implement the {@link FriendsFragmentInteractionListener}
  * interface.
  */
 public class FriendsFragment extends Fragment implements FifaFragment {
@@ -45,7 +45,7 @@ public class FriendsFragment extends Fragment implements FifaFragment {
     private static final int mColumnCount = 2;
 
     private FifaSearchView mSearchView;
-    private OnListFragmentInteractionListener mListener;
+    private FriendsFragmentInteractionListener mListener;
     private User mUser;
     private View mView = null;
     private boolean searchItemIsReady = false;
@@ -117,11 +117,11 @@ public class FriendsFragment extends Fragment implements FifaFragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnListFragmentInteractionListener) {
-            mListener = (OnListFragmentInteractionListener) context;
+        if (context instanceof FriendsFragmentInteractionListener) {
+            mListener = (FriendsFragmentInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
-                    + " must implement OnListFragmentInteractionListener");
+                    + " must implement FriendsFragmentInteractionListener");
         }
     }
 
@@ -167,8 +167,8 @@ public class FriendsFragment extends Fragment implements FifaFragment {
         }
     }
 
-    public interface OnListFragmentInteractionListener {
-        void onListFragmentInteraction(Friend friend);
+    public interface FriendsFragmentInteractionListener {
+        void onFriendsFragmentInteraction(Friend friend);
     }
 
     private void setAdapter(List<Friend> friends) {

@@ -8,7 +8,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.kevin.fifastatistics.R;
-import com.example.kevin.fifastatistics.fragments.FriendsFragment.OnListFragmentInteractionListener;
+import com.example.kevin.fifastatistics.fragments.FriendsFragment;
+import com.example.kevin.fifastatistics.fragments.FriendsFragment.FriendsFragmentInteractionListener;
 import com.example.kevin.fifastatistics.models.databasemodels.user.Friend;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
@@ -16,16 +17,16 @@ import java.util.List;
 
 /**
  * {@link RecyclerView.Adapter} that can display a {@link Friend} and makes a call to the
- * specified {@link OnListFragmentInteractionListener}.
+ * specified {@link FriendsFragment.FriendsFragmentInteractionListener}.
  */
 public class FriendsRecyclerViewAdapter
         extends RecyclerView.Adapter<FriendsRecyclerViewAdapter.ViewHolder> {
 
     private List<Friend> mUsers;
-    private final OnListFragmentInteractionListener mListener;
+    private final FriendsFragmentInteractionListener mListener;
     private ImageLoader imageLoader;
 
-    public FriendsRecyclerViewAdapter(List<Friend> users, OnListFragmentInteractionListener listener) {
+    public FriendsRecyclerViewAdapter(List<Friend> users, FriendsFragmentInteractionListener listener) {
         mUsers = users;
         mListener = listener;
         imageLoader = ImageLoader.getInstance();
@@ -46,7 +47,7 @@ public class FriendsRecyclerViewAdapter
         imageLoader.displayImage(mUsers.get(position).getImageUrl(), holder.mImageView);
         holder.mView.setOnClickListener(view -> {
                 if (mListener != null) {
-                    mListener.onListFragmentInteraction(holder.mItem);
+                    mListener.onFriendsFragmentInteraction(holder.mItem);
                 }
             });
     }

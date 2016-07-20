@@ -3,19 +3,20 @@ package com.example.kevin.fifastatistics.activities;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.example.kevin.fifastatistics.R;
-import com.example.kevin.fifastatistics.fragments.FriendsFragment;
+import com.example.kevin.fifastatistics.fragments.PlayerOverviewFragment;
 import com.example.kevin.fifastatistics.fragments.SecondFragment;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
 import com.example.kevin.fifastatistics.views.adapters.ViewPagerAdapter;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
-public class PlayerActivty extends FifaActivity {
+public class PlayerActivty extends FifaActivity
+        implements PlayerOverviewFragment.OnPlayerFragmentInteractionListener {
 
     /** The name of the user. */
     public static final String NAME_EXTRA = "name";
@@ -41,6 +42,9 @@ public class PlayerActivty extends FifaActivity {
         setContentView(R.layout.activity_player);
         setTitle(getIntent().getStringExtra(NAME_EXTRA));
 
+//        TextView title = (TextView) findViewById(R.id.title);
+//        title.setText(NAME_EXTRA);
+
         initializeToolbar();
         initializeTabs();
     }
@@ -51,8 +55,8 @@ public class PlayerActivty extends FifaActivity {
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        ImageView userImage = (ImageView) findViewById(R.id.user_image);
-        ImageLoader.getInstance().displayImage(getIntent().getStringExtra(IMAGE_URL_EXTRA), userImage);
+//        ImageView userImage = (ImageView) findViewById(R.id.avatar);
+//        ImageLoader.getInstance().displayImage(getIntent().getStringExtra(IMAGE_URL_EXTRA), userImage);
     }
 
     @SuppressWarnings("ConstantConditions")
@@ -63,7 +67,8 @@ public class PlayerActivty extends FifaActivity {
         mTabLayout = (TabLayout) findViewById(R.id.tabs);
         mTabLayout.setupWithViewPager(mViewPager);
 
-        mAdapter.addFragment(new SecondFragment(), "Overview");
+        String userId = getIntent().getStringExtra(ID_EXTRA);
+        mAdapter.addFragment(PlayerOverviewFragment.newInstance(userId), "Overview");
         mAdapter.addFragment(new SecondFragment(), "Head to head");
         mAdapter.notifyDataSetChanged();
     }
@@ -75,6 +80,11 @@ public class PlayerActivty extends FifaActivity {
                 finish();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onPlayerFragmentInteraction(User user) {
+
     }
 
     @Override

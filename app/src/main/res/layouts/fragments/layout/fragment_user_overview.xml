@@ -29,9 +29,9 @@
             android:textSize="20sp"
             android:textStyle="bold"/>
 
-        <include layout="@layout/divisor"></include>
+        <include layout="@layout/divisor"/>
 
-        <include layout="@layout/user_overview_data"></include>
+        <include layout="@layout/user_overview_data"/>
 
     </LinearLayout>
 </ScrollView>
