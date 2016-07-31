@@ -5,6 +5,7 @@ import android.support.design.widget.TabLayout;
 import com.example.kevin.fifastatistics.activities.FifaActivity;
 import com.example.kevin.fifastatistics.activities.MainActivity;
 import com.example.kevin.fifastatistics.views.adapters.ViewPagerAdapter;
+import com.getbase.floatingactionbutton.FloatingActionsMenu;
 
 /**
  * Prepares the activity for the fragment that will be displayed.
@@ -32,4 +33,9 @@ public abstract class FragmentInitializer {
      * etc.)
      */
     public abstract void setTabLayoutVisibility(TabLayout tabLayout);
+
+    /**
+     * Set the visibility of the floating action menu.
+     */
+    public abstract void setFabVisibility(FloatingActionsMenu menu);
 }

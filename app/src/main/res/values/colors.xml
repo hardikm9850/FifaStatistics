@@ -4,6 +4,7 @@
     <color name="colorPrimary">#262523</color>
     <color name="colorPrimaryDark">#181715</color>
     <color name="colorAccent">#b2ff59</color>
+    <color name="colorAccentDark">#9ccc65</color>
     <color name="blue">#3F51B5</color>
     <color name="white">#FFFFFF</color>
     <color name="background">#212121</color>
@@ -12,5 +13,11 @@
     <!-- Card view colors -->
     <color name="cardViewBackground">#262523</color>
     <color name="cardViewHeaderBackground">#302F2D</color>
+
+    <!-- FAB -->
+    <color name="white_pressed">#f1f1f1</color>
+    <color name="half_black">#808080</color>
+    <color name="black_semi_transparent">#B2000000</color>
+
 
 </resources>

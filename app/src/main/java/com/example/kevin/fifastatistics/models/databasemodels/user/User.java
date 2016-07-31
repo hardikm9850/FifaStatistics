@@ -73,6 +73,23 @@ public class User extends DatabaseModel {
         outgoingRequests.add(friend);
     }
 
+    public boolean hasIncomingRequestWithId(String id) {
+        return hasIncomingRequestsWithIdInList(id, incomingRequests);
+    }
+
+    public boolean hasOutgoingRequestWithId(String id) {
+        return hasIncomingRequestsWithIdInList(id, outgoingRequests);
+    }
+
+    private boolean hasIncomingRequestsWithIdInList(String id, List<Friend> requestList) {
+        for (Friend request : requestList) {
+            if (request.getId().equals(id)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public void addFriend(Friend friend) {
         friends.add(friend);
     }

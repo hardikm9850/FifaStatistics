@@ -12,9 +12,12 @@ import com.example.kevin.fifastatistics.fragments.FriendsFragment;
 import com.example.kevin.fifastatistics.fragments.initializers.FragmentInitializer;
 import com.example.kevin.fifastatistics.fragments.initializers.FragmentInitializerFactory;
 import com.example.kevin.fifastatistics.models.databasemodels.user.Friend;
+import com.example.kevin.fifastatistics.utils.FabFactory;
 import com.example.kevin.fifastatistics.utils.IntentFactory;
 import com.example.kevin.fifastatistics.views.wrappers.FifaNavigationDrawer;
 import com.example.kevin.fifastatistics.views.adapters.ViewPagerAdapter;
+import com.getbase.floatingactionbutton.FloatingActionButton;
+import com.getbase.floatingactionbutton.FloatingActionsMenu;
 
 /**
  * The application's main activity class that is loaded on launch, so long as the user is signed in.
@@ -31,6 +34,7 @@ public class MainActivity extends FifaActivity
     private ViewPagerAdapter mAdapter;
     private TabLayout mTabLayout;
     private ViewPager mViewPager;
+    private FloatingActionsMenu mActionMenu;
     private FifaFragment currentFragment;
 
     private int currentDrawerPosition;
@@ -43,6 +47,7 @@ public class MainActivity extends FifaActivity
         initializeToolbar();
         initializeViewPager();
         initializeDrawer();
+        initializeFab();
         initializeFragment();
     }
 
@@ -83,6 +88,15 @@ public class MainActivity extends FifaActivity
         });
     }
 
+    private void initializeFab() {
+        mActionMenu = (FloatingActionsMenu) findViewById(R.id.fab_menu);
+        FloatingActionButton matchButton = FabFactory.createPlayMatchFab(this);
+        FloatingActionButton seriesButton = FabFactory.createPlaySeriesFab(this);
+
+        mActionMenu.addButton(matchButton);
+        mActionMenu.addButton(seriesButton);
+    }
+
     private void initializeFragment() {
         FragmentInitializer initializer = FragmentInitializerFactory.createFragmentInitializer(this);
         prepareActivityForFragments(initializer);
@@ -92,6 +106,7 @@ public class MainActivity extends FifaActivity
         initializer.setActivityTitle(this);
         initializer.changeAdapterDataSet(mAdapter);
         initializer.setTabLayoutVisibility(mTabLayout);
+        initializer.setFabVisibility(mActionMenu);
 
         int currentPage = getIntent().getIntExtra(PAGE_EXTRA, 0);
         mViewPager.setCurrentItem(currentPage);

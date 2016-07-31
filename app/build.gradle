@@ -82,6 +82,7 @@ dependencies {
 
     // Layout
     compile 'me.henrytao:smooth-app-bar-layout:23.2.1'
+    compile 'com.getbase:floatingactionbutton:1.10.1'
 
     // Graphs
     compile 'com.diogobernardino:williamchart:2.2'

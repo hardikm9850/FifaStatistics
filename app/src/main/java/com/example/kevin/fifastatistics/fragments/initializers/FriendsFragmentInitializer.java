@@ -7,6 +7,7 @@ import com.example.kevin.fifastatistics.activities.FifaActivity;
 import com.example.kevin.fifastatistics.fragments.FriendsFragment;
 import com.example.kevin.fifastatistics.models.Constants;
 import com.example.kevin.fifastatistics.views.adapters.ViewPagerAdapter;
+import com.getbase.floatingactionbutton.FloatingActionsMenu;
 
 /**
  * Implementation of the abstract FragmentInitializer class for FriendFragments.
@@ -37,5 +38,10 @@ public class FriendsFragmentInitializer extends FragmentInitializer
     @Override
     public void setTabLayoutVisibility(TabLayout tabLayout) {
         tabLayout.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void setFabVisibility(FloatingActionsMenu menu) {
+        menu.setVisibility(View.GONE);
     }
 }

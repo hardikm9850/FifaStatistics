@@ -7,6 +7,7 @@ import com.example.kevin.fifastatistics.activities.FifaActivity;
 import com.example.kevin.fifastatistics.fragments.UserOverviewFragment;
 import com.example.kevin.fifastatistics.models.Constants;
 import com.example.kevin.fifastatistics.views.adapters.ViewPagerAdapter;
+import com.getbase.floatingactionbutton.FloatingActionsMenu;
 
 /**
  * Implementation of the abstract FragmentInitializer class for OverviewFragments.
@@ -31,5 +32,10 @@ public class OverviewFragmentInitializer extends FragmentInitializer {
     @Override
     public void setTabLayoutVisibility(TabLayout tabLayout) {
         tabLayout.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void setFabVisibility(FloatingActionsMenu menu) {
+        menu.setVisibility(View.VISIBLE);
     }
 }

@@ -30,7 +30,7 @@ public class RetrofitErrorManager {
                     return code;
                 }
             }
-            throw new IllegalArgumentException("ErrorCode cannot be constructed from value " + value);
+            return UNKNOWN_ERROR;
         }
 
         public int getValue() {
