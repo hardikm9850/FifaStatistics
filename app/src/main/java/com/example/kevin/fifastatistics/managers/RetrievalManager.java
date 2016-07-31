@@ -24,4 +24,10 @@ public class RetrievalManager {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }
+
+    public static Observable<User> getCurrentUser() {
+        return Observable.just(SharedPreferencesManager.getUser())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
 }

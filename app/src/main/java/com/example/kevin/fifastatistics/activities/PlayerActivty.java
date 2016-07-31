@@ -10,6 +10,7 @@ import android.view.View;
 import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.fragments.PlayerOverviewFragment;
 import com.example.kevin.fifastatistics.fragments.SecondFragment;
+import com.example.kevin.fifastatistics.managers.RetrievalManager;
 import com.example.kevin.fifastatistics.managers.SharedPreferencesManager;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
 import com.example.kevin.fifastatistics.utils.FabFactory;
@@ -32,7 +33,6 @@ public class PlayerActivty extends FifaActivity
     /** Whether or not the user is a friend of the current user. */
     public static final String FRIEND_EXTRA = "isFriend";
 
-    private User mCurrentUser;
     private String mPlayerId;
     private Toolbar mToolbar;
     private ViewPagerAdapter mAdapter;
@@ -45,7 +45,6 @@ public class PlayerActivty extends FifaActivity
         setContentView(R.layout.activity_player);
         setTitle(getIntent().getStringExtra(NAME_EXTRA));
 
-        mCurrentUser = SharedPreferencesManager.getUser();
         mPlayerId = getIntent().getStringExtra(ID_EXTRA);
 
 //        TextView title = (TextView) findViewById(R.id.title);
@@ -53,7 +52,7 @@ public class PlayerActivty extends FifaActivity
 
         initializeToolbar();
         initializeTabs();
-        initializeFab();
+        RetrievalManager.getCurrentUser().subscribe(this::initializeFab);
     }
 
     @SuppressWarnings("ConstantConditions")
@@ -80,7 +79,7 @@ public class PlayerActivty extends FifaActivity
     }
 
     @SuppressWarnings("ConstantConditions")
-    private void initializeFab() {
+    private void initializeFab(User user) {
         FloatingActionsMenu menu = (FloatingActionsMenu) findViewById(R.id.fab_menu);
         boolean isFriend = getIntent().getBooleanExtra(FRIEND_EXTRA, false);
         if (isFriend) {
@@ -89,12 +88,12 @@ public class PlayerActivty extends FifaActivity
             menu.addButton(matchButton);
             menu.addButton(seriesButton);
         } else {
-            if (mCurrentUser.hasIncomingRequestWithId(mPlayerId)) {
+            if (user.hasIncomingRequestWithId(mPlayerId)) {
                 FloatingActionButton acceptButton = FabFactory.createAcceptRequestFab(this);
                 FloatingActionButton declineButton = FabFactory.createDeclineRequestFab(this);
                 menu.addButton(declineButton);
                 menu.addButton(acceptButton);
-            } else if (mCurrentUser.hasOutgoingRequestWithId(mPlayerId)) {
+            } else if (user.hasOutgoingRequestWithId(mPlayerId)) {
                 // TODO display notice that friend request is pending
                 menu.setVisibility(View.GONE);
             } else {
