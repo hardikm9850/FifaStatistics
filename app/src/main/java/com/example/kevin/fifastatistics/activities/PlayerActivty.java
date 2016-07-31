@@ -84,12 +84,18 @@ public class PlayerActivty extends FifaActivity
         FloatingActionsMenu menu = (FloatingActionsMenu) findViewById(R.id.fab_menu);
         boolean isFriend = getIntent().getBooleanExtra(FRIEND_EXTRA, false);
         if (isFriend) {
-            // TODO
+            FloatingActionButton matchButton = FabFactory.createPlayMatchFab(this);
+            FloatingActionButton seriesButton = FabFactory.createPlaySeriesFab(this);
+            menu.addButton(matchButton);
+            menu.addButton(seriesButton);
         } else {
             if (mCurrentUser.hasIncomingRequestWithId(mPlayerId)) {
-                // accept or decline request
+                FloatingActionButton acceptButton = FabFactory.createAcceptRequestFab(this);
+                FloatingActionButton declineButton = FabFactory.createDeclineRequestFab(this);
+                menu.addButton(declineButton);
+                menu.addButton(acceptButton);
             } else if (mCurrentUser.hasOutgoingRequestWithId(mPlayerId)) {
-                // no button, request pending
+                // TODO display notice that friend request is pending
                 menu.setVisibility(View.GONE);
             } else {
                 FloatingActionButton sendRequestButton = FabFactory.createSendFriendRequestFab(this);

@@ -83,4 +83,11 @@
     <string name="unable_to_contact_server">Unable to contact server</string>
     <string name="unknown_error">Unknown error</string>
 
+    <!-- FABS -->
+    <string name="send_friend_request">Send Friend Request</string>
+    <string name="play_match">Play Match</string>
+    <string name="play_series">Play Series</string>
+    <string name="accept_friend_request">Accept Friend Request</string>
+    <string name="decline_friend_request">Decline Friend Request</string>
+
 </resources>
