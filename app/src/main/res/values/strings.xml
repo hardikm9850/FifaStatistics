@@ -77,4 +77,10 @@
     <!-- PLAYER ACTIVITY -->
     <string name="title_activity_player_activty">Player Activity</string>
 
+    <!-- TOASTS -->
+    <string name="not_found">Not found!</string>
+    <string name="no_network">No network connection</string>
+    <string name="unable_to_contact_server">Unable to contact server</string>
+    <string name="unknown_error">Unknown error</string>
+
 </resources>

@@ -1,7 +1,6 @@
 package com.example.kevin.fifastatistics.fragments;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -11,6 +10,7 @@ import android.widget.ProgressBar;
 
 import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.managers.RetrievalManager;
+import com.example.kevin.fifastatistics.managers.RetrofitErrorManager;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
 import com.example.kevin.fifastatistics.views.UserOverview;
 
@@ -55,10 +55,19 @@ public class PlayerOverviewFragment extends Fragment implements FifaFragment {
         mProgressBar.setVisibility(View.VISIBLE);
 
         UserOverview overview = (UserOverview) view.findViewById(R.id.useroverviewdata);
-        RetrievalManager.getUser(mUserId).subscribe(user -> {
-            overview.setUserame(user.getName());
-            overview.setUser(user);
-            mProgressBar.setVisibility(View.INVISIBLE);
+        RetrievalManager.getUser(mUserId)
+                .onErrorReturn(t -> {
+                    RetrofitErrorManager.showToastForError(t, getActivity());
+                    return null;
+                })
+                .subscribe(user -> {
+                    if (user == null) {
+                        getActivity().finish();
+                    } else {
+                        overview.setUsername(user.getName());
+                        overview.setUser(user);
+                        mProgressBar.setVisibility(View.INVISIBLE);
+                    }
         });
 
         return view;

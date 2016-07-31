@@ -38,7 +38,7 @@ public class UserOverview extends LinearLayout {
      * name of the user, rather than its default value. This MUST be called before {@link
      * #setUser(User), or it will have no effect.
      */
-    public void setUserame(String name) {
+    public void setUsername(String name) {
         mUserame = name;
     }
 

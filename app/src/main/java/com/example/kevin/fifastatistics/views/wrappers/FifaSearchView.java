@@ -34,13 +34,14 @@ public class FifaSearchView {
      * This method makes a network call to retrieve the list of users.
      * @param activity The activity the searchview is in.
      * @param currentUser The current user
-     * @return the search view
+     * @return the search view, or null if the list of users cannot be retrieved
      */
     public static Observable<FifaSearchView> getInstance(FifaActivity activity, User currentUser) {
         return FifaApiAdapter.getService().getUsers()
                 .map(ApiListResponse::getItems)
                 .map(users -> { users.remove(currentUser); return users; })
                 .flatMap(users -> initialize(activity, users))
+                .onErrorReturn(t -> null)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }
