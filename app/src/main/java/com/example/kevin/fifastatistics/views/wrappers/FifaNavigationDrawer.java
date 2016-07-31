@@ -115,8 +115,8 @@ public class FifaNavigationDrawer {
         return new PrimaryDrawerItem()
                 .withName(R.string.players)
                 .withIcon(R.drawable.ic_group_black_24dp)
-                .withBadge(String.valueOf(incomingRequestsCount))
-                .withBadgeStyle(style)
+//                .withBadge(String.valueOf(incomingRequestsCount))
+//                .withBadgeStyle(style)
                 .withIdentifier(FRIENDS_ITEM_IDENTIFIER)
                 .withIconTintingEnabled(true);
     }
