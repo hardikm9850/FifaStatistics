@@ -55,6 +55,7 @@ public class RetrofitErrorManager {
         switch (code) {
             case NOT_FOUND :
                 ToastUtils.showLongToast(activity, activity.getString(R.string.not_found));
+                break;
             default :
                 handleUnkownError(t, activity);
         }
