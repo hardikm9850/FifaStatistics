@@ -4,13 +4,19 @@ import android.content.Intent;
 
 import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.activities.FifaActivity;
+import com.example.kevin.fifastatistics.models.apiresponses.ApiListResponse;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
+import com.example.kevin.fifastatistics.network.FifaApiAdapter;
 import com.example.kevin.fifastatistics.utils.IntentFactory;
 import com.example.kevin.fifastatistics.views.adapters.SearchViewAdapter;
 import com.lapism.searchview.view.SearchCodes;
 import com.lapism.searchview.view.SearchView;
 
 import java.util.List;
+
+import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
  * Wrapper class around {@link com.lapism.searchview.view.SearchView}.
@@ -25,16 +31,25 @@ public class FifaSearchView {
 
     /**
      * Get the SearchView instance. This method will not attach an adapter to the searchview.
-     *
+     * This method makes a network call to retrieve the list of users.
      * @param activity The activity the searchview is in.
-     * @param users    The list of users to be displayed by the searchview
+     * @param currentUser The current user
      * @return the search view
      */
-    public static FifaSearchView getInstance(FifaActivity activity, List<User> users) {
+    public static Observable<FifaSearchView> getInstance(FifaActivity activity, User currentUser) {
+        return FifaApiAdapter.getService().getUsers()
+                .map(ApiListResponse::getItems)
+                .map(users -> { users.remove(currentUser); return users; })
+                .flatMap(users -> initialize(activity, users))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    private static Observable<FifaSearchView> initialize(FifaActivity activity, List<User> users) {
         if (mInstance == null) {
             mInstance = new FifaSearchView(activity, users);
         }
-        return mInstance;
+        return Observable.just(mInstance);
     }
 
     /**

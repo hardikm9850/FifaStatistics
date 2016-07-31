@@ -14,19 +14,13 @@ import android.view.ViewGroup;
 import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.activities.FifaActivity;
 import com.example.kevin.fifastatistics.managers.SharedPreferencesManager;
-import com.example.kevin.fifastatistics.models.apiresponses.ApiListResponse;
 import com.example.kevin.fifastatistics.models.databasemodels.user.Friend;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
-import com.example.kevin.fifastatistics.network.FifaApiAdapter;
 import com.example.kevin.fifastatistics.views.wrappers.FifaSearchView;
 import com.example.kevin.fifastatistics.views.GridRecyclerView;
 import com.example.kevin.fifastatistics.views.adapters.FriendsRecyclerViewAdapter;
 
 import java.util.List;
-
-import rx.Observable;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 /**
  * A fragment representing a list of players.
@@ -48,7 +42,7 @@ public class FriendsFragment extends Fragment implements FifaFragment {
     private FriendsFragmentInteractionListener mListener;
     private User mUser;
     private View mView = null;
-    private boolean searchItemIsReady = false;
+    private boolean mIsSearchViewReady = false;
 
     public FriendsFragment() {
     }
@@ -74,28 +68,18 @@ public class FriendsFragment extends Fragment implements FifaFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mView = inflater.inflate(R.layout.fragment_friends_list, container, false);
 
-        beginSearchViewInitialization();
+        initializeSearchView();
         setAdapterDataSource();
         return mView;
     }
 
-    private void beginSearchViewInitialization() {
-        FifaApiAdapter.getService().getUsers()
-                .map(ApiListResponse::getItems)
-                .flatMap(this::initializeSearchView)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(sv -> {
-                    mSearchView.attachAdapter();
-                    searchItemIsReady = true;
-                    getActivity().invalidateOptionsMenu();
-                });
-    }
-
-    private Observable<FifaSearchView> initializeSearchView(List<User> users) {
-        users.remove(mUser);
-        mSearchView = FifaSearchView.getInstance((FifaActivity) getActivity(), users);
-        return Observable.just(mSearchView);
+    private void initializeSearchView() {
+        FifaSearchView.getInstance((FifaActivity) getActivity(), mUser).subscribe(sv -> {
+            mSearchView = sv;
+            mSearchView.attachAdapter();
+            mIsSearchViewReady = true;
+            getActivity().invalidateOptionsMenu();
+        });
     }
 
     private void setAdapterDataSource() {
@@ -144,7 +128,7 @@ public class FriendsFragment extends Fragment implements FifaFragment {
         inflater.inflate(R.menu.main, menu);
 
         MenuItem searchItem = menu.findItem(R.id.action_search);
-        searchItem.setVisible(searchItemIsReady);
+        searchItem.setVisible(mIsSearchViewReady);
     }
 
     @Override
