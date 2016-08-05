@@ -1,7 +1,5 @@
 package com.example.kevin.fifastatistics.network;
 
-import static com.example.kevin.fifastatistics.models.Constants.*;
-
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
@@ -13,37 +11,43 @@ import retrofit2.converter.jackson.JacksonConverterFactory;
 /**
  * Adapter class to interact with the FifaApi.
  */
-public class FifaApiAdapter
-{
+public class ApiAdapter {
+
+    private static final String FIFA_API_ENDPOINT = "https://fifastatisticsapi.azurewebsites.net/";
+    private static final String NOTIFICATIONS_API_ENDPOINT = "https://gcm-http.googleapis.com/gcm/";
     private static final int CONNECT_TIMEOUT_DURATION = 4;
 
-    private static FifaApi api;
+    private static FifaApi fifaApi;
+    private static NotificationsApi notificationsApi;
 
-    public static FifaApi getService()
-    {
-        if (api == null) {
-            initializeFifaApi();
+    public static NotificationsApi getNotificationsApi() {
+        if (notificationsApi == null) {
+            notificationsApi = (initializeApi(NotificationsApi.class, NOTIFICATIONS_API_ENDPOINT));
         }
-        return api;
+        return notificationsApi;
     }
 
-    private static void initializeFifaApi()
-    {
+    public static FifaApi getFifaApi() {
+        if (fifaApi == null) {
+            fifaApi = initializeApi(FifaApi.class, FIFA_API_ENDPOINT);
+        }
+        return fifaApi;
+    }
+
+    private static <T> T initializeApi(Class<T> api, String baseUrl) {
         HttpLoggingInterceptor loggingInterceptor = initializeLoggingInterceptor();
         OkHttpClient httpClient = initializeHttpClient(loggingInterceptor);
-        Retrofit retrofit = initializeRetrofitObject(httpClient);
-        api = retrofit.create(FifaApi.class);
+        Retrofit retrofit = initializeRetrofitObject(httpClient, baseUrl);
+        return retrofit.create(api);
     }
 
-    private static HttpLoggingInterceptor initializeLoggingInterceptor()
-    {
+    private static HttpLoggingInterceptor initializeLoggingInterceptor() {
         HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
         loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
         return loggingInterceptor;
     }
 
-    private static OkHttpClient initializeHttpClient(HttpLoggingInterceptor interceptor)
-    {
+    private static OkHttpClient initializeHttpClient(HttpLoggingInterceptor interceptor) {
         return new OkHttpClient.Builder()
                 .addInterceptor(interceptor)
                 .connectTimeout(CONNECT_TIMEOUT_DURATION, TimeUnit.SECONDS)
@@ -51,10 +55,9 @@ public class FifaApiAdapter
                 .build();
     }
 
-    private static Retrofit initializeRetrofitObject(OkHttpClient httpClient)
-    {
+    private static Retrofit initializeRetrofitObject(OkHttpClient httpClient, String baseUrl) {
         return new Retrofit.Builder()
-                .baseUrl(FIFA_API_ENDPOINT)
+                .baseUrl(baseUrl)
                 .client(httpClient)
                 .addConverterFactory(JacksonConverterFactory.create())
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())

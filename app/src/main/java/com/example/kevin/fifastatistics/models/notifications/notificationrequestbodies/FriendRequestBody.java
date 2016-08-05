@@ -1,4 +1,4 @@
-package com.example.kevin.fifastatistics.models.notificationrequestbodies;
+package com.example.kevin.fifastatistics.models.notifications.notificationrequestbodies;
 
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
 import com.example.kevin.fifastatistics.utils.SerializationUtils;
@@ -19,7 +19,7 @@ public class FriendRequestBody extends NotificationRequestBody {
         data = Data.fromUser(user);
     }
 
-    public static String buildNotificationBody(User user) {
+    private static String buildNotificationBody(User user) {
         return "Friend request from " + user.getName();
     }
 

@@ -30,9 +30,13 @@ public class PlayerActivty extends FifaActivity
     /** The ID of the user. */
     public static final String ID_EXTRA = "id";
 
+    /** The registration token of the user */
+    public static final String REG_TOKEN_EXTRA = "registrationToken";
+
     /** Whether or not the user is a friend of the current user. */
     public static final String FRIEND_EXTRA = "isFriend";
 
+    private View mParentLayout;
     private String mPlayerId;
     private Toolbar mToolbar;
     private ViewPagerAdapter mAdapter;
@@ -46,6 +50,7 @@ public class PlayerActivty extends FifaActivity
         setTitle(getIntent().getStringExtra(NAME_EXTRA));
 
         mPlayerId = getIntent().getStringExtra(ID_EXTRA);
+        mParentLayout = findViewById(R.id.coordinator_layout);
 
 //        TextView title = (TextView) findViewById(R.id.title);
 //        title.setText(NAME_EXTRA);
@@ -97,7 +102,8 @@ public class PlayerActivty extends FifaActivity
                 // TODO display notice that friend request is pending
                 menu.setVisibility(View.GONE);
             } else {
-                FloatingActionButton sendRequestButton = FabFactory.createSendFriendRequestFab(this);
+                FloatingActionButton sendRequestButton = FabFactory.createSendFriendRequestFab
+                        (this, user, getIntent().getStringExtra(REG_TOKEN_EXTRA));
                 menu.addButton(sendRequestButton);
             }
         }
@@ -123,7 +129,10 @@ public class PlayerActivty extends FifaActivity
     }
 
     @Override
-    public void setNavigationLocked(boolean locked) {
+    public void setNavigationLocked(boolean locked) {}
 
+    @Override
+    public View getParentLayout() {
+        return mParentLayout;
     }
 }

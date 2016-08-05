@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
 
 import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.fragments.FifaFragment;
@@ -29,6 +30,7 @@ public class MainActivity extends FifaActivity
     public static final String PAGE_EXTRA = "page";
     public static final String FRAGMENT_EXTRA = "fragment";
 
+    private View mCoordinatorLayout;
     private Toolbar mToolbar;
     private FifaNavigationDrawer mDrawer;
     private ViewPagerAdapter mAdapter;
@@ -44,6 +46,7 @@ public class MainActivity extends FifaActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        mCoordinatorLayout = findViewById(R.id.coordinator_layout);
         initializeToolbar();
         initializeViewPager();
         initializeDrawer();
@@ -135,5 +138,10 @@ public class MainActivity extends FifaActivity
     @Override
     public void setNavigationLocked(boolean locked) {
         mDrawer.setLocked(locked);
+    }
+
+    @Override
+    public View getParentLayout() {
+        return mCoordinatorLayout;
     }
 }

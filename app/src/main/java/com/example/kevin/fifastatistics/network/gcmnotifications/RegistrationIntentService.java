@@ -7,6 +7,7 @@ import android.util.Log;
 
 import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.managers.SharedPreferencesManager;
+import com.example.kevin.fifastatistics.models.databasemodels.user.User;
 import com.google.android.gms.gcm.GcmPubSub;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.google.android.gms.iid.InstanceID;
@@ -43,6 +44,9 @@ public class RegistrationIntentService extends IntentService {
 
             // TODO: Implement this method to send any registration to your app's servers.
             SharedPreferencesManager.setRegistrationToken(token);
+            User user = SharedPreferencesManager.getUser();
+            user.setRegistrationToken(token);
+            SharedPreferencesManager.storeUser(user);
 
             // Subscribe to topic channels
             subscribeTopics(token);

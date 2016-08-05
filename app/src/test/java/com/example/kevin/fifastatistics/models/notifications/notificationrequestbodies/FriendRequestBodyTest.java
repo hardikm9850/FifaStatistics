@@ -1,4 +1,4 @@
-package com.example.kevin.fifastatistics.models.notificationrequestbodies;
+package com.example.kevin.fifastatistics.models.notifications.notificationrequestbodies;
 
 import com.example.kevin.fifastatistics.datagenerators.UserGenerator;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;

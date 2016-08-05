@@ -1,4 +1,4 @@
-package com.example.kevin.fifastatistics.models.notificationrequestbodies;
+package com.example.kevin.fifastatistics.models.notifications.notificationrequestbodies;
 
 import lombok.AccessLevel;
 import lombok.Getter;

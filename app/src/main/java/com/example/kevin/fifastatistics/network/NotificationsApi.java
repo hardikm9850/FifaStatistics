@@ -1,13 +1,21 @@
 package com.example.kevin.fifastatistics.network;
 
-/**
- * Created by Kevin on 4/1/2016.
- */
-public interface NotificationsApi
-{
-// TODO
+import com.example.kevin.fifastatistics.models.notifications.NotificationResponse;
+import com.example.kevin.fifastatistics.models.notifications.notificationrequestbodies.FriendRequestBody;
 
-//    @Headers("key: " + NOTIFICATION_KEY)
-//    @POST
-//    Call<FriendRequestResponse> sendFriendRequest(@Body FriendRequestBody friendRequestBody);
+import retrofit2.http.Body;
+import retrofit2.http.Headers;
+import retrofit2.http.POST;
+import rx.Observable;
+
+/**
+ * Retrofit interface for sending notifications.
+ */
+public interface NotificationsApi {
+
+    String NOTIFICATION_KEY = "AIzaSyDjCHksoGamhWxeNsaDN-DW5v3p9IcJNFE";
+
+    @Headers("Authorization:key=" + NOTIFICATION_KEY)
+    @POST("send")
+    Observable<NotificationResponse> sendFriendRequest(@Body FriendRequestBody body);
 }

@@ -6,7 +6,7 @@ import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.activities.FifaActivity;
 import com.example.kevin.fifastatistics.models.apiresponses.ApiListResponse;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
-import com.example.kevin.fifastatistics.network.FifaApiAdapter;
+import com.example.kevin.fifastatistics.network.ApiAdapter;
 import com.example.kevin.fifastatistics.utils.IntentFactory;
 import com.example.kevin.fifastatistics.views.adapters.SearchViewAdapter;
 import com.lapism.searchview.view.SearchCodes;
@@ -37,7 +37,7 @@ public class FifaSearchView {
      * @return the search view, or null if the list of users cannot be retrieved
      */
     public static Observable<FifaSearchView> getInstance(FifaActivity activity, User currentUser) {
-        return FifaApiAdapter.getService().getUsers()
+        return ApiAdapter.getFifaApi().getUsers()
                 .map(ApiListResponse::getItems)
                 .map(users -> { users.remove(currentUser); return users; })
                 .flatMap(users -> initialize(activity, users))

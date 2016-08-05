@@ -17,6 +17,7 @@ public class IntentFactory {
         intent.putExtra(PlayerActivty.NAME_EXTRA, friend.getName());
         intent.putExtra(PlayerActivty.ID_EXTRA, friend.getId());
         intent.putExtra(PlayerActivty.IMAGE_URL_EXTRA, friend.getImageUrl());
+        intent.putExtra(PlayerActivty.REG_TOKEN_EXTRA, friend.getRegistrationToken());
         intent.putExtra(PlayerActivty.FRIEND_EXTRA, true);
 
         return intent;
@@ -31,6 +32,7 @@ public class IntentFactory {
         intent.putExtra(PlayerActivty.NAME_EXTRA, user.getName());
         intent.putExtra(PlayerActivty.ID_EXTRA, user.getId());
         intent.putExtra(PlayerActivty.IMAGE_URL_EXTRA, user.getImageUrl());
+        intent.putExtra(PlayerActivty.REG_TOKEN_EXTRA, user.getRegistrationToken());
         intent.putExtra(PlayerActivty.FRIEND_EXTRA, false);
 
         return intent;

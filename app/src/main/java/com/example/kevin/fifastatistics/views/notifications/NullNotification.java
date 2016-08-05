@@ -2,7 +2,7 @@ package com.example.kevin.fifastatistics.views.notifications;
 
 import android.content.Context;
 
-import com.example.kevin.fifastatistics.models.notificationbundles.NotificationBundle;
+import com.example.kevin.fifastatistics.models.notifications.notificationbundles.NotificationBundle;
 
 /**
  * Null notification object used when no valid notification can be initialized.

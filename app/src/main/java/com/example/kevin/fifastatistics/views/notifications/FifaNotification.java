@@ -9,9 +9,11 @@ import android.graphics.Bitmap;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
+import android.util.Log;
 
+import com.example.kevin.fifastatistics.FifaApplication;
 import com.example.kevin.fifastatistics.R;
-import com.example.kevin.fifastatistics.models.notificationbundles.NotificationBundle;
+import com.example.kevin.fifastatistics.models.notifications.notificationbundles.NotificationBundle;
 import com.example.kevin.fifastatistics.utils.BitmapUtils;
 
 public abstract class FifaNotification
@@ -20,12 +22,17 @@ public abstract class FifaNotification
     private static final Uri SOUND_URI = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
     private static final int SMALL_ICON = R.mipmap.ic_launcher;
 
+    protected static NotificationCompat.Builder mNotificationBuilder;
+
     private Context context;
-    private NotificationCompat.Builder notificationBuilder;
 
     public FifaNotification(Context context) {
         this.context = context;
-        notificationBuilder = GlobalNotificationBuilder.getInstance();
+        mNotificationBuilder = new NotificationCompat.Builder(context);
+    }
+
+    public static NotificationCompat.Builder getNotifcationBuilder() {
+        return mNotificationBuilder;
     }
 
     public final void build() {
@@ -35,9 +42,7 @@ public abstract class FifaNotification
         setContentIntent();
         addActions();
         performPreSendActions();
-
-        int notificationId = getNotificationId();
-        send(notificationId);
+        send(getNotificationId());
     }
 
     /**
@@ -52,7 +57,7 @@ public abstract class FifaNotification
     {
         Bitmap userIcon = BitmapUtils.getCircleBitmapFromUrl(nb.getImageUrl());
 
-        notificationBuilder
+        mNotificationBuilder
                 .setSmallIcon(SMALL_ICON)
                 .setLargeIcon(userIcon)
                 .setContentTitle(CONTENT_TITLE)
@@ -96,9 +101,8 @@ public abstract class FifaNotification
      * the NullNotification class, so no notification sends).
      */
     protected void send(int notificationId) {
-        NotificationManager nm = (NotificationManager)
-                context.getSystemService(Context.NOTIFICATION_SERVICE);
-
-        nm.notify(notificationId, notificationBuilder.build());
+        NotificationManager nm = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        Log.e("NOTIFICATION", String.valueOf(mNotificationBuilder.mActions.size()));
+        nm.notify(notificationId, mNotificationBuilder.build());
     }
 }

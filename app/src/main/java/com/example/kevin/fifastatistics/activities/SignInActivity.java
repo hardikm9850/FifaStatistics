@@ -9,7 +9,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.example.kevin.fifastatistics.R;
-import com.example.kevin.fifastatistics.network.FifaApiAdapter;
+import com.example.kevin.fifastatistics.network.ApiAdapter;
 import com.example.kevin.fifastatistics.network.FifaApi;
 import com.example.kevin.fifastatistics.network.gcmnotifications.RegistrationIntentService;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
@@ -118,7 +118,7 @@ public class SignInActivity extends AppCompatActivity implements
     private void _debugging_setUserToAccount() {
         String incognito = "574f8e739866cc5dd8f75f9c";
         String personal = "5704926828878a8c6266cba2";
-        FifaApiAdapter.getService().getUser(incognito)
+        ApiAdapter.getFifaApi().getUser(incognito)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(user -> {
@@ -256,7 +256,7 @@ public class SignInActivity extends AppCompatActivity implements
             return;
         }
 
-        api = FifaApiAdapter.getService();
+        api = ApiAdapter.getFifaApi();
 
         api.getUserWithGoogleId(googleId)
                 .onErrorReturn(u -> createNewUser(name, email, googleId, imageUrl))

@@ -1,4 +1,4 @@
-package com.example.kevin.fifastatistics.models.notificationbundles;
+package com.example.kevin.fifastatistics.models.notifications.notificationbundles;
 
 import android.os.Bundle;
 
