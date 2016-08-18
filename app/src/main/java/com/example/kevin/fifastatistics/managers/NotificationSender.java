@@ -1,7 +1,5 @@
 package com.example.kevin.fifastatistics.managers;
 
-import android.util.Log;
-
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
 import com.example.kevin.fifastatistics.models.notifications.NotificationResponse;
 import com.example.kevin.fifastatistics.models.notifications.notificationrequestbodies.FriendRequestBody;
@@ -27,7 +25,7 @@ public class NotificationSender {
     public static Observable<NotificationResponse> sendFriendRequest(User currentUser, String receiverRegistrationToken) {
         if (NetworkUtils.isNotConnected()) return Observable.just(NotificationResponse.ERROR_RESPONSE);
         FriendRequestBody body = new FriendRequestBody(currentUser, receiverRegistrationToken);
-        return doThing(API.sendFriendRequest(body));
+        return sendNotification(API.sendFriendRequest(body));
     }
 
     public static Observable<NotificationResponse> acceptFriendRequest(User user, String regToken) {
@@ -38,7 +36,7 @@ public class NotificationSender {
         // TODO
     }
 
-    private static Observable<NotificationResponse> doThing(Observable<NotificationResponse> action) {
+    private static Observable<NotificationResponse> sendNotification(Observable<NotificationResponse> action) {
         return action
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
