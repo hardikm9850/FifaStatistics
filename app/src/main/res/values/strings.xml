@@ -90,5 +90,6 @@
     <string name="play_series">Play Series</string>
     <string name="accept_friend_request">Accept Friend Request</string>
     <string name="decline_friend_request">Decline Friend Request</string>
+    <string name="friend_request_pending">Friend Request Pending</string>
 
 </resources>

@@ -27,7 +27,19 @@ public class NotificationSender {
     public static Observable<NotificationResponse> sendFriendRequest(User currentUser, String receiverRegistrationToken) {
         if (NetworkUtils.isNotConnected()) return Observable.just(NotificationResponse.ERROR_RESPONSE);
         FriendRequestBody body = new FriendRequestBody(currentUser, receiverRegistrationToken);
-        return API.sendFriendRequest(body)
+        return doThing(API.sendFriendRequest(body));
+    }
+
+    public static Observable<NotificationResponse> acceptFriendRequest(User user, String regToken) {
+        // TODO
+    }
+
+    public static Observable<NotificationResponse> declineFriendRequest(User user, String regToken) {
+        // TODO
+    }
+
+    private static Observable<NotificationResponse> doThing(Observable<NotificationResponse> action) {
+        return action
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .onErrorReturn(t -> NotificationResponse.ERROR_RESPONSE);

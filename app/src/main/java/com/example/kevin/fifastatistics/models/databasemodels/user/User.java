@@ -73,6 +73,19 @@ public class User extends DatabaseModel {
         outgoingRequests.add(friend);
     }
 
+    public void acceptIncomingRequest(Friend friend) {
+        incomingRequests.remove(friend);
+        friends.add(friend);
+    }
+
+    public void declineIncomingRequest(Friend friend) {
+        incomingRequests.remove(friend);
+    }
+
+    public void removeOutgoingRequest(Friend friend) {
+        outgoingRequests.remove(friend);
+    }
+
     public boolean hasIncomingRequestWithId(String id) {
         return hasIncomingRequestsWithIdInList(id, incomingRequests);
     }
@@ -92,18 +105,6 @@ public class User extends DatabaseModel {
 
     public void addFriend(Friend friend) {
         friends.add(friend);
-    }
-
-    public void deleteIncomingRequests() {
-        if (incomingRequests != null) {
-            incomingRequests.clear();
-        }
-    }
-
-    public void deleteFriends() {
-        if (friends != null) {
-            friends.clear();
-        }
     }
 
     /**
