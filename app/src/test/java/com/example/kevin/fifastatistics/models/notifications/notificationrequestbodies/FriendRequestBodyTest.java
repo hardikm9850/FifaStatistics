@@ -12,7 +12,7 @@ public class FriendRequestBodyTest {
     @Test
     public void FriendRequestBody_SerializationTest() {
         User user = UserGenerator.generateUser();
-        FriendRequestBody frb = new FriendRequestBody(user, to);
+        SendFriendRequestBody frb = new SendFriendRequestBody(user, to);
 
         System.out.println(frb.toString());
     }

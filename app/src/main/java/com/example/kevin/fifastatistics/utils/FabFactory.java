@@ -1,14 +1,9 @@
 package com.example.kevin.fifastatistics.utils;
 
 import android.graphics.Color;
-import android.util.Log;
 
 import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.activities.FifaActivity;
-import com.example.kevin.fifastatistics.managers.NotificationSender;
-import com.example.kevin.fifastatistics.managers.SharedPreferencesManager;
-import com.example.kevin.fifastatistics.models.databasemodels.user.Friend;
-import com.example.kevin.fifastatistics.models.databasemodels.user.User;
 import com.getbase.floatingactionbutton.FloatingActionButton;
 
 /**

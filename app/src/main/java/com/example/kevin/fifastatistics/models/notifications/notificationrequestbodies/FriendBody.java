@@ -6,25 +6,21 @@ import com.example.kevin.fifastatistics.utils.SerializationUtils;
 import lombok.Getter;
 
 /**
- * Model of a "Send Friend Rquest" notification request body.
+ * Abstract class defining notifications that have data containing properties of a friend.
  */
-public class FriendRequestBody extends NotificationRequestBody {
+public abstract class FriendBody extends NotificationRequestBody {
 
-    private static final String NOTIFICATION_TAG = "FRIEND_REQUEST";
+    @Getter
+    private final Data data;
 
-    @Getter private final Data data;
-
-    public FriendRequestBody(User user, String registrationTokenOfReceiver) {
-        super(new Notification(buildNotificationBody(user), ""), registrationTokenOfReceiver);
-        data = Data.fromUser(user);
-    }
-
-    private static String buildNotificationBody(User user) {
-        return "Friend request from " + user.getName();
+    public FriendBody(User user, String registrationTokenOfReceiver, String bodyText,
+                      String notificationTag) {
+        super(new NotificationRequestBody.Notification(bodyText, ""), registrationTokenOfReceiver);
+        data = Data.fromUserAndTag(user, notificationTag);
     }
 
     @Getter
-    public static class Data implements NotificationData {
+    public static class Data implements NotificationRequestBody.NotificationData {
         private final String tag;
         private String name;
         private String id;
@@ -32,8 +28,8 @@ public class FriendRequestBody extends NotificationRequestBody {
         private String registrationToken;
         private int level;
 
-        public static Data fromUser(User user) {
-            Data data = new Data();
+        public static Data fromUserAndTag(User user, String notificationTag) {
+            Data data = new Data(notificationTag);
             data.name = user.getName();
             data.id = user.getId();
             data.imageUrl = user.getImageUrl();
@@ -43,8 +39,8 @@ public class FriendRequestBody extends NotificationRequestBody {
             return data;
         }
 
-        private Data() {
-            tag = NOTIFICATION_TAG;
+        private Data(String notificationTag) {
+            tag = notificationTag;
         }
     }
 

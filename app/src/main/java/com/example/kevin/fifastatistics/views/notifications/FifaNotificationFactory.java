@@ -3,7 +3,11 @@ package com.example.kevin.fifastatistics.views.notifications;
 import android.content.Context;
 import android.os.Bundle;
 
-import com.example.kevin.fifastatistics.models.Constants;
+import com.example.kevin.fifastatistics.models.notifications.notificationrequestbodies.AcceptFriendRequestBody;
+import com.example.kevin.fifastatistics.models.notifications.notificationrequestbodies.DeclineFriendRequestBody;
+import com.example.kevin.fifastatistics.models.notifications.notificationrequestbodies.SendFriendRequestBody;
+import com.example.kevin.fifastatistics.views.notifications.friendrequestnotification.AcceptRequestNotification;
+import com.example.kevin.fifastatistics.views.notifications.friendrequestnotification.DeclineRequestNotification;
 import com.example.kevin.fifastatistics.views.notifications.friendrequestnotification.FriendRequestNotification;
 
 public class FifaNotificationFactory
@@ -18,8 +22,12 @@ public class FifaNotificationFactory
     {
         String tag = getTag(bundle);
         switch (tag) {
-            case Constants.FRIEND_REQUEST_TAG :
+            case SendFriendRequestBody.NOTIFICATION_TAG :
                 return new FriendRequestNotification(context, bundle);
+            case AcceptFriendRequestBody.NOTIFICATION_TAG :
+                return new AcceptRequestNotification(context, bundle);
+            case DeclineFriendRequestBody.NOTIFICATION_TAG :
+                return new DeclineRequestNotification(context, bundle);
             default :
                 return new NullNotification(context);
         }

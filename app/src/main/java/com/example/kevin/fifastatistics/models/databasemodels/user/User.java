@@ -65,6 +65,14 @@ public class User extends DatabaseModel {
         this.imageUrl = imageUrl;
     }
 
+    public static User fromFriend(Friend friend) {
+        User user = new User(friend.getName(), "", "", friend.getImageUrl());
+        user.registrationToken = friend.getRegistrationToken();
+        user.id = friend.getId();
+        user.level = friend.getLevel();
+        return user;
+    }
+
     public void addIncomingRequest(Friend friend) {
         incomingRequests.add(friend);
     }
@@ -87,16 +95,20 @@ public class User extends DatabaseModel {
     }
 
     public boolean hasIncomingRequestWithId(String id) {
-        return hasIncomingRequestsWithIdInList(id, incomingRequests);
+        return hasFriendWithIdInList(id, incomingRequests);
     }
 
     public boolean hasOutgoingRequestWithId(String id) {
-        return hasIncomingRequestsWithIdInList(id, outgoingRequests);
+        return hasFriendWithIdInList(id, outgoingRequests);
     }
 
-    private boolean hasIncomingRequestsWithIdInList(String id, List<Friend> requestList) {
-        for (Friend request : requestList) {
-            if (request.getId().equals(id)) {
+    public boolean hasFriendWithId(String id) {
+        return hasFriendWithIdInList(id, friends);
+    }
+
+    private boolean hasFriendWithIdInList(String id, List<Friend> friendList) {
+        for (Friend friend : friendList) {
+            if (friend.getId().equals(id)) {
                 return true;
             }
         }

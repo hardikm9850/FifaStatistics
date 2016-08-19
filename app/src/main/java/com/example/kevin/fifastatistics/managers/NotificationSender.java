@@ -2,7 +2,9 @@ package com.example.kevin.fifastatistics.managers;
 
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
 import com.example.kevin.fifastatistics.models.notifications.NotificationResponse;
-import com.example.kevin.fifastatistics.models.notifications.notificationrequestbodies.FriendRequestBody;
+import com.example.kevin.fifastatistics.models.notifications.notificationrequestbodies.AcceptFriendRequestBody;
+import com.example.kevin.fifastatistics.models.notifications.notificationrequestbodies.DeclineFriendRequestBody;
+import com.example.kevin.fifastatistics.models.notifications.notificationrequestbodies.SendFriendRequestBody;
 import com.example.kevin.fifastatistics.network.ApiAdapter;
 import com.example.kevin.fifastatistics.network.NotificationsApi;
 import com.example.kevin.fifastatistics.utils.NetworkUtils;
@@ -23,23 +25,28 @@ public class NotificationSender {
      * response if the notification did not successfully send for any reason.
      */
     public static Observable<NotificationResponse> sendFriendRequest(User currentUser, String receiverRegistrationToken) {
-        if (NetworkUtils.isNotConnected()) return Observable.just(NotificationResponse.ERROR_RESPONSE);
-        FriendRequestBody body = new FriendRequestBody(currentUser, receiverRegistrationToken);
+        SendFriendRequestBody body = new SendFriendRequestBody(currentUser, receiverRegistrationToken);
         return sendNotification(API.sendFriendRequest(body));
     }
 
     public static Observable<NotificationResponse> acceptFriendRequest(User user, String regToken) {
-        // TODO
+        AcceptFriendRequestBody body = new AcceptFriendRequestBody(user, regToken);
+        return sendNotification(API.acceptFriendRequest(body));
     }
 
     public static Observable<NotificationResponse> declineFriendRequest(User user, String regToken) {
-        // TODO
+        DeclineFriendRequestBody body = new DeclineFriendRequestBody(user, regToken);
+        return sendNotification(API.declineFriendRequest(body));
     }
 
     private static Observable<NotificationResponse> sendNotification(Observable<NotificationResponse> action) {
-        return action
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
-                .onErrorReturn(t -> NotificationResponse.ERROR_RESPONSE);
+        if (NetworkUtils.isNotConnected()) {
+            return Observable.just(NotificationResponse.ERROR_RESPONSE);
+        } else {
+            return action
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribeOn(Schedulers.io())
+                    .onErrorReturn(t -> NotificationResponse.ERROR_RESPONSE);
+        }
     }
 }

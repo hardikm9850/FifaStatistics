@@ -40,15 +40,16 @@ public class FifaSearchView {
         return ApiAdapter.getFifaApi().getUsers()
                 .map(ApiListResponse::getItems)
                 .map(users -> { users.remove(currentUser); return users; })
-                .flatMap(users -> initialize(activity, users))
+                .flatMap(users -> initialize(activity, users, currentUser))
                 .onErrorReturn(t -> null)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
-    private static Observable<FifaSearchView> initialize(FifaActivity activity, List<User> users) {
+    private static Observable<FifaSearchView> initialize(FifaActivity activity, List<User> users,
+                                                         User currentUser                                                    ) {
         if (mInstance == null) {
-            mInstance = new FifaSearchView(activity, users);
+            mInstance = new FifaSearchView(activity, users, currentUser);
         }
         return Observable.just(mInstance);
     }
@@ -73,12 +74,12 @@ public class FifaSearchView {
         return mSearchView.isSearchOpen();
     }
 
-    private FifaSearchView(FifaActivity activity, List<User> users) {
+    private FifaSearchView(FifaActivity activity, List<User> users, User currentUser) {
         mSearchView = (SearchView) activity.findViewById(R.id.searchView);
         setBasicSearchViewProperties();
         setSearchViewListeners(activity);
 
-        mAdapter = initializeAdapter(activity, users);
+        mAdapter = initializeAdapter(activity, users, currentUser);
     }
 
     private void setBasicSearchViewProperties() {
@@ -117,16 +118,21 @@ public class FifaSearchView {
         });
     }
 
-    private SearchViewAdapter initializeAdapter(FifaActivity activity, List<User> users) {
+    private SearchViewAdapter initializeAdapter(FifaActivity activity, List<User> users,
+                                                User currentUser) {
         SearchViewAdapter adapter = new SearchViewAdapter(activity, THEME_TYPE, users);
 
         adapter.setOnItemClickListener((view, position) -> {
-            // TODO determine whether friend or not
             mSearchView.hide(true);
-            User user = adapter.getUserAtPosition(position);
-            Intent intent = IntentFactory.createPlayerActivityIntent(activity, user);
+            User selectedUser = adapter.getUserAtPosition(position);
+            Intent intent = getAppropriateIntent(activity, currentUser, selectedUser);
             activity.startActivity(intent);
         });
         return adapter;
+    }
+
+    private Intent getAppropriateIntent(FifaActivity activity, User currentUser, User selectedUser) {
+        boolean isFriend = currentUser.hasFriendWithId(selectedUser.getId());
+        return IntentFactory.createPlayerActivityIntent(activity, selectedUser, isFriend);
     }
 }

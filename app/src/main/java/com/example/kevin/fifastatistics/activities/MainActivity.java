@@ -12,6 +12,7 @@ import com.example.kevin.fifastatistics.fragments.FifaFragment;
 import com.example.kevin.fifastatistics.fragments.FriendsFragment;
 import com.example.kevin.fifastatistics.fragments.initializers.FragmentInitializer;
 import com.example.kevin.fifastatistics.fragments.initializers.FragmentInitializerFactory;
+import com.example.kevin.fifastatistics.managers.RetrievalManager;
 import com.example.kevin.fifastatistics.models.databasemodels.user.Friend;
 import com.example.kevin.fifastatistics.utils.FabFactory;
 import com.example.kevin.fifastatistics.utils.IntentFactory;
@@ -76,7 +77,7 @@ public class MainActivity extends FifaActivity
     }
 
     private void initializeDrawer() {
-        mDrawer = FifaNavigationDrawer.getInstance(this);
+        mDrawer = FifaNavigationDrawer.newInstance(this);
         mDrawer.setOnDrawerItemClickListener((view, position, drawerItem) -> {
             if (position == currentDrawerPosition) {
                 mDrawer.closeDrawer();
@@ -93,8 +94,9 @@ public class MainActivity extends FifaActivity
 
     private void initializeFab() {
         mActionMenu = (FloatingActionsMenu) findViewById(R.id.fab_menu);
-        FloatingActionButton matchButton = FabFactory.createPlayMatchFab(this);
-        FloatingActionButton seriesButton = FabFactory.createPlaySeriesFab(this);
+        FabFactory factory = FabFactory.newInstance(this);
+        FloatingActionButton matchButton = factory.createPlayMatchFab();
+        FloatingActionButton seriesButton = factory.createPlaySeriesFab();
 
         mActionMenu.addButton(matchButton);
         mActionMenu.addButton(seriesButton);
@@ -118,8 +120,12 @@ public class MainActivity extends FifaActivity
 
     @Override
     public void onFriendsFragmentInteraction(Friend friend) {
-        Intent intent = IntentFactory.createPlayerActivityIntent(this, friend);
-        startActivity(intent);
+        RetrievalManager.getCurrentUser()
+                .map(u -> u.hasFriendWithId(friend.getId()))
+                .subscribe(isFriend -> {
+                    Intent intent = IntentFactory.createPlayerActivityIntent(this, friend, isFriend);
+                    startActivity(intent);
+                });
     }
 
     @Override

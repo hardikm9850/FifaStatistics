@@ -107,5 +107,5 @@ public interface FifaApi
 //    @POST
 //    @Headers("key: " + Constants.NOTIFICATION_KEY)
 //    Observable<FriendRequestResponse> sendFriendRequest(
-//            @Body FriendRequestBody friendRequestBody);
+//            @Body SendFriendRequestBody friendRequestBody);
 }

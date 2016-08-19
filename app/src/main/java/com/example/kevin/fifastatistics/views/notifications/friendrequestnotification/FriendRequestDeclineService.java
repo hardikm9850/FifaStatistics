@@ -8,7 +8,9 @@ import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
+import com.example.kevin.fifastatistics.managers.NotificationSender;
 import com.example.kevin.fifastatistics.managers.SharedPreferencesManager;
+import com.example.kevin.fifastatistics.models.databasemodels.user.Friend;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
 import com.example.kevin.fifastatistics.views.notifications.FifaNotification;
 
@@ -17,9 +19,7 @@ public class FriendRequestDeclineService extends Service
     private static final String TAG = "RequestDecline";
     private static final long DELAY_AFTER_DECLINE_UNTIL_CANCEL_MS = 1300;
 
-    public FriendRequestDeclineService()
-    {
-    }
+    public FriendRequestDeclineService() {}
 
     @Override
     public IBinder onBind(Intent intent)
@@ -31,8 +31,6 @@ public class FriendRequestDeclineService extends Service
     public int onStartCommand(Intent intent, int flags, int startId)
     {
         declineFriendRequest();
-        updateAndClearNotification();
-
         return START_NOT_STICKY;
     }
 
@@ -40,24 +38,30 @@ public class FriendRequestDeclineService extends Service
     {
         Log.i(TAG, "Declining request");
         User user = SharedPreferencesManager.getUser();
-        int size = user.getIncomingRequests().size();
-        user.getIncomingRequests().remove(size - 1);
-        SharedPreferencesManager.storeUserSync(user);
+        Friend friend = user.getIncomingRequests().get(user.getIncomingRequests().size() - 1);
+        NotificationSender.declineFriendRequest(user, friend.getRegistrationToken())
+                .subscribe(response -> {
+                    if (response.isSuccessful()) {
+                        user.declineIncomingRequest(friend);
+                        SharedPreferencesManager.storeUser(user);
+                        updateAndClearNotification("Friend request declined");
+                    } else {
+                        updateAndClearNotification("Failed to decline friend request");
+                    }
+                });
     }
 
-    private void updateAndClearNotification()
+    private void updateAndClearNotification(String message)
     {
         NotificationManager nm = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        updateNotification(nm);
+        updateNotification(nm, message);
         waitForCancelDelay();
         nm.cancel(FriendRequestNotification.NOTIFICATION_ID);
     }
 
-    private void updateNotification(NotificationManager nm)
+    private void updateNotification(NotificationManager nm, String message)
     {
-        NotificationCompat.Builder nb = FifaNotification.getNotifcationBuilder()
-                .setContentText("Friend request declined");
-
+        NotificationCompat.Builder nb = FifaNotification.getNotifcationBuilder().setContentText(message);
         nb.mActions.clear();
         nm.notify(FriendRequestNotification.NOTIFICATION_ID, nb.build());
     }

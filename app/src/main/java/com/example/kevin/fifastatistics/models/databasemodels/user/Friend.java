@@ -30,6 +30,16 @@ public class Friend extends DatabaseModel
     public static final class FriendBuilder {
     }
 
+    public static Friend fromUser(User user) {
+        return Friend.builder()
+                .id(user.getId())
+                .imageUrl(user.getImageUrl())
+                .name(user.getName())
+                .registrationToken(user.getRegistrationToken())
+                .level(user.getLevel())
+                .build();
+    }
+
     @Override
     public String toString() {
         return SerializationUtils.toJson(this);

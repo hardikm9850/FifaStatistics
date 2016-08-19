@@ -69,7 +69,9 @@
     <string name="notification_key">AIzaSyDjCHksoGamhWxeNsaDN-DW5v3p9IcJNFE</string>
 
     <!-- NOTIFICATIONS -->
-    <string name="new_friend_request">New friend request from</string>
+    <string name="friend_request_from">Friend request from</string>
+    <string name="accepted_your_friend_request">accepted your friend request</string>
+    <string name="declined_your_friend_request">declined your friend request</string>
     <string name="new_friend_request_npe">New friend request</string>
     <string name="notification_accept">ACCEPT</string>
     <string name="notification_decline">DECLINE</string>

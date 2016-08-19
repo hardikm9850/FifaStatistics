@@ -24,9 +24,6 @@ public class NullNotification extends FifaNotification
     protected void setDefaultNotificationSettings(NotificationBundle bundle) {}
 
     @Override
-    protected void setContentText() {}
-
-    @Override
     protected void setContentIntent() {}
 
     @Override

@@ -11,7 +11,6 @@ import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
-import com.example.kevin.fifastatistics.FifaApplication;
 import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.models.notifications.notificationbundles.NotificationBundle;
 import com.example.kevin.fifastatistics.utils.BitmapUtils;
@@ -38,7 +37,7 @@ public abstract class FifaNotification
     public final void build() {
         NotificationBundle nb = getNotificationBundle();
         setDefaultNotificationSettings(nb);
-        setContentText();
+        setContentText(nb);
         setContentIntent();
         addActions();
         performPreSendActions();
@@ -70,7 +69,9 @@ public abstract class FifaNotification
     /**
      * Sets the context text for the notification.
      */
-    protected abstract void setContentText();
+    private void setContentText(NotificationBundle bundle) {
+        if (bundle != null) mNotificationBuilder.setContentText(bundle.getBody());
+    }
 
     /**
      * Sets the content intent that will be launched when the notification is

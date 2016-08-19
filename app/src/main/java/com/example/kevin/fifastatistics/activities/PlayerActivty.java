@@ -44,6 +44,7 @@ public class PlayerActivty extends FifaActivity
     private Toolbar mToolbar;
     private FloatingActionsMenu mFam;
 
+    private User mCurrentUser;
     private String mPlayerId;
     private String mName;
     private String mImageUrl;
@@ -95,6 +96,7 @@ public class PlayerActivty extends FifaActivity
 
     @SuppressWarnings("ConstantConditions")
     private void initializeFab(User user) {
+        mCurrentUser = user;
         FabFactory factory = FabFactory.newInstance(this);
         boolean isFriend = getIntent().getBooleanExtra(FRIEND_EXTRA, false);
         if (isFriend) {
@@ -102,11 +104,11 @@ public class PlayerActivty extends FifaActivity
         } else {
             Friend friend = buildFriend();
             if (user.hasIncomingRequestWithId(mPlayerId)) {
-                initializeFamForIncomingFriendRequest(friend, user, factory);
+                initializeFamForIncomingFriendRequest(friend, factory);
             } else if (user.hasOutgoingRequestWithId(mPlayerId)) {
                 initializeFabForOutgoingFriendRequest(factory);
             } else {
-                initializeFabForNonFriend(friend, user, factory);
+                initializeFabForNonFriend(friend, factory);
             }
         }
     }
@@ -127,49 +129,51 @@ public class PlayerActivty extends FifaActivity
                 .build();
     }
 
-    private void initializeFamForIncomingFriendRequest(Friend friend, User user, FabFactory factory) {
+    private void initializeFamForIncomingFriendRequest(Friend friend, FabFactory factory) {
         FloatingActionButton acceptButton = factory.createAcceptRequestFab();
+        FloatingActionButton declineButton = factory.createDeclineRequestFab();
         acceptButton.setOnClickListener(l -> {
             mFam.collapse();
-            handleAcceptFriendRequestClick(friend, user, acceptButton, factory);
+            handleAcceptFriendRequestClick(friend, acceptButton, declineButton, factory);
         });
-        FloatingActionButton declineButton = factory.createDeclineRequestFab();
         declineButton.setOnClickListener(l -> {
             mFam.collapse();
-            handleDeclineFriendRequestClick(friend, user, declineButton, factory);
+            handleDeclineFriendRequestClick(friend, acceptButton, declineButton, factory);
         });
         mFam.addButton(declineButton);
         mFam.addButton(acceptButton);
     }
 
-    private void handleAcceptFriendRequestClick(Friend friend, User user,
-                                                FloatingActionButton acceptButton, FabFactory factory) {
-        NotificationSender.acceptFriendRequest(user, mRegToken).subscribe(response -> {
+    private void handleAcceptFriendRequestClick(Friend friend, FloatingActionButton acceptButton,
+                                                FloatingActionButton declineButton, FabFactory factory) {
+        NotificationSender.acceptFriendRequest(mCurrentUser, mRegToken).subscribe(response -> {
             if (response.isSuccessful()) {
                 SnackbarUtils.getShortSnackbar(this, "Friend request accepted").show();
-                user.acceptIncomingRequest(friend);
-                SharedPreferencesManager.storeUser(user);
+                mCurrentUser.acceptIncomingRequest(friend);
+                SharedPreferencesManager.storeUser(mCurrentUser);
                 mFam.removeButton(acceptButton);
+                mFam.removeButton(declineButton);
                 initializeFamForFriend(factory);
             } else {
                 SnackbarUtils.getRetrySnackbar(this, "Failed to accept request",
-                        v -> handleAcceptFriendRequestClick(friend, user, acceptButton, factory));
+                        v -> handleAcceptFriendRequestClick(friend, acceptButton, declineButton, factory));
             }
         });
     }
 
-    private void handleDeclineFriendRequestClick(Friend friend, User user,
+    private void handleDeclineFriendRequestClick(Friend friend, FloatingActionButton acceptButon,
                                                  FloatingActionButton declineButton, FabFactory factory) {
-        NotificationSender.declineFriendRequest(user, mRegToken).subscribe(response -> {
+        NotificationSender.declineFriendRequest(mCurrentUser, mRegToken).subscribe(response -> {
            if (response.isSuccessful()) {
                SnackbarUtils.getShortSnackbar(this, "Friend request declined").show();
-               user.declineIncomingRequest(friend);
-               SharedPreferencesManager.storeUser(user);
+               mCurrentUser.declineIncomingRequest(friend);
+               SharedPreferencesManager.storeUser(mCurrentUser);
                mFam.removeButton(declineButton);
-               initializeFabForNonFriend(friend, user, factory);
+               mFam.removeButton(acceptButon);
+               initializeFabForNonFriend(friend, factory);
            } else {
                SnackbarUtils.getRetrySnackbar(this, "Failed to decline request",
-                       v -> handleDeclineFriendRequestClick(friend, user, declineButton, factory));
+                       v -> handleDeclineFriendRequestClick(friend, acceptButon, declineButton, factory));
            }
         });
     }
@@ -178,27 +182,27 @@ public class PlayerActivty extends FifaActivity
         mFam.addButton(factory.createFriendRequestPendingFab());
     }
 
-    private void initializeFabForNonFriend(Friend friend, User user, FabFactory factory) {
+    private void initializeFabForNonFriend(Friend friend, FabFactory factory) {
         FloatingActionButton b = factory.createSendFriendRequestFab();
         b.setOnClickListener(l -> {
             mFam.collapse();
-            handleSendFriendRequestClick(user, friend, b, factory);
+            handleSendFriendRequestClick(friend, b, factory);
         });
         mFam.addButton(b);
     }
 
-    private void handleSendFriendRequestClick(User user, Friend friend, FloatingActionButton b,
+    private void handleSendFriendRequestClick(Friend friend, FloatingActionButton b,
                                               FabFactory factory) {
-        NotificationSender.sendFriendRequest(user, friend.getRegistrationToken()).subscribe(response -> {
+        NotificationSender.sendFriendRequest(mCurrentUser, friend.getRegistrationToken()).subscribe(response -> {
             if (response.isSuccessful()) {
                 SnackbarUtils.getShortSnackbar(this, "Friend request sent").show();
-                user.addOutgoingRequest(friend);
-                SharedPreferencesManager.storeUser(user);
+                mCurrentUser.addOutgoingRequest(friend);
+                SharedPreferencesManager.storeUser(mCurrentUser);
                 mFam.removeButton(b);
                 initializeFabForOutgoingFriendRequest(factory);
             } else {
                 SnackbarUtils.getRetrySnackbar(this, "Failed to send friend request",
-                        v -> handleSendFriendRequestClick(user, friend, b, factory)).show();
+                        v -> handleSendFriendRequestClick(friend, b, factory)).show();
                 Log.i("ERROR", response.toString());
             }
         });

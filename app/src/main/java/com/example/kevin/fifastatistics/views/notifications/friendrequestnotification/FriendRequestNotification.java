@@ -78,11 +78,6 @@ public class FriendRequestNotification extends FifaNotification
     }
 
     @Override
-    protected void setContentText() {
-        mNotificationBuilder.setContentText(friendRequestBundle.getBody());
-    }
-
-    @Override
     protected void setContentIntent() {
         mNotificationBuilder.setContentIntent(contentIntent);
     }
@@ -108,10 +103,6 @@ public class FriendRequestNotification extends FifaNotification
     @Override
     public void performPreSendActions() {
         addFriendRequestToUser();
-    }
-
-    public NotificationCompat.Builder getNotificationBuilder() {
-        return mNotificationBuilder;
     }
 
     private void addFriendRequestToUser() {

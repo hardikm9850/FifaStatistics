@@ -31,8 +31,6 @@ public class FifaNavigationDrawer {
     private static final int BADGE_CORNER_RADIUS_DP = 20;
     private static final int FRIENDS_ITEM_IDENTIFIER = 1;
 
-    private static FifaNavigationDrawer mInstance;
-
     private Drawer mDrawer;
 
     /**
@@ -41,11 +39,8 @@ public class FifaNavigationDrawer {
      * @param activity the activity the drawer will be in
      * @return the drawer
      */
-    public static FifaNavigationDrawer getInstance(FifaActivity activity) {
-        if (mInstance == null) {
-            mInstance = new FifaNavigationDrawer(activity);
-        }
-        return mInstance;
+    public static FifaNavigationDrawer newInstance(FifaActivity activity) {
+        return new FifaNavigationDrawer(activity);
     }
 
     /**
