@@ -10,10 +10,12 @@ import android.view.View;
 import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.fragments.FifaFragment;
 import com.example.kevin.fifastatistics.fragments.FriendsFragment;
+import com.example.kevin.fifastatistics.fragments.dialogs.SelectOpponentDialog;
 import com.example.kevin.fifastatistics.fragments.initializers.FragmentInitializer;
 import com.example.kevin.fifastatistics.fragments.initializers.FragmentInitializerFactory;
 import com.example.kevin.fifastatistics.managers.RetrievalManager;
 import com.example.kevin.fifastatistics.models.databasemodels.user.Friend;
+import com.example.kevin.fifastatistics.models.databasemodels.user.User;
 import com.example.kevin.fifastatistics.utils.FabFactory;
 import com.example.kevin.fifastatistics.utils.IntentFactory;
 import com.example.kevin.fifastatistics.views.wrappers.FifaNavigationDrawer;
@@ -40,6 +42,7 @@ public class MainActivity extends FifaActivity
     private FloatingActionsMenu mActionMenu;
     private FifaFragment currentFragment;
 
+    private User mUser;
     private int currentDrawerPosition;
 
     @Override
@@ -48,6 +51,7 @@ public class MainActivity extends FifaActivity
         setContentView(R.layout.activity_main);
 
         mCoordinatorLayout = findViewById(R.id.coordinator_layout);
+        RetrievalManager.getCurrentUser().subscribe(user -> mUser = user);
         initializeToolbar();
         initializeViewPager();
         initializeDrawer();
@@ -96,6 +100,9 @@ public class MainActivity extends FifaActivity
         mActionMenu = (FloatingActionsMenu) findViewById(R.id.fab_menu);
         FabFactory factory = FabFactory.newInstance(this);
         FloatingActionButton matchButton = factory.createPlayMatchFab();
+        matchButton.setOnClickListener(l -> {
+            SelectOpponentDialog.newInstance(mUser).show(getSupportFragmentManager(), "opponents");
+        });
         FloatingActionButton seriesButton = factory.createPlaySeriesFab();
 
         mActionMenu.addButton(matchButton);

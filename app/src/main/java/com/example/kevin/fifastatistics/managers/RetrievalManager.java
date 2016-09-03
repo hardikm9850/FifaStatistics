@@ -3,6 +3,7 @@ package com.example.kevin.fifastatistics.managers;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
 import com.example.kevin.fifastatistics.network.FifaApi;
 import com.example.kevin.fifastatistics.network.ApiAdapter;
+import com.example.kevin.fifastatistics.utils.ObservableUtils;
 
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
@@ -20,14 +21,10 @@ public class RetrievalManager {
      * TODO error handling
      */
     public static Observable<User> getUser(String id) {
-        return API.getUser(id)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread());
+        return API.getUser(id).compose(ObservableUtils.applySchedulers());
     }
 
     public static Observable<User> getCurrentUser() {
-        return Observable.just(SharedPreferencesManager.getUser())
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread());
+        return Observable.just(SharedPreferencesManager.getUser()).compose(ObservableUtils.applySchedulers());
     }
 }

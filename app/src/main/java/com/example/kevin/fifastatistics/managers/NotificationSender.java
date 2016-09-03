@@ -8,6 +8,7 @@ import com.example.kevin.fifastatistics.models.notifications.notificationrequest
 import com.example.kevin.fifastatistics.network.ApiAdapter;
 import com.example.kevin.fifastatistics.network.NotificationsApi;
 import com.example.kevin.fifastatistics.utils.NetworkUtils;
+import com.example.kevin.fifastatistics.utils.ObservableUtils;
 
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
@@ -44,8 +45,7 @@ public class NotificationSender {
             return Observable.just(NotificationResponse.ERROR_RESPONSE);
         } else {
             return action
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribeOn(Schedulers.io())
+                    .compose(ObservableUtils.applySchedulers())
                     .onErrorReturn(t -> NotificationResponse.ERROR_RESPONSE);
         }
     }

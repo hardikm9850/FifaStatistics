@@ -1,27 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.example.kevin.fifastatistics.views.GridRecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/list"
+    android:name="com.example.kevin.fifastatistics.FriendsFragment"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:paddingTop="@dimen/nav_header_vertical_spacing">
-
-    <de.hdodenhof.circleimageview.CircleImageView
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/user_image"
-        android:layout_width="130dp"
-        android:layout_height="130dp"
-        app:civ_border_width="@dimen/civ_border_width"
-        app:civ_border_color="#FFFFFF"
-        android:src="@android:color/white"
-        android:layout_gravity="center_horizontal"/>
-
-    <TextView
-        android:id="@+id/name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/text_margin"
-        android:gravity="center"
-        android:text="@string/app_name"
-        android:layout_gravity="center_horizontal" />
-
-</LinearLayout>
+    android:layout_height="match_parent"
+    android:layout_marginLeft="16dp"
+    android:layout_marginRight="16dp"
+    android:layoutAnimation="@anim/grid_layout_animation"
+    tools:context=".fragments.FriendsFragment"
+    tools:listitem="@layout/fragment_friends_item" />
+    <!--android:paddingTop="?attr/actionBarSize"-->
