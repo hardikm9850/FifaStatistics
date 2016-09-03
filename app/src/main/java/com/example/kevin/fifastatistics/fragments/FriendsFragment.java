@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -13,14 +14,15 @@ import android.view.ViewGroup;
 
 import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.activities.FifaActivity;
-import com.example.kevin.fifastatistics.managers.SharedPreferencesManager;
+import com.example.kevin.fifastatistics.managers.RetrievalManager;
 import com.example.kevin.fifastatistics.models.databasemodels.user.Friend;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
-import com.example.kevin.fifastatistics.views.wrappers.FifaSearchView;
-import com.example.kevin.fifastatistics.views.GridRecyclerView;
 import com.example.kevin.fifastatistics.views.adapters.FriendsRecyclerViewAdapter;
+import com.example.kevin.fifastatistics.views.wrappers.FifaSearchView;
 
 import java.util.List;
+
+import it.gmariotti.recyclerview.adapter.SlideInBottomAnimatorAdapter;
 
 /**
  * A fragment representing a list of players.
@@ -40,7 +42,6 @@ public class FriendsFragment extends Fragment implements FifaFragment {
 
     private FifaSearchView mSearchView;
     private FriendsFragmentInteractionListener mListener;
-    private User mUser;
     private View mView = null;
     private boolean mIsSearchViewReady = false;
 
@@ -58,8 +59,6 @@ public class FriendsFragment extends Fragment implements FifaFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        mUser = SharedPreferencesManager.getUser();
         setRetainInstance(true);
         setHasOptionsMenu(true);
     }
@@ -68,13 +67,15 @@ public class FriendsFragment extends Fragment implements FifaFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mView = inflater.inflate(R.layout.fragment_friends, container, false);
 
-        initializeSearchView();
-        setAdapterDataSource();
+        RetrievalManager.getCurrentUser().subscribe(user -> {
+            initializeSearchView(user);
+            setAdapterDataSource(user);
+        });
         return mView;
     }
 
-    private void initializeSearchView() {
-        FifaSearchView.getInstance((FifaActivity) getActivity(), mUser).subscribe(sv -> {
+    private void initializeSearchView(User user) {
+        FifaSearchView.getInstance((FifaActivity) getActivity(), user).subscribe(sv -> {
             if (sv != null) {
                 mSearchView = sv;
                 mSearchView.attachAdapter();
@@ -84,12 +85,12 @@ public class FriendsFragment extends Fragment implements FifaFragment {
         });
     }
 
-    private void setAdapterDataSource() {
+    private void setAdapterDataSource(User user) {
         int viewToShow = getArguments().getInt(viewArgument, 0);
         if (viewToShow == friendsView) {
-            setAdapter(mUser.getFriends());
+            setAdapter(user.getFriends());
         } else {
-            setAdapter(mUser.getIncomingRequests());
+            setAdapter(user.getIncomingRequests());
         }
     }
 
@@ -158,12 +159,12 @@ public class FriendsFragment extends Fragment implements FifaFragment {
     }
 
     private void setAdapter(List<Friend> friends) {
-        if (mView instanceof GridRecyclerView) {
-            GridRecyclerView recyclerView = (GridRecyclerView) mView;
+        if (mView instanceof RecyclerView) {
+            RecyclerView recyclerView = (RecyclerView) mView;
             FriendsRecyclerViewAdapter adapter = new FriendsRecyclerViewAdapter(friends, mListener);
-
+            SlideInBottomAnimatorAdapter animatorAdapter = new SlideInBottomAnimatorAdapter(adapter, recyclerView);
             recyclerView.setLayoutManager(new GridLayoutManager(mView.getContext(), mColumnCount));
-            recyclerView.setAdapter(adapter);
+            recyclerView.setAdapter(animatorAdapter);
         }
     }
 }

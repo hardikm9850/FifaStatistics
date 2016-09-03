@@ -88,8 +88,7 @@ public class MainActivity extends FifaActivity
                 return true;
             } else {
                 currentDrawerPosition = position;
-                FragmentInitializer initializer = FragmentInitializerFactory
-                        .createFragmentInitializer(currentDrawerPosition);
+                FragmentInitializer initializer = FragmentInitializerFactory.createFragmentInitializer(currentDrawerPosition);
                 prepareActivityForFragments(initializer);
                 return false;
             }

@@ -52,6 +52,7 @@ public class FriendsRecyclerViewAdapter
             });
     }
 
+
     @Override
     public int getItemCount() {
         if (mUsers == null) {
