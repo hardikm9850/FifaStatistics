@@ -7,11 +7,11 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ProgressBar;
 
 import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.fragments.PlayerOverviewFragment;
 import com.example.kevin.fifastatistics.fragments.SecondFragment;
+import com.example.kevin.fifastatistics.managers.FifaEventManager;
 import com.example.kevin.fifastatistics.managers.NotificationSender;
 import com.example.kevin.fifastatistics.managers.RetrievalManager;
 import com.example.kevin.fifastatistics.managers.SharedPreferencesManager;
@@ -100,10 +100,10 @@ public class PlayerActivty extends FifaActivity
         mCurrentUser = user;
         FabFactory factory = FabFactory.newInstance(this);
         boolean isFriend = getIntent().getBooleanExtra(FRIEND_EXTRA, false);
+        Friend friend = buildFriend();
         if (isFriend) {
-            initializeFamForFriend(factory);
+            initializeFamForFriend(factory, friend);
         } else {
-            Friend friend = buildFriend();
             if (user.hasIncomingRequestWithId(mPlayerId)) {
                 initializeFamForIncomingFriendRequest(friend, factory);
             } else if (user.hasOutgoingRequestWithId(mPlayerId)) {
@@ -114,10 +114,27 @@ public class PlayerActivty extends FifaActivity
         }
     }
 
-    private void initializeFamForFriend(FabFactory factory) {
+    private void initializeFamForFriend(FabFactory factory, Friend friend) {
+        FifaEventManager manager = FifaEventManager.newInstance(this, mCurrentUser);
+        initializeAddMatchButton(factory, manager, friend);
+        initializeAddSeriesButton(factory, manager, friend);
+    }
+
+    private void initializeAddMatchButton(FabFactory factory, FifaEventManager manager, Friend friend) {
         FloatingActionButton matchButton = factory.createPlayMatchFab();
-        FloatingActionButton seriesButton = factory.createPlaySeriesFab();
+        matchButton.setOnClickListener(l -> {
+            manager.setMatchFlow();
+            manager.startNewFlow(friend);
+        });
         mFam.addButton(matchButton);
+    }
+
+    private void initializeAddSeriesButton(FabFactory factory, FifaEventManager manager, Friend friend) {
+        FloatingActionButton seriesButton = factory.createPlaySeriesFab();
+        seriesButton.setOnClickListener(l -> {
+            manager.setSeriesFlow();
+            manager.startNewFlow(friend);
+        });
         mFam.addButton(seriesButton);
     }
 
@@ -154,7 +171,7 @@ public class PlayerActivty extends FifaActivity
                 SharedPreferencesManager.storeUser(mCurrentUser);
                 mFam.removeButton(acceptButton);
                 mFam.removeButton(declineButton);
-                initializeFamForFriend(factory);
+                initializeFamForFriend(factory, friend);
             } else {
                 SnackbarUtils.getRetrySnackbar(this, "Failed to accept request",
                         v -> handleAcceptFriendRequestClick(friend, acceptButton, declineButton, factory));

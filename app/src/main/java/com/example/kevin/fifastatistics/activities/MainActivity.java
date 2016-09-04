@@ -10,9 +10,9 @@ import android.view.View;
 import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.fragments.FifaFragment;
 import com.example.kevin.fifastatistics.fragments.FriendsFragment;
-import com.example.kevin.fifastatistics.fragments.dialogs.SelectOpponentDialog;
 import com.example.kevin.fifastatistics.fragments.initializers.FragmentInitializer;
 import com.example.kevin.fifastatistics.fragments.initializers.FragmentInitializerFactory;
+import com.example.kevin.fifastatistics.managers.FifaEventManager;
 import com.example.kevin.fifastatistics.managers.RetrievalManager;
 import com.example.kevin.fifastatistics.models.databasemodels.user.Friend;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
@@ -47,7 +47,6 @@ public class MainActivity extends FifaActivity
     private FloatingActionsMenu mActionMenu;
     private FifaFragment currentFragment;
 
-    private User mUser;
     private int currentDrawerPosition;
 
     @Override
@@ -56,7 +55,6 @@ public class MainActivity extends FifaActivity
         setContentView(R.layout.activity_main);
 
         mCoordinatorLayout = findViewById(R.id.coordinator_layout);
-        RetrievalManager.getCurrentUser().subscribe(user -> mUser = user);
         initializeToolbar();
         initializeViewPager();
         initializeDrawer();
@@ -104,7 +102,7 @@ public class MainActivity extends FifaActivity
                 .map(FragmentInitializerFactory::createFragmentInitializer)
                 .compose(ObservableUtils.applySchedulers())
                 .delaySubscription(450, TimeUnit.MILLISECONDS)
-                .subscribe(initializer -> prepareActivityForFragments(initializer));
+                .subscribe(this::prepareActivityForFragments);
     }
 
     private void initializeFragment() {
@@ -125,14 +123,30 @@ public class MainActivity extends FifaActivity
 
     private void initializeFab() {
         mActionMenu = (FloatingActionsMenu) findViewById(R.id.fab_menu);
-        FabFactory factory = FabFactory.newInstance(this);
+        RetrievalManager.getCurrentUser().subscribe(user -> {
+            FabFactory factory = FabFactory.newInstance(this);
+            FifaEventManager manager = FifaEventManager.newInstance(this, user);
+
+            initializeAddMatchButton(factory, manager);
+            initializeAddSeriesButton(factory, manager);
+        });
+    }
+
+    private void initializeAddMatchButton(FabFactory factory, FifaEventManager manager) {
         FloatingActionButton matchButton = factory.createPlayMatchFab();
         matchButton.setOnClickListener(l -> {
-            SelectOpponentDialog.newInstance(mUser).show(getSupportFragmentManager());
+            manager.setMatchFlow();
+            manager.startNewFlow();
         });
-        FloatingActionButton seriesButton = factory.createPlaySeriesFab();
-
         mActionMenu.addButton(matchButton);
+    }
+
+    private void initializeAddSeriesButton(FabFactory factory, FifaEventManager manager) {
+        FloatingActionButton seriesButton = factory.createPlaySeriesFab();
+        seriesButton.setOnClickListener(l -> {
+            manager.setSeriesFlow();
+            manager.startNewFlow();
+        });
         mActionMenu.addButton(seriesButton);
     }
 
