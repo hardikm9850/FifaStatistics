@@ -3,6 +3,7 @@ package com.example.kevin.fifastatistics.fragments.dialogs;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
 
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
@@ -15,6 +16,8 @@ import lombok.NoArgsConstructor;
  */
 @NoArgsConstructor
 public class SelectOpponentDialog extends DialogFragment {
+
+    private static final String TAG = "opponents";
 
     private User mUser;
 
@@ -31,5 +34,9 @@ public class SelectOpponentDialog extends DialogFragment {
         builder.setCancelable(true);
         builder.setTitle("Select Opponent");
         return builder.create();
+    }
+
+    public void show(FragmentManager manager) {
+        show(manager, TAG);
     }
 }

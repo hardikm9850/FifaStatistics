@@ -104,9 +104,7 @@ public class MainActivity extends FifaActivity
                 .map(FragmentInitializerFactory::createFragmentInitializer)
                 .compose(ObservableUtils.applySchedulers())
                 .delaySubscription(450, TimeUnit.MILLISECONDS)
-                .subscribe(initializer -> {
-                    prepareActivityForFragments(initializer);
-                });
+                .subscribe(initializer -> prepareActivityForFragments(initializer));
     }
 
     private void initializeFragment() {
@@ -130,7 +128,7 @@ public class MainActivity extends FifaActivity
         FabFactory factory = FabFactory.newInstance(this);
         FloatingActionButton matchButton = factory.createPlayMatchFab();
         matchButton.setOnClickListener(l -> {
-            SelectOpponentDialog.newInstance(mUser).show(getSupportFragmentManager(), "opponents");
+            SelectOpponentDialog.newInstance(mUser).show(getSupportFragmentManager());
         });
         FloatingActionButton seriesButton = factory.createPlaySeriesFab();
 
@@ -169,5 +167,10 @@ public class MainActivity extends FifaActivity
     @Override
     public View getParentLayout() {
         return mCoordinatorLayout;
+    }
+
+    @Override
+    public void setProgressBarVisible(boolean visible) {
+        ;
     }
 }

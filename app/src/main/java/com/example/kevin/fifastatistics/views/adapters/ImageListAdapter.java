@@ -6,7 +6,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.kevin.fifastatistics.R;
@@ -20,16 +19,14 @@ import java.util.List;
  */
 public class ImageListAdapter extends BaseAdapter {
 
-    private Context mContext;
     private List<Friend> mFriends;
     private ImageLoader mImageLoader;
     private LayoutInflater mInflater;
 
     public ImageListAdapter(Context context, List<Friend> friends) {
-        mContext = context;
         mFriends = friends;
         mImageLoader = ImageLoader.getInstance();
-        mInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
     @Override

@@ -6,9 +6,9 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
 
 import com.example.kevin.fifastatistics.R;
+import com.example.kevin.fifastatistics.activities.FifaActivity;
 import com.example.kevin.fifastatistics.managers.RetrievalManager;
 import com.example.kevin.fifastatistics.managers.RetrofitErrorManager;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
@@ -27,7 +27,7 @@ public class PlayerOverviewFragment extends Fragment implements FifaFragment {
     private static final String ARG_USER_ID = "id";
 
     private String mUserId;
-    private ProgressBar mProgressBar;
+    private FifaActivity mActivity;
     private OnPlayerFragmentInteractionListener mListener;
 
     public PlayerOverviewFragment() {} // Required
@@ -50,11 +50,9 @@ public class PlayerOverviewFragment extends Fragment implements FifaFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_player_overview, container, false);
-
-        mProgressBar = (ProgressBar) view.findViewById(R.id.progress_bar);
-        mProgressBar.setVisibility(View.VISIBLE);
-
+        mActivity = (FifaActivity) getActivity();
         UserOverview overview = (UserOverview) view.findViewById(R.id.useroverviewdata);
+        overview.setVisibility(View.GONE);
         RetrievalManager.getUser(mUserId)
                 .onErrorReturn(t -> {
                     RetrofitErrorManager.showToastForError(t, getActivity());
@@ -66,7 +64,8 @@ public class PlayerOverviewFragment extends Fragment implements FifaFragment {
                     } else {
                         overview.setUsername(user.getName());
                         overview.setUser(user);
-                        mProgressBar.setVisibility(View.INVISIBLE);
+                        mActivity.setProgressBarVisible(false);
+                        overview.setVisibility(View.VISIBLE);
                     }
         });
 
