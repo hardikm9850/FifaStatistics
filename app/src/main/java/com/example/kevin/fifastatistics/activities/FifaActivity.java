@@ -11,5 +11,4 @@ public abstract class FifaActivity extends AppCompatActivity {
     public abstract Toolbar getToolbar();
     public abstract void setNavigationLocked(boolean locked);
     public abstract View getParentLayout();
-    public abstract void setProgressBarVisible(boolean visible);
 }

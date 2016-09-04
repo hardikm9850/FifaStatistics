@@ -168,9 +168,4 @@ public class MainActivity extends FifaActivity
     public View getParentLayout() {
         return mCoordinatorLayout;
     }
-
-    @Override
-    public void setProgressBarVisible(boolean visible) {
-        ;
-    }
 }

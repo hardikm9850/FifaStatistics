@@ -8,6 +8,7 @@ import com.example.kevin.fifastatistics.models.apiresponses.ApiListResponse;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
 import com.example.kevin.fifastatistics.network.ApiAdapter;
 import com.example.kevin.fifastatistics.utils.IntentFactory;
+import com.example.kevin.fifastatistics.utils.ObservableUtils;
 import com.example.kevin.fifastatistics.views.adapters.SearchViewAdapter;
 import com.lapism.searchview.view.SearchCodes;
 import com.lapism.searchview.view.SearchView;
@@ -15,8 +16,6 @@ import com.lapism.searchview.view.SearchView;
 import java.util.List;
 
 import rx.Observable;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 /**
  * Wrapper class around {@link com.lapism.searchview.view.SearchView}.
@@ -38,12 +37,11 @@ public class FifaSearchView {
      */
     public static Observable<FifaSearchView> getInstance(FifaActivity activity, User currentUser) {
         return ApiAdapter.getFifaApi().getUsers()
+                .compose(ObservableUtils.applySchedulers())
                 .map(ApiListResponse::getItems)
                 .map(users -> { users.remove(currentUser); return users; })
                 .flatMap(users -> initialize(activity, users, currentUser))
-                .onErrorReturn(t -> null)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread());
+                .onErrorReturn(t -> null);
     }
 
     private static Observable<FifaSearchView> initialize(FifaActivity activity, List<User> users,

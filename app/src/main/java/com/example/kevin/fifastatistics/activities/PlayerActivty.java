@@ -44,7 +44,6 @@ public class PlayerActivty extends FifaActivity
     private View mParentLayout;
     private Toolbar mToolbar;
     private FloatingActionsMenu mFam;
-    private ProgressBar mProgressBar;
 
     private User mCurrentUser;
     private String mPlayerId;
@@ -64,8 +63,6 @@ public class PlayerActivty extends FifaActivity
         mRegToken = getIntent().getStringExtra(REG_TOKEN_EXTRA);
         mParentLayout = findViewById(R.id.coordinator_layout);
         mFam = (FloatingActionsMenu) findViewById(R.id.fab_menu);
-        mProgressBar = (ProgressBar) findViewById(R.id.progress_bar);
-        mProgressBar.setVisibility(View.VISIBLE);
 
 //        TextView title = (TextView) findViewById(R.id.title);
 //        title.setText(NAME_EXTRA);
@@ -237,10 +234,5 @@ public class PlayerActivty extends FifaActivity
     @Override
     public View getParentLayout() {
         return mParentLayout;
-    }
-
-    @Override
-    public void setProgressBarVisible(boolean visible) {
-        mProgressBar.setVisibility(visible ? View.VISIBLE : View.GONE);
     }
 }

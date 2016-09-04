@@ -2,32 +2,26 @@ package com.example.kevin.fifastatistics.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.devspark.progressfragment.ProgressFragment;
 import com.example.kevin.fifastatistics.R;
-import com.example.kevin.fifastatistics.activities.FifaActivity;
 import com.example.kevin.fifastatistics.managers.RetrievalManager;
 import com.example.kevin.fifastatistics.managers.RetrofitErrorManager;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
 import com.example.kevin.fifastatistics.views.UserOverview;
 
 /**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link OnPlayerFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link PlayerOverviewFragment#newInstance} factory method to
- * create an instance of this fragment.
+ * Overview of a player that is not the current user.
  */
-public class PlayerOverviewFragment extends Fragment implements FifaFragment {
+public class PlayerOverviewFragment extends ProgressFragment implements FifaFragment {
 
     private static final String ARG_USER_ID = "id";
 
     private String mUserId;
-    private FifaActivity mActivity;
+    private View mContentView;
     private OnPlayerFragmentInteractionListener mListener;
 
     public PlayerOverviewFragment() {} // Required
@@ -49,10 +43,16 @@ public class PlayerOverviewFragment extends Fragment implements FifaFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_player_overview, container, false);
-        mActivity = (FifaActivity) getActivity();
-        UserOverview overview = (UserOverview) view.findViewById(R.id.useroverviewdata);
-        overview.setVisibility(View.GONE);
+        mContentView = inflater.inflate(R.layout.fragment_player_overview, container, false);
+        return super.onCreateView(inflater, container, savedInstanceState);
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        setContentView(mContentView);
+        setContentShown(false);
+        UserOverview overview = (UserOverview) mContentView.findViewById(R.id.useroverviewdata);
         RetrievalManager.getUser(mUserId)
                 .onErrorReturn(t -> {
                     RetrofitErrorManager.showToastForError(t, getActivity());
@@ -64,12 +64,9 @@ public class PlayerOverviewFragment extends Fragment implements FifaFragment {
                     } else {
                         overview.setUsername(user.getName());
                         overview.setUser(user);
-                        mActivity.setProgressBarVisible(false);
-                        overview.setVisibility(View.VISIBLE);
+                        setContentShown(true);
                     }
-        });
-
-        return view;
+                });
     }
 
     @Override
