@@ -18,10 +18,15 @@ import com.example.kevin.fifastatistics.models.databasemodels.user.Friend;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
 import com.example.kevin.fifastatistics.utils.FabFactory;
 import com.example.kevin.fifastatistics.utils.IntentFactory;
+import com.example.kevin.fifastatistics.utils.ObservableUtils;
 import com.example.kevin.fifastatistics.views.wrappers.FifaNavigationDrawer;
 import com.example.kevin.fifastatistics.views.adapters.ViewPagerAdapter;
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
+
+import java.util.concurrent.TimeUnit;
+
+import rx.Observable;
 
 /**
  * The application's main activity class that is loaded on launch, so long as the user is signed in.
@@ -87,25 +92,21 @@ public class MainActivity extends FifaActivity
                 mDrawer.closeDrawer();
                 return true;
             } else {
-                currentDrawerPosition = position;
-                FragmentInitializer initializer = FragmentInitializerFactory.createFragmentInitializer(currentDrawerPosition);
-                prepareActivityForFragments(initializer);
+                handleDrawerClick(position);
                 return false;
             }
         });
     }
 
-    private void initializeFab() {
-        mActionMenu = (FloatingActionsMenu) findViewById(R.id.fab_menu);
-        FabFactory factory = FabFactory.newInstance(this);
-        FloatingActionButton matchButton = factory.createPlayMatchFab();
-        matchButton.setOnClickListener(l -> {
-            SelectOpponentDialog.newInstance(mUser).show(getSupportFragmentManager(), "opponents");
-        });
-        FloatingActionButton seriesButton = factory.createPlaySeriesFab();
-
-        mActionMenu.addButton(matchButton);
-        mActionMenu.addButton(seriesButton);
+    private void handleDrawerClick(int position) {
+        Observable.just(position)
+                .map(p -> currentDrawerPosition = p)
+                .map(FragmentInitializerFactory::createFragmentInitializer)
+                .compose(ObservableUtils.applySchedulers())
+                .delaySubscription(450, TimeUnit.MILLISECONDS)
+                .subscribe(initializer -> {
+                    prepareActivityForFragments(initializer);
+                });
     }
 
     private void initializeFragment() {
@@ -122,6 +123,19 @@ public class MainActivity extends FifaActivity
         int currentPage = getIntent().getIntExtra(PAGE_EXTRA, 0);
         mViewPager.setCurrentItem(currentPage);
         currentFragment = (FifaFragment) mAdapter.getItem(currentPage);
+    }
+
+    private void initializeFab() {
+        mActionMenu = (FloatingActionsMenu) findViewById(R.id.fab_menu);
+        FabFactory factory = FabFactory.newInstance(this);
+        FloatingActionButton matchButton = factory.createPlayMatchFab();
+        matchButton.setOnClickListener(l -> {
+            SelectOpponentDialog.newInstance(mUser).show(getSupportFragmentManager(), "opponents");
+        });
+        FloatingActionButton seriesButton = factory.createPlaySeriesFab();
+
+        mActionMenu.addButton(matchButton);
+        mActionMenu.addButton(seriesButton);
     }
 
     @Override
