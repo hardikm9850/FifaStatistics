@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingTop="24dp"
+                android:background="@color/colorPrimary"
+                android:fitsSystemWindows="true"
+                xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/dialog_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/accent"
+        android:clickable="true"
+        android:fitsSystemWindows="true"
+        app:popupTheme="@style/AppTheme.PopupOverlay"
+        app:layout_collapseMode="pin">
+
+        <ImageButton
+            android:id="@+id/done_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_margin="@dimen/activity_horizontal_margin"
+            android:src="@drawable/ic_check_white_24dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="Done"/>
+
+        <ImageButton
+            android:id="@+id/camera_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_margin="@dimen/activity_horizontal_margin"
+            android:src="@drawable/ic_camera_alt_white_24dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="Camera"/>
+
+    </android.support.v7.widget.Toolbar>
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/left_image"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_below="@id/dialog_toolbar"
+        android:layout_alignParentStart="true"
+        android:layout_margin="@dimen/activity_horizontal_margin"
+        app:civ_border_width="2dp"
+        app:civ_border_color="#FFFFFF"
+        android:src="@android:color/white"/>
+
+    <ImageButton
+        android:id="@+id/switch_sides_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/dialog_toolbar"
+        android:layout_margin="@dimen/activity_horizontal_margin"
+        android:src="@drawable/ic_swap_horiz_white_24dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="Switch Sides"/>
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/right_image"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_below="@id/dialog_toolbar"
+        android:layout_alignParentEnd="true"
+        android:layout_margin="@dimen/activity_horizontal_margin"
+        app:civ_border_width="2dp"
+        app:civ_border_color="#FFFFFF"
+        android:src="@android:color/white"/>
+
+    <android.support.v7.widget.ListViewCompat
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/right_image"
+        android:layout_margin="@dimen/activity_horizontal_margin"
+        tools:listitem="@layout/match_input_list_item"/>
+
+</RelativeLayout>

@@ -2,6 +2,7 @@ package com.example.kevin.fifastatistics.fragments.dialogs;
 
 import android.app.Dialog;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
@@ -33,11 +34,12 @@ public class SelectOpponentDialog extends DialogFragment {
     }
 
     @Override
+    @NonNull
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setAdapter(new ImageListAdapter(getActivity(), mFriends), (dialog, which) -> {
-            mListener.onOpponentClick(mFriends.get(which));
-        });
+        builder.setAdapter(new ImageListAdapter(getActivity(), mFriends), (dialog, which) ->
+            mListener.onOpponentClick(mFriends.get(which))
+        );
         builder.setCancelable(true);
         builder.setTitle("Select Opponent");
         return builder.create();

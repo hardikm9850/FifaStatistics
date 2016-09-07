@@ -1,11 +1,15 @@
 package com.example.kevin.fifastatistics.managers;
 
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
+
 import com.example.kevin.fifastatistics.activities.FifaActivity;
+import com.example.kevin.fifastatistics.fragments.AddMatchDialogFragment;
 import com.example.kevin.fifastatistics.fragments.dialogs.SelectOpponentDialog;
 import com.example.kevin.fifastatistics.models.databasemodels.user.Friend;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
 
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
 /**
@@ -54,10 +58,17 @@ public class FifaEventManager implements SelectOpponentDialog.SelectOpponentList
     }
 
     /** Represents the type of flow (Match or Series) */
-    private abstract class Flow {
+    private abstract class Flow implements AddMatchDialogFragment.AddMatchDialogSaveListener {
 
         public void startNewFlow() {
             SelectOpponentDialog.newInstance(mUser, FifaEventManager.this).show(mActivity.getSupportFragmentManager());
+        }
+
+        public void showAddMatchFragment(FifaActivity parentActivity, Friend opponent) {
+            FragmentTransaction t = parentActivity.getSupportFragmentManager().beginTransaction();
+            t.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+            Fragment fragment = AddMatchDialogFragment.newInstance(mUser, opponent, this, mActivity);
+            t.add(android.R.id.content, fragment).addToBackStack(null).commit();
         }
 
         public abstract void startNewFlow(Friend opponent);
@@ -67,7 +78,12 @@ public class FifaEventManager implements SelectOpponentDialog.SelectOpponentList
 
         @Override
         public void startNewFlow(Friend opponent) {
+            Log.i("SERIES", "new series versus " + opponent.getName());
+        }
 
+        @Override
+        public void onSave() {
+            // TODO
         }
     }
 
@@ -75,7 +91,12 @@ public class FifaEventManager implements SelectOpponentDialog.SelectOpponentList
 
         @Override
         public void startNewFlow(Friend opponent) {
+            showAddMatchFragment(mActivity, opponent);
+        }
 
+        @Override
+        public void onSave() {
+            // TODO
         }
     }
 }
