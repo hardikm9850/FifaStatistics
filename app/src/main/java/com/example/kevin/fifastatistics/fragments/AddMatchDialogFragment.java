@@ -14,6 +14,7 @@ import android.support.v7.widget.Toolbar;
 import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.models.databasemodels.user.Friend;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
+import com.example.kevin.fifastatistics.utils.ResourceUtils;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import lombok.NoArgsConstructor;
@@ -56,6 +57,7 @@ public class AddMatchDialogFragment extends DialogFragment {
         initializeListView(view);
         setStatusBarColor();
 
+        view = maybeAddPaddingToTop(view);
         return view;
     }
 
@@ -67,6 +69,15 @@ public class AddMatchDialogFragment extends DialogFragment {
 
     private void resetStatusBarColor() {
         mActivity.getWindow().setStatusBarColor(mOldStatusBarColor);
+    }
+
+    private View maybeAddPaddingToTop(View view) {
+        boolean isDrawerLayout = mActivity.getWindow().getDecorView().getRootView().findViewById(R.id.drawer_layout) != null;
+        if (isDrawerLayout) {
+            float requiredTopPadding = ResourceUtils.getDimensionFromResourceId(R.dimen.status_bar_height);
+            view.setPadding(0, Math.round(requiredTopPadding), 0 ,0);
+        }
+        return view;
     }
 
     private void initializeToolbar(View view) {

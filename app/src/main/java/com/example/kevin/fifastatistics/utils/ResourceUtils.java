@@ -15,4 +15,8 @@ public class ResourceUtils {
     public static String getStringFromResourceId(int id) {
         return mContext.getResources().getString(id);
     }
+
+    public static float getDimensionFromResourceId(int id) {
+        return mContext.getResources().getDimension(id);
+    }
 }
