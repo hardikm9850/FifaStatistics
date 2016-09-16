@@ -25,14 +25,19 @@ import com.nostra13.universalimageloader.core.ImageLoader;
  */
 public class AddMatchDialogFragment extends DialogFragment {
 
-    private User mUser;
-    private Friend mOpponent;
-    private AddMatchDialogSaveListener mListener;
     private ImageLoader mImageLoader;
     private Toolbar mToolbar;
     private Activity mActivity;
+
+    private User mUser;
+    private Friend mOpponent;
+    private AddMatchDialogSaveListener mListener;
     private AddMatchListLayout mAddMatchList;
+    private ImageView mLeftImage;
+    private ImageView mRightImage;
+
     private int mOldStatusBarColor;
+    private boolean mDidSwapSides;
 
     public static AddMatchDialogFragment newInstance(User user, Friend opponent,
                                                      AddMatchDialogSaveListener listener,
@@ -115,13 +120,21 @@ public class AddMatchDialogFragment extends DialogFragment {
     }
 
     private void initializeLeftUserImage(View view) {
-        ImageView leftImage = (ImageView) view.findViewById(R.id.left_image);
-        mImageLoader.displayImage(mUser.getImageUrl(), leftImage);
+        mLeftImage = (ImageView) view.findViewById(R.id.left_image);
+        setLeftImage(mUser.getImageUrl());
+    }
+
+    private void setLeftImage(String imageUrl) {
+        mImageLoader.displayImage(imageUrl, mLeftImage);
     }
 
     private void initializeRightUserImage(View view) {
-        ImageView rightImage = (ImageView) view.findViewById(R.id.right_image);
-        mImageLoader.displayImage(mOpponent.getImageUrl(), rightImage);
+        mRightImage = (ImageView) view.findViewById(R.id.right_image);
+        setRightImage(mOpponent.getImageUrl());
+    }
+
+    private void setRightImage(String imageUrl) {
+        mImageLoader.displayImage(imageUrl, mRightImage);
     }
 
     private void initializeAddMatchList(View view) {
@@ -131,7 +144,9 @@ public class AddMatchDialogFragment extends DialogFragment {
     private void initializeSwitchSidesButton(View view) {
         ImageButton b = (ImageButton) view.findViewById(R.id.switch_sides_button);
         b.setOnClickListener(v -> {
-            // TODO
+            setLeftImage(mDidSwapSides ? mUser.getImageUrl() : mOpponent.getImageUrl());
+            setRightImage(mDidSwapSides ? mOpponent.getImageUrl() : mUser.getImageUrl());
+            mDidSwapSides = !mDidSwapSides;
         });
     }
 
