@@ -16,4 +16,9 @@ public class Penalties {
 
     private int winner;
     private int loser;
+
+    public Penalties(String winner, String loser) {
+        this.winner = Integer.valueOf(winner);
+        this.loser = Integer.valueOf(loser);
+    }
 }

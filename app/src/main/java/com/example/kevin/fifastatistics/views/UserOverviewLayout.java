@@ -14,15 +14,15 @@ import com.example.kevin.fifastatistics.views.cards.RecordsCardView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserOverview extends LinearLayout {
+public class UserOverviewLayout extends LinearLayout {
 
     private final RecordsCardView mRecordsCardView;
     private final ViewPager mStatsViewPager;
     private final Context mContext;
 
-    private String mUserame;
+    private String mUsername;
 
-    public UserOverview(Context c, AttributeSet attributeSet) {
+    public UserOverviewLayout(Context c, AttributeSet attributeSet) {
         super(c, attributeSet);
 
         LayoutInflater inflater = (LayoutInflater) c.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -39,7 +39,7 @@ public class UserOverview extends LinearLayout {
      * #setUser(User), or it will have no effect.
      */
     public void setUsername(String name) {
-        mUserame = name;
+        mUsername = name;
     }
 
     public void setUser(User user) {
@@ -49,7 +49,7 @@ public class UserOverview extends LinearLayout {
         List<User.StatsPair> stats = new ArrayList<>();
         stats.add(user.getAverageStats());
         stats.add(user.getRecordStats());
-        mStatsViewPager.setAdapter(new BarChartViewPagerAdapter(mContext, stats, mUserame));
+        mStatsViewPager.setAdapter(new BarChartViewPagerAdapter(mContext, stats, mUsername));
         mStatsViewPager.setCurrentItem(0);
     }
 }

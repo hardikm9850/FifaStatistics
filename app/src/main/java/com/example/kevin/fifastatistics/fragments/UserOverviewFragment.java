@@ -14,7 +14,7 @@ import android.widget.TextView;
 import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.managers.SharedPreferencesManager;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
-import com.example.kevin.fifastatistics.views.UserOverview;
+import com.example.kevin.fifastatistics.views.UserOverviewLayout;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 /**
@@ -55,7 +55,7 @@ public class UserOverviewFragment extends Fragment implements FifaFragment {
     }
 
     private void initializeContent(View view) {
-        UserOverview overview = (UserOverview) view.findViewById(R.id.useroverviewdata);
+        UserOverviewLayout overview = (UserOverviewLayout) view.findViewById(R.id.useroverviewdata);
         overview.setUser(mUser);
     }
 

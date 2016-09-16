@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_margin="@dimen/activity_horizontal_margin">
+
+        <include android:id="@+id/goals"
+                 layout="@layout/add_match_list_item_layout"/>
+
+        <include android:id="@+id/shots"
+                 layout="@layout/add_match_list_item_layout"/>
+
+        <include android:id="@+id/shots_on_target"
+                 layout="@layout/add_match_list_item_layout"/>
+
+        <include android:id="@+id/possession"
+                 layout="@layout/add_match_list_item_layout"/>
+
+        <include android:id="@+id/tackles"
+                 layout="@layout/add_match_list_item_layout"/>
+
+        <include android:id="@+id/fouls"
+                 layout="@layout/add_match_list_item_layout"/>
+
+        <include android:id="@+id/yellow_cards"
+                 layout="@layout/add_match_list_item_layout"/>
+
+        <include android:id="@+id/red_cards"
+                 layout="@layout/add_match_list_item_layout"/>
+
+        <include android:id="@+id/offsides"
+                 layout="@layout/add_match_list_item_layout"/>
+
+        <include android:id="@+id/injuries"
+                 layout="@layout/add_match_list_item_layout"/>
+
+        <include android:id="@+id/shot_accuracy"
+                 layout="@layout/add_match_list_item_layout"/>
+
+        <include android:id="@+id/pass_accuracy"
+                 layout="@layout/add_match_list_item_layout"/>
+
+        <include android:id="@+id/penalties"
+                 layout="@layout/add_match_list_item_layout"/>
+
+    </LinearLayout>
+
+</ScrollView>

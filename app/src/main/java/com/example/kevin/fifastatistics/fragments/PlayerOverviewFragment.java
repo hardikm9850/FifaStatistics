@@ -11,7 +11,7 @@ import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.managers.RetrievalManager;
 import com.example.kevin.fifastatistics.managers.RetrofitErrorManager;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
-import com.example.kevin.fifastatistics.views.UserOverview;
+import com.example.kevin.fifastatistics.views.UserOverviewLayout;
 
 /**
  * Overview of a player that is not the current user.
@@ -52,7 +52,7 @@ public class PlayerOverviewFragment extends ProgressFragment implements FifaFrag
         super.onActivityCreated(savedInstanceState);
         setContentView(mContentView);
         setContentShown(false);
-        UserOverview overview = (UserOverview) mContentView.findViewById(R.id.useroverviewdata);
+        UserOverviewLayout overview = (UserOverviewLayout) mContentView.findViewById(R.id.useroverviewdata);
         RetrievalManager.getUser(mUserId)
                 .onErrorReturn(t -> {
                     RetrofitErrorManager.showToastForError(t, getActivity());

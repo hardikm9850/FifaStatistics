@@ -3,6 +3,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@color/colorPrimary"
+                android:scrollbars="none"
                 xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <android.support.v7.widget.Toolbar
@@ -43,7 +44,7 @@
         android:layout_height="50dp"
         android:layout_below="@id/dialog_toolbar"
         android:layout_alignParentStart="true"
-        android:layout_margin="@dimen/activity_horizontal_margin"
+        android:layout_margin="@dimen/activity_vertical_margin"
         app:civ_border_width="2dp"
         app:civ_border_color="#FFFFFF"
         android:src="@android:color/white"/>
@@ -51,10 +52,10 @@
     <ImageButton
         android:id="@+id/switch_sides_button"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:layout_centerHorizontal="true"
         android:layout_below="@id/dialog_toolbar"
-        android:layout_margin="@dimen/activity_horizontal_margin"
+        android:layout_margin="@dimen/activity_vertical_margin"
         android:src="@drawable/ic_swap_horiz_white_24dp"
         android:background="?attr/selectableItemBackgroundBorderless"
         android:contentDescription="Switch Sides"/>
@@ -66,18 +67,16 @@
         android:layout_height="50dp"
         android:layout_below="@id/dialog_toolbar"
         android:layout_alignParentEnd="true"
-        android:layout_margin="@dimen/activity_horizontal_margin"
+        android:layout_margin="@dimen/activity_vertical_margin"
         app:civ_border_width="2dp"
         app:civ_border_color="#FFFFFF"
         android:src="@android:color/white"/>
 
-    <android.support.v7.widget.ListViewCompat
-        xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/list"
+    <com.example.kevin.fifastatistics.views.AddMatchListLayout
+        android:id="@+id/add_match_list_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_below="@id/right_image"
-        android:layout_margin="@dimen/activity_horizontal_margin"
-        tools:listitem="@layout/match_input_list_item"/>
+        android:layout_margin="@dimen/activity_horizontal_margin"/>
 
 </RelativeLayout>

@@ -8,23 +8,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.support.v7.widget.Toolbar;
 
 import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.models.databasemodels.user.Friend;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
 import com.example.kevin.fifastatistics.utils.ResourceUtils;
+import com.example.kevin.fifastatistics.utils.ToastUtils;
+import com.example.kevin.fifastatistics.views.AddMatchListLayout;
 import com.nostra13.universalimageloader.core.ImageLoader;
-
-import lombok.NoArgsConstructor;
 
 /**
  * Dialog for adding matches. Should be shown as a fullscreen dialog.
  * <p>
  * See https://developer.android.com/guide/topics/ui/dialogs.html#FullscreenDialog for details.
  */
-@NoArgsConstructor
 public class AddMatchDialogFragment extends DialogFragment {
 
     private User mUser;
@@ -33,6 +31,7 @@ public class AddMatchDialogFragment extends DialogFragment {
     private ImageLoader mImageLoader;
     private Toolbar mToolbar;
     private Activity mActivity;
+    private AddMatchListLayout mAddMatchList;
     private int mOldStatusBarColor;
 
     public static AddMatchDialogFragment newInstance(User user, Friend opponent,
@@ -54,7 +53,8 @@ public class AddMatchDialogFragment extends DialogFragment {
         initializeToolbar(view);
         initializeLeftUserImage(view);
         initializeRightUserImage(view);
-        initializeListView(view);
+        initializeAddMatchList(view);
+        initializeSwitchSidesButton(view);
         setStatusBarColor();
 
         view = maybeAddPaddingToTop(view);
@@ -92,10 +92,21 @@ public class AddMatchDialogFragment extends DialogFragment {
 
     private void initializeDoneMenuItem() {
         ImageButton b = (ImageButton) mToolbar.findViewById(R.id.done_button);
+        b.setOnClickListener(v -> {
+            try {
+                User.StatsPair stats = mAddMatchList.getValues();
+            } catch (NumberFormatException nfe) {
+                ToastUtils.showShortToast(mActivity, "All values must be integers.");
+                return;
+            }
+            // TODO match
+            mListener.onSave();
+        });
     }
 
     private void initializeCameraMenuItem() {
         ImageButton b = (ImageButton) mToolbar.findViewById(R.id.camera_button);
+        //TODO
     }
 
     private void setStatusBarColor() {
@@ -113,8 +124,15 @@ public class AddMatchDialogFragment extends DialogFragment {
         mImageLoader.displayImage(mOpponent.getImageUrl(), rightImage);
     }
 
-    private void initializeListView(View view) {
-        ListView list = (ListView) view.findViewById(R.id.list);
+    private void initializeAddMatchList(View view) {
+        mAddMatchList = (AddMatchListLayout) view.findViewById(R.id.add_match_list_layout);
+    }
+
+    private void initializeSwitchSidesButton(View view) {
+        ImageButton b = (ImageButton) view.findViewById(R.id.switch_sides_button);
+        b.setOnClickListener(v -> {
+            // TODO
+        });
     }
 
     public interface AddMatchDialogSaveListener {

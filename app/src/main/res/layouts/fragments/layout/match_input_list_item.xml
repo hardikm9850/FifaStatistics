@@ -3,28 +3,31 @@
               android:orientation="horizontal"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              android:paddingTop="@dimen/activity_vertical_margin">
+              android:paddingTop="@dimen/activity_horizontal_margin">
     
     <EditText
         android:id="@+id/left_text"
-        android:layout_width="40dp"
+        android:layout_width="80dp"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/activity_horizontal_margin"
-        android:layout_gravity="start"
+        android:layout_gravity="center_vertical"
+        android:gravity="center_vertical|start"
         android:inputType="number"
         android:hint="for"/>
 
     <TextView
-        android:layout_width="wrap_content"
+        android:id="@+id/title_text"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"/>
+        android:layout_weight="0.5"
+        android:layout_gravity="center_vertical"
+        android:gravity="center_horizontal|bottom"/>
 
     <EditText
         android:id="@+id/right_text"
-        android:layout_width="40dp"
+        android:layout_width="80dp"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/activity_horizontal_margin"
-        android:layout_gravity="end"
+        android:layout_gravity="center_vertical"
+        android:gravity="center_vertical|end"
         android:inputType="number"
         android:hint="against"/>
 
