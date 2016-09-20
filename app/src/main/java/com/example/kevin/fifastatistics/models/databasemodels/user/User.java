@@ -1,6 +1,8 @@
 package com.example.kevin.fifastatistics.models.databasemodels.user;
 
 import com.example.kevin.fifastatistics.models.databasemodels.DatabaseModel;
+import com.example.kevin.fifastatistics.models.databasemodels.match.Match;
+import com.example.kevin.fifastatistics.models.databasemodels.match.Result;
 import com.example.kevin.fifastatistics.models.databasemodels.user.records.UserRecords;
 import com.example.kevin.fifastatistics.utils.SerializationUtils;
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -8,6 +10,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Queue;
+import java.util.concurrent.ArrayBlockingQueue;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -25,7 +29,9 @@ import lombok.Setter;
 @NoArgsConstructor(access = AccessLevel.PRIVATE, onConstructor=@__(@JsonCreator))
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Getter
-public class User extends DatabaseModel {
+public class User extends DatabaseModel implements Player {
+
+    private static final int RECENT_EVENT_SIZE = 5; // TODO abstract out
 
     @Setter private String registrationToken;
     @Setter private int level;
@@ -40,8 +46,8 @@ public class User extends DatabaseModel {
     private List<Friend> friends;
     private List<Friend> incomingRequests;
     private List<Friend> outgoingRequests;
-    private List<MatchStub> matches;
-    private List<SeriesStub> series;
+    private Queue<MatchStub> matches;
+    private Queue<SeriesStub> series;
 
     private StatsPair recordStats;
     private StatsPair averageStats;
@@ -52,8 +58,8 @@ public class User extends DatabaseModel {
         friends = new ArrayList<>();
         incomingRequests = new ArrayList<>();
         outgoingRequests = new ArrayList<>();
-        matches = new ArrayList<>();
-        series = new ArrayList<>();
+        matches = new ArrayBlockingQueue<>(RECENT_EVENT_SIZE); // TODO abstract out
+        series = new ArrayBlockingQueue<>(RECENT_EVENT_SIZE); // TODO abstract out
         recordStats = new StatsPair();
         averageStats = new StatsPair();
         matchRecords = UserRecords.emptyRecords();
@@ -71,6 +77,25 @@ public class User extends DatabaseModel {
         user.id = friend.getId();
         user.level = friend.getLevel();
         return user;
+    }
+
+    public void addMatch(Match match) {
+        boolean didWin = match.getWinner().getId() == id;
+        matchRecords.addResult(didWin ? Result.WIN : Result.LOSS);
+
+        Stats statsFor = didWin ? match.getStats().getStatsFor() : match.getStats().getStatsAgainst();
+        Stats statsAgainst = didWin ? match.getStats().getStatsAgainst() : match.getStats().getStatsFor();
+        int totalMatches = matchRecords.getTotalCount();
+        averageStats.statsFor.updateAverages(statsFor, totalMatches);
+        averageStats.statsAgainst.updateAverages(statsAgainst, totalMatches);
+        recordStats.statsFor.updateRecords(statsFor);
+        recordStats.statsAgainst.updateRecords(statsAgainst);
+
+        // TODO abstract out
+        if (matches.size() == RECENT_EVENT_SIZE) {
+            matches.remove();
+        }
+        matches.add(MatchStub.fromMatch(match));
     }
 
     public void addIncomingRequest(Friend friend) {
@@ -140,6 +165,10 @@ public class User extends DatabaseModel {
         public StatsPair() {
             statsFor = new Stats();
             statsAgainst = new Stats();
+        }
+
+        public boolean validate() {
+            return (statsFor.validate() && statsAgainst.validate());
         }
     }
 }

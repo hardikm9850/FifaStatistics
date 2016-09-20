@@ -1,5 +1,7 @@
 package com.example.kevin.fifastatistics.managers;
 
+import android.app.ProgressDialog;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
@@ -7,8 +9,13 @@ import android.util.Log;
 import com.example.kevin.fifastatistics.activities.FifaActivity;
 import com.example.kevin.fifastatistics.fragments.AddMatchDialogFragment;
 import com.example.kevin.fifastatistics.fragments.dialogs.SelectOpponentDialog;
+import com.example.kevin.fifastatistics.models.databasemodels.match.Match;
 import com.example.kevin.fifastatistics.models.databasemodels.user.Friend;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
+import com.example.kevin.fifastatistics.network.CreateFailedException;
+import com.example.kevin.fifastatistics.utils.MatchUtils;
+import com.example.kevin.fifastatistics.utils.ToastUtils;
+import com.example.kevin.fifastatistics.utils.UserUtils;
 
 import lombok.RequiredArgsConstructor;
 
@@ -64,11 +71,13 @@ public class FifaEventManager implements SelectOpponentDialog.SelectOpponentList
             SelectOpponentDialog.newInstance(mUser, FifaEventManager.this).show(mActivity.getSupportFragmentManager());
         }
 
-        public void showAddMatchFragment(FifaActivity parentActivity, Friend opponent) {
+        public DialogFragment showAddMatchFragment(FifaActivity parentActivity, Friend opponent) {
             FragmentTransaction t = parentActivity.getSupportFragmentManager().beginTransaction();
             t.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-            Fragment fragment = AddMatchDialogFragment.newInstance(mUser, opponent, this, mActivity);
+            DialogFragment fragment = AddMatchDialogFragment.newInstance(mUser, opponent, this, mActivity);
             t.add(android.R.id.content, fragment).addToBackStack(null).commit();
+
+            return fragment;
         }
 
         public abstract void startNewFlow(Friend opponent);
@@ -82,21 +91,43 @@ public class FifaEventManager implements SelectOpponentDialog.SelectOpponentList
         }
 
         @Override
-        public void onSave() {
+        public void onSave(Match match) {
             // TODO
         }
     }
 
     private class MatchFlow extends Flow {
 
+        private DialogFragment mAddMatchFragment;
+
         @Override
         public void startNewFlow(Friend opponent) {
-            showAddMatchFragment(mActivity, opponent);
+            mAddMatchFragment = showAddMatchFragment(mActivity, opponent);
         }
 
         @Override
-        public void onSave() {
-            // TODO
+        public void onSave(Match match) {
+            ProgressDialog d = new ProgressDialog(mActivity);
+            d.setTitle("Uploading match");
+            d.setMessage("Please wait...");
+            d.setCancelable(false);
+            try {
+                d.show();
+                MatchUtils.createMatch(match).subscribe(m -> {
+                    d.cancel();
+                    mUser.addMatch(match);
+                    UserUtils.updateUser(mUser).subscribe();
+
+                    // TODO send notification
+                    ToastUtils.showShortToast(mActivity, "Match created successfully");
+                    mAddMatchFragment.dismiss();
+                });
+            } catch (CreateFailedException cfe) {
+                d.cancel();
+                ToastUtils.showShortToast(mActivity, "Failed to create match: "
+                        + cfe.getErrorCode().getMessage());
+                // TODO save match for retry
+            }
         }
     }
 }

@@ -4,11 +4,13 @@ import android.app.Activity;
 import android.util.Log;
 
 import com.example.kevin.fifastatistics.R;
+import com.example.kevin.fifastatistics.utils.ResourceUtils;
 import com.example.kevin.fifastatistics.utils.ToastUtils;
 
 import java.io.IOException;
 import java.net.SocketTimeoutException;
 
+import lombok.Getter;
 import retrofit2.adapter.rxjava.HttpException;
 
 public class RetrofitErrorManager {
@@ -16,12 +18,17 @@ public class RetrofitErrorManager {
     private static final String TAG = "Error Manager";
 
     public enum ErrorCode {
-        SERVER_UNRESPONSIVE(-1), NO_NETWORK(-2), UNKNOWN_ERROR(-3), NOT_FOUND(404);
+        SERVER_UNRESPONSIVE(-1, ResourceUtils.getStringFromResourceId(R.string.unable_to_contact_server)),
+        NO_NETWORK(-2, ResourceUtils.getStringFromResourceId(R.string.no_network)),
+        UNKNOWN_ERROR(-3, ResourceUtils.getStringFromResourceId(R.string.unknown_error)),
+        NOT_FOUND(404, ResourceUtils.getStringFromResourceId(R.string.not_found));
 
-        private int value;
+        @Getter private int value;
+        @Getter private String message;
 
-        ErrorCode(int value) {
+        ErrorCode(int value, String message) {
             this.value = value;
+            this.message = message;
         }
 
         public static ErrorCode fromValue(int value) {
@@ -33,8 +40,17 @@ public class RetrofitErrorManager {
             return UNKNOWN_ERROR;
         }
 
-        public int getValue() {
-            return value;
+        public static ErrorCode fromThrowable(Throwable t) {
+            if (t instanceof HttpException) {
+                HttpException ex = (HttpException) t;
+                return fromValue(ex.code());
+            } else if (t instanceof SocketTimeoutException) {
+                return SERVER_UNRESPONSIVE;
+            } else if (t instanceof IOException) {
+                return NO_NETWORK;
+            } else {
+                return UNKNOWN_ERROR;
+            }
         }
     }
 
@@ -54,7 +70,7 @@ public class RetrofitErrorManager {
         ErrorCode code = ErrorCode.fromValue(t.code());
         switch (code) {
             case NOT_FOUND :
-                ToastUtils.showLongToast(activity, activity.getString(R.string.not_found));
+                ToastUtils.showLongToast(activity, ErrorCode.NOT_FOUND.getMessage());
                 break;
             default :
                 handleUnkownError(t, activity);
@@ -64,18 +80,18 @@ public class RetrofitErrorManager {
     }
 
     private static ErrorCode handleServerUnresponsive(Activity activity) {
-        ToastUtils.showLongToast(activity, activity.getString(R.string.unable_to_contact_server));
+        ToastUtils.showLongToast(activity, ErrorCode.SERVER_UNRESPONSIVE.getMessage());
         return ErrorCode.SERVER_UNRESPONSIVE;
     }
 
     private static ErrorCode handleNoNetwork(Activity activity) {
-        ToastUtils.showLongToast(activity, activity.getString(R.string.no_network));
+        ToastUtils.showLongToast(activity, ErrorCode.NO_NETWORK.getMessage());
         return ErrorCode.NO_NETWORK;
     }
 
     private static ErrorCode handleUnkownError(Throwable t, Activity activity) {
         Log.e(TAG, "Unknown error: " + t.getMessage() + " |||| " + t.getClass().getName(), t);
-        ToastUtils.showLongToast(activity, activity.getString(R.string.unknown_error));
+        ToastUtils.showLongToast(activity, ErrorCode.UNKNOWN_ERROR.getMessage());
 
         return ErrorCode.UNKNOWN_ERROR;
     }

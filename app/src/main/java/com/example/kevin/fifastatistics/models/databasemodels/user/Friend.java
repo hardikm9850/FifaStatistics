@@ -16,7 +16,7 @@ import lombok.Setter;
 @JsonDeserialize(builder = Friend.FriendBuilder.class)
 @Builder
 @Getter
-public class Friend extends DatabaseModel
+public class Friend extends DatabaseModel implements Player
 {
     private final String id;
     private final String name;

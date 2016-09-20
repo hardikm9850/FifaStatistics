@@ -3,16 +3,19 @@ package com.example.kevin.fifastatistics.fragments;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.support.v7.widget.Toolbar;
 
 import com.example.kevin.fifastatistics.R;
+import com.example.kevin.fifastatistics.models.databasemodels.match.Match;
+import com.example.kevin.fifastatistics.models.databasemodels.match.Penalties;
 import com.example.kevin.fifastatistics.models.databasemodels.user.Friend;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
+import com.example.kevin.fifastatistics.utils.MatchUtils;
 import com.example.kevin.fifastatistics.utils.ResourceUtils;
 import com.example.kevin.fifastatistics.utils.ToastUtils;
 import com.example.kevin.fifastatistics.views.AddMatchListLayout;
@@ -98,15 +101,38 @@ public class AddMatchDialogFragment extends DialogFragment {
     private void initializeDoneMenuItem() {
         ImageButton b = (ImageButton) mToolbar.findViewById(R.id.done_button);
         b.setOnClickListener(v -> {
+            User.StatsPair stats;
             try {
-                User.StatsPair stats = mAddMatchList.getValues();
+                stats = mAddMatchList.getValues();
             } catch (NumberFormatException nfe) {
                 ToastUtils.showShortToast(mActivity, "All values must be integers.");
                 return;
             }
-            // TODO match
-            mListener.onSave();
+            Penalties penalties = mAddMatchList.getPenalties();
+            boolean userDidWin = userDidWin(stats, penalties);
+            Match match = Match.builder()
+                    .stats(stats)
+                    .penalties(penalties)
+                    .winner(userDidWin ? Friend.fromUser(mUser) : mOpponent)
+                    .loser(userDidWin ? mOpponent : Friend.fromUser(mUser))
+                    .build();
+
+            if (MatchUtils.validateMatch(match)) {
+                mListener.onSave(match);
+            } else {
+                ToastUtils.showShortToast(mActivity, "Match is not valid.");
+            }
         });
+    }
+
+    private boolean userDidWin(User.StatsPair stats, Penalties penalties) {
+        if (penalties == null) {
+            int goalsLeft = stats.getStatsFor().getGoals();
+            int goalsRight = stats.getStatsAgainst().getGoals();
+            return mDidSwapSides != goalsLeft > goalsRight;
+        } else {
+            return mDidSwapSides != mAddMatchList.isLeftPenaltiesGreater();
+        }
     }
 
     private void initializeCameraMenuItem() {
@@ -151,6 +177,6 @@ public class AddMatchDialogFragment extends DialogFragment {
     }
 
     public interface AddMatchDialogSaveListener {
-        void onSave(); // onSave(Match match);
+        void onSave(Match match);
     }
 }

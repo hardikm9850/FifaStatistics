@@ -39,6 +39,11 @@ public class UserRecords {
         return currentStreak.toString();
     }
 
+    @JsonIgnore
+    public int getTotalCount() {
+        return overallRecord.getWins() + overallRecord.getLosses();
+    }
+
     public void addResult(Result result) {
         overallRecord.addResult(result);
         lastTenRecord.addResult(result);

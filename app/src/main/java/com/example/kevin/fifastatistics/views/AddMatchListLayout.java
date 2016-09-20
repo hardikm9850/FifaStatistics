@@ -139,7 +139,17 @@ public class AddMatchListLayout extends ScrollView {
     }
 
     public Penalties getPenalties() {
-        return isPenaltiesEmpty() ? null : new Penalties(getLeftPenalties(), getRightPenalties());
+        if (getLeftGoals() != getRightGoals() || isPenaltiesEmpty()) {
+            return null;
+        } else if (isLeftPenaltiesGreater()) {
+            return new Penalties(getLeftPenalties(), getRightPenalties());
+        } else {
+            return new Penalties(getRightPenalties(), getLeftPenalties());
+        }
+    }
+
+    public boolean isLeftPenaltiesGreater() {
+        return getLeftPenalties() > getRightPenalties();
     }
 
     private boolean isPenaltiesEmpty() {

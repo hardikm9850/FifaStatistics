@@ -1,6 +1,7 @@
 package com.example.kevin.fifastatistics.network;
 
 import com.example.kevin.fifastatistics.models.apiresponses.ApiListResponse;
+import com.example.kevin.fifastatistics.models.databasemodels.match.Match;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
 
 import retrofit2.Response;
@@ -104,8 +105,14 @@ public interface FifaApi
     @PATCH("users/{id}")
     Observable<User> patchUser(@Path("id") String id, @Body String body);
 
-//    @POST
-//    @Headers("key: " + Constants.NOTIFICATION_KEY)
-//    Observable<FriendRequestResponse> sendFriendRequest(
-//            @Body SendFriendRequestBody friendRequestBody);
+    // MATCHES
+
+    @GET("matches")
+    Observable<ApiListResponse<Match>> getMatches();
+
+    @POST("matches")
+    Observable<Response<Void>> createMatch(@Body Match match);
+
+    @GET
+    Observable<Match> lookupMatch(@Url String url);
 }
