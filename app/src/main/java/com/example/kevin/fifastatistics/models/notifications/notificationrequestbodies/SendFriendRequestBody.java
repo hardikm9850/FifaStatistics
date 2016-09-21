@@ -5,7 +5,7 @@ import com.example.kevin.fifastatistics.models.databasemodels.user.User;
 import com.example.kevin.fifastatistics.utils.ResourceUtils;
 
 /**
- * Model of a "Send Friend Rquest" notification request body.
+ * Model of a "Send Friend Request" notification request body.
  */
 public class SendFriendRequestBody extends FriendBody {
 

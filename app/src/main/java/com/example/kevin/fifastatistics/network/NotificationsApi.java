@@ -3,6 +3,7 @@ package com.example.kevin.fifastatistics.network;
 import com.example.kevin.fifastatistics.models.notifications.NotificationResponse;
 import com.example.kevin.fifastatistics.models.notifications.notificationrequestbodies.AcceptFriendRequestBody;
 import com.example.kevin.fifastatistics.models.notifications.notificationrequestbodies.DeclineFriendRequestBody;
+import com.example.kevin.fifastatistics.models.notifications.notificationrequestbodies.NewMatchBody;
 import com.example.kevin.fifastatistics.models.notifications.notificationrequestbodies.SendFriendRequestBody;
 
 import retrofit2.http.Body;
@@ -28,4 +29,8 @@ public interface NotificationsApi {
     @Headers("Authorization:key=" + NOTIFICATION_KEY)
     @POST("send")
     Observable<NotificationResponse> declineFriendRequest(@Body DeclineFriendRequestBody body);
+
+    @Headers("Authorization:key=" + NOTIFICATION_KEY)
+    @POST("send")
+    Observable<NotificationResponse> addNewMatch(@Body NewMatchBody body);
 }

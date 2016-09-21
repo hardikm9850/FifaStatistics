@@ -5,4 +5,5 @@ public interface Player {
     String getId();
     String getName();
     String getImageUrl();
+    String getRegistrationToken();
 }

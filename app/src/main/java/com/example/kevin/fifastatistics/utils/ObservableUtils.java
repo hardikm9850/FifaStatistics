@@ -18,4 +18,14 @@ public class ObservableUtils {
         return observable -> observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }
+
+    /**
+     * Apply the schedulers that observe and subscribe on the calling thread.
+     * <p>
+     * Use it inside the compose() method.
+     */
+    public static <T> Observable.Transformer<T, T> applyImmediateSchedulers() {
+        return observable -> observable.subscribeOn(Schedulers.immediate())
+                .observeOn(Schedulers.immediate());
+    }
 }

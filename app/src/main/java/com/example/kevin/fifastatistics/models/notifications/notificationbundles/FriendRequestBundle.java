@@ -12,9 +12,9 @@ import lombok.Getter;
 @Getter
 public class FriendRequestBundle implements NotificationBundle
 {
-    private String body;
-    private String tag;
-    private Friend friend;
+    private final String body;
+    private final String tag;
+    private final Friend friend;
 
     @SuppressWarnings("ConstantConditions")
     public FriendRequestBundle(Bundle bundle) {

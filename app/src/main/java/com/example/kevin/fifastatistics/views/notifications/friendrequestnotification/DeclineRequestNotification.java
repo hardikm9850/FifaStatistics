@@ -11,6 +11,7 @@ import com.example.kevin.fifastatistics.models.databasemodels.user.User;
 import com.example.kevin.fifastatistics.models.notifications.notificationbundles.FriendRequestBundle;
 import com.example.kevin.fifastatistics.models.notifications.notificationbundles.NotificationBundle;
 import com.example.kevin.fifastatistics.utils.IntentFactory;
+import com.example.kevin.fifastatistics.utils.UserUtils;
 import com.example.kevin.fifastatistics.views.notifications.FifaNotification;
 
 /**
@@ -55,7 +56,7 @@ public class DeclineRequestNotification extends FifaNotification{
     protected void performPreSendActions() {
         User currentUser = SharedPreferencesManager.getUser();
         currentUser.removeOutgoingRequest(mNotificationBundle.getFriend());
-        SharedPreferencesManager.storeUser(currentUser);
+        UserUtils.updateUserSync(currentUser).subscribe();
     }
 
     @Override

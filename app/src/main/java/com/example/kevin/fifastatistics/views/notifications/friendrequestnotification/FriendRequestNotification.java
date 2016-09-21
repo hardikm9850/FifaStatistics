@@ -15,6 +15,8 @@ import com.example.kevin.fifastatistics.models.Constants;
 import com.example.kevin.fifastatistics.models.notifications.notificationbundles.FriendRequestBundle;
 import com.example.kevin.fifastatistics.models.notifications.notificationbundles.NotificationBundle;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
+import com.example.kevin.fifastatistics.utils.IntentFactory;
+import com.example.kevin.fifastatistics.utils.UserUtils;
 import com.example.kevin.fifastatistics.views.notifications.FifaNotification;
 
 public class FriendRequestNotification extends FifaNotification
@@ -43,13 +45,8 @@ public class FriendRequestNotification extends FifaNotification
 
     private void initializeContentIntent()
     {
-        Intent intent = new Intent(context, MainActivity.class);
-        intent.putExtra(MainActivity.FRAGMENT_EXTRA, Constants.FRIENDS_FRAGMENT);
-        intent.putExtra(MainActivity.PAGE_EXTRA, FriendsFragment.requestsView);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-
-        contentIntent = PendingIntent.getActivity(
-                context, NOTIFICATION_ID, intent, PendingIntent.FLAG_ONE_SHOT);
+        Intent intent = IntentFactory.createFriendRequestsIntent(context);
+        contentIntent = PendingIntent.getActivity(context, NOTIFICATION_ID, intent, PendingIntent.FLAG_ONE_SHOT);
     }
 
     private void initializeAcceptRequestPendingIntent()
@@ -108,6 +105,6 @@ public class FriendRequestNotification extends FifaNotification
     private void addFriendRequestToUser() {
         User user = SharedPreferencesManager.getUser();
         user.addIncomingRequest(friendRequestBundle.getFriend());
-        SharedPreferencesManager.storeUserSync(user);
+        UserUtils.updateUserSync(user).subscribe();
     }
 }

@@ -73,6 +73,7 @@
     <string name="accepted_your_friend_request">accepted your friend request</string>
     <string name="declined_your_friend_request">declined your friend request</string>
     <string name="new_friend_request_npe">New friend request</string>
+    <string name="added_a_new_match">added a new match</string>
     <string name="notification_accept">ACCEPT</string>
     <string name="notification_decline">DECLINE</string>
 

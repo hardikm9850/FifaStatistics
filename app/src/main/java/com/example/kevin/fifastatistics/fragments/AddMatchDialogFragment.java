@@ -118,7 +118,7 @@ public class AddMatchDialogFragment extends DialogFragment {
                     .build();
 
             if (MatchUtils.validateMatch(match)) {
-                mListener.onSave(match);
+                mListener.onSaveMatch(match);
             } else {
                 ToastUtils.showShortToast(mActivity, "Match is not valid.");
             }
@@ -177,6 +177,6 @@ public class AddMatchDialogFragment extends DialogFragment {
     }
 
     public interface AddMatchDialogSaveListener {
-        void onSave(Match match);
+        void onSaveMatch(Match match);
     }
 }

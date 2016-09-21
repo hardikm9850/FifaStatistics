@@ -2,7 +2,6 @@ package com.example.kevin.fifastatistics.managers;
 
 import android.app.ProgressDialog;
 import android.support.v4.app.DialogFragment;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 
@@ -11,6 +10,7 @@ import com.example.kevin.fifastatistics.fragments.AddMatchDialogFragment;
 import com.example.kevin.fifastatistics.fragments.dialogs.SelectOpponentDialog;
 import com.example.kevin.fifastatistics.models.databasemodels.match.Match;
 import com.example.kevin.fifastatistics.models.databasemodels.user.Friend;
+import com.example.kevin.fifastatistics.models.databasemodels.user.Player;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
 import com.example.kevin.fifastatistics.network.CreateFailedException;
 import com.example.kevin.fifastatistics.utils.MatchUtils;
@@ -91,7 +91,7 @@ public class FifaEventManager implements SelectOpponentDialog.SelectOpponentList
         }
 
         @Override
-        public void onSave(Match match) {
+        public void onSaveMatch(Match match) {
             // TODO
         }
     }
@@ -99,14 +99,16 @@ public class FifaEventManager implements SelectOpponentDialog.SelectOpponentList
     private class MatchFlow extends Flow {
 
         private DialogFragment mAddMatchFragment;
+        private Player mOpponent;
 
         @Override
         public void startNewFlow(Friend opponent) {
+            mOpponent = opponent;
             mAddMatchFragment = showAddMatchFragment(mActivity, opponent);
         }
 
         @Override
-        public void onSave(Match match) {
+        public void onSaveMatch(Match match) {
             ProgressDialog d = new ProgressDialog(mActivity);
             d.setTitle("Uploading match");
             d.setMessage("Please wait...");
@@ -118,7 +120,14 @@ public class FifaEventManager implements SelectOpponentDialog.SelectOpponentList
                     mUser.addMatch(match);
                     UserUtils.updateUser(mUser).subscribe();
 
-                    // TODO send notification
+                    NotificationSender.addMatch(mUser, mOpponent.getRegistrationToken(), match)
+                            .subscribe(response -> {
+                                if (!response.isSuccessful()) {
+                                    Log.e("NOTIFICATION", "failed to send add match notification");
+                                } else {
+                                    Log.e("NOTIFICATION", "sending successful");
+                                }
+                            });
                     ToastUtils.showShortToast(mActivity, "Match created successfully");
                     mAddMatchFragment.dismiss();
                 });

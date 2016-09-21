@@ -5,6 +5,7 @@ import com.example.kevin.fifastatistics.models.databasemodels.user.Friend;
 import com.example.kevin.fifastatistics.models.databasemodels.user.Player;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
 import com.example.kevin.fifastatistics.utils.SerializationUtils;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 
@@ -13,6 +14,7 @@ import java.util.Date;
 import lombok.Builder;
 import lombok.Getter;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 @JsonDeserialize(builder = Match.MatchBuilder.class)
 @Builder
 @Getter
@@ -23,9 +25,10 @@ public class Match extends DatabaseModel {
     private final Penalties penalties;
     private final Date date;
 
-    @JsonDeserialize(as=Friend.class) private final Player winner;
-    @JsonDeserialize(as=Friend.class) private final Player loser;
+    private final Friend winner;
+    private final Friend loser;
 
+    @JsonIgnoreProperties(ignoreUnknown = true)
     @JsonPOJOBuilder(withPrefix = "")
     public static final class MatchBuilder {
     }

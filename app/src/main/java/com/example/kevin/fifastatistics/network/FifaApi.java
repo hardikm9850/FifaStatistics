@@ -110,6 +110,9 @@ public interface FifaApi
     @GET("matches")
     Observable<ApiListResponse<Match>> getMatches();
 
+    @GET("matches/{id}")
+    Observable<Match> getMatch(@Path("id") String id);
+
     @POST("matches")
     Observable<Response<Void>> createMatch(@Body Match match);
 
