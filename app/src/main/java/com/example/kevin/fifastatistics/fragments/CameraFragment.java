@@ -5,9 +5,9 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.pm.PackageManager;
-import android.content.res.Configuration;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.ImageFormat;
 import android.graphics.Matrix;
 import android.graphics.Point;
@@ -23,7 +23,6 @@ import android.hardware.camera2.CaptureRequest;
 import android.hardware.camera2.CaptureResult;
 import android.hardware.camera2.TotalCaptureResult;
 import android.hardware.camera2.params.StreamConfigurationMap;
-import android.media.Image;
 import android.media.ImageReader;
 import android.os.Bundle;
 import android.os.Handler;
@@ -44,11 +43,10 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.kevin.fifastatistics.R;
-import com.example.kevin.fifastatistics.views.AutoFitTextureView;
+import com.example.kevin.fifastatistics.managers.MatchFactsPreprocessor;
+import com.example.kevin.fifastatistics.managers.MatchFactsPreprocessor15;
+import com.example.kevin.fifastatistics.utils.ObservableUtils;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -57,6 +55,8 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
+
+import rx.Observable;
 
 public class CameraFragment extends Fragment
         implements View.OnClickListener, FragmentCompat.OnRequestPermissionsResultCallback {
@@ -149,9 +149,9 @@ public class CameraFragment extends Fragment
     private String mCameraId;
 
     /**
-     * An {@link AutoFitTextureView} for camera preview.
+     * An {@link TextureView} for camera preview.
      */
-    private AutoFitTextureView mTextureView;
+    private TextureView mTextureView;
 
     /**
      * A {@link CameraCaptureSession } for camera preview.
@@ -217,9 +217,14 @@ public class CameraFragment extends Fragment
     private ImageReader mImageReader;
 
     /**
-     * This is the output file for our picture.
+     * The {@link ImageCaptureListener} that is called when a bitmap is ready.
      */
-    private File mFile;
+    private ImageCaptureListener mListener;
+
+    /**
+     * The {@link MatchFactsPreprocessor} that will be provided to the {@link ImageCaptureListener}.
+     */
+    private MatchFactsPreprocessor mPreprocessor;
 
     /**
      * This a callback object for the {@link ImageReader}. "onImageAvailable" will be called when a
@@ -230,7 +235,20 @@ public class CameraFragment extends Fragment
 
         @Override
         public void onImageAvailable(ImageReader reader) {
-            mBackgroundHandler.post(new ImageSaver(reader.acquireNextImage(), mFile));
+            Observable.just(reader.acquireNextImage())
+                    .map(image -> {
+                        ByteBuffer buffer = image.getPlanes()[0].getBuffer();
+                        byte[] bytes = new byte[buffer.remaining()];
+                        buffer.get(bytes);
+                        BitmapFactory.Options options = new BitmapFactory.Options();
+                        Bitmap b = BitmapFactory.decodeByteArray(bytes, 0, bytes.length, options);
+                        bytes = null;
+                        return b;
+                    })
+                    .compose(ObservableUtils.applySchedulers())
+                    .subscribe(b -> {
+                        mListener.onImageCapture(b, mPreprocessor);
+                    });
         }
 
     };
@@ -396,13 +414,16 @@ public class CameraFragment extends Fragment
         }
     }
 
-    public static CameraFragment newInstance() {
-        return new CameraFragment();
+    public static CameraFragment newInstance(ImageCaptureListener listener) {
+        CameraFragment f = new CameraFragment();
+        f.mListener = listener;
+        return f;
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        mPreprocessor = new MatchFactsPreprocessor15();
         return inflater.inflate(R.layout.fragment_camera, container, false);
     }
 
@@ -410,13 +431,7 @@ public class CameraFragment extends Fragment
     public void onViewCreated(final View view, Bundle savedInstanceState) {
         view.findViewById(R.id.picture).setOnClickListener(this);
         view.findViewById(R.id.info).setOnClickListener(this);
-        mTextureView = (AutoFitTextureView) view.findViewById(R.id.texture);
-    }
-
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        mFile = new File(getActivity().getExternalFilesDir(null), "pic.jpg");
+        mTextureView = (TextureView) view.findViewById(R.id.texture);
     }
 
     @Override
@@ -469,6 +484,7 @@ public class CameraFragment extends Fragment
      * @param width  The width of available size for camera preview
      * @param height The height of available size for camera preview
      */
+    @SuppressWarnings("SuspiciousNameCombination")
     private void setUpCameraOutputs(int width, int height) {
         Activity activity = getActivity();
         CameraManager manager = (CameraManager) activity.getSystemService(Context.CAMERA_SERVICE);
@@ -550,17 +566,6 @@ public class CameraFragment extends Fragment
                         rotatedPreviewWidth, rotatedPreviewHeight, maxPreviewWidth,
                         maxPreviewHeight, largest);
 
-                // We fit the aspect ratio of TextureView to the size of preview we picked.
-                int orientation = getResources().getConfiguration().orientation;
-                if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
-                    mTextureView.setAspectRatio(
-                            mPreviewSize.getWidth(), mPreviewSize.getHeight());
-                } else {
-                    mTextureView.setAspectRatio(
-                            mPreviewSize.getHeight(), mPreviewSize.getWidth());
-                }
-
-                // Check if the flash is supported.
                 Boolean available = characteristics.get(CameraCharacteristics.FLASH_INFO_AVAILABLE);
                 mFlashSupported = available == null ? false : available;
 
@@ -685,7 +690,7 @@ public class CameraFragment extends Fragment
                             try {
                                 // Auto focus should be continuous for camera preview.
                                 mPreviewRequestBuilder.set(CaptureRequest.CONTROL_AF_MODE,
-                                        CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_PICTURE);
+                                        CaptureRequest.CONTROL_AF_MODE_MACRO);
                                 // Flash is automatically enabled when necessary.
                                 setAutoFlash(mPreviewRequestBuilder);
 
@@ -795,6 +800,7 @@ public class CameraFragment extends Fragment
             if (null == activity || null == mCameraDevice) {
                 return;
             }
+
             // This is the CaptureRequest.Builder that we use to take a picture.
             final CaptureRequest.Builder captureBuilder =
                     mCameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_STILL_CAPTURE);
@@ -802,7 +808,7 @@ public class CameraFragment extends Fragment
 
             // Use the same AE and AF modes as the preview.
             captureBuilder.set(CaptureRequest.CONTROL_AF_MODE,
-                    CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_PICTURE);
+                    CaptureRequest.FLASH_MODE_OFF);
             setAutoFlash(captureBuilder);
 
             // Orientation
@@ -816,8 +822,6 @@ public class CameraFragment extends Fragment
                 public void onCaptureCompleted(@NonNull CameraCaptureSession session,
                                                @NonNull CaptureRequest request,
                                                @NonNull TotalCaptureResult result) {
-                    showToast("Saved: " + mFile);
-                    Log.d(TAG, mFile.toString());
                     unlockFocus();
                 }
             };
@@ -887,52 +891,8 @@ public class CameraFragment extends Fragment
     private void setAutoFlash(CaptureRequest.Builder requestBuilder) {
         if (mFlashSupported) {
             requestBuilder.set(CaptureRequest.CONTROL_AE_MODE,
-                    CaptureRequest.CONTROL_AE_MODE_ON_AUTO_FLASH);
+                    CaptureRequest.FLASH_MODE_OFF);
         }
-    }
-
-    /**
-     * Saves a JPEG {@link Image} into the specified {@link File}.
-     */
-    private static class ImageSaver implements Runnable {
-
-        /**
-         * The JPEG image
-         */
-        private final Image mImage;
-        /**
-         * The file we save the image into.
-         */
-        private final File mFile;
-
-        public ImageSaver(Image image, File file) {
-            mImage = image;
-            mFile = file;
-        }
-
-        @Override
-        public void run() {
-            ByteBuffer buffer = mImage.getPlanes()[0].getBuffer();
-            byte[] bytes = new byte[buffer.remaining()];
-            buffer.get(bytes);
-            FileOutputStream output = null;
-            try {
-                output = new FileOutputStream(mFile);
-                output.write(bytes);
-            } catch (IOException e) {
-                e.printStackTrace();
-            } finally {
-                mImage.close();
-                if (null != output) {
-                    try {
-                        output.close();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        }
-
     }
 
     /**
@@ -964,6 +924,7 @@ public class CameraFragment extends Fragment
             return dialog;
         }
 
+        @NonNull
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
             final Activity activity = getActivity();
@@ -980,6 +941,7 @@ public class CameraFragment extends Fragment
      */
     public static class ConfirmationDialog extends DialogFragment {
 
+        @NonNull
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
             final Fragment parent = getParentFragment();
@@ -998,6 +960,10 @@ public class CameraFragment extends Fragment
                     })
                     .create();
         }
+    }
+
+    public interface ImageCaptureListener {
+        void onImageCapture(Bitmap bitmap, MatchFactsPreprocessor processor);
     }
 
 }

@@ -1,8 +1,11 @@
 package com.example.kevin.fifastatistics.fragments;
 
+import android.app.ProgressDialog;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
 import android.support.v7.app.AppCompatActivity;
@@ -13,11 +16,14 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 
 import com.example.kevin.fifastatistics.R;
+import com.example.kevin.fifastatistics.managers.MatchFactsPreprocessor;
+import com.example.kevin.fifastatistics.managers.OcrManager;
 import com.example.kevin.fifastatistics.models.databasemodels.match.Match;
 import com.example.kevin.fifastatistics.models.databasemodels.match.Penalties;
 import com.example.kevin.fifastatistics.models.databasemodels.user.Friend;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
 import com.example.kevin.fifastatistics.utils.MatchUtils;
+import com.example.kevin.fifastatistics.utils.ObservableUtils;
 import com.example.kevin.fifastatistics.utils.ResourceUtils;
 import com.example.kevin.fifastatistics.utils.ToastUtils;
 import com.example.kevin.fifastatistics.views.AddMatchListLayout;
@@ -28,7 +34,8 @@ import com.nostra13.universalimageloader.core.ImageLoader;
  * <p>
  * See https://developer.android.com/guide/topics/ui/dialogs.html#FullscreenDialog for details.
  */
-public class AddMatchDialogFragment extends DialogFragment {
+public class AddMatchDialogFragment extends DialogFragment
+        implements CameraFragment.ImageCaptureListener {
 
     private ImageLoader mImageLoader;
     private Toolbar mToolbar;
@@ -36,6 +43,7 @@ public class AddMatchDialogFragment extends DialogFragment {
 
     private User mUser;
     private Friend mOpponent;
+    private Fragment mCameraFragment;
     private AddMatchDialogSaveListener mListener;
     private AddMatchListLayout mAddMatchList;
     private ImageView mLeftImage;
@@ -142,8 +150,8 @@ public class AddMatchDialogFragment extends DialogFragment {
         b.setOnClickListener(view -> {
             FragmentTransaction t = mActivity.getSupportFragmentManager().beginTransaction();
             t.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-            Fragment fragment = CameraFragment.newInstance();
-            t.add(android.R.id.content, fragment).addToBackStack(null).commit();
+            mCameraFragment = CameraFragment.newInstance(this);
+            t.add(android.R.id.content, mCameraFragment).addToBackStack(null).commit();
         });
     }
 
@@ -181,6 +189,34 @@ public class AddMatchDialogFragment extends DialogFragment {
             setRightImage(mDidSwapSides ? mOpponent.getImageUrl() : mUser.getImageUrl());
             mDidSwapSides = !mDidSwapSides;
         });
+    }
+
+    @Override
+    public void onImageCapture(Bitmap bitmap, MatchFactsPreprocessor preprocessor) {
+        closeCameraFragment();
+        ProgressDialog dialog = new ProgressDialog(mActivity);
+        dialog.setTitle("Processing Facts");
+        dialog.setMessage("Please wait...");
+        dialog.setCancelable(false);
+        preprocessor.processBitmap(bitmap)
+                .compose(ObservableUtils.applySchedulers())
+                .flatMap(b -> {
+                    OcrManager manager = OcrManager.getInstance(b);
+                    return manager.retrieveFacts();
+                })
+                .subscribe(b -> {
+                    dialog.cancel();
+        });
+    }
+
+    private void closeCameraFragment() {
+        if (mCameraFragment != null) {
+            FragmentManager manager = getActivity().getSupportFragmentManager();
+            FragmentTransaction trans = manager.beginTransaction();
+            trans.remove(mCameraFragment);
+            trans.commit();
+            manager.popBackStack();
+        }
     }
 
     public interface AddMatchDialogSaveListener {
