@@ -1,4 +1,4 @@
-package com.example.kevin.fifastatistics.fragments.dialogs;
+package com.example.kevin.fifastatistics.fragments;
 
 import android.app.Dialog;
 import android.os.Bundle;
@@ -19,15 +19,15 @@ import lombok.NoArgsConstructor;
  * Dialog for selecting an opponent to play against when playing a new series or match.
  */
 @NoArgsConstructor
-public class SelectOpponentDialog extends DialogFragment {
+public class SelectOpponentDialogFragment extends DialogFragment {
 
     private static final String TAG = "opponents";
 
     private SelectOpponentListener mListener;
     private List<Friend> mFriends;
 
-    public static SelectOpponentDialog newInstance(User user, SelectOpponentListener listener) {
-        SelectOpponentDialog dialog = new SelectOpponentDialog();
+    public static SelectOpponentDialogFragment newInstance(User user, SelectOpponentListener listener) {
+        SelectOpponentDialogFragment dialog = new SelectOpponentDialogFragment();
         dialog.mFriends = user.getFriends();
         dialog.mListener = listener;
         return dialog;

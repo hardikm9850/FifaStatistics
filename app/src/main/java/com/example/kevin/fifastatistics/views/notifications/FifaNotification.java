@@ -54,6 +54,7 @@ public abstract class FifaNotification
      */
     protected void setDefaultNotificationSettings(NotificationBundle nb)
     {
+        Log.e("FIFA NOTIFICATION", nb.toString());
         Bitmap userIcon = BitmapUtils.getCircleBitmapFromUrl(nb.getImageUrl());
 
         mNotificationBuilder

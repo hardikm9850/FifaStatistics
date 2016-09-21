@@ -7,7 +7,7 @@ import android.util.Log;
 
 import com.example.kevin.fifastatistics.activities.FifaActivity;
 import com.example.kevin.fifastatistics.fragments.AddMatchDialogFragment;
-import com.example.kevin.fifastatistics.fragments.dialogs.SelectOpponentDialog;
+import com.example.kevin.fifastatistics.fragments.SelectOpponentDialogFragment;
 import com.example.kevin.fifastatistics.models.databasemodels.match.Match;
 import com.example.kevin.fifastatistics.models.databasemodels.user.Friend;
 import com.example.kevin.fifastatistics.models.databasemodels.user.Player;
@@ -23,7 +23,7 @@ import lombok.RequiredArgsConstructor;
  * Manager for adding new matches and series.
  */
 @RequiredArgsConstructor
-public class FifaEventManager implements SelectOpponentDialog.SelectOpponentListener {
+public class FifaEventManager implements SelectOpponentDialogFragment.SelectOpponentListener {
 
     private final FifaActivity mActivity;
     private final User mUser;
@@ -68,7 +68,7 @@ public class FifaEventManager implements SelectOpponentDialog.SelectOpponentList
     private abstract class Flow implements AddMatchDialogFragment.AddMatchDialogSaveListener {
 
         public void startNewFlow() {
-            SelectOpponentDialog.newInstance(mUser, FifaEventManager.this).show(mActivity.getSupportFragmentManager());
+            SelectOpponentDialogFragment.newInstance(mUser, FifaEventManager.this).show(mActivity.getSupportFragmentManager());
         }
 
         public DialogFragment showAddMatchFragment(FifaActivity parentActivity, Friend opponent) {
@@ -133,8 +133,7 @@ public class FifaEventManager implements SelectOpponentDialog.SelectOpponentList
                 });
             } catch (CreateFailedException cfe) {
                 d.cancel();
-                ToastUtils.showShortToast(mActivity, "Failed to create match: "
-                        + cfe.getErrorCode().getMessage());
+                ToastUtils.showShortToast(mActivity, "Failed to create match: " + cfe.getErrorCode().getMessage());
                 // TODO save match for retry
             }
         }

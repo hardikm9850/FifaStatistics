@@ -1,9 +1,11 @@
 package com.example.kevin.fifastatistics.fragments;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,7 +32,7 @@ public class AddMatchDialogFragment extends DialogFragment {
 
     private ImageLoader mImageLoader;
     private Toolbar mToolbar;
-    private Activity mActivity;
+    private AppCompatActivity mActivity;
 
     private User mUser;
     private Friend mOpponent;
@@ -44,7 +46,7 @@ public class AddMatchDialogFragment extends DialogFragment {
 
     public static AddMatchDialogFragment newInstance(User user, Friend opponent,
                                                      AddMatchDialogSaveListener listener,
-                                                     Activity activity) {
+                                                     AppCompatActivity activity) {
         AddMatchDialogFragment fragment = new AddMatchDialogFragment();
         fragment.mUser = user;
         fragment.mOpponent = opponent;
@@ -137,7 +139,12 @@ public class AddMatchDialogFragment extends DialogFragment {
 
     private void initializeCameraMenuItem() {
         ImageButton b = (ImageButton) mToolbar.findViewById(R.id.camera_button);
-        //TODO
+        b.setOnClickListener(view -> {
+            FragmentTransaction t = mActivity.getSupportFragmentManager().beginTransaction();
+            t.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+            Fragment fragment = CameraFragment.newInstance();
+            t.add(android.R.id.content, fragment).addToBackStack(null).commit();
+        });
     }
 
     private void setStatusBarColor() {

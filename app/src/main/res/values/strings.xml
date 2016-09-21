@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">FifaStatistics</string>
+    <string name="app_name">FIFA Statistics</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -46,6 +46,7 @@
     <!-- Button labels -->
     <string name="sign_out">Sign Out</string>
     <string name="disconnect">Disconnect</string>
+    <string name="camera_button_description">Picture</string>
 
     <!-- Content Description for images -->
     <string name="desc_google_icon">Google Logo</string>
@@ -109,5 +110,9 @@
     <string name="shot_accuracy_percent">Shot Accuracy (%)</string>
     <string name="pass_accuracy_percent">Pass Accuracy (%)</string>
     <string name="penalties">Penalties</string>
+
+    <!-- PERMISSIONS -->
+    <string name="request_camera_permission">FIFA Statistics needs camera permission.</string>
+    <string name="camera_error">This device doesn\'t support Camera2 API.</string>
 
 </resources>

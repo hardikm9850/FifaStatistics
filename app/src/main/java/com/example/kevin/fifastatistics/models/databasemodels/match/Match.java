@@ -2,7 +2,6 @@ package com.example.kevin.fifastatistics.models.databasemodels.match;
 
 import com.example.kevin.fifastatistics.models.databasemodels.DatabaseModel;
 import com.example.kevin.fifastatistics.models.databasemodels.user.Friend;
-import com.example.kevin.fifastatistics.models.databasemodels.user.Player;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
 import com.example.kevin.fifastatistics.utils.SerializationUtils;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
