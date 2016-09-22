@@ -1,6 +1,7 @@
 package com.example.kevin.fifastatistics.managers;
 
 import android.graphics.Bitmap;
+import android.util.Log;
 
 import com.example.kevin.fifastatistics.utils.BitmapUtils;
 import com.example.kevin.fifastatistics.utils.ObservableUtils;
@@ -15,28 +16,77 @@ public class MatchFactsPreprocessor15 implements MatchFactsPreprocessor {
     @Override
     public Observable<Bitmap> processBitmap(Bitmap matchFactsBitmap) {
         return Observable.just(matchFactsBitmap)
-                .compose(ObservableUtils.applySchedulers())
                 .map(BitmapUtils::getMutableBitmap)
-                .map(this::sharpen)
+                .map(this::makeMonochrome)
                 .map(this::invertColors)
                 .map(this::increaseContrast)
-                .map(this::invertColorsInHighlightedSection);
+                .map(this::invertColorsInHighlightedSection)
+                .compose(ObservableUtils.applySchedulers());
     }
 
     private Bitmap sharpen(Bitmap bitmap) {
-        return bitmap;
+        return BitmapUtils.sharpenBitmap(bitmap);
     }
 
     private Bitmap invertColors(Bitmap bitmap) {
         return BitmapUtils.getInvertedBitmap(bitmap);
     }
 
+    private Bitmap makeMonochrome(Bitmap bitmap) {
+        return BitmapUtils.grayscale(bitmap);
+    }
+
     private Bitmap increaseContrast(Bitmap bitmap) {
-        return bitmap;
+        return BitmapUtils.contrast(bitmap, 9);
     }
 
     private Bitmap invertColorsInHighlightedSection(Bitmap bitmap) {
+
+        int width = bitmap.getWidth();
+        int height = bitmap.getHeight();
+        // GET LEFTMOST PIXELS
+
+        int[] yPixels = new int[height];
+        bitmap.getPixels(yPixels, 0, 1, 0, 0, 1, height);
+
+        int blackThreshold = 0xff494844;
+        int whiteThreshold = 0xfffdfdfd;
+
+        // GET START Y
+        int startY = -1;
+        for (int i = 0; i < yPixels.length; i++){
+            if (yPixels[i] < blackThreshold){
+                startY = i;
+                break;
+            }
+        }
+
+        if (startY == -1) Log.d("FAILED: ", "START Y IS -1");
+
+        // GET END Y
+        int endY = -1;
+        for (int i = startY + 1; i < yPixels.length; i++){
+            if (yPixels[i] > whiteThreshold){
+                endY = i;
+                break;
+            }
+        }
+
+        if (endY == -1) Log.d("FAILED: ", "END Y IS -1");
+
+        // UPDATE PIXELS IN BOUNDS
+
+        int[] pixels = new int[width * height];
+        bitmap.getPixels(pixels, 0, bitmap.getWidth(), 0, 0, bitmap.getWidth(), bitmap.getHeight());
+        int end = endY * width;
+        for (int i = startY * width; i < end; i++){
+            if (pixels[i] < blackThreshold){
+                pixels[i] = 0xffffffff;
+            } else if (pixels[i] > whiteThreshold) {
+                pixels[i] = 0xff000000;
+            }
+        }
+        bitmap.setPixels(pixels, 0, width, 0, 0, width, height);
         return bitmap;
     }
-    
 }

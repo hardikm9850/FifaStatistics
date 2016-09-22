@@ -9,6 +9,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -202,8 +203,9 @@ public class AddMatchDialogFragment extends DialogFragment
         dialog.setTitle("Processing Facts");
         dialog.setMessage("Please wait...");
         dialog.setCancelable(false);
+        dialog.show();
+        Log.d("STARTING", "PROCESSING");
         preprocessor.processBitmap(bitmap)
-                .compose(ObservableUtils.applySchedulers())
                 .subscribe(b -> {
                     dialog.cancel();
                     mTempImageView.setVisibility(View.VISIBLE);
@@ -215,6 +217,7 @@ public class AddMatchDialogFragment extends DialogFragment
 //                .subscribe(facts -> {
 //                    dialog.cancel();
         });
+        Log.d("FINISHED", "PROCESSING");
     }
 
     private void closeCameraFragment() {
