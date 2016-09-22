@@ -22,7 +22,7 @@ public class MatchFactsPreprocessor15 implements MatchFactsPreprocessor {
                 .map(this::invertColors)
                 .map(this::increaseContrast)
                 .map(this::invertColorsInHighlightedSection)
-                .map(b -> BitmapUtils.scaleDown(b, 4.0f));
+                .map(b -> BitmapUtils.scaleDown(b, 4.8f));
     }
 
     private Bitmap sharpen(Bitmap bitmap) {

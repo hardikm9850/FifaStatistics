@@ -126,7 +126,7 @@ public class OcrResultParser {
 
     private void removeGarbagePunctuation() {
         mResult = mResult.replace("°C", "%");
-        mResult = mResult.replaceAll("[%';:`.{}‘?_“\"°]", "");
+        mResult = mResult.replaceAll("[%';:`.{}‘?_“\"°-»«]", "");
     }
 
     private static int[] parseLine(String line) {
@@ -153,6 +153,7 @@ public class OcrResultParser {
         else if (item.equals("B")) return 8;
         else if (item.equalsIgnoreCase("i") || item.equals("l")) return 1;
         else if (item.equals("T")) return 7;
+        else if (item.equals("ID")) return 10;
         else if (item.equals("M") || item.equals("ll")) return 11;
         else if (item.equalsIgnoreCase("c")) return 0;
         else if (itemEndsInInt(item)) {
