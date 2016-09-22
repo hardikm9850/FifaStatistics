@@ -13,16 +13,18 @@ import rx.Observable;
  */
 public class MatchFactsPreprocessor15 implements MatchFactsPreprocessor {
 
+    public static final float SCALE_LEVEL = 4.8f;
+
     @Override
     public Observable<Bitmap> processBitmap(Bitmap matchFactsBitmap) {
         Log.d("ORIGINAL SIZE", "w: " + matchFactsBitmap.getWidth());
         return Observable.just(matchFactsBitmap)
                 .map(BitmapUtils::getMutableBitmap)
+                .map(b -> BitmapUtils.scaleDown(b, SCALE_LEVEL))
                 .map(this::makeMonochrome)
                 .map(this::invertColors)
                 .map(this::increaseContrast)
-                .map(this::invertColorsInHighlightedSection)
-                .map(b -> BitmapUtils.scaleDown(b, 4.8f));
+                .map(this::invertColorsInHighlightedSection);
     }
 
     private Bitmap sharpen(Bitmap bitmap) {
