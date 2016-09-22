@@ -1,15 +1,27 @@
 package com.example.kevin.fifastatistics.utils;
 
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.ColorMatrix;
+import android.graphics.ColorMatrixColorFilter;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.RectF;
 
+import com.example.kevin.fifastatistics.FifaApplication;
+import com.example.kevin.fifastatistics.R;
 import com.nostra13.universalimageloader.core.ImageLoader;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.RandomAccessFile;
+import java.nio.MappedByteBuffer;
+import java.nio.channels.FileChannel;
 
 import lombok.experimental.UtilityClass;
 
@@ -81,5 +93,54 @@ public class BitmapUtils
         Bitmap image = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
         image.eraseColor(android.graphics.Color.WHITE);
         return image;
+    }
+
+    /**
+     * Returns the bitmap with inverted colors
+     * @param bitmap    the original bitmap
+     * @return the inverted bitmap
+     */
+    public static Bitmap getInvertedBitmap(Bitmap bitmap) {
+        float invertMatrix [] = {
+                -1.0f,   0.0f,   0.0f,  1.0f,  0.0f,
+                 0.0f,  -1.0f,   0.0f,  1.0f,  0.0f,
+                 0.0f,   0.0f,  -1.0f,  1.0f,  0.0f,
+                 1.0f,   1.0f,   1.0f,  1.0f,  0.0f
+        };
+        Canvas c = new Canvas(bitmap);
+        Paint p = new Paint();
+        ColorMatrix cm = new ColorMatrix(invertMatrix);
+        p.setColorFilter(new ColorMatrixColorFilter(cm));
+
+        c.drawBitmap(bitmap, 0, 0, p);
+        return bitmap;
+    }
+
+    public static Bitmap getMutableBitmap(Bitmap imgIn) {
+        final int width = imgIn.getWidth(), height = imgIn.getHeight();
+        final Bitmap.Config type = imgIn.getConfig();
+        File outputFile = null;
+        final File outputDir = FifaApplication.getContext().getCacheDir();
+        try {
+            outputFile = File.createTempFile(Long.toString(System.currentTimeMillis()), null, outputDir);
+            outputFile.deleteOnExit();
+            final RandomAccessFile randomAccessFile = new RandomAccessFile(outputFile, "rw");
+            final FileChannel channel = randomAccessFile.getChannel();
+            final MappedByteBuffer map = channel.map(FileChannel.MapMode.READ_WRITE, 0, imgIn.getRowBytes() * height);
+            imgIn.copyPixelsToBuffer(map);
+            imgIn.recycle();
+            final Bitmap result = Bitmap.createBitmap(width, height, type);
+            map.position(0);
+            result.copyPixelsFromBuffer(map);
+            channel.close();
+            randomAccessFile.close();
+            outputFile.delete();
+            return result;
+        } catch (final Exception e) {
+        } finally {
+            if (outputFile != null)
+                outputFile.delete();
+        }
+        return null;
     }
 }

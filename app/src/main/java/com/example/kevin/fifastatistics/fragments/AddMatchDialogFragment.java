@@ -49,6 +49,8 @@ public class AddMatchDialogFragment extends DialogFragment
     private ImageView mLeftImage;
     private ImageView mRightImage;
 
+    private ImageView mTempImageView;
+
     private int mOldStatusBarColor;
     private boolean mDidSwapSides;
 
@@ -74,6 +76,8 @@ public class AddMatchDialogFragment extends DialogFragment
         initializeAddMatchList(view);
         initializeSwitchSidesButton(view);
         setStatusBarColor();
+
+        mTempImageView = (ImageView) view.findViewById(R.id.temp_imageview);
 
         view = maybeAddPaddingToTop(view);
         return view;
@@ -200,12 +204,16 @@ public class AddMatchDialogFragment extends DialogFragment
         dialog.setCancelable(false);
         preprocessor.processBitmap(bitmap)
                 .compose(ObservableUtils.applySchedulers())
-                .flatMap(b -> {
-                    OcrManager manager = OcrManager.getInstance(b);
-                    return manager.retrieveFacts();
-                })
                 .subscribe(b -> {
                     dialog.cancel();
+                    mTempImageView.setVisibility(View.VISIBLE);
+                    mTempImageView.setImageBitmap(b);
+//                .flatMap(b -> {
+//                    OcrManager manager = OcrManager.getInstance(b);
+//                    return manager.retrieveFacts();
+//                })
+//                .subscribe(facts -> {
+//                    dialog.cancel();
         });
     }
 
