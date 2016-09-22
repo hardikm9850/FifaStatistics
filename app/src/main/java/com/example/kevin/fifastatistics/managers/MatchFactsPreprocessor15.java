@@ -62,7 +62,7 @@ public class MatchFactsPreprocessor15 implements MatchFactsPreprocessor {
             }
         }
 
-        if (startY == -1) Log.d("FAILED: ", "START Y IS -1");
+        if (startY == -1) return bitmap;
 
         // GET END Y
         int endY = -1;
@@ -73,7 +73,7 @@ public class MatchFactsPreprocessor15 implements MatchFactsPreprocessor {
             }
         }
 
-        if (endY == -1) Log.d("FAILED: ", "END Y IS -1");
+        if (endY == -1) return bitmap;
 
         // UPDATE PIXELS IN BOUNDS
 
