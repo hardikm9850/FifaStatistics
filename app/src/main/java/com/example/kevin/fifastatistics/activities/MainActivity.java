@@ -137,6 +137,7 @@ public class MainActivity extends FifaActivity
     private void initializeAddMatchButton(FabFactory factory, FifaEventManager manager) {
         FloatingActionButton matchButton = factory.createPlayMatchFab();
         matchButton.setOnClickListener(l -> {
+            mActionMenu.collapse();
             manager.setMatchFlow();
             manager.startNewFlow();
         });

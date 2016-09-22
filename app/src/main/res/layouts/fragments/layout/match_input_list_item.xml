@@ -11,8 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:gravity="center_vertical|start"
-        android:inputType="number"
-        android:hint="for"/>
+        android:inputType="number"/>
 
     <TextView
         android:id="@+id/title_text"
@@ -28,7 +27,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:gravity="center_vertical|end"
-        android:inputType="number"
-        android:hint="against"/>
+        android:inputType="number"/>
 
 </LinearLayout>

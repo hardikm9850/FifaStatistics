@@ -26,9 +26,12 @@ import com.example.kevin.fifastatistics.models.databasemodels.user.User;
 import com.example.kevin.fifastatistics.utils.MatchUtils;
 import com.example.kevin.fifastatistics.utils.ObservableUtils;
 import com.example.kevin.fifastatistics.utils.ResourceUtils;
+import com.example.kevin.fifastatistics.utils.SnackbarUtils;
 import com.example.kevin.fifastatistics.utils.ToastUtils;
 import com.example.kevin.fifastatistics.views.AddMatchListLayout;
 import com.nostra13.universalimageloader.core.ImageLoader;
+
+import java.io.IOException;
 
 /**
  * Dialog for adding matches. Should be shown as a fullscreen dialog.
@@ -49,8 +52,6 @@ public class AddMatchDialogFragment extends DialogFragment
     private AddMatchListLayout mAddMatchList;
     private ImageView mLeftImage;
     private ImageView mRightImage;
-
-    private ImageView mTempImageView;
 
     private int mOldStatusBarColor;
     private boolean mDidSwapSides;
@@ -78,8 +79,6 @@ public class AddMatchDialogFragment extends DialogFragment
         initializeSwitchSidesButton(view);
         setStatusBarColor();
 
-        mTempImageView = (ImageView) view.findViewById(R.id.temp_imageview);
-
         view = maybeAddPaddingToTop(view);
         return view;
     }
@@ -87,6 +86,7 @@ public class AddMatchDialogFragment extends DialogFragment
     @Override
     public void onDestroyView() {
         resetStatusBarColor();
+        System.gc();
         super.onDestroyView();
     }
 
@@ -153,6 +153,7 @@ public class AddMatchDialogFragment extends DialogFragment
     private void initializeCameraMenuItem() {
         ImageButton b = (ImageButton) mToolbar.findViewById(R.id.camera_button);
         b.setOnClickListener(view -> {
+            System.gc(); // want to clear memory before heavy bitmap operations
             FragmentTransaction t = mActivity.getSupportFragmentManager().beginTransaction();
             t.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
             mCameraFragment = CameraFragment.newInstance(this);
@@ -200,22 +201,29 @@ public class AddMatchDialogFragment extends DialogFragment
     public void onImageCapture(Bitmap bitmap, MatchFactsPreprocessor preprocessor) {
         closeCameraFragment();
         ProgressDialog dialog = new ProgressDialog(mActivity);
-        dialog.setTitle("Processing Facts");
+        dialog.setTitle("Processing Image");
         dialog.setMessage("Please wait...");
         dialog.setCancelable(false);
         dialog.show();
         Log.d("STARTING", "PROCESSING");
         preprocessor.processBitmap(bitmap)
-                .subscribe(b -> {
-                    dialog.cancel();
-                    mTempImageView.setVisibility(View.VISIBLE);
-                    mTempImageView.setImageBitmap(b);
-//                .flatMap(b -> {
-//                    OcrManager manager = OcrManager.getInstance(b);
-//                    return manager.retrieveFacts();
-//                })
-//                .subscribe(facts -> {
-//                    dialog.cancel();
+                .map(b -> {
+                    OcrManager manager = OcrManager.getInstance(b);
+                    try {
+                        return manager.retrieveFacts();
+                    } catch (IOException e) {
+                        return null;
+                    }
+                })
+                .compose(ObservableUtils.applySchedulers())
+                .subscribe(facts -> {
+                    if (facts != null) {
+                        mAddMatchList.setValues(facts);
+                        dialog.cancel();
+                    } else {
+                        ToastUtils.showShortToast(mActivity, "Failed to parse image.");
+                    }
+                    System.gc(); // cleanup bitmap memory
         });
         Log.d("FINISHED", "PROCESSING");
     }

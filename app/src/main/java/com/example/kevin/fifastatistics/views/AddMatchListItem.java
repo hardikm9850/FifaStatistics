@@ -31,7 +31,7 @@ public class AddMatchListItem extends LinearLayout {
     }
 
     public void setLeftText(int value) {
-        mLeftText.setText(value);
+        mLeftText.setText(getStringForText(value));
     }
 
     public String getRightText() {
@@ -39,7 +39,11 @@ public class AddMatchListItem extends LinearLayout {
     }
 
     public void setRightText(int value) {
-        mRightText.setText(value);
+        mRightText.setText(getStringForText(value));
+    }
+
+    private String getStringForText(int value) {
+        return (value < 0) ? null : String.valueOf(value);
     }
 
     public void setTitle(String title) {

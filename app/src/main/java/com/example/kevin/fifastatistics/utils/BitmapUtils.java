@@ -1,6 +1,7 @@
 package com.example.kevin.fifastatistics.utils;
 
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.ColorMatrix;
@@ -180,6 +181,13 @@ public class BitmapUtils
 
         c.drawBitmap(bitmap, 0, 0, p);
         return bitmap;
+    }
+
+    public static Bitmap scaleDown(Bitmap bitmap, float scale) {
+        return Bitmap.createScaledBitmap(bitmap,
+                Math.round(bitmap.getWidth() / scale),
+                Math.round(bitmap.getHeight() / scale),
+                false);
     }
 
     public static Bitmap getMutableBitmap(Bitmap imgIn) {

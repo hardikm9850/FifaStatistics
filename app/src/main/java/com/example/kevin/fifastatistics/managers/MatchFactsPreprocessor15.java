@@ -15,13 +15,14 @@ public class MatchFactsPreprocessor15 implements MatchFactsPreprocessor {
 
     @Override
     public Observable<Bitmap> processBitmap(Bitmap matchFactsBitmap) {
+        Log.d("ORIGINAL SIZE", "w: " + matchFactsBitmap.getWidth());
         return Observable.just(matchFactsBitmap)
                 .map(BitmapUtils::getMutableBitmap)
                 .map(this::makeMonochrome)
                 .map(this::invertColors)
                 .map(this::increaseContrast)
                 .map(this::invertColorsInHighlightedSection)
-                .compose(ObservableUtils.applySchedulers());
+                .map(b -> BitmapUtils.scaleDown(b, 4.0f));
     }
 
     private Bitmap sharpen(Bitmap bitmap) {
@@ -37,7 +38,7 @@ public class MatchFactsPreprocessor15 implements MatchFactsPreprocessor {
     }
 
     private Bitmap increaseContrast(Bitmap bitmap) {
-        return BitmapUtils.contrast(bitmap, 9);
+        return BitmapUtils.contrast(bitmap, 10);
     }
 
     private Bitmap invertColorsInHighlightedSection(Bitmap bitmap) {

@@ -123,6 +123,7 @@ public class PlayerActivty extends FifaActivity
     private void initializeAddMatchButton(FabFactory factory, FifaEventManager manager, Friend friend) {
         FloatingActionButton matchButton = factory.createPlayMatchFab();
         matchButton.setOnClickListener(l -> {
+            mFam.collapse();
             manager.setMatchFlow();
             manager.startNewFlow(friend);
         });
