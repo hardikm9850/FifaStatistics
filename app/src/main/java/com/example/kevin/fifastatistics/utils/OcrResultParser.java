@@ -20,7 +20,7 @@ public class OcrResultParser {
 
     private static final List<String> ZERO_MAPPINGS =
             Arrays.asList("o", "O", "D", "Q", "Cl", "c", "C", "I]", "[I", "(I", "I)", "ll", "II",
-                    "I!", "!I", "I", "n", "fl", "a");
+                    "I!", "!I", "I", "n", "fl", "a", "[1", "1]");
 
     private int GOALS_LINE = 0;
     private int SHOTS_LINE = 1;
