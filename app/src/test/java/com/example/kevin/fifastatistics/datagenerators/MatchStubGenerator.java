@@ -17,7 +17,6 @@ public class MatchStubGenerator {
         int goalsLoser = (goalsWinner == 0) ? 0 : goals.nextInt(goalsWinner + 1);
 
         return MatchStub.builder()
-                .matchId(IdGenerator.getRandomId())
                 .winnerId(chooseId(id))
                 .date(today.toString())
                 .goalsWinner(goalsWinner)

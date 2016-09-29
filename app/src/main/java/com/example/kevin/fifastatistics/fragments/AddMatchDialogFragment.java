@@ -219,10 +219,10 @@ public class AddMatchDialogFragment extends DialogFragment
                 .subscribe(facts -> {
                     if (facts != null) {
                         mAddMatchList.setValues(facts);
-                        dialog.cancel();
                     } else {
                         ToastUtils.showShortToast(mActivity, "Failed to parse image.");
                     }
+                    dialog.cancel();
                     System.gc(); // cleanup bitmap memory
         });
         Log.d("FINISHED", "PROCESSING");

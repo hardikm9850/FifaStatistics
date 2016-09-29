@@ -5,15 +5,22 @@ import android.util.Log;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Parses the text returned by OCR into a StatsPair.
  */
 public class OcrResultParser {
 
+    /** Value set for a statistic that could not be parsed. */
+    public static final int ERROR_VALUE = -1;
+
     private static final String TAG = "OCR";
 
-    private static final int ERROR_VALUE = -1;
+    private static final List<String> ZERO_MAPPINGS =
+            Arrays.asList("o", "O", "D", "Q", "Cl", "c", "C", "I]", "[I", "(I", "I)", "ll", "II",
+                    "I!", "!I", "I", "n", "fl", "a");
 
     private int GOALS_LINE = 0;
     private int SHOTS_LINE = 1;
@@ -141,21 +148,19 @@ public class OcrResultParser {
         try {
             return Integer.parseInt(item);
         } catch (NumberFormatException e) {
-            Log.e(TAG, "Attempted to parse item into value");
             return mapStringToInt(item);
         }
     }
 
     private static int mapStringToInt(String item) {
-        if (item.equalsIgnoreCase("s")) return 5;
-        else if (item.equalsIgnoreCase("o") || item.equals("D") || item.equals("Q") || item.equals("Cl")) return 0;
-        else if (item.equals("A")) return 4;
+        if (doesItemMapToZero(item)) return 0;
+        else if (item.equalsIgnoreCase("s")) return 5;
+        else if (item.equals("A") || item.equals("g")) return 4;
         else if (item.equals("B")) return 8;
-        else if (item.equalsIgnoreCase("i") || item.equals("l")) return 1;
+        else if (item.equals("i") || item.equals("l")) return 1;
         else if (item.equals("T")) return 7;
         else if (item.equals("ID")) return 10;
-        else if (item.equals("M") || item.equals("ll")) return 11;
-        else if (item.equalsIgnoreCase("c")) return 0;
+        else if (item.equals("M")) return 11;
         else if (itemEndsInInt(item)) {
             if (item.charAt(item.length() - 2) == 'l') {
                 return 10 + getLastIntOfString(item);
@@ -167,6 +172,10 @@ public class OcrResultParser {
             return parseStringEndingInZeroMappedLetter(item);
         }
         else return ERROR_VALUE;
+    }
+
+    private static boolean doesItemMapToZero(String item) {
+        return ZERO_MAPPINGS.contains(item);
     }
 
     private static boolean itemEndsInInt(String item) {

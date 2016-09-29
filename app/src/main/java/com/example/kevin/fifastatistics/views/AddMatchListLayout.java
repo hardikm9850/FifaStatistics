@@ -9,6 +9,7 @@ import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.models.databasemodels.match.Penalties;
 import com.example.kevin.fifastatistics.models.databasemodels.user.Stats;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User.StatsPair;
+import com.example.kevin.fifastatistics.utils.OcrResultParser;
 
 public class AddMatchListLayout extends ScrollView {
 
@@ -77,7 +78,6 @@ public class AddMatchListLayout extends ScrollView {
         mGoalsItem.setLeftText(leftStats.getGoals());
         mShotsItem.setLeftText(leftStats.getShots());
         mShotsOnTargetItem.setLeftText(leftStats.getShotsOnTarget());
-        mPossessionItem.setLeftText(leftStats.getPossession());
         mTacklesItem.setLeftText(leftStats.getTackles());
         mFoulsItem.setLeftText(leftStats.getFouls());
         mYellowCardsItem.setLeftText(leftStats.getYellowCards());
@@ -91,7 +91,6 @@ public class AddMatchListLayout extends ScrollView {
         mGoalsItem.setRightText(rightStats.getGoals());
         mShotsItem.setRightText(rightStats.getShots());
         mShotsOnTargetItem.setRightText(rightStats.getShotsOnTarget());
-        mPossessionItem.setRightText(rightStats.getPossession());
         mTacklesItem.setRightText(rightStats.getTackles());
         mFoulsItem.setRightText(rightStats.getFouls());
         mYellowCardsItem.setRightText(rightStats.getYellowCards());
@@ -100,6 +99,26 @@ public class AddMatchListLayout extends ScrollView {
         mInjuriesItem.setRightText(rightStats.getInjuries());
         mShotAccuracyItem.setRightText(rightStats.getShotAccuracy());
         mPassAccuracyItem.setRightText(rightStats.getPassAccuracy());
+
+        setPossession(statsPair);
+    }
+
+    private void setPossession(StatsPair statsPair) {
+        int leftPossession = statsPair.getStatsFor().getPossession();
+        int rightPossession = statsPair.getStatsAgainst().getPossession();
+        if (leftPossession == OcrResultParser.ERROR_VALUE) {
+            if (rightPossession != OcrResultParser.ERROR_VALUE) {
+                mPossessionItem.setRightText(rightPossession);
+                mPossessionItem.setLeftText(100 - rightPossession);
+            }
+        } else {
+            mPossessionItem.setLeftText(leftPossession);
+            if (rightPossession == OcrResultParser.ERROR_VALUE) {
+                mPossessionItem.setRightText(100 - leftPossession);
+            } else {
+                mPossessionItem.setRightText(rightPossession);
+            }
+        }
     }
 
     /**
