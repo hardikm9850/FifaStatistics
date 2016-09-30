@@ -20,7 +20,8 @@ public class OcrResultParser {
 
     private static final List<String> ZERO_MAPPINGS =
             Arrays.asList("o", "O", "D", "Q", "Cl", "c", "C", "I]", "[I", "(I", "I)", "ll", "II",
-                    "I!", "!I", "I", "n", "fl", "a", "[1", "1]");
+                    "I!", "!I", "I", "n", "fl", "a", "[1", "1]", "[l", "l]", "{I", "I}", "l}",
+                    "{l", "u", "U");
 
     private int GOALS_LINE = 0;
     private int SHOTS_LINE = 1;
@@ -133,10 +134,11 @@ public class OcrResultParser {
 
     private void removeGarbagePunctuation() {
         mResult = mResult.replace("°C", "%");
-        mResult = mResult.replaceAll("[%';:`.{}‘?_“\"°-»«]", "");
+        mResult = mResult.replaceAll("[%';:`.‘?_“\"°-»«><]", "");
     }
 
     private static int[] parseLine(String line) {
+        line = line.trim();
         String[] items = line.split(" ");
 
         int leftVal = parseItem(items[0]);
@@ -146,7 +148,8 @@ public class OcrResultParser {
 
     private static int parseItem(String item) {
         try {
-            return Integer.parseInt(item);
+            int result = Integer.parseInt(item);
+            return (result > 100) ? ERROR_VALUE : result;
         } catch (NumberFormatException e) {
             return mapStringToInt(item);
         }
@@ -154,28 +157,35 @@ public class OcrResultParser {
 
     private static int mapStringToInt(String item) {
         if (doesItemMapToZero(item)) return 0;
-        else if (item.equalsIgnoreCase("s")) return 5;
-        else if (item.equals("A") || item.equals("g")) return 4;
-        else if (item.equals("B")) return 8;
-        else if (item.equals("i") || item.equals("l")) return 1;
-        else if (item.equals("T")) return 7;
-        else if (item.equals("ID")) return 10;
-        else if (item.equals("M")) return 11;
-        else if (itemEndsInInt(item)) {
-            if (item.charAt(item.length() - 2) == 'l') {
-                return 10 + getLastIntOfString(item);
-            } else {
-                return ERROR_VALUE;
-            }
+        else {
+            item = removeZeroPunctuation(item);
+            if (item.equalsIgnoreCase("s")) return 5;
+            else if (item.equals("A") || item.equals("g")) return 4;
+            else if (item.equals("B")) return 8;
+            else if (item.equals("i") || item.equals("l")) return 1;
+            else if (item.equals("T")) return 7;
+            else if (item.equals("ID")) return 10;
+            else if (item.equals("M")) return 11;
+            else if (itemEndsInInt(item)) {
+                if (item.charAt(item.length() - 2) == 'l') {
+                    return 10 + getLastIntOfString(item);
+                } else {
+                    return ERROR_VALUE;
+                }
+            } else if (itemEndsInZeroMappedLetter(item)) {
+                return parseStringEndingInZeroMappedLetter(item);
+            } else return ERROR_VALUE;
         }
-        else if (itemEndsInZeroMappedLetter(item)) {
-            return parseStringEndingInZeroMappedLetter(item);
-        }
-        else return ERROR_VALUE;
     }
 
     private static boolean doesItemMapToZero(String item) {
         return ZERO_MAPPINGS.contains(item);
+    }
+
+    private static String removeZeroPunctuation(String item) {
+        item = item.replaceAll("[{}()]", "");
+        item = item.replace("[", "");
+        return item.replace("]", "");
     }
 
     private static boolean itemEndsInInt(String item) {
