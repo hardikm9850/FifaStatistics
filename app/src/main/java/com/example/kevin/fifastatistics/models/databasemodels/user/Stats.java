@@ -1,7 +1,5 @@
 package com.example.kevin.fifastatistics.models.databasemodels.user;
 
-import android.util.Log;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Getter;
@@ -60,18 +58,18 @@ public class Stats {
     }
 
     public void updateAverages(Stats stats, int totalCount) {
-        goals = ((totalCount * goals) + stats.goals) / totalCount;
-        shots = ((totalCount * shots) + stats.shots) / totalCount;
-        shotsOnTarget = ((totalCount * shotsOnTarget) + stats.shotsOnTarget) / totalCount;
-        possession = ((totalCount * possession) + stats.possession) / totalCount;
-        tackles = ((totalCount * tackles) + stats.tackles) / totalCount;
-        fouls = ((totalCount * fouls) + stats.fouls) / totalCount;
-        yellowCards = ((totalCount * yellowCards) + stats.yellowCards) / totalCount;
-        redCards = ((totalCount * redCards) + stats.redCards) / totalCount;
-        offsides = ((totalCount * offsides) + stats.offsides) / totalCount;
-        injuries = ((totalCount * injuries) + stats.injuries) / totalCount;
-        shotAccuracy = ((totalCount * shotAccuracy) + stats.shotAccuracy) / totalCount;
-        passAccuracy = ((totalCount * passAccuracy) + stats.passAccuracy) / totalCount;
+        goals = (((totalCount - 1) * goals) + stats.goals) / totalCount;
+        shots = (((totalCount - 1) * shots) + stats.shots) / totalCount;
+        shotsOnTarget = (((totalCount - 1) * shotsOnTarget) + stats.shotsOnTarget) / totalCount;
+        possession = (((totalCount - 1) * possession) + stats.possession) / totalCount;
+        tackles = (((totalCount - 1) * tackles) + stats.tackles) / totalCount;
+        fouls = (((totalCount - 1) * fouls) + stats.fouls) / totalCount;
+        yellowCards = (((totalCount - 1) * yellowCards) + stats.yellowCards) / totalCount;
+        redCards = (((totalCount - 1) * redCards) + stats.redCards) / totalCount;
+        offsides = (((totalCount - 1) * offsides) + stats.offsides) / totalCount;
+        injuries = (((totalCount - 1) * injuries) + stats.injuries) / totalCount;
+        shotAccuracy = (((totalCount - 1) * shotAccuracy) + stats.shotAccuracy) / totalCount;
+        passAccuracy = (((totalCount - 1) * passAccuracy) + stats.passAccuracy) / totalCount;
     }
 
     public void updateRecords(Stats stats) {

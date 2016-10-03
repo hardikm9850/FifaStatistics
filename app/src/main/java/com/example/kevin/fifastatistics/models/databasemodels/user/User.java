@@ -82,10 +82,8 @@ public class User extends DatabaseModel implements Player {
         Stats statsFor = didWin ? match.getStats().getStatsFor() : match.getStats().getStatsAgainst();
         Stats statsAgainst = didWin ? match.getStats().getStatsAgainst() : match.getStats().getStatsFor();
         int totalMatches = matchRecords.getTotalCount();
-        averageStats.statsFor.updateAverages(statsFor, totalMatches);
-        averageStats.statsAgainst.updateAverages(statsAgainst, totalMatches);
-        recordStats.statsFor.updateRecords(statsFor);
-        recordStats.statsAgainst.updateRecords(statsAgainst);
+        averageStats.updateAverages(statsFor, statsAgainst, totalMatches);
+        recordStats.updateRecords(statsFor, statsAgainst);
         matches.add(MatchStub.fromMatch(match));
     }
 
@@ -156,6 +154,16 @@ public class User extends DatabaseModel implements Player {
         public StatsPair() {
             statsFor = new Stats();
             statsAgainst = new Stats();
+        }
+
+        public void updateAverages(Stats statsFor, Stats statsAgainst, int totalMatches) {
+            statsFor.updateAverages(statsFor, totalMatches);
+            statsAgainst.updateAverages(statsAgainst, totalMatches);
+        }
+
+        public void updateRecords(Stats statsFor, Stats statsAgainst) {
+            statsFor.updateRecords(statsFor);
+            statsAgainst.updateRecords(statsAgainst);
         }
 
         public boolean validate() {
