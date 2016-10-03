@@ -167,6 +167,16 @@ public class AddMatchListLayout extends ScrollView {
         }
     }
 
+    /** Return true if any EditText field has been edited. */
+    public boolean isEdited() {
+        return
+                mGoalsItem.isEdited() || mShotsItem.isEdited() || mShotsOnTargetItem.isEdited() ||
+                mPossessionItem.isEdited() || mTacklesItem.isEdited() || mFoulsItem.isEdited() ||
+                mYellowCardsItem.isEdited() || mRedCardsItem.isEdited() || mOffsidesItem.isEdited() ||
+                mInjuriesItem.isEdited() || mShotAccuracyItem.isEdited() ||
+                mPassAccuracyItem.isEdited() || mPenalties.isEdited();
+    }
+
     public boolean isLeftPenaltiesGreater() {
         return getLeftPenalties() > getRightPenalties();
     }

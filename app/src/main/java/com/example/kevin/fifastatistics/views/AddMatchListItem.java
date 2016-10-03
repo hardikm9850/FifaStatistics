@@ -49,4 +49,12 @@ public class AddMatchListItem extends LinearLayout {
     public void setTitle(String title) {
         mTitle.setText(title);
     }
+
+    /**
+     * Returns true if either one of EditText fields have a value.
+     */
+    public boolean isEdited() {
+        return (!mLeftText.getText().toString().trim().isEmpty() ||
+                !mRightText.getText().toString().trim().isEmpty());
+    }
 }

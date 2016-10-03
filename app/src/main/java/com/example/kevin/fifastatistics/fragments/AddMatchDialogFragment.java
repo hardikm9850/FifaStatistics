@@ -239,8 +239,12 @@ public class AddMatchDialogFragment extends DialogFragment
 
     @Override
     public boolean handleBackPress() {
-        showConfirmationDialog();
-        return true;
+        if (mAddMatchList.isEdited()) {
+            showConfirmationDialog();
+            return true;
+        } else {
+            return false;
+        }
     }
 
     private void closeCameraFragment() {
