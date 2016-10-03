@@ -9,6 +9,10 @@ public class MatchStubGenerator {
 
     private static final int MAX_GOALS = 6;
 
+    public static MatchStub generateMatchStub() {
+        return generateMatchStub(IdGenerator.getRandomId());
+    }
+
     public static MatchStub generateMatchStub(String id) {
 
         Date today = new Date();
