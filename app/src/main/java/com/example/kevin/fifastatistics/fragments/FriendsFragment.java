@@ -27,12 +27,10 @@ import it.gmariotti.recyclerview.adapter.SlideInBottomAnimatorAdapter;
 /**
  * A fragment representing a list of players.
  * <p>
- * Implements the {@link FifaFragment} interface, as all fragments in this project should.
- * <p>
  * Activities containing this fragment MUST implement the {@link FriendsFragmentInteractionListener}
  * interface.
  */
-public class FriendsFragment extends Fragment implements FifaFragment {
+public class FriendsFragment extends Fragment implements FifaActivity.OnBackPressedHandler {
 
     public static final String viewArgument = "view";
     public static final int friendsView = 0;

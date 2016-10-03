@@ -8,21 +8,17 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 import com.example.kevin.fifastatistics.R;
-import com.example.kevin.fifastatistics.fragments.FifaFragment;
 import com.example.kevin.fifastatistics.fragments.FriendsFragment;
 import com.example.kevin.fifastatistics.fragments.initializers.FragmentInitializer;
 import com.example.kevin.fifastatistics.fragments.initializers.FragmentInitializerFactory;
 import com.example.kevin.fifastatistics.managers.FifaEventManager;
 import com.example.kevin.fifastatistics.managers.RetrievalManager;
-import com.example.kevin.fifastatistics.managers.SharedPreferencesManager;
 import com.example.kevin.fifastatistics.models.databasemodels.user.Friend;
-import com.example.kevin.fifastatistics.models.databasemodels.user.User;
-import com.example.kevin.fifastatistics.network.ApiAdapter;
 import com.example.kevin.fifastatistics.utils.FabFactory;
 import com.example.kevin.fifastatistics.utils.IntentFactory;
 import com.example.kevin.fifastatistics.utils.ObservableUtils;
-import com.example.kevin.fifastatistics.views.wrappers.FifaNavigationDrawer;
 import com.example.kevin.fifastatistics.views.adapters.ViewPagerAdapter;
+import com.example.kevin.fifastatistics.views.wrappers.FifaNavigationDrawer;
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
 
@@ -47,7 +43,7 @@ public class MainActivity extends FifaActivity
     private TabLayout mTabLayout;
     private ViewPager mViewPager;
     private FloatingActionsMenu mActionMenu;
-    private FifaFragment currentFragment;
+    private OnBackPressedHandler mBackPressHandler;
 
     private int currentDrawerPosition;
 
@@ -77,7 +73,7 @@ public class MainActivity extends FifaActivity
         mViewPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
             @Override
             public void onPageSelected(int position) {
-                currentFragment = (FifaFragment) mAdapter.getItem(position);
+                mBackPressHandler = (OnBackPressedHandler) mAdapter.getItem(position);
             }
         });
 
@@ -120,7 +116,7 @@ public class MainActivity extends FifaActivity
 
         int currentPage = getIntent().getIntExtra(PAGE_EXTRA, 0);
         mViewPager.setCurrentItem(currentPage);
-        currentFragment = (FifaFragment) mAdapter.getItem(currentPage);
+        mBackPressHandler = (OnBackPressedHandler) mAdapter.getItem(currentPage);
     }
 
     private void initializeFab() {
@@ -138,6 +134,7 @@ public class MainActivity extends FifaActivity
         FloatingActionButton matchButton = factory.createPlayMatchFab();
         matchButton.setOnClickListener(l -> {
             mActionMenu.collapse();
+            mBackPressHandler = manager;
             manager.setMatchFlow();
             manager.startNewFlow();
         });
@@ -147,6 +144,7 @@ public class MainActivity extends FifaActivity
     private void initializeAddSeriesButton(FabFactory factory, FifaEventManager manager) {
         FloatingActionButton seriesButton = factory.createPlaySeriesFab();
         seriesButton.setOnClickListener(l -> {
+            mActionMenu.collapse();
             manager.setSeriesFlow();
             manager.startNewFlow();
         });
@@ -155,17 +153,13 @@ public class MainActivity extends FifaActivity
 
     @Override
     public void onFriendsFragmentInteraction(Friend friend) {
-        RetrievalManager.getCurrentUser()
-                .map(u -> u.hasFriendWithId(friend.getId()))
-                .subscribe(isFriend -> {
-                    Intent intent = IntentFactory.createPlayerActivityIntent(this, friend, isFriend);
-                    startActivity(intent);
-                });
+        Intent intent = IntentFactory.createPlayerActivityIntent(this, friend);
+        startActivity(intent);
     }
 
     @Override
     public void onBackPressed() {
-        if (currentFragment.handleBackPress()) {
+        if (mBackPressHandler.handleBackPress()) {
             return;
         }
         super.onBackPressed();

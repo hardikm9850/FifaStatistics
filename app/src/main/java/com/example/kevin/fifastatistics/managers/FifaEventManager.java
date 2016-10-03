@@ -1,7 +1,6 @@
 package com.example.kevin.fifastatistics.managers;
 
 import android.app.ProgressDialog;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 
@@ -23,7 +22,8 @@ import lombok.RequiredArgsConstructor;
  * Manager for adding new matches and series.
  */
 @RequiredArgsConstructor
-public class FifaEventManager implements SelectOpponentDialogFragment.SelectOpponentListener {
+public class FifaEventManager implements SelectOpponentDialogFragment.SelectOpponentListener,
+        FifaActivity.OnBackPressedHandler {
 
     private final FifaActivity mActivity;
     private final User mUser;
@@ -64,17 +64,23 @@ public class FifaEventManager implements SelectOpponentDialogFragment.SelectOppo
         mFlow.startNewFlow(friend);
     }
 
+    @Override
+    public boolean handleBackPress() {
+        return (mFlow != null) && mFlow.handleBackPress();
+    }
+
     /** Represents the type of flow (Match or Series) */
-    private abstract class Flow implements AddMatchDialogFragment.AddMatchDialogSaveListener {
+    private abstract class Flow implements AddMatchDialogFragment.AddMatchDialogSaveListener,
+            FifaActivity.OnBackPressedHandler {
 
         public void startNewFlow() {
             SelectOpponentDialogFragment.newInstance(mUser, FifaEventManager.this).show(mActivity.getSupportFragmentManager());
         }
 
-        public DialogFragment showAddMatchFragment(FifaActivity parentActivity, Friend opponent) {
+        public AddMatchDialogFragment showAddMatchFragment(FifaActivity parentActivity, Friend opponent) {
             FragmentTransaction t = parentActivity.getSupportFragmentManager().beginTransaction();
             t.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-            DialogFragment fragment = AddMatchDialogFragment.newInstance(mUser, opponent, this, mActivity);
+            AddMatchDialogFragment fragment = AddMatchDialogFragment.newInstance(mUser, opponent, this, mActivity);
             t.add(android.R.id.content, fragment).addToBackStack(null).commit();
 
             return fragment;
@@ -94,11 +100,16 @@ public class FifaEventManager implements SelectOpponentDialogFragment.SelectOppo
         public void onSaveMatch(Match match) {
             // TODO
         }
+
+        @Override
+        public boolean handleBackPress() {
+            return false;
+        }
     }
 
     private class MatchFlow extends Flow {
 
-        private DialogFragment mAddMatchFragment;
+        private AddMatchDialogFragment mAddMatchFragment;
         private Player mOpponent;
 
         @Override
@@ -136,6 +147,11 @@ public class FifaEventManager implements SelectOpponentDialogFragment.SelectOppo
                 ToastUtils.showShortToast(mActivity, "Failed to create match: " + cfe.getErrorCode().getMessage());
                 // TODO save match for retry
             }
+        }
+
+        @Override
+        public boolean handleBackPress() {
+            return (mAddMatchFragment != null) && mAddMatchFragment.handleBackPress();
         }
     }
 }

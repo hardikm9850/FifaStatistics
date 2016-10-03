@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.kevin.fifastatistics.R;
+import com.example.kevin.fifastatistics.activities.FifaActivity;
 import com.example.kevin.fifastatistics.managers.SharedPreferencesManager;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
 import com.example.kevin.fifastatistics.views.UserOverviewLayout;
@@ -20,7 +21,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 /**
  * The main overview fragment for the current user.
  */
-public class UserOverviewFragment extends Fragment implements FifaFragment {
+public class UserOverviewFragment extends Fragment implements FifaActivity.OnBackPressedHandler {
 
     private User mUser;
 

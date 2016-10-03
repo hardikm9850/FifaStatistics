@@ -34,7 +34,7 @@ public class AcceptRequestNotification extends FifaNotification{
     }
 
     private void initializeContentIntent(Friend friend) {
-        Intent intent = IntentFactory.createPlayerActivityIntent(mContext, friend, true);
+        Intent intent = IntentFactory.createPlayerActivityIntent(mContext, friend);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
         mContentIntent = PendingIntent.getActivity(

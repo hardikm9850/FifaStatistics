@@ -7,37 +7,16 @@ import com.example.kevin.fifastatistics.activities.MainActivity;
 import com.example.kevin.fifastatistics.activities.PlayerActivty;
 import com.example.kevin.fifastatistics.fragments.FriendsFragment;
 import com.example.kevin.fifastatistics.models.Constants;
-import com.example.kevin.fifastatistics.models.databasemodels.user.Friend;
-import com.example.kevin.fifastatistics.models.databasemodels.user.User;
+import com.example.kevin.fifastatistics.models.databasemodels.user.Player;
 
 public class IntentFactory {
 
-    /**
-     * Create a new PlayerActivity intent, and indicate that this user is the current user's friend.
-     */
-    public static Intent createPlayerActivityIntent(Context c, Friend friend, boolean isFriend) {
+    public static Intent createPlayerActivityIntent(Context c, Player player) {
         Intent intent = new Intent(c, PlayerActivty.class);
-        intent.putExtra(PlayerActivty.NAME_EXTRA, friend.getName());
-        intent.putExtra(PlayerActivty.ID_EXTRA, friend.getId());
-        intent.putExtra(PlayerActivty.IMAGE_URL_EXTRA, friend.getImageUrl());
-        intent.putExtra(PlayerActivty.REG_TOKEN_EXTRA, friend.getRegistrationToken());
-        intent.putExtra(PlayerActivty.FRIEND_EXTRA, isFriend);
-
-        return intent;
-    }
-
-    /**
-     * Create a new PlayerActivity intent, and indicate that this user is not a friend of the
-     * current user.
-     */
-    public static Intent createPlayerActivityIntent(Context c, User user, boolean isFriend) {
-        Intent intent = new Intent(c, PlayerActivty.class);
-        intent.putExtra(PlayerActivty.NAME_EXTRA, user.getName());
-        intent.putExtra(PlayerActivty.ID_EXTRA, user.getId());
-        intent.putExtra(PlayerActivty.IMAGE_URL_EXTRA, user.getImageUrl());
-        intent.putExtra(PlayerActivty.REG_TOKEN_EXTRA, user.getRegistrationToken());
-        intent.putExtra(PlayerActivty.FRIEND_EXTRA, isFriend);
-
+        intent.putExtra(PlayerActivty.NAME_EXTRA, player.getName());
+        intent.putExtra(PlayerActivty.ID_EXTRA, player.getId());
+        intent.putExtra(PlayerActivty.IMAGE_URL_EXTRA, player.getImageUrl());
+        intent.putExtra(PlayerActivty.REG_TOKEN_EXTRA, player.getRegistrationToken());
         return intent;
     }
 

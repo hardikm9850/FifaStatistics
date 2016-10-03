@@ -7,8 +7,9 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.widget.Toolbar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +18,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 
 import com.example.kevin.fifastatistics.R;
+import com.example.kevin.fifastatistics.activities.FifaActivity;
 import com.example.kevin.fifastatistics.managers.MatchFactsPreprocessor;
 import com.example.kevin.fifastatistics.managers.OcrManager;
 import com.example.kevin.fifastatistics.models.databasemodels.match.Match;
@@ -26,7 +28,6 @@ import com.example.kevin.fifastatistics.models.databasemodels.user.User;
 import com.example.kevin.fifastatistics.utils.MatchUtils;
 import com.example.kevin.fifastatistics.utils.ObservableUtils;
 import com.example.kevin.fifastatistics.utils.ResourceUtils;
-import com.example.kevin.fifastatistics.utils.SnackbarUtils;
 import com.example.kevin.fifastatistics.utils.ToastUtils;
 import com.example.kevin.fifastatistics.views.AddMatchListLayout;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -39,7 +40,7 @@ import java.io.IOException;
  * See https://developer.android.com/guide/topics/ui/dialogs.html#FullscreenDialog for details.
  */
 public class AddMatchDialogFragment extends DialogFragment
-        implements CameraFragment.ImageCaptureListener {
+        implements CameraFragment.ImageCaptureListener, FifaActivity.OnBackPressedHandler {
 
     private ImageLoader mImageLoader;
     private Toolbar mToolbar;
@@ -67,6 +68,14 @@ public class AddMatchDialogFragment extends DialogFragment
         fragment.mActivity = activity;
 
         return fragment;
+    }
+
+    private void showConfirmationDialog() {
+        AlertDialog dialog = new AlertDialog.Builder(mActivity).create();
+        dialog.setMessage("Are you sure you want to discard this match?");
+        dialog.setButton(AlertDialog.BUTTON_POSITIVE, "KEEP EDITING", (d, w) -> dialog.dismiss());
+        dialog.setButton(AlertDialog.BUTTON_NEGATIVE, "DISCARD", (d, w) -> dismiss());
+        dialog.show();
     }
 
     @Override
@@ -107,7 +116,7 @@ public class AddMatchDialogFragment extends DialogFragment
         mToolbar = (Toolbar) view.findViewById(R.id.dialog_toolbar);
         mToolbar.setTitle("Add Match");
         mToolbar.setNavigationIcon(R.drawable.ic_close_white_24dp);
-        mToolbar.setNavigationOnClickListener(v -> dismiss());
+        mToolbar.setNavigationOnClickListener(v -> showConfirmationDialog());
 
         initializeDoneMenuItem();
         initializeCameraMenuItem();
@@ -226,6 +235,12 @@ public class AddMatchDialogFragment extends DialogFragment
                     System.gc(); // cleanup bitmap memory
         });
         Log.d("FINISHED", "PROCESSING");
+    }
+
+    @Override
+    public boolean handleBackPress() {
+        showConfirmationDialog();
+        return true;
     }
 
     private void closeCameraFragment() {

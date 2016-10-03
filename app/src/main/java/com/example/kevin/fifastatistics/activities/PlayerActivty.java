@@ -38,9 +38,6 @@ public class PlayerActivty extends FifaActivity
     /** The registration token of the user */
     public static final String REG_TOKEN_EXTRA = "registrationToken";
 
-    /** Whether or not the user is a friend of the current user. */
-    public static final String FRIEND_EXTRA = "isFriend";
-
     private View mParentLayout;
     private Toolbar mToolbar;
     private FloatingActionsMenu mFam;
@@ -57,19 +54,22 @@ public class PlayerActivty extends FifaActivity
         setContentView(R.layout.activity_player);
         setTitle(getIntent().getStringExtra(NAME_EXTRA));
 
+        initializeMembers();
+        initializeToolbar();
+        initializeTabs();
+        RetrievalManager.getCurrentUser()
+                .map(user -> mCurrentUser = user)
+                .map(user -> user.hasFriendWithId(mPlayerId))
+                .subscribe(this::initializeFab);
+    }
+
+    private void initializeMembers() {
         mPlayerId = getIntent().getStringExtra(ID_EXTRA);
         mName = getIntent().getStringExtra(NAME_EXTRA);
         mImageUrl = getIntent().getStringExtra(IMAGE_URL_EXTRA);
         mRegToken = getIntent().getStringExtra(REG_TOKEN_EXTRA);
         mParentLayout = findViewById(R.id.coordinator_layout);
         mFam = (FloatingActionsMenu) findViewById(R.id.fab_menu);
-
-//        TextView title = (TextView) findViewById(R.id.title);
-//        title.setText(NAME_EXTRA);
-
-        initializeToolbar();
-        initializeTabs();
-        RetrievalManager.getCurrentUser().subscribe(this::initializeFab);
     }
 
     @SuppressWarnings("ConstantConditions")
@@ -96,17 +96,15 @@ public class PlayerActivty extends FifaActivity
     }
 
     @SuppressWarnings("ConstantConditions")
-    private void initializeFab(User user) {
-        mCurrentUser = user;
+    private void initializeFab(boolean isFriend) {
         FabFactory factory = FabFactory.newInstance(this);
-        boolean isFriend = getIntent().getBooleanExtra(FRIEND_EXTRA, false);
         Friend friend = buildFriend();
         if (isFriend) {
             initializeFamForFriend(factory, friend);
         } else {
-            if (user.hasIncomingRequestWithId(mPlayerId)) {
+            if (mCurrentUser.hasIncomingRequestWithId(mPlayerId)) {
                 initializeFamForIncomingFriendRequest(friend, factory);
-            } else if (user.hasOutgoingRequestWithId(mPlayerId)) {
+            } else if (mCurrentUser.hasOutgoingRequestWithId(mPlayerId)) {
                 initializeFabForOutgoingFriendRequest(factory);
             } else {
                 initializeFabForNonFriend(friend, factory);
@@ -133,6 +131,7 @@ public class PlayerActivty extends FifaActivity
     private void initializeAddSeriesButton(FabFactory factory, FifaEventManager manager, Friend friend) {
         FloatingActionButton seriesButton = factory.createPlaySeriesFab();
         seriesButton.setOnClickListener(l -> {
+            mFam.collapse();
             manager.setSeriesFlow();
             manager.startNewFlow(friend);
         });

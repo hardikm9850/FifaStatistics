@@ -17,7 +17,7 @@ import com.example.kevin.fifastatistics.views.notifications.FifaNotification;
 /**
  * Notification that is displayed when an outgoing friend request has been declined.
  */
-public class DeclineRequestNotification extends FifaNotification{
+public class DeclineRequestNotification extends FifaNotification {
 
     public static final int NOTIFICATION_ID = 2;
 
@@ -35,7 +35,7 @@ public class DeclineRequestNotification extends FifaNotification{
     }
 
     private void initializeContentIntent(User user) {
-        Intent intent = IntentFactory.createPlayerActivityIntent(mContext, user, false);
+        Intent intent = IntentFactory.createPlayerActivityIntent(mContext, user);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
         mContentIntent = PendingIntent.getActivity(
