@@ -29,6 +29,7 @@ import com.example.kevin.fifastatistics.utils.MatchUtils;
 import com.example.kevin.fifastatistics.utils.ObservableUtils;
 import com.example.kevin.fifastatistics.utils.ResourceUtils;
 import com.example.kevin.fifastatistics.utils.ToastUtils;
+import com.example.kevin.fifastatistics.utils.UiUtils;
 import com.example.kevin.fifastatistics.views.AddMatchListLayout;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
@@ -74,7 +75,10 @@ public class AddMatchDialogFragment extends DialogFragment
         AlertDialog dialog = new AlertDialog.Builder(mActivity).create();
         dialog.setMessage("Are you sure you want to discard this match?");
         dialog.setButton(AlertDialog.BUTTON_POSITIVE, "KEEP EDITING", (d, w) -> dialog.dismiss());
-        dialog.setButton(AlertDialog.BUTTON_NEGATIVE, "DISCARD", (d, w) -> dismiss());
+        dialog.setButton(AlertDialog.BUTTON_NEGATIVE, "DISCARD", (d, w) -> {
+            dialog.dismiss();
+            dismiss();
+        });
         dialog.show();
     }
 
@@ -93,11 +97,19 @@ public class AddMatchDialogFragment extends DialogFragment
     }
 
     @Override
+    public void onPause() {
+        UiUtils.hideKeyboard(mActivity);
+        super.onPause();
+    }
+
+    @Override
     public void onDestroyView() {
+        UiUtils.removeFragmentFromBackstack(mActivity, this);
         resetStatusBarColor();
         System.gc();
         super.onDestroyView();
     }
+
 
     private void resetStatusBarColor() {
         mActivity.getWindow().setStatusBarColor(mOldStatusBarColor);

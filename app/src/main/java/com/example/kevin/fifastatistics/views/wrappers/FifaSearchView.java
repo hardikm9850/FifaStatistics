@@ -1,5 +1,6 @@
 package com.example.kevin.fifastatistics.views.wrappers;
 
+import android.app.Activity;
 import android.content.Intent;
 
 import com.example.kevin.fifastatistics.R;
@@ -21,8 +22,6 @@ import rx.Observable;
  * Wrapper class around {@link com.lapism.searchview.SearchView}.
  */
 public class FifaSearchView {
-
-    private static final int ANIMATION_DURATION = 240;
 
     private static FifaSearchView mInstance;
 
@@ -50,17 +49,6 @@ public class FifaSearchView {
         }
     }
 
-    /**
-     * Attaches the default adapter to the searchview. Must be called from the UI Thread
-     * (attaching the adpater begins filtering).
-     */
-    public void attachAdapter() {
-        if (!mIsAdapterSet) {
-            mIsAdapterSet = true;
-            mSearchView.setAdapter(mAdapter);
-        }
-    }
-
     public void show(boolean animate) {
         mSearchView.open(animate);
     }
@@ -79,13 +67,21 @@ public class FifaSearchView {
         setSearchViewListeners(activity);
 
         mAdapter = initializeAdapter(activity, users);
+        attachAdapter();
+    }
+
+    private void attachAdapter() {
+        if (!mIsAdapterSet) {
+            mIsAdapterSet = true;
+            mSearchView.setAdapter(mAdapter);
+        }
     }
 
     private void setBasicSearchViewProperties() {
         mSearchView.setVersion(SearchView.VERSION_MENU_ITEM);
+        mSearchView.setVersionMargins(SearchView.VERSION_MARGINS_MENU_ITEM);
+        mSearchView.setNavigationIconArrowHamburger();
         mSearchView.setTheme(SearchView.THEME_LIGHT);
-        mSearchView.setDivider(true);
-        mSearchView.setAnimationDuration(ANIMATION_DURATION);
         mSearchView.setVoice(false);
         mSearchView.setHint("Search Users");
     }
@@ -94,7 +90,9 @@ public class FifaSearchView {
         mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                mSearchView.close(false);
+                if (mSearchView.getAdapter().getItemCount() == 1) {
+                    launchPlayerActivity(activity, (SearchAdapter) mSearchView.getAdapter(), 0);
+                }
                 return false;
             }
 
@@ -118,13 +116,15 @@ public class FifaSearchView {
 
     private SearchAdapter initializeAdapter(FifaActivity activity, List<? extends Player> players) {
         SearchAdapter adapter = new SearchAdapter(activity, players);
+        adapter.addOnItemClickListener((v, p) -> launchPlayerActivity(activity, adapter, p));
 
-        adapter.addOnItemClickListener((view, position) -> {
-            mSearchView.close(true);
-            Player selectedUser = adapter.getPlayerAtPosition(position);
-            Intent intent = IntentFactory.createPlayerActivityIntent(activity, selectedUser);
-            activity.startActivity(intent);
-        });
         return adapter;
+    }
+
+    private void launchPlayerActivity(Activity activity, SearchAdapter adapter, int position) {
+        mSearchView.close(true);
+        Player selectedUser = adapter.getPlayerAtPosition(position);
+        Intent intent = IntentFactory.createPlayerActivityIntent(activity, selectedUser);
+        activity.startActivity(intent);
     }
 }

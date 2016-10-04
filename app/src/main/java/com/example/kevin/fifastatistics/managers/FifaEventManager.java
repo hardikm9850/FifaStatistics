@@ -151,7 +151,8 @@ public class FifaEventManager implements SelectOpponentDialogFragment.SelectOppo
 
         @Override
         public boolean handleBackPress() {
-            return (mAddMatchFragment != null) && mAddMatchFragment.handleBackPress();
+            return (mAddMatchFragment != null) && (mAddMatchFragment.isVisible()) &&
+                    mAddMatchFragment.handleBackPress();
         }
     }
 }

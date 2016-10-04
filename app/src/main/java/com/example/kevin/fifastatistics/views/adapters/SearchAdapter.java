@@ -20,6 +20,7 @@ import android.widget.TextView;
 import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.models.databasemodels.user.Player;
 import com.example.kevin.fifastatistics.utils.BitmapUtils;
+import com.example.kevin.fifastatistics.utils.ObservableUtils;
 import com.lapism.searchview.SearchView;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
@@ -170,8 +171,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ResultView
         Observable.just(imageUrl)
                 .map(mImageLoader::loadImageSync)
                 .map(b -> b == null ? BitmapUtils.getBlankBitmap(IMAGE_SIZE, IMAGE_SIZE) : b)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+                .compose(ObservableUtils.applySchedulers())
                 .subscribe(icon::setImageBitmap);
     }
 

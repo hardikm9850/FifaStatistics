@@ -77,7 +77,6 @@ public class FriendsFragment extends Fragment implements FifaActivity.OnBackPres
         FifaSearchView.getInstance((FifaActivity) getActivity(), user).subscribe(sv -> {
             if (sv != null) {
                 mSearchView = sv;
-                mSearchView.attachAdapter();
                 mIsSearchViewReady = true;
                 getActivity().invalidateOptionsMenu();
             }
@@ -95,7 +94,6 @@ public class FriendsFragment extends Fragment implements FifaActivity.OnBackPres
 
     @Override
     public void onDestroyView() {
-        Log.d("FRIENDS", "destroying");
         mView = null;
         mSearchView = null;
         super.onDestroyView();
