@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 
 import com.example.kevin.fifastatistics.R;
@@ -45,7 +44,6 @@ public class MainActivity extends FifaActivity
     private TabLayout mTabLayout;
     private ViewPager mViewPager;
     private FloatingActionsMenu mActionMenu;
-    private OnBackPressedHandler mBackPressHandler;
 
     private int currentDrawerPosition;
 
@@ -160,15 +158,6 @@ public class MainActivity extends FifaActivity
     public void onFriendsFragmentInteraction(Friend friend) {
         Intent intent = IntentFactory.createPlayerActivityIntent(this, friend);
         startActivity(intent);
-    }
-
-    @Override
-    public void onBackPressed() {
-        if (mBackPressHandler != null && mBackPressHandler.handleBackPress()) {
-            return;
-        }
-        Log.d("MAIN ACTIVITY", "HANDLING BACK PRESS");
-        super.onBackPressed();
     }
 
     @Override

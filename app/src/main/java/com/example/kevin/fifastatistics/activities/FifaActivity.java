@@ -6,9 +6,19 @@ import android.view.View;
 
 public abstract class FifaActivity extends AppCompatActivity {
 
+    protected OnBackPressedHandler mBackPressHandler;
+
     public abstract Toolbar getToolbar();
     public abstract void setNavigationLocked(boolean locked);
     public abstract View getParentLayout();
+
+    @Override
+    public void onBackPressed() {
+        if (mBackPressHandler != null && mBackPressHandler.handleBackPress()) {
+            return;
+        }
+        super.onBackPressed();
+    }
 
     public interface OnBackPressedHandler {
 

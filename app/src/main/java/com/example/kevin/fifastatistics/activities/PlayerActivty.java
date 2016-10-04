@@ -122,6 +122,7 @@ public class PlayerActivty extends FifaActivity
         FloatingActionButton matchButton = factory.createPlayMatchFab();
         matchButton.setOnClickListener(l -> {
             mFam.collapse();
+            mBackPressHandler = manager;
             manager.setMatchFlow();
             manager.startNewFlow(friend);
         });
