@@ -26,6 +26,13 @@
                 app:popupTheme="@style/AppTheme.PopupOverlay"
                 app:layout_collapseMode="pin"/>
 
+            <com.lapism.searchview.SearchView
+                android:id="@+id/searchView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                search_version="menu_item"
+                search_hide_on_keyboard_close="true"/>
+
         </FrameLayout>
 
         <android.support.design.widget.TabLayout

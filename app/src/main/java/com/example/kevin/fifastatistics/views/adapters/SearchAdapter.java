@@ -81,7 +81,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ResultView
                     List<Player> results = new ArrayList<>();
                     for (Player player : mSuggestionsList) {
                         String string = player.getName().toLowerCase(Locale.getDefault());
-                        if (string.contains(key)) {
+                        if (string.startsWith(key)) {
                             results.add(player);
                         }
                     }
