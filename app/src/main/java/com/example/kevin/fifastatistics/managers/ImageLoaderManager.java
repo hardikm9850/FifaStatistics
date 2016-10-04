@@ -7,6 +7,7 @@ import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.ImageScaleType;
+import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
 
 /**
  * Manager for initialization of imageLoader options.
@@ -31,22 +32,10 @@ public class ImageLoaderManager {
         DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder()
                 .cacheOnDisk(true).cacheInMemory(true)
                 .imageScaleType(ImageScaleType.EXACTLY)
+                .displayer(new FadeInBitmapDisplayer(100))
                 .build();
 
         initConfigWithOptions(context, defaultOptions);
-    }
-
-    /**
-     * Initialization for the ImageLoader options that are used for loading notification images.
-     * @param context   the Context
-     */
-    public static void initializeNotificationsImageLoader(Context context) {
-        DisplayImageOptions notificationOptions = new DisplayImageOptions.Builder()
-                .cacheOnDisk(true).cacheInMemory(true)
-                .imageScaleType(ImageScaleType.EXACTLY)
-                .build();
-
-        initConfigWithOptions(context, notificationOptions);
     }
 
     private static void initConfigWithOptions(Context context, DisplayImageOptions options) {

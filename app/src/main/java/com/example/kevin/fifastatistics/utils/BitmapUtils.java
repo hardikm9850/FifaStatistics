@@ -85,14 +85,14 @@ public class BitmapUtils
     }
 
     /**
-     * Returns a plain white bitmap.
+     * Returns a transparent bitmap.
      * @param width     The width of the bitmap
      * @param height    THe height of the bitmap
      * @return  the plain white bitmap
      */
-    public static Bitmap getBlankBitmap(int width, int height) {
+    public static Bitmap getTransparentBitmap(int width, int height) {
         Bitmap image = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_4444);
-        image.eraseColor(android.graphics.Color.WHITE);
+        image.eraseColor(Color.TRANSPARENT);
         return image;
     }
 

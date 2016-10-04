@@ -2,13 +2,14 @@ package com.example.kevin.fifastatistics.views.adapters;
 
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Typeface;
-import android.media.ThumbnailUtils;
 import android.support.v7.widget.RecyclerView;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,15 +28,17 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 import rx.Observable;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 @SuppressWarnings({"WeakerAccess", "unused"})
 public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ResultViewHolder> implements Filterable {
 
     private static final int IMAGE_SIZE = 150;
+    private static final int IMAGE_LOAD_DELAY_TIME_MS = 500;
+
+    private final Bitmap BLANK_BITMAP = BitmapUtils.getTransparentBitmap(IMAGE_SIZE, IMAGE_SIZE);
 
     private String key = "";
     private List<? extends Player> mResultList = new ArrayList<>();
@@ -150,8 +153,8 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ResultView
     public void onBindViewHolder(ResultViewHolder viewHolder, int position) {
         Player item = mResultList.get(position);
 
-        viewHolder.icon_left.setScaleType(ImageView.ScaleType.CENTER_CROP);
-        setIcon(item.getImageUrl(), viewHolder.icon_left);
+        maybeSetIcon(item.getImageUrl(), viewHolder);
+        viewHolder.imageUrl = item.getImageUrl();
         viewHolder.text.setTypeface((Typeface.create(SearchView.getTextFont(), SearchView.getTextStyle())));
         viewHolder.text.setTextColor(SearchView.getTextColor());
 
@@ -167,12 +170,16 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ResultView
         }
     }
 
-    private void setIcon(String imageUrl, ImageView icon) {
-        Observable.just(imageUrl)
-                .map(mImageLoader::loadImageSync)
-                .map(b -> b == null ? BitmapUtils.getBlankBitmap(IMAGE_SIZE, IMAGE_SIZE) : b)
-                .compose(ObservableUtils.applySchedulers())
-                .subscribe(icon::setImageBitmap);
+    private void maybeSetIcon(String imageUrl, ResultViewHolder viewHolder) {
+        if (!viewHolder.imageUrl.equals(imageUrl)) {
+            viewHolder.icon_left.setImageBitmap(BLANK_BITMAP);
+            Observable.just(imageUrl)
+                    .map(mImageLoader::loadImageSync)
+                    .map(b -> b == null ? BLANK_BITMAP : b)
+                    .compose(ObservableUtils.applySchedulers())
+                    .delaySubscription(IMAGE_LOAD_DELAY_TIME_MS, TimeUnit.MILLISECONDS)
+                    .subscribe(viewHolder.icon_left::setImageBitmap);
+        }
     }
 
     @Override
@@ -204,12 +211,15 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ResultView
 
     public class ResultViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        final protected ImageView icon_left;
-        final protected TextView text;
+        protected final ImageView icon_left;
+        protected final TextView text;
+        protected String imageUrl;
 
         public ResultViewHolder(View view) {
             super(view);
             icon_left = (ImageView) view.findViewById(R.id.imageView_item_icon_left);
+            icon_left.setScaleType(ImageView.ScaleType.CENTER_CROP);
+            imageUrl = "";
             text = (TextView) view.findViewById(R.id.textView_item_text);
             view.setOnClickListener(this);
         }
