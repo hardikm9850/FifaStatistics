@@ -21,6 +21,7 @@ import com.example.kevin.fifastatistics.views.adapters.ViewPagerAdapter;
 import com.example.kevin.fifastatistics.views.wrappers.FifaNavigationDrawer;
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
+import com.lapism.searchview.SearchView;
 
 import java.util.concurrent.TimeUnit;
 
@@ -62,6 +63,8 @@ public class MainActivity extends FifaActivity
 
     private void initializeToolbar() {
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        SearchView sv = (SearchView) findViewById(R.id.searchView);
+        sv.setVersion(SearchView.VERSION_MENU_ITEM);
         setSupportActionBar(mToolbar);
     }
 
