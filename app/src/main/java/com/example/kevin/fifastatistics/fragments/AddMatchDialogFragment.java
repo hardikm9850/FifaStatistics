@@ -181,6 +181,7 @@ public class AddMatchDialogFragment extends DialogFragment
         ImageButton b = (ImageButton) mToolbar.findViewById(R.id.camera_button);
         b.setOnClickListener(view -> {
             System.gc(); // want to clear memory before heavy bitmap operations
+            UiUtils.hideKeyboard(mActivity);
             FragmentTransaction t = mActivity.getSupportFragmentManager().beginTransaction();
             t.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
             mCameraFragment = CameraFragment.newInstance(this);
