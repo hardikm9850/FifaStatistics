@@ -116,7 +116,13 @@ public class AddMatchDialogFragment extends DialogFragment
         mToolbar = (Toolbar) view.findViewById(R.id.dialog_toolbar);
         mToolbar.setTitle("Add Match");
         mToolbar.setNavigationIcon(R.drawable.ic_close_white_24dp);
-        mToolbar.setNavigationOnClickListener(v -> showConfirmationDialog());
+        mToolbar.setNavigationOnClickListener(v -> {
+            if (mAddMatchList.isEdited()) {
+                showConfirmationDialog();
+            } else {
+                dismiss();
+            }
+        });
 
         initializeDoneMenuItem();
         initializeCameraMenuItem();

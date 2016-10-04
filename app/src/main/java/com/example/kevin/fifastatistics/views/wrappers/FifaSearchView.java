@@ -45,8 +45,9 @@ public class FifaSearchView {
                     .map(users -> { users.remove(currentUser); return users; })
                     .map(players -> mInstance = new FifaSearchView(activity, players))
                     .onErrorReturn(t -> null);
+        } else {
+            return Observable.just(mInstance);
         }
-        return Observable.just(mInstance);
     }
 
     /**
