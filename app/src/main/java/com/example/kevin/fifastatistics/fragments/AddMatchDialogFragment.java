@@ -5,7 +5,6 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -75,10 +74,7 @@ public class AddMatchDialogFragment extends DialogFragment
         AlertDialog dialog = new AlertDialog.Builder(mActivity).create();
         dialog.setMessage("Are you sure you want to discard this match?");
         dialog.setButton(AlertDialog.BUTTON_POSITIVE, "KEEP EDITING", (d, w) -> dialog.dismiss());
-        dialog.setButton(AlertDialog.BUTTON_NEGATIVE, "DISCARD", (d, w) -> {
-            dialog.dismiss();
-            dismiss();
-        });
+        dialog.setButton(AlertDialog.BUTTON_NEGATIVE, "DISCARD", (d, w) -> dismiss());
         dialog.show();
     }
 
@@ -128,16 +124,18 @@ public class AddMatchDialogFragment extends DialogFragment
         mToolbar = (Toolbar) view.findViewById(R.id.dialog_toolbar);
         mToolbar.setTitle("Add Match");
         mToolbar.setNavigationIcon(R.drawable.ic_close_white_24dp);
-        mToolbar.setNavigationOnClickListener(v -> {
-            if (mAddMatchList.isEdited()) {
-                showConfirmationDialog();
-            } else {
-                dismiss();
-            }
-        });
+        mToolbar.setNavigationOnClickListener(v -> maybeDismiss());
 
         initializeDoneMenuItem();
         initializeCameraMenuItem();
+    }
+
+    private void maybeDismiss() {
+        if (mAddMatchList.isEdited()) {
+            showConfirmationDialog();
+        } else {
+            dismiss();
+        }
     }
 
     private void initializeDoneMenuItem() {
@@ -150,21 +148,29 @@ public class AddMatchDialogFragment extends DialogFragment
                 ToastUtils.showShortToast(mActivity, "All values must be integers.");
                 return;
             }
-            Penalties penalties = mAddMatchList.getPenalties();
-            boolean userDidWin = userDidWin(stats, penalties);
-            Match match = Match.builder()
-                    .stats(stats)
-                    .penalties(penalties)
-                    .winner(userDidWin ? Friend.fromUser(mUser) : mOpponent)
-                    .loser(userDidWin ? mOpponent : Friend.fromUser(mUser))
-                    .build();
 
-            if (MatchUtils.validateMatch(match)) {
-                mListener.onSaveMatch(match);
-            } else {
-                ToastUtils.showShortToast(mActivity, "Match is not valid.");
-            }
+            Match match = buildMatch(stats);
+            attemptMatchSave(match);
         });
+    }
+
+    private Match buildMatch(User.StatsPair stats) {
+        Penalties penalties = mAddMatchList.getPenalties();
+        boolean userDidWin = userDidWin(stats, penalties);
+        return Match.builder()
+                .stats(stats)
+                .penalties(penalties)
+                .winner(userDidWin ? Friend.fromUser(mUser) : mOpponent)
+                .loser(userDidWin ? mOpponent : Friend.fromUser(mUser))
+                .build();
+    }
+
+    private void attemptMatchSave(Match match) {
+        if (MatchUtils.validateMatch(match)) {
+            mListener.onSaveMatch(match);
+        } else {
+            ToastUtils.showShortToast(mActivity, "Match is not valid.");
+        }
     }
 
     private boolean userDidWin(User.StatsPair stats, Penalties penalties) {
@@ -228,32 +234,41 @@ public class AddMatchDialogFragment extends DialogFragment
     @Override
     public void onImageCapture(Bitmap bitmap, MatchFactsPreprocessor preprocessor) {
         closeCameraFragment();
+        ProgressDialog dialog = showProcessingDialog();
+        preprocessor.processBitmap(bitmap)
+                .map(this::getMatchFacts)
+                .compose(ObservableUtils.applySchedulers())
+                .subscribe(facts -> {
+                    maybeSetListValues(facts);
+                    dialog.cancel();
+                    System.gc(); // cleanup bitmap memory
+        });
+    }
+
+    private ProgressDialog showProcessingDialog() {
         ProgressDialog dialog = new ProgressDialog(mActivity);
         dialog.setTitle("Processing Image");
         dialog.setMessage("Please wait...");
         dialog.setCancelable(false);
         dialog.show();
-        Log.d("STARTING", "PROCESSING");
-        preprocessor.processBitmap(bitmap)
-                .map(b -> {
-                    OcrManager manager = OcrManager.getInstance(b);
-                    try {
-                        return manager.retrieveFacts();
-                    } catch (IOException e) {
-                        return null;
-                    }
-                })
-                .compose(ObservableUtils.applySchedulers())
-                .subscribe(facts -> {
-                    if (facts != null) {
-                        mAddMatchList.setValues(facts);
-                    } else {
-                        ToastUtils.showShortToast(mActivity, "Failed to parse image.");
-                    }
-                    dialog.cancel();
-                    System.gc(); // cleanup bitmap memory
-        });
-        Log.d("FINISHED", "PROCESSING");
+        return dialog;
+    }
+
+    private User.StatsPair getMatchFacts(Bitmap b) {
+        OcrManager manager = OcrManager.getInstance(b);
+        try {
+            return manager.retrieveFacts();
+        } catch (IOException e) {
+            return null;
+        }
+    }
+
+    private void maybeSetListValues(User.StatsPair facts) {
+        if (facts != null) {
+            mAddMatchList.setValues(facts);
+        } else {
+            ToastUtils.showShortToast(mActivity, "Failed to parse image.");
+        }
     }
 
     @Override
@@ -268,11 +283,7 @@ public class AddMatchDialogFragment extends DialogFragment
 
     private void closeCameraFragment() {
         if (mCameraFragment != null) {
-            FragmentManager manager = getActivity().getSupportFragmentManager();
-            FragmentTransaction trans = manager.beginTransaction();
-            trans.remove(mCameraFragment);
-            trans.commit();
-            manager.popBackStack();
+            UiUtils.removeFragmentFromBackstack(mActivity, mCameraFragment);
         }
     }
 
