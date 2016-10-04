@@ -141,7 +141,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ResultView
     @Override
     public ResultViewHolder onCreateViewHolder(final ViewGroup parent, int viewType) {
         final LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        final View view = inflater.inflate(R.layout.search_item, parent, false);
+        final View view = inflater.inflate(R.layout.search_list_item, parent, false);
         return new ResultViewHolder(view);
     }
 
@@ -149,6 +149,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ResultView
     public void onBindViewHolder(ResultViewHolder viewHolder, int position) {
         Player item = mResultList.get(position);
 
+        viewHolder.icon_left.setScaleType(ImageView.ScaleType.CENTER_CROP);
         setIcon(item.getImageUrl(), viewHolder.icon_left);
         viewHolder.text.setTypeface((Typeface.create(SearchView.getTextFont(), SearchView.getTextStyle())));
         viewHolder.text.setTextColor(SearchView.getTextColor());
@@ -168,9 +169,8 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ResultView
     private void setIcon(String imageUrl, ImageView icon) {
         Observable.just(imageUrl)
                 .map(mImageLoader::loadImageSync)
-                .map(b -> ThumbnailUtils.extractThumbnail(b, IMAGE_SIZE, IMAGE_SIZE))
+//                .map(b -> ThumbnailUtils.extractThumbnail(b, IMAGE_SIZE, IMAGE_SIZE))
                 .map(b -> b == null ? BitmapUtils.getBlankBitmap(IMAGE_SIZE, IMAGE_SIZE) : b)
-                .map(BitmapUtils::getCircleBitmap)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(icon::setImageBitmap);
