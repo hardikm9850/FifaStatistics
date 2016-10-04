@@ -25,8 +25,10 @@ public class FifaSearchView {
     private static final int ANIMATION_DURATION = 240;
 
     private static FifaSearchView mInstance;
+
     private SearchView mSearchView;
     private SearchAdapter mAdapter;
+    private boolean mIsAdapterSet;
 
     /**
      * Get the SearchView instance. This method will not attach an adapter to the searchview.
@@ -36,17 +38,13 @@ public class FifaSearchView {
      * @return the search view, or null if the list of users cannot be retrieved
      */
     public static Observable<FifaSearchView> getInstance(FifaActivity activity, User currentUser) {
-        return ApiAdapter.getFifaApi().getUsers()
-                .compose(ObservableUtils.applySchedulers())
-                .map(ApiListResponse::getItems)
-                .map(users -> { users.remove(currentUser); return users; })
-                .flatMap(users -> initialize(activity, users))
-                .onErrorReturn(t -> null);
-    }
-
-    private static Observable<FifaSearchView> initialize(FifaActivity activity, List<? extends Player> players) {
         if (mInstance == null) {
-            mInstance = new FifaSearchView(activity, players);
+            return ApiAdapter.getFifaApi().getUsers()
+                    .compose(ObservableUtils.applySchedulers())
+                    .map(ApiListResponse::getItems)
+                    .map(users -> { users.remove(currentUser); return users; })
+                    .map(players -> mInstance = new FifaSearchView(activity, players))
+                    .onErrorReturn(t -> null);
         }
         return Observable.just(mInstance);
     }
@@ -56,7 +54,10 @@ public class FifaSearchView {
      * (attaching the adpater begins filtering).
      */
     public void attachAdapter() {
-        mSearchView.setAdapter(mAdapter);
+        if (!mIsAdapterSet) {
+            mIsAdapterSet = true;
+            mSearchView.setAdapter(mAdapter);
+        }
     }
 
     public void show(boolean animate) {

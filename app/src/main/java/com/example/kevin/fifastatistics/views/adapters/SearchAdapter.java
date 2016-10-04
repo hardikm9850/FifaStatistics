@@ -169,7 +169,6 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ResultView
     private void setIcon(String imageUrl, ImageView icon) {
         Observable.just(imageUrl)
                 .map(mImageLoader::loadImageSync)
-//                .map(b -> ThumbnailUtils.extractThumbnail(b, IMAGE_SIZE, IMAGE_SIZE))
                 .map(b -> b == null ? BitmapUtils.getBlankBitmap(IMAGE_SIZE, IMAGE_SIZE) : b)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
