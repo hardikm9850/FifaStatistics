@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -134,7 +135,7 @@ public class FriendsFragment extends Fragment implements FifaActivity.OnBackPres
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_search) {
-            mSearchView.show(true);
+            mSearchView.show(true, item);
             return true;
         } else {
             return super.onOptionsItemSelected(item);

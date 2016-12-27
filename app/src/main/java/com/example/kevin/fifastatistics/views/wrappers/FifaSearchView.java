@@ -2,6 +2,7 @@ package com.example.kevin.fifastatistics.views.wrappers;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.view.MenuItem;
 
 import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.activities.FifaActivity;
@@ -49,7 +50,7 @@ public class FifaSearchView {
         }
     }
 
-    public void show(boolean animate) {
+    public void show(boolean animate, MenuItem item) {
         mSearchView.open(animate);
     }
 
@@ -80,13 +81,14 @@ public class FifaSearchView {
     private void setBasicSearchViewProperties() {
         mSearchView.setVersion(SearchView.VERSION_MENU_ITEM);
         mSearchView.setVersionMargins(SearchView.VERSION_MARGINS_MENU_ITEM);
-        mSearchView.setNavigationIconArrowHamburger();
+//        mSearchView.setArrowOnly(false);
         mSearchView.setTheme(SearchView.THEME_LIGHT);
         mSearchView.setVoice(false);
-        mSearchView.setHint("Search Users");
+        mSearchView.setHint("Search Players");
     }
 
     private void setSearchViewListeners(FifaActivity activity) {
+
         mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -103,13 +105,15 @@ public class FifaSearchView {
         });
         mSearchView.setOnOpenCloseListener(new SearchView.OnOpenCloseListener() {
             @Override
-            public void onOpen() {
+            public boolean onOpen() {
                 activity.setNavigationLocked(true);
+                return true;
             }
 
             @Override
-            public void onClose() {
+            public boolean onClose() {
                 activity.setNavigationLocked(false);
+                return true;
             }
         });
     }
