@@ -59,7 +59,9 @@
 
         <!-- [START gcm_listener] -->
         <service
-            android:name=".network.gcmnotifications.FirebaseListenerService">
+            android:name=".network.gcmnotifications.FirebaseListenerService"
+            android:enabled="true"
+            android:exported="true">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT"/>
             </intent-filter>

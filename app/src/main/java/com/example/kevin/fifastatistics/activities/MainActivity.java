@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 
 import com.example.kevin.fifastatistics.R;
@@ -13,6 +14,7 @@ import com.example.kevin.fifastatistics.fragments.initializers.FragmentInitializ
 import com.example.kevin.fifastatistics.fragments.initializers.FragmentInitializerFactory;
 import com.example.kevin.fifastatistics.managers.FifaEventManager;
 import com.example.kevin.fifastatistics.managers.RetrievalManager;
+import com.example.kevin.fifastatistics.managers.SharedPreferencesManager;
 import com.example.kevin.fifastatistics.models.databasemodels.user.Friend;
 import com.example.kevin.fifastatistics.utils.FabFactory;
 import com.example.kevin.fifastatistics.utils.IntentFactory;
@@ -58,6 +60,7 @@ public class MainActivity extends FifaActivity
         initializeDrawer();
         initializeFab();
         initializeFragment();
+        Log.d("token", SharedPreferencesManager.getRegistrationToken());
     }
 
     @SuppressWarnings("ConstantConditions")
