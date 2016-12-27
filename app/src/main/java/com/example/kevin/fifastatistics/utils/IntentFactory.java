@@ -23,7 +23,7 @@ public class IntentFactory {
     public static Intent createFriendRequestsIntent(Context context) {
         Intent intent = new Intent(context, MainActivity.class);
         intent.putExtra(MainActivity.FRAGMENT_EXTRA, Constants.FRIENDS_FRAGMENT);
-        intent.putExtra(MainActivity.PAGE_EXTRA, FriendsFragment.requestsView);
+        intent.putExtra(MainActivity.PAGE_EXTRA, FriendsFragment.REQUESTS_VIEW);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         return intent;
     }

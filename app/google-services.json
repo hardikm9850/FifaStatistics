@@ -1,99 +1,99 @@
 {
   "project_info": {
-    "project_id": "fifastatistics",
     "project_number": "433114915503",
-    "name": "FifaStatistics"
+    "firebase_url": "https://fifastatistics.firebaseio.com",
+    "project_id": "fifastatistics",
+    "storage_bucket": "fifastatistics.appspot.com"
   },
   "client": [
     {
       "client_info": {
         "mobilesdk_app_id": "1:433114915503:android:5a0c9af5ef0f4c04",
-        "client_id": "android:com.example.kevin",
-        "client_type": 1,
         "android_client_info": {
           "package_name": "com.example.kevin"
         }
       },
       "oauth_client": [
         {
-          "client_id": "433114915503-ek2cfp684a0vboth5dnoj1q0ltsiajpt.apps.googleusercontent.com",
+          "client_id": "433114915503-nvuvtkm58qdkkusrqafhtd4ae1adqdaa.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.example.kevin",
-            "certificate_hash": "89EE1298B6ECA381699C3910B5D379BAA42A0249"
+            "certificate_hash": "F152886FEB8161A6D7F0472183D9A820B3FBF5BC"
           }
         },
         {
-          "client_id": "433114915503-tmk7hf9qemqr8av2bdlfagi5qletbt0m.apps.googleusercontent.com",
+          "client_id": "433114915503-sc59fevmgf8npcehi31ooc8en6b7j7ak.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
-      "api_key": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCdoaybqW3QHjbnPE4xr9jgxxhJOl53Ln4"
+        }
+      ],
       "services": {
         "analytics_service": {
           "status": 1
         },
-        "cloud_messaging_service": {
-          "status": 1,
-          "apns_config": []
-        },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
-        },
-        "google_signin_service": {
-          "status": 2
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "433114915503-sc59fevmgf8npcehi31ooc8en6b7j7ak.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         },
         "ads_service": {
-          "status": 1
+          "status": 2
         }
       }
     },
     {
       "client_info": {
         "mobilesdk_app_id": "1:433114915503:android:3048f8005ce5d64e",
-        "client_id": "android:com.example.kevin.fifastatistics",
-        "client_type": 1,
         "android_client_info": {
           "package_name": "com.example.kevin.fifastatistics"
         }
       },
       "oauth_client": [
         {
-          "client_id": "433114915503-1tgpgppqctui1f3k7d6ollra1gcq3gq6.apps.googleusercontent.com",
+          "client_id": "433114915503-pdoh5pdqi7ob7n83inmva999iole3ai7.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.example.kevin.fifastatistics",
-            "certificate_hash": "89EE1298B6ECA381699C3910B5D379BAA42A0249"
+            "certificate_hash": "F152886FEB8161A6D7F0472183D9A820B3FBF5BC"
           }
         },
         {
-          "client_id": "433114915503-tmk7hf9qemqr8av2bdlfagi5qletbt0m.apps.googleusercontent.com",
+          "client_id": "433114915503-sc59fevmgf8npcehi31ooc8en6b7j7ak.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
-      "api_key": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCdoaybqW3QHjbnPE4xr9jgxxhJOl53Ln4"
+        }
+      ],
       "services": {
         "analytics_service": {
           "status": 1
         },
-        "cloud_messaging_service": {
-          "status": 2,
-          "apns_config": []
-        },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
-        },
-        "google_signin_service": {
-          "status": 2
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "433114915503-sc59fevmgf8npcehi31ooc8en6b7j7ak.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         },
         "ads_service": {
-          "status": 1
+          "status": 2
         }
       }
     }
   ],
-  "client_info": [],
-  "ARTIFACT_VERSION": "1"
+  "configuration_version": "1"
 }

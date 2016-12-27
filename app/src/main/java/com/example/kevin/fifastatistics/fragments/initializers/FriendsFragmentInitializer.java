@@ -26,10 +26,10 @@ public class FriendsFragmentInitializer extends FragmentInitializer
     public void changeAdapterDataSet(ViewPagerAdapter adapter) {
         adapter.clear();
         adapter.addFragment(
-                FriendsFragment.newInstance(FriendsFragment.friendsView),
+                FriendsFragment.newInstance(FriendsFragment.FRIENDS_VIEW),
                 Constants.FRIENDS_FRAGMENT);
         adapter.addFragment(
-                FriendsFragment.newInstance(FriendsFragment.requestsView),
+                FriendsFragment.newInstance(FriendsFragment.REQUESTS_VIEW),
                 "Friend Requests");
 
         adapter.notifyDataSetChanged();

@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -33,11 +32,11 @@ import it.gmariotti.recyclerview.adapter.SlideInBottomAnimatorAdapter;
  */
 public class FriendsFragment extends Fragment implements FifaActivity.OnBackPressedHandler {
 
-    public static final String viewArgument = "view";
-    public static final int friendsView = 0;
-    public static final int requestsView = 1;
+    public static final String VIEW_ARG = "view";
+    public static final int FRIENDS_VIEW = 0;
+    public static final int REQUESTS_VIEW = 1;
 
-    private static final int mColumnCount = 2;
+    private static final int COLUMN_COUNT = 2;
 
     private FifaSearchView mSearchView;
     private FriendsFragmentInteractionListener mListener;
@@ -50,7 +49,7 @@ public class FriendsFragment extends Fragment implements FifaActivity.OnBackPres
     public static FriendsFragment newInstance(int view) {
         FriendsFragment fragment = new FriendsFragment();
         Bundle args = new Bundle();
-        args.putInt(viewArgument, view);
+        args.putInt(VIEW_ARG, view);
         fragment.setArguments(args);
         return fragment;
     }
@@ -84,8 +83,8 @@ public class FriendsFragment extends Fragment implements FifaActivity.OnBackPres
     }
 
     private void setAdapterDataSource(User user) {
-        int viewToShow = getArguments().getInt(viewArgument, 0);
-        if (viewToShow == friendsView) {
+        int viewToShow = getArguments().getInt(VIEW_ARG, 0);
+        if (viewToShow == FRIENDS_VIEW) {
             setAdapter(user.getFriends());
         } else {
             setAdapter(user.getIncomingRequests());
@@ -161,7 +160,8 @@ public class FriendsFragment extends Fragment implements FifaActivity.OnBackPres
             RecyclerView recyclerView = (RecyclerView) mView;
             FriendsRecyclerViewAdapter adapter = new FriendsRecyclerViewAdapter(friends, mListener);
             SlideInBottomAnimatorAdapter animatorAdapter = new SlideInBottomAnimatorAdapter(adapter, recyclerView);
-            recyclerView.setLayoutManager(new GridLayoutManager(mView.getContext(), mColumnCount));
+//            animatorAdapter.getViewAnimator().setAnimationDurationMillis(200);
+            recyclerView.setLayoutManager(new GridLayoutManager(mView.getContext(), COLUMN_COUNT));
             recyclerView.setAdapter(animatorAdapter);
         }
     }

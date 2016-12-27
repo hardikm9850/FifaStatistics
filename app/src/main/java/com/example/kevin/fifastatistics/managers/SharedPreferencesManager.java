@@ -3,6 +3,7 @@ package com.example.kevin.fifastatistics.managers;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -122,10 +123,9 @@ public class SharedPreferencesManager {
         ObjectMapper mapper = new ObjectMapper();
         String user = preferences.getString(CURRENT_USER, null);
         try {
-            return mapper.readValue(user, User.class);
+            return user == null ? null : mapper.readValue(user, User.class);
         } catch (IOException e) {
-            e.printStackTrace();
-            throw new RuntimeException(e);
+            return null;
         }
     }
 }

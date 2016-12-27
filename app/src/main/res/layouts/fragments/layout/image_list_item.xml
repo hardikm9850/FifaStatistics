@@ -14,7 +14,6 @@
         android:paddingStart="@dimen/activity_horizontal_margin"
         app:civ_border_width="2dp"
         app:civ_border_color="#FFFFFF"
-        android:src="@android:color/white"
         android:layout_gravity="center_vertical"/>
 
     <TextView
