@@ -7,6 +7,8 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.fragments.PlayerOverviewFragment;
@@ -22,6 +24,7 @@ import com.example.kevin.fifastatistics.utils.SnackbarUtils;
 import com.example.kevin.fifastatistics.views.adapters.ViewPagerAdapter;
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 public class PlayerActivty extends FifaActivity
         implements PlayerOverviewFragment.OnPlayerFragmentInteractionListener {
@@ -77,9 +80,13 @@ public class PlayerActivty extends FifaActivity
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-//        ImageView userImage = (ImageView) findViewById(R.id.avatar);
-//        ImageLoader.getInstance().displayImage(getIntent().getStringExtra(IMAGE_URL_EXTRA), userImage);
+        TextView title = (TextView) findViewById(R.id.toolbar_title);
+        title.setText(mName);
+
+        ImageView userImage = (ImageView) findViewById(R.id.toolbar_profile_imageview);
+        ImageLoader.getInstance().displayImage(mImageUrl, userImage);
     }
 
     @SuppressWarnings("ConstantConditions")

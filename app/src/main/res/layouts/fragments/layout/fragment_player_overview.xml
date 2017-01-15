@@ -14,10 +14,6 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <include
-                android:id="@+id/item_header_view_pager_parallax_spacing"
-                layout="@layout/item_header_view_pager_parallax_spacing" />
-
             <include layout="@layout/user_overview_data"/>
 
         </LinearLayout>

@@ -61,8 +61,7 @@ public class UserOverviewFragment extends Fragment implements FifaActivity.OnBac
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater)
-    {
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.main, menu);
         menu.findItem(R.id.action_search).setVisible(false);
     }

@@ -31,5 +31,7 @@
     <dimen name="user_image_height">100dp</dimen>
     <dimen name="player_image_width">100dp</dimen>
     <dimen name="player_image_small_width">32dp</dimen>
+    <dimen name="toolbar_profile_image_size">32dp</dimen>
+    <dimen name="toolbar_image_margin_end">12dp</dimen>
 
 </resources>
