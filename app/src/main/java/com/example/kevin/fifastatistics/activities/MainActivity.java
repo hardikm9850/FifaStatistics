@@ -28,6 +28,7 @@ import com.lapism.searchview.SearchView;
 import java.util.concurrent.TimeUnit;
 
 import rx.Observable;
+import rx.Subscription;
 
 /**
  * The application's main activity class that is loaded on launch, so long as the user is signed in.
@@ -101,12 +102,13 @@ public class MainActivity extends FifaActivity
     }
 
     private void handleDrawerClick(int position) {
-        Observable.just(position)
+        Subscription drawerSubscription = Observable.just(position)
                 .map(p -> currentDrawerPosition = p)
                 .map(FragmentInitializerFactory::createFragmentInitializer)
                 .compose(ObservableUtils.applySchedulers())
                 .delaySubscription(450, TimeUnit.MILLISECONDS)
                 .subscribe(this::prepareActivityForFragments);
+        addSubscription(drawerSubscription);
     }
 
     private void initializeFragment() {
@@ -127,13 +129,14 @@ public class MainActivity extends FifaActivity
 
     private void initializeFab() {
         mActionMenu = (FloatingActionsMenu) findViewById(R.id.fab_menu);
-        RetrievalManager.getCurrentUser().subscribe(user -> {
+        Subscription fabSubscription = RetrievalManager.getCurrentUser().subscribe(user -> {
             FabFactory factory = FabFactory.newInstance(this);
             FifaEventManager manager = FifaEventManager.newInstance(this, user);
 
             initializeAddMatchButton(factory, manager);
             initializeAddSeriesButton(factory, manager);
         });
+        addSubscription(fabSubscription);
     }
 
     private void initializeAddMatchButton(FabFactory factory, FifaEventManager manager) {

@@ -14,10 +14,12 @@ import com.example.kevin.fifastatistics.managers.RetrofitErrorManager;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
 import com.example.kevin.fifastatistics.views.UserOverviewLayout;
 
+import rx.Subscription;
+
 /**
  * Overview of a player that is not the current user.
  */
-public class PlayerOverviewFragment extends ProgressFragment implements FifaActivity.OnBackPressedHandler {
+public class PlayerOverviewFragment extends FifaProgressFragment implements FifaActivity.OnBackPressedHandler {
 
     private static final String ARG_USER_ID = "id";
 
@@ -54,7 +56,7 @@ public class PlayerOverviewFragment extends ProgressFragment implements FifaActi
         setContentView(mContentView);
         setContentShown(false);
         UserOverviewLayout overview = (UserOverviewLayout) mContentView.findViewById(R.id.useroverviewdata);
-        RetrievalManager.getUser(mUserId)
+        Subscription userSub = RetrievalManager.getUser(mUserId)
                 .onErrorReturn(t -> {
                     RetrofitErrorManager.showToastForError(t, getActivity());
                     return null;
@@ -68,6 +70,7 @@ public class PlayerOverviewFragment extends ProgressFragment implements FifaActi
                         setContentShown(true);
                     }
                 });
+        addSubscription(userSub);
     }
 
     @Override

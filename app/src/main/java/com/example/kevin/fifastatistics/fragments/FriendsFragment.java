@@ -24,6 +24,7 @@ import com.example.kevin.fifastatistics.views.wrappers.FifaSearchView;
 import java.util.List;
 
 import it.gmariotti.recyclerview.adapter.SlideInBottomAnimatorAdapter;
+import rx.Subscription;
 
 /**
  * A fragment representing a list of players.
@@ -31,7 +32,7 @@ import it.gmariotti.recyclerview.adapter.SlideInBottomAnimatorAdapter;
  * Activities containing this fragment MUST implement the {@link FriendsFragmentInteractionListener}
  * interface.
  */
-public class FriendsFragment extends Fragment implements FifaActivity.OnBackPressedHandler {
+public class FriendsFragment extends FifaBaseFragment implements FifaActivity.OnBackPressedHandler {
 
     public static final String VIEW_ARG = "view";
     public static final int FRIENDS_VIEW = 0;
@@ -66,21 +67,23 @@ public class FriendsFragment extends Fragment implements FifaActivity.OnBackPres
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mView = inflater.inflate(R.layout.fragment_friends, container, false);
 
-        RetrievalManager.getCurrentUser().subscribe(user -> {
+        Subscription userSub = RetrievalManager.getCurrentUser().subscribe(user -> {
             initializeSearchView(user);
             setAdapterDataSource(user);
         });
+        addSubscription(userSub);
         return mView;
     }
 
     private void initializeSearchView(User user) {
-        FifaSearchView.getInstance((FifaActivity) getActivity(), user).subscribe(sv -> {
+        Subscription searchSub = FifaSearchView.getInstance((FifaActivity) getActivity(), user).subscribe(sv -> {
             if (sv != null) {
                 mSearchView = sv;
                 mIsSearchViewReady = true;
                 getActivity().invalidateOptionsMenu();
             }
         });
+        addSubscription(searchSub);
     }
 
     private void setAdapterDataSource(User user) {

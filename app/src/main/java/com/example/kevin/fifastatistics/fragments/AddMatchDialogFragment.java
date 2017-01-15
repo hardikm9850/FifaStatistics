@@ -34,12 +34,14 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.io.IOException;
 
+import rx.Subscription;
+
 /**
  * Dialog for adding matches. Should be shown as a fullscreen dialog.
  * <p>
  * See https://developer.android.com/guide/topics/ui/dialogs.html#FullscreenDialog for details.
  */
-public class AddMatchDialogFragment extends DialogFragment
+public class AddMatchDialogFragment extends FifaBaseDialogFragment
         implements CameraFragment.ImageCaptureListener, FifaActivity.OnBackPressedHandler {
 
     private ImageLoader mImageLoader;
@@ -235,7 +237,7 @@ public class AddMatchDialogFragment extends DialogFragment
     public void onImageCapture(Bitmap bitmap, MatchFactsPreprocessor preprocessor) {
         closeCameraFragment();
         ProgressDialog dialog = showProcessingDialog();
-        preprocessor.processBitmap(bitmap)
+        Subscription bitmapSub = preprocessor.processBitmap(bitmap)
                 .map(this::getMatchFacts)
                 .compose(ObservableUtils.applySchedulers())
                 .subscribe(facts -> {
@@ -243,6 +245,7 @@ public class AddMatchDialogFragment extends DialogFragment
                     dialog.cancel();
                     System.gc(); // cleanup bitmap memory
         });
+        addSubscription(bitmapSub);
     }
 
     private ProgressDialog showProcessingDialog() {

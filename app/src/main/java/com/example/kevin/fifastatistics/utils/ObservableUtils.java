@@ -2,8 +2,10 @@ package com.example.kevin.fifastatistics.utils;
 
 import lombok.experimental.UtilityClass;
 import rx.Observable;
+import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
+import rx.subscriptions.CompositeSubscription;
 
 @UtilityClass
 public class ObservableUtils {
@@ -28,4 +30,11 @@ public class ObservableUtils {
         return observable -> observable.subscribeOn(Schedulers.immediate())
                 .observeOn(Schedulers.immediate());
     }
+
+    public static void unsubscribeCompositeSubscription(CompositeSubscription cs) {
+        if (cs != null && cs.hasSubscriptions()) {
+            cs.unsubscribe();
+        }
+    }
+
 }

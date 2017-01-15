@@ -21,7 +21,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 /**
  * The main overview fragment for the current user.
  */
-public class UserOverviewFragment extends Fragment implements FifaActivity.OnBackPressedHandler {
+public class UserOverviewFragment extends FifaBaseFragment implements FifaActivity.OnBackPressedHandler {
 
     private User mUser;
 

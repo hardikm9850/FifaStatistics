@@ -19,7 +19,7 @@ import lombok.NoArgsConstructor;
  * Dialog for selecting an opponent to play against when playing a new series or match.
  */
 @NoArgsConstructor
-public class SelectOpponentDialogFragment extends DialogFragment {
+public class SelectOpponentDialogFragment extends FifaBaseDialogFragment {
 
     private static final String TAG = "opponents";
 

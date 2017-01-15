@@ -26,6 +26,8 @@ import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
+import rx.Subscription;
+
 public class PlayerActivty extends FifaActivity
         implements PlayerOverviewFragment.OnPlayerFragmentInteractionListener {
 
@@ -60,10 +62,11 @@ public class PlayerActivty extends FifaActivity
         initializeMembers();
         initializeToolbar();
         initializeTabs();
-        RetrievalManager.getCurrentUser()
+        Subscription userSubscription = RetrievalManager.getCurrentUser()
                 .map(user -> mCurrentUser = user)
                 .map(user -> user.hasFriendWithId(mPlayerId))
                 .subscribe(this::initializeFab);
+        addSubscription(userSubscription);
     }
 
     private void initializeMembers() {
@@ -172,7 +175,7 @@ public class PlayerActivty extends FifaActivity
 
     private void handleAcceptFriendRequestClick(Friend friend, FloatingActionButton acceptButton,
                                                 FloatingActionButton declineButton, FabFactory factory) {
-        NotificationSender.acceptFriendRequest(mCurrentUser, mRegToken).subscribe(response -> {
+        Subscription acceptSub = NotificationSender.acceptFriendRequest(mCurrentUser, mRegToken).subscribe(response -> {
             if (response.isSuccessful()) {
                 SnackbarUtils.getShortSnackbar(this, "Friend request accepted").show();
                 mCurrentUser.acceptIncomingRequest(friend);
@@ -185,11 +188,12 @@ public class PlayerActivty extends FifaActivity
                         v -> handleAcceptFriendRequestClick(friend, acceptButton, declineButton, factory));
             }
         });
+        addSubscription(acceptSub);
     }
 
     private void handleDeclineFriendRequestClick(Friend friend, FloatingActionButton acceptButon,
                                                  FloatingActionButton declineButton, FabFactory factory) {
-        NotificationSender.declineFriendRequest(mCurrentUser, mRegToken).subscribe(response -> {
+        Subscription declineSub = NotificationSender.declineFriendRequest(mCurrentUser, mRegToken).subscribe(response -> {
            if (response.isSuccessful()) {
                SnackbarUtils.getShortSnackbar(this, "Friend request declined").show();
                mCurrentUser.declineIncomingRequest(friend);
@@ -202,6 +206,7 @@ public class PlayerActivty extends FifaActivity
                        v -> handleDeclineFriendRequestClick(friend, acceptButon, declineButton, factory));
            }
         });
+        addSubscription(declineSub);
     }
 
     private void initializeFabForOutgoingFriendRequest(FabFactory factory) {
@@ -219,7 +224,7 @@ public class PlayerActivty extends FifaActivity
 
     private void handleSendFriendRequestClick(Friend friend, FloatingActionButton b,
                                               FabFactory factory) {
-        NotificationSender.sendFriendRequest(mCurrentUser, friend.getRegistrationToken()).subscribe(response -> {
+        Subscription sendSub = NotificationSender.sendFriendRequest(mCurrentUser, friend.getRegistrationToken()).subscribe(response -> {
             if (response.isSuccessful()) {
                 SnackbarUtils.getShortSnackbar(this, "Friend request sent").show();
                 mCurrentUser.addOutgoingRequest(friend);
@@ -232,6 +237,7 @@ public class PlayerActivty extends FifaActivity
                 Log.i("ERROR", response.toString());
             }
         });
+        addSubscription(sendSub);
     }
 
     @Override
