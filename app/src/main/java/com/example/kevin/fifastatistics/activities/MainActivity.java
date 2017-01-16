@@ -12,6 +12,7 @@ import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.fragments.FriendsFragment;
 import com.example.kevin.fifastatistics.fragments.initializers.FragmentInitializer;
 import com.example.kevin.fifastatistics.fragments.initializers.FragmentInitializerFactory;
+import com.example.kevin.fifastatistics.interfaces.OnBackPressedHandler;
 import com.example.kevin.fifastatistics.managers.FifaEventManager;
 import com.example.kevin.fifastatistics.managers.RetrievalManager;
 import com.example.kevin.fifastatistics.managers.SharedPreferencesManager;

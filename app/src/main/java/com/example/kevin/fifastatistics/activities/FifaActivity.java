@@ -4,6 +4,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
+import com.example.kevin.fifastatistics.interfaces.OnBackPressedHandler;
 import com.example.kevin.fifastatistics.utils.ObservableUtils;
 
 import rx.Subscription;
@@ -15,12 +16,13 @@ public abstract class FifaActivity extends AppCompatActivity {
     private CompositeSubscription mCompositeSubscription;
 
     public abstract Toolbar getToolbar();
-    public abstract void setNavigationLocked(boolean locked);
     public abstract View getParentLayout();
 
     public FifaActivity() {
         mCompositeSubscription = new CompositeSubscription();
     }
+
+    public void setNavigationLocked(boolean locked) {};
 
     @Override
     public void onBackPressed() {
@@ -43,12 +45,4 @@ public abstract class FifaActivity extends AppCompatActivity {
         }
     }
 
-    public interface OnBackPressedHandler {
-
-        /**
-         * return true if the handler will handle the back press, or false if handling should
-         * fall through to the activity.
-         */
-        boolean handleBackPress();
-    }
 }

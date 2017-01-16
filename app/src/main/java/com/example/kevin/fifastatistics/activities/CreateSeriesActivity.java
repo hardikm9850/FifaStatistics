@@ -1,8 +1,77 @@
 package com.example.kevin.fifastatistics.activities;
 
-/**
- * Created by kevingrant on 1/15/17.
- */
+import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
 
-public class CreateSeriesActivity {
+import com.example.kevin.fifastatistics.R;
+import com.example.kevin.fifastatistics.managers.FifaEventManager;
+import com.example.kevin.fifastatistics.managers.RetrievalManager;
+import com.example.kevin.fifastatistics.models.databasemodels.user.User;
+
+import rx.Subscription;
+
+public class CreateSeriesActivity extends BasePlayerActivity {
+
+    private View mParentLayout;
+    private Toolbar mToolbar;
+    private FifaEventManager mEventManager;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_create_series);
+        initializeToolbar();
+        initializeUsers();
+    }
+
+    @SuppressWarnings("ConstantConditions")
+    private void initializeToolbar() {
+        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
+
+    private void initializeUsers() {
+        Subscription userSub = RetrievalManager.getCurrentUser().subscribe(this::initializeEventManager);
+        addSubscription(userSub);
+    }
+
+    private void initializeEventManager(User currentUser) {
+        mEventManager = FifaEventManager.newInstance(this, currentUser);
+        mEventManager.setMatchFlow();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_create_series, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_item_add_match :
+                mBackPressHandler = mEventManager;
+                mEventManager.startNewFlow(getFriend());
+                return true;
+            case android.R.id.home :
+                onBackPressed();
+            default :
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
+    public Toolbar getToolbar() {
+        return mToolbar;
+    }
+
+    @Override
+    public View getParentLayout() {
+        return mParentLayout;
+    }
 }

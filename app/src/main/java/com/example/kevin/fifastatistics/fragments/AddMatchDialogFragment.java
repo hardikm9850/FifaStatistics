@@ -18,6 +18,7 @@ import android.widget.ImageView;
 
 import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.activities.FifaActivity;
+import com.example.kevin.fifastatistics.interfaces.OnBackPressedHandler;
 import com.example.kevin.fifastatistics.managers.MatchFactsPreprocessor;
 import com.example.kevin.fifastatistics.managers.OcrManager;
 import com.example.kevin.fifastatistics.models.databasemodels.match.Match;
@@ -42,7 +43,7 @@ import rx.Subscription;
  * See https://developer.android.com/guide/topics/ui/dialogs.html#FullscreenDialog for details.
  */
 public class AddMatchDialogFragment extends FifaBaseDialogFragment
-        implements CameraFragment.ImageCaptureListener, FifaActivity.OnBackPressedHandler {
+        implements CameraFragment.ImageCaptureListener, OnBackPressedHandler {
 
     private ImageLoader mImageLoader;
     private Toolbar mToolbar;

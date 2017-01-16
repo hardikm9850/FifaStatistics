@@ -28,30 +28,13 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 
 import rx.Subscription;
 
-public class PlayerActivty extends FifaActivity
+public class PlayerActivty extends BasePlayerActivity
         implements PlayerOverviewFragment.OnPlayerFragmentInteractionListener {
-
-    /** The name of the user. */
-    public static final String NAME_EXTRA = "name";
-
-    /** The image URL of the user. */
-    public static final String IMAGE_URL_EXTRA = "imageurl";
-
-    /** The ID of the user. */
-    public static final String ID_EXTRA = "id";
-
-    /** The registration token of the user */
-    public static final String REG_TOKEN_EXTRA = "registrationToken";
 
     private View mParentLayout;
     private Toolbar mToolbar;
     private FloatingActionsMenu mFam;
-
     private User mCurrentUser;
-    private String mPlayerId;
-    private String mName;
-    private String mImageUrl;
-    private String mRegToken;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,16 +47,12 @@ public class PlayerActivty extends FifaActivity
         initializeTabs();
         Subscription userSubscription = RetrievalManager.getCurrentUser()
                 .map(user -> mCurrentUser = user)
-                .map(user -> user.hasFriendWithId(mPlayerId))
+                .map(user -> user.hasFriendWithId(getPlayerId()))
                 .subscribe(this::initializeFab);
         addSubscription(userSubscription);
     }
 
     private void initializeMembers() {
-        mPlayerId = getIntent().getStringExtra(ID_EXTRA);
-        mName = getIntent().getStringExtra(NAME_EXTRA);
-        mImageUrl = getIntent().getStringExtra(IMAGE_URL_EXTRA);
-        mRegToken = getIntent().getStringExtra(REG_TOKEN_EXTRA);
         mParentLayout = findViewById(R.id.coordinator_layout);
         mFam = (FloatingActionsMenu) findViewById(R.id.fab_menu);
     }
@@ -86,10 +65,10 @@ public class PlayerActivty extends FifaActivity
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         TextView title = (TextView) findViewById(R.id.toolbar_title);
-        title.setText(mName);
+        title.setText(getName());
 
         ImageView userImage = (ImageView) findViewById(R.id.toolbar_profile_imageview);
-        ImageLoader.getInstance().displayImage(mImageUrl, userImage);
+        ImageLoader.getInstance().displayImage(getImageUrl(), userImage);
     }
 
     @SuppressWarnings("ConstantConditions")
@@ -100,7 +79,7 @@ public class PlayerActivty extends FifaActivity
         TabLayout tl = (TabLayout) findViewById(R.id.tabs);
         tl.setupWithViewPager(vp);
 
-        adapter.addFragment(PlayerOverviewFragment.newInstance(mPlayerId), "Overview");
+        adapter.addFragment(PlayerOverviewFragment.newInstance(getPlayerId()), "Overview");
         adapter.addFragment(new SecondFragment(), "Head to head");
         adapter.notifyDataSetChanged();
     }
@@ -108,13 +87,13 @@ public class PlayerActivty extends FifaActivity
     @SuppressWarnings("ConstantConditions")
     private void initializeFab(boolean isFriend) {
         FabFactory factory = FabFactory.newInstance(this);
-        Friend friend = buildFriend();
+        Friend friend = getFriend();
         if (isFriend) {
             initializeFamForFriend(factory, friend);
         } else {
-            if (mCurrentUser.hasIncomingRequestWithId(mPlayerId)) {
+            if (mCurrentUser.hasIncomingRequestWithId(getPlayerId())) {
                 initializeFamForIncomingFriendRequest(friend, factory);
-            } else if (mCurrentUser.hasOutgoingRequestWithId(mPlayerId)) {
+            } else if (mCurrentUser.hasOutgoingRequestWithId(getPlayerId())) {
                 initializeFabForOutgoingFriendRequest(factory);
             } else {
                 initializeFabForNonFriend(friend, factory);
@@ -149,15 +128,6 @@ public class PlayerActivty extends FifaActivity
         mFam.addButton(seriesButton);
     }
 
-    private Friend buildFriend() {
-        return Friend.builder()
-                .id(mPlayerId)
-                .imageUrl(mImageUrl)
-                .name(mName)
-                .registrationToken(mRegToken)
-                .build();
-    }
-
     private void initializeFamForIncomingFriendRequest(Friend friend, FabFactory factory) {
         FloatingActionButton acceptButton = factory.createAcceptRequestFab();
         FloatingActionButton declineButton = factory.createDeclineRequestFab();
@@ -175,7 +145,7 @@ public class PlayerActivty extends FifaActivity
 
     private void handleAcceptFriendRequestClick(Friend friend, FloatingActionButton acceptButton,
                                                 FloatingActionButton declineButton, FabFactory factory) {
-        Subscription acceptSub = NotificationSender.acceptFriendRequest(mCurrentUser, mRegToken).subscribe(response -> {
+        Subscription acceptSub = NotificationSender.acceptFriendRequest(mCurrentUser, getRegToken()).subscribe(response -> {
             if (response.isSuccessful()) {
                 SnackbarUtils.getShortSnackbar(this, "Friend request accepted").show();
                 mCurrentUser.acceptIncomingRequest(friend);
@@ -193,7 +163,7 @@ public class PlayerActivty extends FifaActivity
 
     private void handleDeclineFriendRequestClick(Friend friend, FloatingActionButton acceptButon,
                                                  FloatingActionButton declineButton, FabFactory factory) {
-        Subscription declineSub = NotificationSender.declineFriendRequest(mCurrentUser, mRegToken).subscribe(response -> {
+        Subscription declineSub = NotificationSender.declineFriendRequest(mCurrentUser, getRegToken()).subscribe(response -> {
            if (response.isSuccessful()) {
                SnackbarUtils.getShortSnackbar(this, "Friend request declined").show();
                mCurrentUser.declineIncomingRequest(friend);
@@ -241,6 +211,14 @@ public class PlayerActivty extends FifaActivity
     }
 
     @Override
+    public void onPause() {
+        super.onPause();
+        if (mFam.isExpanded()) {
+            mFam.collapseImmediately();
+        }
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
@@ -258,9 +236,6 @@ public class PlayerActivty extends FifaActivity
     public Toolbar getToolbar() {
         return mToolbar;
     }
-
-    @Override
-    public void setNavigationLocked(boolean locked) {}
 
     @Override
     public View getParentLayout() {

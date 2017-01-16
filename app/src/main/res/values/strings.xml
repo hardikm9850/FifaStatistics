@@ -12,6 +12,7 @@
     <!-- MENU ITEMS -->
     <string name="menuItem_search">Search</string>
     <string name="menuItem_requests">Requests</string>
+    <string name="menuItem_add_match">Add Match</string>
 
     <!-- NAVIGATION DRAWER -->
     <string name="overview">Overview</string>
@@ -80,6 +81,10 @@
 
     <!-- PLAYER ACTIVITY -->
     <string name="title_activity_player_activty">Player Activity</string>
+
+    <!-- CREATE SERIES ACTIVITY -->
+    <string name="title_activity_create_series_activity">New Series</string>
+    <string name="new_series">New Series</string>
 
     <!-- TOASTS -->
     <string name="not_found">Not found!</string>

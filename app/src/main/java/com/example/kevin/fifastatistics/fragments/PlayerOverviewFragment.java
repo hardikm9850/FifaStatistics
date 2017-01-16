@@ -6,9 +6,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.devspark.progressfragment.ProgressFragment;
 import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.activities.FifaActivity;
+import com.example.kevin.fifastatistics.interfaces.OnBackPressedHandler;
 import com.example.kevin.fifastatistics.managers.RetrievalManager;
 import com.example.kevin.fifastatistics.managers.RetrofitErrorManager;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
@@ -19,7 +19,7 @@ import rx.Subscription;
 /**
  * Overview of a player that is not the current user.
  */
-public class PlayerOverviewFragment extends FifaProgressFragment implements FifaActivity.OnBackPressedHandler {
+public class PlayerOverviewFragment extends FifaProgressFragment implements OnBackPressedHandler {
 
     private static final String ARG_USER_ID = "id";
 

@@ -3,6 +3,8 @@ package com.example.kevin.fifastatistics.utils;
 import android.content.Context;
 import android.content.Intent;
 
+import com.example.kevin.fifastatistics.activities.BasePlayerActivity;
+import com.example.kevin.fifastatistics.activities.CreateSeriesActivity;
 import com.example.kevin.fifastatistics.activities.MainActivity;
 import com.example.kevin.fifastatistics.activities.PlayerActivty;
 import com.example.kevin.fifastatistics.fragments.FriendsFragment;
@@ -17,6 +19,15 @@ public class IntentFactory {
         intent.putExtra(PlayerActivty.ID_EXTRA, player.getId());
         intent.putExtra(PlayerActivty.IMAGE_URL_EXTRA, player.getImageUrl());
         intent.putExtra(PlayerActivty.REG_TOKEN_EXTRA, player.getRegistrationToken());
+        return intent;
+    }
+
+    public static Intent createNewSeriesActivityIntent(Context c, Player player) {
+        Intent intent = new Intent(c, CreateSeriesActivity.class);
+        intent.putExtra(BasePlayerActivity.NAME_EXTRA, player.getName());
+        intent.putExtra(BasePlayerActivity.ID_EXTRA, player.getId());
+        intent.putExtra(BasePlayerActivity.IMAGE_URL_EXTRA, player.getImageUrl());
+        intent.putExtra(BasePlayerActivity.REG_TOKEN_EXTRA, player.getRegistrationToken());
         return intent;
     }
 

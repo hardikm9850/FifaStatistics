@@ -1,17 +1,20 @@
 package com.example.kevin.fifastatistics.managers;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 
 import com.example.kevin.fifastatistics.activities.FifaActivity;
 import com.example.kevin.fifastatistics.fragments.AddMatchDialogFragment;
 import com.example.kevin.fifastatistics.fragments.SelectOpponentDialogFragment;
+import com.example.kevin.fifastatistics.interfaces.OnBackPressedHandler;
 import com.example.kevin.fifastatistics.models.databasemodels.match.Match;
 import com.example.kevin.fifastatistics.models.databasemodels.user.Friend;
 import com.example.kevin.fifastatistics.models.databasemodels.user.Player;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
 import com.example.kevin.fifastatistics.network.CreateFailedException;
+import com.example.kevin.fifastatistics.utils.IntentFactory;
 import com.example.kevin.fifastatistics.utils.MatchUtils;
 import com.example.kevin.fifastatistics.utils.ToastUtils;
 import com.example.kevin.fifastatistics.utils.UserUtils;
@@ -22,8 +25,7 @@ import lombok.RequiredArgsConstructor;
  * Manager for adding new matches and series.
  */
 @RequiredArgsConstructor
-public class FifaEventManager implements SelectOpponentDialogFragment.SelectOpponentListener,
-        FifaActivity.OnBackPressedHandler {
+public class FifaEventManager implements SelectOpponentDialogFragment.SelectOpponentListener, OnBackPressedHandler {
 
     private final FifaActivity mActivity;
     private final User mUser;
@@ -70,8 +72,7 @@ public class FifaEventManager implements SelectOpponentDialogFragment.SelectOppo
     }
 
     /** Represents the type of flow (Match or Series) */
-    private abstract class Flow implements AddMatchDialogFragment.AddMatchDialogSaveListener,
-            FifaActivity.OnBackPressedHandler {
+    private abstract class Flow implements AddMatchDialogFragment.AddMatchDialogSaveListener, OnBackPressedHandler {
 
         public void startNewFlow() {
             SelectOpponentDialogFragment.newInstance(mUser, FifaEventManager.this).show(mActivity.getSupportFragmentManager());
@@ -93,7 +94,8 @@ public class FifaEventManager implements SelectOpponentDialogFragment.SelectOppo
 
         @Override
         public void startNewFlow(Friend opponent) {
-            Log.i("SERIES", "new series versus " + opponent.getName());
+            Intent newSeriesIntent = IntentFactory.createNewSeriesActivityIntent(mActivity, opponent);
+            mActivity.startActivity(newSeriesIntent);
         }
 
         @Override

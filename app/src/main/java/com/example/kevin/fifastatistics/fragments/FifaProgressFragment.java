@@ -7,6 +7,8 @@ import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
+import com.example.kevin.fifastatistics.R;
+
 public abstract class FifaProgressFragment extends FifaBaseFragment {
 
     private View mProgressContainer;
@@ -20,7 +22,7 @@ public abstract class FifaProgressFragment extends FifaBaseFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(com.devspark.progressfragment.R.layout.fragment_progress, container, false);
+        return inflater.inflate(R.layout.fragment_progress, container, false);
     }
 
     @Override
@@ -205,11 +207,11 @@ public abstract class FifaProgressFragment extends FifaBaseFragment {
         if (root == null) {
             throw new IllegalStateException("Content view not yet created");
         }
-        mProgressContainer = root.findViewById(com.devspark.progressfragment.R.id.progress_container);
+        mProgressContainer = root.findViewById(R.id.progress_container);
         if (mProgressContainer == null) {
             throw new RuntimeException("Your content must have a ViewGroup whose id attribute is 'R.id.progress_container'");
         }
-        mContentContainer = root.findViewById(com.devspark.progressfragment.R.id.content_container);
+        mContentContainer = root.findViewById(R.id.content_container);
         if (mContentContainer == null) {
             throw new RuntimeException("Your content must have a ViewGroup whose id attribute is 'R.id.content_container'");
         }

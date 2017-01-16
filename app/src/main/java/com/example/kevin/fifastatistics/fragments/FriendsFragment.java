@@ -2,10 +2,8 @@ package com.example.kevin.fifastatistics.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -15,6 +13,7 @@ import android.view.ViewGroup;
 
 import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.activities.FifaActivity;
+import com.example.kevin.fifastatistics.interfaces.OnBackPressedHandler;
 import com.example.kevin.fifastatistics.managers.RetrievalManager;
 import com.example.kevin.fifastatistics.models.databasemodels.user.Friend;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
@@ -32,7 +31,7 @@ import rx.Subscription;
  * Activities containing this fragment MUST implement the {@link FriendsFragmentInteractionListener}
  * interface.
  */
-public class FriendsFragment extends FifaBaseFragment implements FifaActivity.OnBackPressedHandler {
+public class FriendsFragment extends FifaBaseFragment implements OnBackPressedHandler {
 
     public static final String VIEW_ARG = "view";
     public static final int FRIENDS_VIEW = 0;
@@ -163,7 +162,8 @@ public class FriendsFragment extends FifaBaseFragment implements FifaActivity.On
         if (mView instanceof RecyclerView) {
             RecyclerView recyclerView = (RecyclerView) mView;
             FriendsRecyclerViewAdapter adapter = new FriendsRecyclerViewAdapter(friends, mListener);
-            SlideInBottomAnimatorAdapter animatorAdapter = new SlideInBottomAnimatorAdapter(adapter, recyclerView);
+            SlideInBottomAnimatorAdapter<FriendsRecyclerViewAdapter.ViewHolder> animatorAdapter =
+                    new SlideInBottomAnimatorAdapter<>(adapter, recyclerView);
 //            animatorAdapter.getViewAnimator().setAnimationDurationMillis(200);
             recyclerView.setLayoutManager(new GridLayoutManager(mView.getContext(), COLUMN_COUNT));
             recyclerView.setAdapter(animatorAdapter);
