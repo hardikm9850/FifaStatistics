@@ -2,6 +2,7 @@ package com.example.kevin.fifastatistics.activities;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -22,7 +23,7 @@ public class CreateSeriesActivity extends BasePlayerActivity {
     private View mParentLayout;
     private Toolbar mToolbar;
     private FifaEventManager mEventManager;
-    private OnMatchCreatedListener mOnMatchCreatedListener;
+    private CreateSeriesMatchListFragment mFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,16 +49,15 @@ public class CreateSeriesActivity extends BasePlayerActivity {
     }
 
     private void initializeFragment(User user) {
-        CreateSeriesMatchListFragment fragment = CreateSeriesMatchListFragment.newInstance(user, getFriend());
-        mOnMatchCreatedListener = fragment;
+        mFragment = CreateSeriesMatchListFragment.newInstance(user, getFriend());
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.content, fragment)
+                .replace(R.id.content, mFragment)
                 .commit();
     }
 
     private void initializeEventManager(User currentUser) {
         mEventManager = FifaEventManager.newInstance(this, currentUser);
-        mEventManager.setMatchFlow(mOnMatchCreatedListener);
+        mEventManager.setMatchFlow(mFragment);
         setOnBackPressHandler(mEventManager);
     }
 
@@ -79,6 +79,19 @@ public class CreateSeriesActivity extends BasePlayerActivity {
             default :
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (mFragment != null && mFragment.isSeriesStarted()) {
+            AlertDialog dialog = new AlertDialog.Builder(this).create();
+            dialog.setMessage("Are you sure you want to discard this series?");
+            dialog.setButton(AlertDialog.BUTTON_POSITIVE, "KEEP EDITING", (d, w) -> dialog.dismiss());
+            dialog.setButton(AlertDialog.BUTTON_NEGATIVE, "DISCARD", (d, w) -> finish());
+            dialog.show();
+            return;
+        }
+        super.onBackPressed();
     }
 
     @Override

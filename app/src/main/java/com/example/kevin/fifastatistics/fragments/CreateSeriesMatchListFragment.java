@@ -50,4 +50,8 @@ public class CreateSeriesMatchListFragment extends FifaBaseFragment implements O
     public void onMatchCreated(Match match) {
         mListViewModel.add(match);
     }
+
+    public boolean isSeriesStarted() {
+        return !mListViewModel.getItems().isEmpty();
+    }
 }
