@@ -1,13 +1,16 @@
 package com.example.kevin.fifastatistics.activities;
 
 import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
 import com.example.kevin.fifastatistics.R;
+import com.example.kevin.fifastatistics.fragments.CameraFragment;
+import com.example.kevin.fifastatistics.fragments.CreateSeriesMatchListFragment;
+import com.example.kevin.fifastatistics.interfaces.OnMatchCreatedListener;
 import com.example.kevin.fifastatistics.managers.FifaEventManager;
 import com.example.kevin.fifastatistics.managers.RetrievalManager;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
@@ -19,6 +22,7 @@ public class CreateSeriesActivity extends BasePlayerActivity {
     private View mParentLayout;
     private Toolbar mToolbar;
     private FifaEventManager mEventManager;
+    private OnMatchCreatedListener mOnMatchCreatedListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,13 +40,25 @@ public class CreateSeriesActivity extends BasePlayerActivity {
     }
 
     private void initializeUsers() {
-        Subscription userSub = RetrievalManager.getCurrentUser().subscribe(this::initializeEventManager);
+        Subscription userSub = RetrievalManager.getCurrentUser().subscribe(user -> {
+            initializeFragment(user);
+            initializeEventManager(user);
+        });
         addSubscription(userSub);
+    }
+
+    private void initializeFragment(User user) {
+        CreateSeriesMatchListFragment fragment = CreateSeriesMatchListFragment.newInstance(user, getFriend());
+        mOnMatchCreatedListener = fragment;
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.content, fragment)
+                .commit();
     }
 
     private void initializeEventManager(User currentUser) {
         mEventManager = FifaEventManager.newInstance(this, currentUser);
-        mEventManager.setMatchFlow();
+        mEventManager.setMatchFlow(mOnMatchCreatedListener);
+        setOnBackPressHandler(mEventManager);
     }
 
     @Override
@@ -55,7 +71,7 @@ public class CreateSeriesActivity extends BasePlayerActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_item_add_match :
-                mBackPressHandler = mEventManager;
+                setOnBackPressHandler(mEventManager);
                 mEventManager.startNewFlow(getFriend());
                 return true;
             case android.R.id.home :

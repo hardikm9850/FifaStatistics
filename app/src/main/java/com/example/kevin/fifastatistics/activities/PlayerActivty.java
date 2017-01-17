@@ -111,7 +111,7 @@ public class PlayerActivty extends BasePlayerActivity
         FloatingActionButton matchButton = factory.createPlayMatchFab();
         matchButton.setOnClickListener(l -> {
             mFam.collapse();
-            mBackPressHandler = manager;
+            setOnBackPressHandler(manager);
             manager.setMatchFlow();
             manager.startNewFlow(friend);
         });

@@ -30,4 +30,19 @@
         <item name="android:textColor">@color/white</item>
     </style>
 
+    <!-- Text -->
+    <style name="text_small" parent="TextAppearance.AppCompat">
+        <item name="android:textSize">15sp</item>
+    </style>
+
+    <style name="text_bold_small" parent="text_small">
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="text_white_small" parent="text_small">
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+
+
 </resources>

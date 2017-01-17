@@ -3,13 +3,11 @@ package com.example.kevin.fifastatistics.fragments;
 import android.app.ProgressDialog;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,8 +15,8 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 
 import com.example.kevin.fifastatistics.R;
-import com.example.kevin.fifastatistics.activities.FifaActivity;
 import com.example.kevin.fifastatistics.interfaces.OnBackPressedHandler;
+import com.example.kevin.fifastatistics.interfaces.OnMatchCreatedListener;
 import com.example.kevin.fifastatistics.managers.MatchFactsPreprocessor;
 import com.example.kevin.fifastatistics.managers.OcrManager;
 import com.example.kevin.fifastatistics.models.databasemodels.match.Match;
@@ -49,10 +47,11 @@ public class AddMatchDialogFragment extends FifaBaseDialogFragment
     private Toolbar mToolbar;
     private AppCompatActivity mActivity;
 
+    private Match mMatch;
     private User mUser;
     private Friend mOpponent;
     private Fragment mCameraFragment;
-    private AddMatchDialogSaveListener mListener;
+    private OnMatchCreatedListener mListener;
     private AddMatchListLayout mAddMatchList;
     private ImageView mLeftImage;
     private ImageView mRightImage;
@@ -61,7 +60,7 @@ public class AddMatchDialogFragment extends FifaBaseDialogFragment
     private boolean mDidSwapSides;
 
     public static AddMatchDialogFragment newInstance(User user, Friend opponent,
-                                                     AddMatchDialogSaveListener listener,
+                                                     OnMatchCreatedListener listener,
                                                      AppCompatActivity activity) {
         AddMatchDialogFragment fragment = new AddMatchDialogFragment();
         fragment.mUser = user;
@@ -109,6 +108,9 @@ public class AddMatchDialogFragment extends FifaBaseDialogFragment
         super.onDestroyView();
     }
 
+    public void setMatch(Match match) {
+        mMatch = match;
+    }
 
     private void resetStatusBarColor() {
         mActivity.getWindow().setStatusBarColor(mOldStatusBarColor);
@@ -131,6 +133,12 @@ public class AddMatchDialogFragment extends FifaBaseDialogFragment
 
         initializeDoneMenuItem();
         initializeCameraMenuItem();
+        _debug_autoPopulateForm();
+    }
+
+    private void _debug_autoPopulateForm() {
+        ImageButton b = (ImageButton) mToolbar.findViewById(R.id.button_autofill);
+        b.setOnClickListener(v -> mAddMatchList.setValues(mUser.getAverageStats()));
     }
 
     private void maybeDismiss() {
@@ -170,7 +178,8 @@ public class AddMatchDialogFragment extends FifaBaseDialogFragment
 
     private void attemptMatchSave(Match match) {
         if (MatchUtils.validateMatch(match)) {
-            mListener.onSaveMatch(match);
+            mListener.onMatchCreated(match);
+            dismiss();
         } else {
             ToastUtils.showShortToast(mActivity, "Match is not valid.");
         }
@@ -223,6 +232,9 @@ public class AddMatchDialogFragment extends FifaBaseDialogFragment
 
     private void initializeAddMatchList(View view) {
         mAddMatchList = (AddMatchListLayout) view.findViewById(R.id.add_match_list_layout);
+        if (mMatch != null) {
+            mAddMatchList.setValues(mMatch.getStats());
+        }
     }
 
     private void initializeSwitchSidesButton(View view) {
@@ -289,9 +301,5 @@ public class AddMatchDialogFragment extends FifaBaseDialogFragment
         if (mCameraFragment != null) {
             UiUtils.removeFragmentFromBackstack(mActivity, mCameraFragment);
         }
-    }
-
-    public interface AddMatchDialogSaveListener {
-        void onSaveMatch(Match match);
     }
 }

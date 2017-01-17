@@ -81,7 +81,7 @@ public class MainActivity extends FifaActivity
         mViewPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
             @Override
             public void onPageSelected(int position) {
-                mBackPressHandler = (OnBackPressedHandler) mAdapter.getItem(position);
+                setOnBackPressHandler((OnBackPressedHandler) mAdapter.getItem(position));
             }
         });
 
@@ -125,7 +125,7 @@ public class MainActivity extends FifaActivity
 
         int currentPage = getIntent().getIntExtra(PAGE_EXTRA, 0);
         mViewPager.setCurrentItem(currentPage);
-        mBackPressHandler = (OnBackPressedHandler) mAdapter.getItem(currentPage);
+        setOnBackPressHandler((OnBackPressedHandler) mAdapter.getItem(currentPage));
     }
 
     private void initializeFab() {
@@ -144,7 +144,7 @@ public class MainActivity extends FifaActivity
         FloatingActionButton matchButton = factory.createPlayMatchFab();
         matchButton.setOnClickListener(l -> {
             mActionMenu.collapse();
-            mBackPressHandler = manager;
+            setOnBackPressHandler(manager);
             manager.setMatchFlow();
             manager.startNewFlow();
         });

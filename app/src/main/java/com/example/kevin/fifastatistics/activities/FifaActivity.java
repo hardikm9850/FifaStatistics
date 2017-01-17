@@ -12,7 +12,7 @@ import rx.subscriptions.CompositeSubscription;
 
 public abstract class FifaActivity extends AppCompatActivity {
 
-    protected OnBackPressedHandler mBackPressHandler;
+    private OnBackPressedHandler mBackPressHandler;
     private CompositeSubscription mCompositeSubscription;
 
     public abstract Toolbar getToolbar();
@@ -45,4 +45,7 @@ public abstract class FifaActivity extends AppCompatActivity {
         }
     }
 
+    public void setOnBackPressHandler(OnBackPressedHandler handler) {
+        mBackPressHandler = handler;
+    }
 }
