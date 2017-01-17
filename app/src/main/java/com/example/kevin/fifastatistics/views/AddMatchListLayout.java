@@ -167,6 +167,13 @@ public class AddMatchListLayout extends ScrollView {
         }
     }
 
+    public void setPenalties(Penalties penalties) {
+        if (penalties != null) {
+            mPenalties.setLeftText(penalties.getWinner());
+            mPenalties.setRightText(penalties.getLoser());
+        }
+    }
+
     /** Return true if any EditText field has been edited. */
     public boolean isEdited() {
         return

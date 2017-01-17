@@ -1,5 +1,7 @@
 package com.example.kevin.fifastatistics.models.databasemodels.match;
 
+import android.util.Log;
+
 import com.example.kevin.fifastatistics.models.databasemodels.DatabaseModel;
 import com.example.kevin.fifastatistics.models.databasemodels.user.Friend;
 import com.example.kevin.fifastatistics.models.databasemodels.user.Player;
@@ -36,6 +38,18 @@ public class Match extends DatabaseModel {
     public static Match fromMatchWithId(Match match, String id) {
         match.id = id;
         return match;
+    }
+
+    public static Match swapStats(Match match) {
+        User.StatsPair newStats = new User.StatsPair(match.getStats().getStatsAgainst(), match.getStats().getStatsFor());
+        return Match.builder()
+                .id(match.id)
+                .stats(newStats)
+                .penalties(match.penalties)
+                .date(match.date)
+                .winner(match.winner)
+                .loser(match.loser)
+                .build();
     }
 
     public boolean didWin(Player player) {

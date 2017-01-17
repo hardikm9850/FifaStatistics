@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="seriesSummaryViewModel"
+            type="com.example.kevin.fifastatistics.viewmodel.CreateSeriesScoreViewModel"/>
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/activity_horizontal_margin"
+        android:orientation="horizontal"
+        android:background="@color/cardViewHeaderBackground"
+        android:elevation="@dimen/cardview_default_elevation">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/left_user_imageview"
+            android:layout_width="@dimen/create_series_user_image_size"
+            android:layout_height="@dimen/create_series_user_image_size"
+            android:layout_gravity="center_vertical"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:layout_marginBottom="@dimen/activity_vertical_margin"
+            android:layout_marginStart="@dimen/create_series_user_image_margin"
+            android:layout_alignParentStart="true"
+            android:src="@android:color/white"
+            app:civ_border_width="2dp"
+            app:civ_border_color="#FFFFFF"
+            app:imageUrl="@{seriesSummaryViewModel.userImageUrl}"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_margin="@dimen/activity_horizontal_margin"
+            android:layout_centerHorizontal="true"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <com.robinhood.ticker.TickerView
+                android:id="@+id/user_score_ticker"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/text_large" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text=" - "
+                android:textAppearance="@style/text_large"/>
+
+            <com.robinhood.ticker.TickerView
+                android:id="@+id/opponent_score_ticker"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/text_large" />
+
+        </LinearLayout>
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/right_user_imageview"
+            android:layout_width="@dimen/create_series_user_image_size"
+            android:layout_height="@dimen/create_series_user_image_size"
+            android:layout_gravity="center_vertical"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:layout_marginBottom="@dimen/activity_vertical_margin"
+            android:layout_marginEnd="@dimen/create_series_user_image_margin"
+            android:layout_alignParentEnd="true"
+            android:src="@android:color/white"
+            app:civ_border_width="2dp"
+            app:civ_border_color="#FFFFFF"
+            app:imageUrl="@{seriesSummaryViewModel.opponentImageUrl}"/>
+
+    </RelativeLayout>
+
+</layout>

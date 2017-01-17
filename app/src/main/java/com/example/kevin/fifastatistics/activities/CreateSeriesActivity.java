@@ -83,7 +83,7 @@ public class CreateSeriesActivity extends BasePlayerActivity {
 
     @Override
     public void onBackPressed() {
-        if (mFragment != null && mFragment.isSeriesStarted()) {
+        if (!performHandlerBackPress() && mFragment != null && mFragment.isSeriesStarted()) {
             AlertDialog dialog = new AlertDialog.Builder(this).create();
             dialog.setMessage("Are you sure you want to discard this series?");
             dialog.setButton(AlertDialog.BUTTON_POSITIVE, "KEEP EDITING", (d, w) -> dialog.dismiss());

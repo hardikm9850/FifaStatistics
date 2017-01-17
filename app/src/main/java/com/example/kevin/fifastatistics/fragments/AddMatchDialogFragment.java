@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -168,6 +169,7 @@ public class AddMatchDialogFragment extends FifaBaseDialogFragment
     private Match buildMatch(User.StatsPair stats) {
         Penalties penalties = mAddMatchList.getPenalties();
         boolean userDidWin = userDidWin(stats, penalties);
+        stats = maybeSwapStats(stats, userDidWin);
         return Match.builder()
                 .stats(stats)
                 .penalties(penalties)
@@ -192,6 +194,14 @@ public class AddMatchDialogFragment extends FifaBaseDialogFragment
             return mDidSwapSides != goalsLeft > goalsRight;
         } else {
             return mDidSwapSides != mAddMatchList.isLeftPenaltiesGreater();
+        }
+    }
+
+    private User.StatsPair maybeSwapStats(User.StatsPair stats, boolean userDidWin) {
+        if ((userDidWin && mDidSwapSides) || (!userDidWin && !mDidSwapSides)) {
+            return new User.StatsPair(stats.getStatsAgainst(), stats.getStatsFor());
+        } else {
+            return stats;
         }
     }
 
@@ -233,7 +243,16 @@ public class AddMatchDialogFragment extends FifaBaseDialogFragment
     private void initializeAddMatchList(View view) {
         mAddMatchList = (AddMatchListLayout) view.findViewById(R.id.add_match_list_layout);
         if (mMatch != null) {
+            if (!mMatch.didWin(mUser)) {
+                mMatch = Match.swapStats(mMatch);
+                if (mMatch.getPenalties() != null) {
+                    int loserPenalties = mMatch.getPenalties().getLoser();
+                    mMatch.getPenalties().setLoser(mMatch.getPenalties().getWinner());
+                    mMatch.getPenalties().setWinner(loserPenalties);
+                }
+            }
             mAddMatchList.setValues(mMatch.getStats());
+            mAddMatchList.setPenalties(mMatch.getPenalties());
         }
     }
 

@@ -17,19 +17,33 @@
             android:id="@+id/match_number_textview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/activity_horizontal_margin"
+            android:layout_marginStart="@dimen/activity_horizontal_margin"
+            android:layout_marginTop="@dimen/activity_horizontal_margin"
+            android:layout_marginBottom="@dimen/activity_horizontal_margin"
+            android:layout_marginEnd="@dimen/match_number_textview_margin_end"
             android:layout_gravity="start|center_vertical"
             android:text="@{listItemViewModel.matchNumber}"
-            android:textAppearance="@style/text_bold_small"/>
+            android:textAppearance="@style/text_bold_medium"/>
 
         <TextView
             android:id="@+id/match_result_textview"
+            android:layout_width="@dimen/match_result_textview_layout_width"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/activity_horizontal_margin"
+            android:layout_marginTop="@dimen/activity_horizontal_margin"
+            android:layout_marginBottom="@dimen/activity_horizontal_margin"
+            android:layout_gravity="center"
+            android:gravity="center_horizontal"
+            android:text="@{listItemViewModel.matchResult}"
+            android:textAppearance="@style/text_white_medium"/>
+
+        <TextView
+            android:id="@+id/match_score_textview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/activity_horizontal_margin"
-            android:layout_gravity="center"
-            android:text="@{listItemViewModel.matchResult}"
-            android:textAppearance="@style/text_white_small"/>
+            android:text="@{listItemViewModel.matchScore}"
+            android:textAppearance="@style/text_white_medium"/>
 
         <TextView
             android:id="@+id/penalties_textview"
@@ -39,7 +53,7 @@
             android:layout_gravity="center_vertical"
             android:visibility="@{listItemViewModel.isPenaltiesVisible}"
             android:text="@{listItemViewModel.penaltiesText}"
-            android:textAppearance="@style/text_small"/>
+            android:textAppearance="@style/text_grey_medium"/>
 
     </LinearLayout>
 

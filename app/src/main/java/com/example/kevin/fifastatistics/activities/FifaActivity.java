@@ -26,7 +26,7 @@ public abstract class FifaActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if (mBackPressHandler != null && mBackPressHandler.handleBackPress()) {
+        if (performHandlerBackPress()) {
             return;
         }
         super.onBackPressed();
@@ -43,6 +43,10 @@ public abstract class FifaActivity extends AppCompatActivity {
         if (mCompositeSubscription != null && subscription != null) {
             mCompositeSubscription.add(subscription);
         }
+    }
+
+    public boolean performHandlerBackPress() {
+        return mBackPressHandler != null && mBackPressHandler.handleBackPress();
     }
 
     public void setOnBackPressHandler(OnBackPressedHandler handler) {

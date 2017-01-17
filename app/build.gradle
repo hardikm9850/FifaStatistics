@@ -97,6 +97,7 @@ dependencies {
     // Layout
     compile 'com.getbase:floatingactionbutton:1.10.1'
     compile 'com.github.gabrielemariotti.recyclerview:recyclerview-animators:0.3.0-SNAPSHOT@aar'
+    compile 'com.robinhood.ticker:ticker:1.1.1'
 
     // Graphs
     compile 'com.diogobernardino:williamchart:2.2'

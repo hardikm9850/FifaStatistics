@@ -35,6 +35,14 @@
         <item name="android:textSize">15sp</item>
     </style>
 
+    <style name="text_medium" parent="TextAppearance.AppCompat">
+        <item name="android:textSize">22sp</item>
+    </style>
+
+    <style name="text_large" parent="TextAppearance.AppCompat">
+        <item name="android:textSize">35sp</item>
+    </style>
+
     <style name="text_bold_small" parent="text_small">
         <item name="android:textStyle">bold</item>
     </style>
@@ -42,6 +50,19 @@
     <style name="text_white_small" parent="text_small">
         <item name="android:textColor">@color/white</item>
     </style>
+
+    <style name="text_bold_medium" parent="text_medium">
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="text_white_medium" parent="text_medium">
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="text_grey_medium" parent="text_medium">
+        <item name="android:textColor">@android:color/secondary_text_dark</item>
+    </style>
+
 
 
 

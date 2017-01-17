@@ -9,6 +9,7 @@ import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.activities.FifaActivity;
 import com.example.kevin.fifastatistics.fragments.AddMatchDialogFragment;
 import com.example.kevin.fifastatistics.interfaces.OnMatchCreatedListener;
+import com.example.kevin.fifastatistics.interfaces.OnMatchUpdatedListener;
 import com.example.kevin.fifastatistics.models.databasemodels.match.Match;
 import com.example.kevin.fifastatistics.models.databasemodels.user.Friend;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
@@ -22,23 +23,27 @@ public class CreateSeriesListItemViewModel extends BaseObservable {
     private FifaActivity mActivity;
     private AddMatchDialogFragment mDialogFragment;
     private OnMatchCreatedListener mOnMatchCreatedListener;
+    private OnMatchUpdatedListener mOnMatchUpdatedListener;
     private int mMatchNumber;
 
-    public CreateSeriesListItemViewModel(FifaActivity activity, Match match, User currentUser, Friend opponent, int matchNumber) {
+    public CreateSeriesListItemViewModel(FifaActivity activity, Match match, User currentUser, Friend opponent, int matchNumber, OnMatchUpdatedListener listener) {
         mMatch = match;
         mActivity = activity;
         mUser = currentUser;
         mOpponent = opponent;
         mMatchNumber = matchNumber;
-        mOnMatchCreatedListener = initializeMatchUpdateListener();
+        mOnMatchUpdatedListener = listener;
+        mOnMatchCreatedListener = initializeMatchCreatedListener();
     }
 
-    private OnMatchCreatedListener initializeMatchUpdateListener() {
+    private OnMatchCreatedListener initializeMatchCreatedListener() {
         return (match -> {
+            Match oldMatch = mMatch;
             setMatch(match);
             if (mDialogFragment != null) {
                 mDialogFragment.dismiss();
             }
+            mOnMatchUpdatedListener.onMatchUpdated(oldMatch, match);
         });
     }
 
@@ -71,16 +76,16 @@ public class CreateSeriesListItemViewModel extends BaseObservable {
     }
 
     @Bindable
+    public String getMatchScore() {
+        return mMatch.getMatchScore(mUser.getId());
+    }
+
+    @Bindable
     public String getMatchResult() {
-        return ((mMatch.didWin(mUser)) ? getResultPrefix(R.string.win) : getResultPrefix(R.string.loss))
-                + " " + getMatchScore();
+        return ((mMatch.didWin(mUser)) ? getResultPrefix(R.string.win) : getResultPrefix(R.string.loss));
     }
 
     private String getResultPrefix(int id) {
         return ResourceUtils.getStringFromResourceId(id).substring(0, 1);
-    }
-
-    private String getMatchScore() {
-        return mMatch.getMatchScore(mUser.getId());
     }
 }

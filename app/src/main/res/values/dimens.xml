@@ -34,4 +34,13 @@
     <dimen name="toolbar_profile_image_size">32dp</dimen>
     <dimen name="toolbar_image_margin_end">12dp</dimen>
 
+    <!-- Create Series Activity -->
+    <dimen name="match_number_textview_margin_end">20dp</dimen>
+    <dimen name="match_result_textview_layout_width">25dp</dimen>
+    <dimen name="match_result_textview_margin_end">2dp</dimen>
+    <dimen name="create_series_user_image_size">50dp</dimen>
+    <dimen name="create_series_user_image_border_size">2dp</dimen>
+    <dimen name="create_series_user_image_margin">20dp</dimen>
+    <dimen name="create_series_score_summary_size">82dp</dimen>
+
 </resources>
