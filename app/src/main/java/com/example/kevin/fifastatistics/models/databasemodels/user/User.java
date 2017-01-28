@@ -169,5 +169,11 @@ public class User extends DatabaseModel implements Player {
         public boolean validate() {
             return (statsFor.validate() && statsAgainst.validate());
         }
+        
+        public void swap() {
+            Stats temp = statsFor;
+            statsFor = statsAgainst;
+            statsAgainst = temp;
+        }
     }
 }

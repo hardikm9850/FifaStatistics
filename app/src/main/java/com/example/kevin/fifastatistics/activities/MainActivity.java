@@ -35,7 +35,7 @@ import rx.Subscription;
  * The application's main activity class that is loaded on launch, so long as the user is signed in.
  * If the user is not signed in, then {@link SignInActivity} will be launched.
  */
-public class MainActivity extends FifaActivity
+public class MainActivity extends FifaBaseActivity
         implements FriendsFragment.FriendsFragmentInteractionListener {
 
     public static final String PAGE_EXTRA = "page";

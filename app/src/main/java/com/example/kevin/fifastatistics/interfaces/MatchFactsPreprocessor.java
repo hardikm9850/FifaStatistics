@@ -1,4 +1,4 @@
-package com.example.kevin.fifastatistics.managers;
+package com.example.kevin.fifastatistics.interfaces;
 
 import android.graphics.Bitmap;
 

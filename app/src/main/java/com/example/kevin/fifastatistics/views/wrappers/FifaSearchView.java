@@ -5,7 +5,7 @@ import android.content.Intent;
 import android.view.MenuItem;
 
 import com.example.kevin.fifastatistics.R;
-import com.example.kevin.fifastatistics.activities.FifaActivity;
+import com.example.kevin.fifastatistics.activities.FifaBaseActivity;
 import com.example.kevin.fifastatistics.models.apiresponses.ApiListResponse;
 import com.example.kevin.fifastatistics.models.databasemodels.user.Player;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
@@ -37,7 +37,7 @@ public class FifaSearchView {
      * @param currentUser The current user
      * @return the search view, or null if the list of users cannot be retrieved
      */
-    public static Observable<FifaSearchView> getInstance(FifaActivity activity, User currentUser) {
+    public static Observable<FifaSearchView> getInstance(FifaBaseActivity activity, User currentUser) {
         if (mInstance == null) {
             return ApiAdapter.getFifaApi().getUsers()
                     .compose(ObservableUtils.applySchedulers())
@@ -62,7 +62,7 @@ public class FifaSearchView {
         return mSearchView.isSearchOpen();
     }
 
-    private FifaSearchView(FifaActivity activity, List<? extends Player> users) {
+    private FifaSearchView(FifaBaseActivity activity, List<? extends Player> users) {
         mSearchView = (SearchView) activity.findViewById(R.id.searchView);
         setBasicSearchViewProperties();
         setSearchViewListeners(activity);
@@ -87,7 +87,7 @@ public class FifaSearchView {
         mSearchView.setHint("Search Players");
     }
 
-    private void setSearchViewListeners(FifaActivity activity) {
+    private void setSearchViewListeners(FifaBaseActivity activity) {
 
         mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -118,7 +118,7 @@ public class FifaSearchView {
         });
     }
 
-    private SearchAdapter initializeAdapter(FifaActivity activity, List<? extends Player> players) {
+    private SearchAdapter initializeAdapter(FifaBaseActivity activity, List<? extends Player> players) {
         SearchAdapter adapter = new SearchAdapter(activity, players);
         adapter.addOnItemClickListener((v, p) -> launchPlayerActivity(activity, adapter, p));
 

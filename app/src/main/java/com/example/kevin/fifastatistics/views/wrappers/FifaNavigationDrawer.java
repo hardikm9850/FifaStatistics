@@ -6,7 +6,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.widget.ImageView;
 
 import com.example.kevin.fifastatistics.R;
-import com.example.kevin.fifastatistics.activities.FifaActivity;
+import com.example.kevin.fifastatistics.activities.FifaBaseActivity;
 import com.example.kevin.fifastatistics.managers.SharedPreferencesManager;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
 import com.mikepenz.materialdrawer.AccountHeader;
@@ -39,7 +39,7 @@ public class FifaNavigationDrawer {
      * @param activity the activity the drawer will be in
      * @return the drawer
      */
-    public static FifaNavigationDrawer newInstance(FifaActivity activity) {
+    public static FifaNavigationDrawer newInstance(FifaBaseActivity activity) {
         return new FifaNavigationDrawer(activity);
     }
 
@@ -69,7 +69,7 @@ public class FifaNavigationDrawer {
         mDrawer.getDrawerLayout().setDrawerLockMode(mode);
     }
 
-    private FifaNavigationDrawer(FifaActivity activity) {
+    private FifaNavigationDrawer(FifaBaseActivity activity) {
         User user = SharedPreferencesManager.getUser();
 
         int incomingRequestsCount = user.getIncomingRequests().size();
@@ -132,12 +132,12 @@ public class FifaNavigationDrawer {
                 .withIconTintingEnabled(true);
     }
 
-    private Drawer buildDrawer(User user, FifaActivity activity, IDrawerItem... items) {
+    private Drawer buildDrawer(User user, FifaBaseActivity activity, IDrawerItem... items) {
         AccountHeader header = initializeDrawerBanner(user, activity);
         return initializeDrawer(activity, header, items);
     }
 
-    private AccountHeader initializeDrawerBanner(User user, FifaActivity activity) {
+    private AccountHeader initializeDrawerBanner(User user, FifaBaseActivity activity) {
         initializeDrawerImageLoader(user);
         ProfileDrawerItem profile = initializeProfileDrawerItem(user);
         return initializeAccountHeader(profile, activity);
@@ -160,7 +160,7 @@ public class FifaNavigationDrawer {
                 .withIcon(user.getImageUrl());
     }
 
-    private AccountHeader initializeAccountHeader(ProfileDrawerItem profile, FifaActivity activity) {
+    private AccountHeader initializeAccountHeader(ProfileDrawerItem profile, FifaBaseActivity activity) {
         return new AccountHeaderBuilder()
                 .withActivity(activity)
                 .withHeaderBackground(R.drawable.header)
@@ -168,7 +168,7 @@ public class FifaNavigationDrawer {
                 .build();
     }
 
-    private Drawer initializeDrawer(FifaActivity activity, AccountHeader header, IDrawerItem... items) {
+    private Drawer initializeDrawer(FifaBaseActivity activity, AccountHeader header, IDrawerItem... items) {
         return new DrawerBuilder()
                 .withActivity(activity)
                 .withAccountHeader(header)

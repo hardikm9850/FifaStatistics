@@ -3,7 +3,7 @@ package com.example.kevin.fifastatistics.utils;
 import android.graphics.Color;
 
 import com.example.kevin.fifastatistics.R;
-import com.example.kevin.fifastatistics.activities.FifaActivity;
+import com.example.kevin.fifastatistics.activities.FifaBaseActivity;
 import com.getbase.floatingactionbutton.FloatingActionButton;
 
 /**
@@ -14,13 +14,13 @@ import com.getbase.floatingactionbutton.FloatingActionButton;
  */
 public class FabFactory {
 
-    private FifaActivity mActivity;
+    private FifaBaseActivity mActivity;
 
-    public static FabFactory newInstance(FifaActivity activity) {
+    public static FabFactory newInstance(FifaBaseActivity activity) {
         return new FabFactory(activity);
     }
 
-    private FabFactory(FifaActivity activity) {
+    private FabFactory(FifaBaseActivity activity) {
         mActivity = activity;
     }
 

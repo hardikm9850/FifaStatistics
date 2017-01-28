@@ -13,7 +13,7 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public class SerializationUtils {
 
-    private static final ObjectMapper mapper = new ObjectMapper();
+    private static final ObjectMapper MAPPER = new ObjectMapper();
 
     /**
      * Serializes an object to a JSON String.
@@ -22,7 +22,7 @@ public class SerializationUtils {
      */
     public static <T> String toJson(T value) {
         try {
-            return mapper.writeValueAsString(value);
+            return MAPPER.writeValueAsString(value);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
             throw new RuntimeException(e);
@@ -36,7 +36,7 @@ public class SerializationUtils {
      */
     public static <T> String toFormattedJson(T value) {
         try {
-            return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(value);
+            return MAPPER.writerWithDefaultPrettyPrinter().writeValueAsString(value);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
             throw new RuntimeException(e);
@@ -51,10 +51,10 @@ public class SerializationUtils {
      */
     public static <T> T fromJson(String json, Class<T> type) {
         try {
-            return mapper.readValue(json, type);
+            return MAPPER.readValue(json, type);
         } catch (IOException e) {
             e.printStackTrace();
-            throw new RuntimeException(e);
+            return null;
         }
     }
 }

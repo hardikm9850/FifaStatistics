@@ -36,7 +36,7 @@ public class MatchUtils {
 
         int goalsWinner = match.getStats().getStatsFor().getGoals();
         int goalsLoser = match.getStats().getStatsAgainst().getGoals();
-        if (didGoToPenalties && (goalsWinner != goalsLoser)) {
+        if (didGoToPenalties && ((goalsWinner != goalsLoser) || !match.getPenalties().validate())) {
             return false;
         } else if (!didGoToPenalties && (goalsWinner == goalsLoser)) {
             return false;

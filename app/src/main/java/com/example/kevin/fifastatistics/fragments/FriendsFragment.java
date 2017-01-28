@@ -12,7 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.kevin.fifastatistics.R;
-import com.example.kevin.fifastatistics.activities.FifaActivity;
+import com.example.kevin.fifastatistics.activities.FifaBaseActivity;
 import com.example.kevin.fifastatistics.interfaces.OnBackPressedHandler;
 import com.example.kevin.fifastatistics.managers.RetrievalManager;
 import com.example.kevin.fifastatistics.models.databasemodels.user.Friend;
@@ -75,7 +75,7 @@ public class FriendsFragment extends FifaBaseFragment implements OnBackPressedHa
     }
 
     private void initializeSearchView(User user) {
-        Subscription searchSub = FifaSearchView.getInstance((FifaActivity) getActivity(), user).subscribe(sv -> {
+        Subscription searchSub = FifaSearchView.getInstance((FifaBaseActivity) getActivity(), user).subscribe(sv -> {
             if (sv != null) {
                 mSearchView = sv;
                 mIsSearchViewReady = true;

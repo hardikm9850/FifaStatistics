@@ -6,7 +6,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 
 import com.example.kevin.fifastatistics.R;
-import com.example.kevin.fifastatistics.activities.FifaActivity;
+import com.example.kevin.fifastatistics.activities.FifaBaseActivity;
 import com.example.kevin.fifastatistics.fragments.AddMatchDialogFragment;
 import com.example.kevin.fifastatistics.interfaces.OnMatchCreatedListener;
 import com.example.kevin.fifastatistics.interfaces.OnMatchUpdatedListener;
@@ -15,24 +15,26 @@ import com.example.kevin.fifastatistics.models.databasemodels.user.Friend;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
 import com.example.kevin.fifastatistics.utils.ResourceUtils;
 
+import java.util.List;
+
 public class CreateSeriesListItemViewModel extends BaseObservable {
 
     private Match mMatch;
     private User mUser;
     private Friend mOpponent;
-    private FifaActivity mActivity;
+    private FifaBaseActivity mActivity;
     private AddMatchDialogFragment mDialogFragment;
     private OnMatchCreatedListener mOnMatchCreatedListener;
-    private OnMatchUpdatedListener mOnMatchUpdatedListener;
+    private List<OnMatchUpdatedListener> mOnMatchUpdatedListeners;
     private int mMatchNumber;
 
-    public CreateSeriesListItemViewModel(FifaActivity activity, Match match, User currentUser, Friend opponent, int matchNumber, OnMatchUpdatedListener listener) {
+    public CreateSeriesListItemViewModel(FifaBaseActivity activity, Match match, User currentUser, Friend opponent, int matchNumber, List<OnMatchUpdatedListener> listeners) {
         mMatch = match;
         mActivity = activity;
         mUser = currentUser;
         mOpponent = opponent;
         mMatchNumber = matchNumber;
-        mOnMatchUpdatedListener = listener;
+        mOnMatchUpdatedListeners = listeners;
         mOnMatchCreatedListener = initializeMatchCreatedListener();
     }
 
@@ -42,9 +44,16 @@ public class CreateSeriesListItemViewModel extends BaseObservable {
             setMatch(match);
             if (mDialogFragment != null) {
                 mDialogFragment.dismiss();
+                mActivity.setOnBackPressHandler(null);
             }
-            mOnMatchUpdatedListener.onMatchUpdated(oldMatch, match);
+            notifyMatchUpdatedListeners(oldMatch, match);
         });
+    }
+
+    private void notifyMatchUpdatedListeners(Match oldMatch, Match newMatch) {
+        for (OnMatchUpdatedListener listener : mOnMatchUpdatedListeners) {
+            listener.onMatchUpdated(oldMatch, newMatch);
+        }
     }
 
     public void onItemClicked() {
@@ -52,12 +61,17 @@ public class CreateSeriesListItemViewModel extends BaseObservable {
         t.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
         mDialogFragment = AddMatchDialogFragment.newInstance(mUser, mOpponent, mOnMatchCreatedListener, mActivity);
         mDialogFragment.setMatch(mMatch);
+        mActivity.setOnBackPressHandler(mDialogFragment);
         t.add(android.R.id.content, mDialogFragment).addToBackStack(null).commit();
     }
 
     public void setMatch(Match match) {
         mMatch = match;
         notifyChange();
+    }
+
+    public Match getMatch() {
+        return mMatch;
     }
 
     @Bindable

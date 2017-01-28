@@ -5,7 +5,7 @@ import android.content.Intent;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 
-import com.example.kevin.fifastatistics.activities.FifaActivity;
+import com.example.kevin.fifastatistics.activities.FifaBaseActivity;
 import com.example.kevin.fifastatistics.fragments.AddMatchDialogFragment;
 import com.example.kevin.fifastatistics.fragments.SelectOpponentDialogFragment;
 import com.example.kevin.fifastatistics.interfaces.OnBackPressedHandler;
@@ -28,11 +28,11 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class FifaEventManager implements SelectOpponentDialogFragment.SelectOpponentListener, OnBackPressedHandler {
 
-    private final FifaActivity mActivity;
+    private final FifaBaseActivity mActivity;
     private final User mUser;
     private Flow mFlow;
 
-    public static FifaEventManager newInstance(FifaActivity activity, User user) {
+    public static FifaEventManager newInstance(FifaBaseActivity activity, User user) {
         return new FifaEventManager(activity, user);
     }
 
@@ -120,7 +120,7 @@ public class FifaEventManager implements SelectOpponentDialogFragment.SelectOppo
             mAddMatchFragment = showAddMatchFragment(mActivity, opponent);
         }
 
-        private AddMatchDialogFragment showAddMatchFragment(FifaActivity parentActivity, Friend opponent) {
+        private AddMatchDialogFragment showAddMatchFragment(FifaBaseActivity parentActivity, Friend opponent) {
             FragmentTransaction t = parentActivity.getSupportFragmentManager().beginTransaction();
             t.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
             AddMatchDialogFragment fragment = AddMatchDialogFragment.newInstance(mUser, opponent, mOnMatchCreatedListener, mActivity);

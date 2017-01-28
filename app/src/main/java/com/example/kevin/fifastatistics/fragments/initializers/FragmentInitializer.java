@@ -2,7 +2,7 @@ package com.example.kevin.fifastatistics.fragments.initializers;
 
 import android.support.design.widget.TabLayout;
 
-import com.example.kevin.fifastatistics.activities.FifaActivity;
+import com.example.kevin.fifastatistics.activities.FifaBaseActivity;
 import com.example.kevin.fifastatistics.activities.MainActivity;
 import com.example.kevin.fifastatistics.views.adapters.ViewPagerAdapter;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
@@ -20,7 +20,7 @@ public abstract class FragmentInitializer {
      * Set the title of the activity's toolbar to what is appropriate for the
      * specified fragment.
      */
-    public abstract void setActivityTitle(FifaActivity activity);
+    public abstract void setActivityTitle(FifaBaseActivity activity);
 
     /**
      * Initialize the fragments that will be present in the activity's ViewPager,

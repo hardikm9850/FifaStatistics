@@ -16,4 +16,8 @@ public class Penalties {
 
     private int winner;
     private int loser;
+
+    public boolean validate() {
+        return winner != loser;
+    }
 }

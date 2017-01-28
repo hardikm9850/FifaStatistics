@@ -1,10 +1,9 @@
 package com.example.kevin.fifastatistics.models.databasemodels.match;
 
-import android.util.Log;
-
 import com.example.kevin.fifastatistics.models.databasemodels.DatabaseModel;
 import com.example.kevin.fifastatistics.models.databasemodels.user.Friend;
 import com.example.kevin.fifastatistics.models.databasemodels.user.Player;
+import com.example.kevin.fifastatistics.models.databasemodels.user.Stats;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
 import com.example.kevin.fifastatistics.utils.SerializationUtils;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -77,6 +76,14 @@ public class Match extends DatabaseModel {
         } else {
             return "";
         }
+    }
+
+    public Stats getStatsFor() {
+        return stats.getStatsFor();
+    }
+
+    public Stats getStatsAgainst() {
+        return stats.getStatsAgainst();
     }
 
     @Override

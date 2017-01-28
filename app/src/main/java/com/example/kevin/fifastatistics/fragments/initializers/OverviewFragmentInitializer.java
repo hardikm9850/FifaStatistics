@@ -3,7 +3,7 @@ package com.example.kevin.fifastatistics.fragments.initializers;
 import android.support.design.widget.TabLayout;
 import android.view.View;
 
-import com.example.kevin.fifastatistics.activities.FifaActivity;
+import com.example.kevin.fifastatistics.activities.FifaBaseActivity;
 import com.example.kevin.fifastatistics.fragments.UserOverviewFragment;
 import com.example.kevin.fifastatistics.models.Constants;
 import com.example.kevin.fifastatistics.views.adapters.ViewPagerAdapter;
@@ -18,7 +18,7 @@ import com.getbase.floatingactionbutton.FloatingActionsMenu;
 public class OverviewFragmentInitializer extends FragmentInitializer {
 
     @Override
-    public void setActivityTitle(FifaActivity activity) {
+    public void setActivityTitle(FifaBaseActivity activity) {
         activity.setTitle(Constants.OVERVIEW_FRAGMENT);
     }
 

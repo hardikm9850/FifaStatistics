@@ -3,8 +3,8 @@ package com.example.kevin.fifastatistics.managers;
 import android.graphics.Bitmap;
 import android.util.Log;
 
+import com.example.kevin.fifastatistics.interfaces.MatchFactsPreprocessor;
 import com.example.kevin.fifastatistics.utils.BitmapUtils;
-import com.example.kevin.fifastatistics.utils.ObservableUtils;
 
 import rx.Observable;
 

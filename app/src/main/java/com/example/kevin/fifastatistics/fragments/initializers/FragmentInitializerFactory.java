@@ -1,6 +1,6 @@
 package com.example.kevin.fifastatistics.fragments.initializers;
 
-import com.example.kevin.fifastatistics.activities.FifaActivity;
+import com.example.kevin.fifastatistics.activities.FifaBaseActivity;
 import com.example.kevin.fifastatistics.managers.SharedPreferencesManager;
 import com.example.kevin.fifastatistics.models.Constants;
 import com.example.kevin.fifastatistics.network.ApiAdapter;
@@ -11,7 +11,7 @@ import rx.schedulers.Schedulers;
 /**
  * Factory for generating fragment initializers.
  * <p>
- * Use the {@link #createFragmentInitializer(FifaActivity)} method to create an initializer based
+ * Use the {@link #createFragmentInitializer(FifaBaseActivity)} method to create an initializer based
  * on the activity's Extras.
  */
 public class FragmentInitializerFactory {
@@ -23,7 +23,7 @@ public class FragmentInitializerFactory {
      * fragment extra passed to the activity. If the extra is null, then an
      * {@link OverviewFragmentInitializer} is returned.
      */
-    public static FragmentInitializer createFragmentInitializer(FifaActivity activity) {
+    public static FragmentInitializer createFragmentInitializer(FifaBaseActivity activity) {
         String fragment = getFragmentExtra(activity);
         switch (fragment) {
             case (Constants.OVERVIEW_FRAGMENT):
@@ -35,7 +35,7 @@ public class FragmentInitializerFactory {
         }
     }
 
-    private static String getFragmentExtra(FifaActivity activity) {
+    private static String getFragmentExtra(FifaBaseActivity activity) {
         String extra = activity.getIntent().getStringExtra(FRAGMENT_EXTRA);
         activity.getIntent().removeExtra(FRAGMENT_EXTRA);
 

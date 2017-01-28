@@ -5,10 +5,14 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
 
+import com.example.kevin.fifastatistics.models.databasemodels.match.Match;
+import com.example.kevin.fifastatistics.models.databasemodels.match.Series;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
+import com.example.kevin.fifastatistics.utils.SerializationUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Utility for handling all Shared Preference needs. Any requests to Shared Preferences should be
@@ -27,6 +31,7 @@ public class SharedPreferencesManager {
     private static final String REGISTRATION_FAILED = "REGISTRATION_FAILED";
     private static final String REGISTRATION_TOKEN = "REGISTRATION_TOKEN";
     private static final String CURRENT_USER = "CURRENT_USER";
+    private static final String CURRENT_SERIES = "CURRENT_SERIES";
 
     private static SharedPreferences preferences;
     private static SharedPreferences.Editor editor;
@@ -112,6 +117,28 @@ public class SharedPreferencesManager {
     public static void storeUser(User user) {
         editor = preferences.edit();
         editor.putString(CURRENT_USER, user.toString());
+        editor.apply();
+    }
+
+    public static void storeCurrentSeries(List<Match> matches) {
+        editor = preferences.edit();
+        editor.putString(CURRENT_SERIES, SerializationUtils.toJson(matches));
+        editor.apply();
+    }
+
+    public static List<Match> getCurrentSeries() {
+        ObjectMapper mapper = new ObjectMapper();
+        String matches = preferences.getString(CURRENT_SERIES, null);
+        try {
+            return matches == null ? null : mapper.readValue(matches, List.class);
+        } catch (IOException e) {
+            return null;
+        }
+    }
+
+    public static void removeCurrentSeries() {
+        editor = preferences.edit();
+        editor.remove(CURRENT_SERIES);
         editor.apply();
     }
 

@@ -28,7 +28,7 @@ public class NetworkUtils {
         return !isConnected();
     }
 
-    /** Retrive the id of the created object from the location header of the response. */
+    /** Retrieve the id of the created object from the location header of the response. */
     public static String getIdFromResponse(Response<?> response) {
         String header = response.headers().get("Location");
         int startIndex = header.lastIndexOf("/");

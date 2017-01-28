@@ -7,11 +7,21 @@ import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.jackson.JacksonConverterFactory;
+import rx.Observer;
 
 /**
  * Adapter class to interact with the FifaApi.
  */
 public class ApiAdapter {
+
+    public static final Observer<Void> EMPTY_OBSERVER = new Observer<Void>() {
+        @Override
+        public void onCompleted() {}
+        @Override
+        public void onError(Throwable e) {}
+        @Override
+        public void onNext(Void aVoid) {}
+    };
 
     private static final String FIFA_API_ENDPOINT = "https://fifastatisticsapi.azurewebsites.net/";
     private static final String NOTIFICATIONS_API_ENDPOINT = "https://gcm-http.googleapis.com/gcm/";

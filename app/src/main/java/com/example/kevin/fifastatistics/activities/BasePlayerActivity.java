@@ -4,7 +4,7 @@ import android.os.Bundle;
 
 import com.example.kevin.fifastatistics.models.databasemodels.user.Friend;
 
-public abstract class BasePlayerActivity extends FifaActivity {
+public abstract class BasePlayerActivity extends FifaBaseActivity {
 
     /** The name of the user. */
     public static final String NAME_EXTRA = "name";

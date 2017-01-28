@@ -8,9 +8,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.kevin.fifastatistics.R;
-import com.example.kevin.fifastatistics.activities.FifaActivity;
+import com.example.kevin.fifastatistics.activities.FifaBaseActivity;
 import com.example.kevin.fifastatistics.databinding.FragmentCreateSeriesMatchListBinding;
 import com.example.kevin.fifastatistics.interfaces.OnMatchCreatedListener;
+import com.example.kevin.fifastatistics.interfaces.OnSeriesCompletedListener;
 import com.example.kevin.fifastatistics.interfaces.OnSeriesScoreUpdateListener;
 import com.example.kevin.fifastatistics.models.databasemodels.match.Match;
 import com.example.kevin.fifastatistics.models.databasemodels.user.Friend;
@@ -21,37 +22,38 @@ import com.robinhood.ticker.TickerView;
 
 public class CreateSeriesMatchListFragment extends FifaBaseFragment implements OnMatchCreatedListener {
 
-    private FragmentCreateSeriesMatchListBinding mMatchListBinding;
     private User mUser;
     private Friend mOpponent;
     private CreateSeriesMatchListViewModel mListViewModel;
     private OnSeriesScoreUpdateListener mSeriesUpdateListener;
+    private OnSeriesCompletedListener mSeriesCompletedListener;
     private TickerView mUserTicker;
     private TickerView mOpponentTicker;
 
     public CreateSeriesMatchListFragment() {}
 
-    public static CreateSeriesMatchListFragment newInstance(User user, Friend opponent) {
+    public static CreateSeriesMatchListFragment newInstance(User user, Friend opponent, OnSeriesCompletedListener seriesCompletedListener) {
         CreateSeriesMatchListFragment f = new CreateSeriesMatchListFragment();
         f.mUser = user;
         f.mOpponent = opponent;
+        f.mSeriesCompletedListener = seriesCompletedListener;
         return f;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mListViewModel = new CreateSeriesMatchListViewModel((FifaActivity) getActivity(), mUser, mOpponent, mSeriesUpdateListener);
+        mListViewModel = new CreateSeriesMatchListViewModel((FifaBaseActivity) getActivity(), mUser, mOpponent, mSeriesUpdateListener, mSeriesCompletedListener);
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        mMatchListBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_create_series_match_list, container, false);
-        initializeSeriesUpdateListener(mMatchListBinding.getRoot());
+        FragmentCreateSeriesMatchListBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_create_series_match_list, container, false);
+        initializeSeriesUpdateListener(binding.getRoot());
         mListViewModel.setOnSeriesScoreUpdateListener(mSeriesUpdateListener);
-        mMatchListBinding.setListViewModel(mListViewModel);
-        return mMatchListBinding.getRoot();
+        binding.setListViewModel(mListViewModel);
+        return binding.getRoot();
     }
 
     private void initializeSeriesUpdateListener(View root) {

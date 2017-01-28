@@ -43,7 +43,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.kevin.fifastatistics.R;
-import com.example.kevin.fifastatistics.managers.MatchFactsPreprocessor;
+import com.example.kevin.fifastatistics.interfaces.MatchFactsPreprocessor;
 import com.example.kevin.fifastatistics.managers.MatchFactsPreprocessor15;
 import com.example.kevin.fifastatistics.utils.ObservableUtils;
 

@@ -85,6 +85,13 @@
     <!-- CREATE SERIES ACTIVITY -->
     <string name="title_activity_create_series_activity">New Series</string>
     <string name="new_series">New Series</string>
+    <string name="create_series_exit_confirmation">"Are you sure you want to discard this series?"</string>
+    <string name="dialog_keep_editing">KEEP EDITING</string>
+    <string name="dialog_discard">DISCARD</string>
+    <string name="uploading_series">Uploading series</string>
+    <string name="please_wait">Please wait...</string>
+    <string name="create_series_failed">Failed to create series</string>
+    <string name="create_series_success">Series created successfully.</string>
 
     <!-- TOASTS -->
     <string name="not_found">Not found!</string>

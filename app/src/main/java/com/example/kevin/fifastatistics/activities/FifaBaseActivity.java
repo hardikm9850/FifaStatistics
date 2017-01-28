@@ -10,7 +10,7 @@ import com.example.kevin.fifastatistics.utils.ObservableUtils;
 import rx.Subscription;
 import rx.subscriptions.CompositeSubscription;
 
-public abstract class FifaActivity extends AppCompatActivity {
+public abstract class FifaBaseActivity extends AppCompatActivity {
 
     private OnBackPressedHandler mBackPressHandler;
     private CompositeSubscription mCompositeSubscription;
@@ -18,7 +18,7 @@ public abstract class FifaActivity extends AppCompatActivity {
     public abstract Toolbar getToolbar();
     public abstract View getParentLayout();
 
-    public FifaActivity() {
+    public FifaBaseActivity() {
         mCompositeSubscription = new CompositeSubscription();
     }
 

@@ -2,8 +2,10 @@ package com.example.kevin.fifastatistics.network;
 
 import com.example.kevin.fifastatistics.models.apiresponses.ApiListResponse;
 import com.example.kevin.fifastatistics.models.databasemodels.match.Match;
+import com.example.kevin.fifastatistics.models.databasemodels.match.Series;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
 
+import lombok.Getter;
 import retrofit2.Response;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -118,4 +120,13 @@ public interface FifaApi
 
     @GET
     Observable<Match> lookupMatch(@Url String url);
+
+    @GET("series")
+    Observable<ApiListResponse<Series>> getSeries();
+
+    @POST("series")
+    Observable<Response<Void>> createSeries(@Body Series series);
+
+    @GET
+    Observable<Series> lookupSeries(@Url String url);
 }
