@@ -75,13 +75,13 @@ public class FifaNavigationDrawer {
         int incomingRequestsCount = user.getIncomingRequests().size();
         BadgeStyle badgeStyle = initializeBadgeStyle();
         PrimaryDrawerItem friendsItem = initializeFriendsItem(badgeStyle, incomingRequestsCount);
-
+        PrimaryDrawerItem matchesItem = initializeMatchesItem();
         PrimaryDrawerItem overviewItem = initializeOverviewItem();
         PrimaryDrawerItem settingsItem = initializeSettingsItem();
         PrimaryDrawerItem statisticsItem = initializeStatisticsItem();
         PrimaryDrawerItem starredItem = initializeStarredItem();
 
-        IDrawerItem[] items = {overviewItem, statisticsItem, friendsItem, starredItem,
+        IDrawerItem[] items = {overviewItem, statisticsItem, matchesItem, friendsItem, starredItem,
                 new DividerDrawerItem(), settingsItem};
         mDrawer = buildDrawer(user, activity, items);
     }
@@ -96,6 +96,13 @@ public class FifaNavigationDrawer {
         return new PrimaryDrawerItem()
                 .withName(R.string.overview)
                 .withIcon(R.drawable.ic_home_black_24dp)
+                .withIconTintingEnabled(true);
+    }
+
+    private PrimaryDrawerItem initializeMatchesItem() {
+        return new PrimaryDrawerItem()
+                .withName(R.string.matches)
+                .withIcon(R.drawable.soccer)
                 .withIconTintingEnabled(true);
     }
 

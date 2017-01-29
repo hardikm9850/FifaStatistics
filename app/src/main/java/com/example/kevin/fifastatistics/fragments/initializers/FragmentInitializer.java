@@ -9,33 +9,31 @@ import com.getbase.floatingactionbutton.FloatingActionsMenu;
 
 /**
  * Prepares the activity for the fragment that will be displayed.
- * For example, it sets the activity title, sets the tab layout state, and initializes the
- * fragments in the activity's view pager.
  */
-public abstract class FragmentInitializer {
+public interface FragmentInitializer {
 
-    protected static final String PAGE_EXTRA = MainActivity.PAGE_EXTRA;
+    String PAGE_EXTRA = MainActivity.PAGE_EXTRA;
 
     /**
      * Set the title of the activity's toolbar to what is appropriate for the
      * specified fragment.
      */
-    public abstract void setActivityTitle(FifaBaseActivity activity);
+    void setActivityTitle(FifaBaseActivity activity);
 
     /**
      * Initialize the fragments that will be present in the activity's ViewPager,
      * and add them to it.
      */
-    public abstract void changeAdapterDataSet(ViewPagerAdapter adapter);
+    void changeAdapterDataSet(ViewPagerAdapter adapter);
 
     /**
      * Set the state of the Tab Layout (The starting page, whether it's visible,
      * etc.)
      */
-    public abstract void setTabLayoutVisibility(TabLayout tabLayout);
+    void setTabLayoutVisibility(TabLayout tabLayout);
 
     /**
      * Set the visibility of the floating action menu.
      */
-    public abstract void setFabVisibility(FloatingActionsMenu menu);
+    void setFabVisibility(FloatingActionsMenu menu);
 }

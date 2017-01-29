@@ -1,7 +1,5 @@
 package com.example.kevin.fifastatistics.models.databasemodels.user.records;
 
-import com.example.kevin.fifastatistics.models.databasemodels.match.Result;
-
 import lombok.Getter;
 
 @Getter
@@ -16,25 +14,6 @@ public class Streak {
 
     private int value;
     private Type type;
-
-    public Streak() {
-        type = Type.WINNING;
-    }
-
-    /**
-     * Update the streak's value and type given the result.
-     * @param result    the match or series result
-     */
-    public void update(Result result) {
-        value++;
-        if (result == Result.WIN && type == Type.LOSING) {
-            type = Type.WINNING;
-            value = 1;
-        } else if (result == Result.LOSS && type == Type.WINNING){
-            type = Type.LOSING;
-            value = 1;
-        }
-    }
 
     /**
      * Returns a string starting with 'L' or 'W' if this is a Winning or Losing streak, followed

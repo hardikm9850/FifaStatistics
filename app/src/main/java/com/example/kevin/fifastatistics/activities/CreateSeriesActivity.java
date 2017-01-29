@@ -115,7 +115,7 @@ public class CreateSeriesActivity extends BasePlayerActivity implements OnSeries
             SeriesUtils.createSeries(mSeries).subscribe(series -> {
                 SharedPreferencesManager.removeCurrentSeries();
                 d.cancel();
-                // TODO update user
+                RetrievalManager.syncCurrentUserWithServer();
                 ToastUtils.showShortToast(this, getString(R.string.create_series_success));
                 finish();
             });

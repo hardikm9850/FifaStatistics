@@ -3,6 +3,7 @@ package com.example.kevin.fifastatistics.fragments.initializers;
 import com.example.kevin.fifastatistics.activities.FifaBaseActivity;
 import com.example.kevin.fifastatistics.managers.SharedPreferencesManager;
 import com.example.kevin.fifastatistics.models.Constants;
+import com.example.kevin.fifastatistics.models.databasemodels.user.Player;
 import com.example.kevin.fifastatistics.network.ApiAdapter;
 
 import rx.android.schedulers.AndroidSchedulers;
@@ -42,13 +43,15 @@ public class FragmentInitializerFactory {
         return extra == null ? Constants.OVERVIEW_FRAGMENT : extra;
     }
 
-    public static FragmentInitializer createFragmentInitializer(int drawerPosition) {
+    public static FragmentInitializer createFragmentInitializer(int drawerPosition, Player user) {
         switch (drawerPosition) {
             case 1:
                 return FragmentInitializerFactory.createOverviewFragmentInitializer();
             case 3:
-                return FragmentInitializerFactory.createFriendsFragmentInitializer();
+                return new MatchesFragmentInitializer(user);
             case 4:
+                return FragmentInitializerFactory.createFriendsFragmentInitializer();
+            case 5:
                 ApiAdapter.getFifaApi().getUser(SharedPreferencesManager.getUser().getId())
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())

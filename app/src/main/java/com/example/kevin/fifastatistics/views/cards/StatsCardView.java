@@ -60,8 +60,8 @@ public class StatsCardView extends LinearLayout {
         rightHeader.setText(text);
     }
 
-    public void setChartData(User.StatsPair stats) {
-        statsList.setAdapter(new StatsRecyclerViewAdapter(stats));
+    public void setChartData(User.StatsPair stats, boolean doShowDecimals) {
+        statsList.setAdapter(new StatsRecyclerViewAdapter(stats, doShowDecimals));
     }
 
 }

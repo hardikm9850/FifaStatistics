@@ -17,6 +17,7 @@ import com.example.kevin.fifastatistics.managers.FifaEventManager;
 import com.example.kevin.fifastatistics.managers.RetrievalManager;
 import com.example.kevin.fifastatistics.managers.SharedPreferencesManager;
 import com.example.kevin.fifastatistics.models.databasemodels.user.Friend;
+import com.example.kevin.fifastatistics.models.databasemodels.user.Player;
 import com.example.kevin.fifastatistics.utils.FabFactory;
 import com.example.kevin.fifastatistics.utils.IntentFactory;
 import com.example.kevin.fifastatistics.utils.ObservableUtils;
@@ -48,6 +49,7 @@ public class MainActivity extends FifaBaseActivity
     private TabLayout mTabLayout;
     private ViewPager mViewPager;
     private FloatingActionsMenu mActionMenu;
+    private Player mUser;
 
     private int currentDrawerPosition;
 
@@ -62,6 +64,7 @@ public class MainActivity extends FifaBaseActivity
         initializeDrawer();
         initializeFab();
         initializeFragment();
+        RetrievalManager.getCurrentUser().subscribe(user -> mUser = user);
         Log.d("token", SharedPreferencesManager.getRegistrationToken());
     }
 
@@ -105,7 +108,7 @@ public class MainActivity extends FifaBaseActivity
     private void handleDrawerClick(int position) {
         Subscription drawerSubscription = Observable.just(position)
                 .map(p -> currentDrawerPosition = p)
-                .map(FragmentInitializerFactory::createFragmentInitializer)
+                .map(p -> FragmentInitializerFactory.createFragmentInitializer(p, mUser))
                 .compose(ObservableUtils.applySchedulers())
                 .delaySubscription(450, TimeUnit.MILLISECONDS)
                 .subscribe(this::prepareActivityForFragments);

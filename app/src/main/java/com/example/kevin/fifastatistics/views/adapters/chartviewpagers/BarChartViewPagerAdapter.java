@@ -29,11 +29,10 @@ public class BarChartViewPagerAdapter extends ChartViewPagerAdapter {
     @Override
     public Object instantiateItem(ViewGroup collection, int position) {
         LayoutInflater inflater = LayoutInflater.from(mContext);
-        StatsCardView chartView = (StatsCardView) inflater.inflate(
-                R.layout.stats_chart_view, collection, false);
+        StatsCardView chartView = (StatsCardView) inflater.inflate(R.layout.stats_chart_view, collection, false);
 
         chartView.setTitle((position == 0) ? "Averages" : "Records");
-        chartView.setChartData(stats.get(position));
+        chartView.setChartData(stats.get(position), position == 0);
 
         if (mUserName != null) {
             chartView.setLeftHeaderText(mUserName);

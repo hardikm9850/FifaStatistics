@@ -5,40 +5,37 @@ import android.view.View;
 
 import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.activities.FifaBaseActivity;
-import com.example.kevin.fifastatistics.fragments.FriendsFragment;
-import com.example.kevin.fifastatistics.models.Constants;
+import com.example.kevin.fifastatistics.fragments.MatchesFragment;
+import com.example.kevin.fifastatistics.models.databasemodels.user.Player;
+import com.example.kevin.fifastatistics.utils.ResourceUtils;
 import com.example.kevin.fifastatistics.views.adapters.ViewPagerAdapter;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
 
-/**
- * Implementation of the abstract FragmentInitializer class for FriendFragments.
- * <p>
- * See {@link FragmentInitializer} and {@link FriendsFragment} for more detailed information on
- * those classes.
- */
-public class FriendsFragmentInitializer implements FragmentInitializer
-{
+public class MatchesFragmentInitializer implements FragmentInitializer {
+
+    private Player mUser;
+
+    public MatchesFragmentInitializer(Player user) {
+        mUser = user;
+    }
+
     @Override
     public void setActivityTitle(FifaBaseActivity activity) {
-        activity.setTitle(R.string.players);
+        activity.setTitle(R.string.matches);
     }
 
     @Override
     public void changeAdapterDataSet(ViewPagerAdapter adapter) {
         adapter.clear();
         adapter.addFragment(
-                FriendsFragment.newInstance(FriendsFragment.FRIENDS_VIEW),
-                Constants.FRIENDS_FRAGMENT);
-        adapter.addFragment(
-                FriendsFragment.newInstance(FriendsFragment.REQUESTS_VIEW),
-                "Friend Requests");
-
+                MatchesFragment.newInstance(mUser),
+                ResourceUtils.getStringFromResourceId(R.string.matches));
         adapter.notifyDataSetChanged();
     }
 
     @Override
     public void setTabLayoutVisibility(TabLayout tabLayout) {
-        tabLayout.setVisibility(View.VISIBLE);
+        tabLayout.setVisibility(View.GONE);
     }
 
     @Override

@@ -27,4 +27,8 @@ public class RetrievalManager {
     public static Observable<User> getCurrentUser() {
         return Observable.just(SharedPreferencesManager.getUser()).compose(ObservableUtils.applySchedulers());
     }
+
+    public static void syncCurrentUserWithServer() {
+        getCurrentUser().flatMap(user -> getUser(user.getId())).subscribe(SharedPreferencesManager::storeUser);
+    }
 }

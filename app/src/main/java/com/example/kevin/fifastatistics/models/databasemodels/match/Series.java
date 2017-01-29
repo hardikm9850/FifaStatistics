@@ -23,7 +23,8 @@ public class Series extends DatabaseModel {
     private Friend winner;
     private Friend loser;
     private Date date;
-    private User.StatsPair stats;
+    private User.StatsPair totalStats;
+    private User.StatsPair averageStats;
     private List<Match> matches;
     private int matchesPlayed;
     private int bestOf;
@@ -38,7 +39,8 @@ public class Series extends DatabaseModel {
         this.playerOne = playerOne;
         this.playerTwo = playerTwo;
         matches = new ArrayList<>(DEFAULT_MAX_SERIES_LENGTH);
-        stats = new User.StatsPair();
+        totalStats = new User.StatsPair();
+        averageStats = new User.StatsPair();
         date = new Date();
         bestOf = DEFAULT_MAX_SERIES_LENGTH;
     }
@@ -71,10 +73,8 @@ public class Series extends DatabaseModel {
 
     private void updateStats(Match match) {
         if (match.didWin(playerOne)) {
-            stats.updateAverages(match.getStatsFor(), match.getStatsAgainst(), matches.size());
             playerOneWins++;
         } else {
-            stats.updateAverages(match.getStatsAgainst(), match.getStatsFor(), matches.size());
             playerTwoWins++;
         }
     }
@@ -87,7 +87,7 @@ public class Series extends DatabaseModel {
         } else if (didPlayerWin(playerTwoWins)) {
             winner = playerTwo;
             loser = playerOne;
-            stats.swap();
+            totalStats.swap();
             isSeriesOver = true;
         }
     }

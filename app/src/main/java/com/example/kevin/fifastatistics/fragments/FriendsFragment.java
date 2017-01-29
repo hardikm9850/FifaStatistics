@@ -164,7 +164,6 @@ public class FriendsFragment extends FifaBaseFragment implements OnBackPressedHa
             FriendsRecyclerViewAdapter adapter = new FriendsRecyclerViewAdapter(friends, mListener);
             SlideInBottomAnimatorAdapter<FriendsRecyclerViewAdapter.ViewHolder> animatorAdapter =
                     new SlideInBottomAnimatorAdapter<>(adapter, recyclerView);
-//            animatorAdapter.getViewAnimator().setAnimationDurationMillis(200);
             recyclerView.setLayoutManager(new GridLayoutManager(mView.getContext(), COLUMN_COUNT));
             recyclerView.setAdapter(animatorAdapter);
         }

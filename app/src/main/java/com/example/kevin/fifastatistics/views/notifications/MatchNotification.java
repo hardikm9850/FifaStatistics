@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.example.kevin.fifastatistics.managers.RetrievalManager;
 import com.example.kevin.fifastatistics.managers.SharedPreferencesManager;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
 import com.example.kevin.fifastatistics.models.notifications.notificationbundles.NewMatchBundle;
@@ -52,17 +53,7 @@ public class MatchNotification extends FifaNotification {
 
     @Override
     public void performPreSendActions() {
-        Log.d("MATCH NOTIFICATION", "performing pre send actions");
-        User user = SharedPreferencesManager.getUser();
-        ApiAdapter.getFifaApi().getMatch(mBundle.getMatchId())
-                .compose(ObservableUtils.applyImmediateSchedulers())
-                .subscribe(match -> {
-                    Log.d("MATCH NOTIFICATION", "adding match");
-                    user.addMatch(match);
-                    UserUtils.updateUserSync(user).subscribe();
-                    Log.d("MATCH NOTIFICATION", "updated user");
-                });
-        Log.d("MATCH NOTIFICATION", "performed actions");
+        RetrievalManager.syncCurrentUserWithServer();
     }
 
 }

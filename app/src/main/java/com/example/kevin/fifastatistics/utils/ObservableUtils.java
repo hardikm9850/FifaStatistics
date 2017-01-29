@@ -2,6 +2,7 @@ package com.example.kevin.fifastatistics.utils;
 
 import lombok.experimental.UtilityClass;
 import rx.Observable;
+import rx.Observer;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -35,6 +36,17 @@ public class ObservableUtils {
         if (cs != null && cs.hasSubscriptions()) {
             cs.unsubscribe();
         }
+    }
+
+    public static abstract class EmptyOnCompleteObserver<T> implements Observer<T> {
+        @Override
+        public final void onCompleted() {}
+
+        @Override
+        public abstract void onError(Throwable e);
+
+        @Override
+        public abstract void onNext(T t);
     }
 
 }

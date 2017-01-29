@@ -11,35 +11,34 @@ import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.models.databasemodels.user.Stats;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
 
-/**
- * Created by kevin on 2016-06-07.
- */
+import java.util.Locale;
+
 public class StatsRecyclerViewAdapter extends RecyclerView.Adapter<StatsRecyclerViewAdapter.ViewHolder> {
 
-    private int[] valuesFor;
-    private int[] valuesAgainst;
+    private float[] valuesFor;
+    private float[] valuesAgainst;
+    private String floatFormat;
 
-    public StatsRecyclerViewAdapter(User.StatsPair statsPair) {
+    public StatsRecyclerViewAdapter(User.StatsPair statsPair, boolean doShowDecimal) {
         this.valuesFor = statsPair.getStatsFor().buildValueSet();
         this.valuesAgainst = statsPair.getStatsAgainst().buildValueSet();
+        floatFormat = doShowDecimal ? "%.1f" : "%.0f";
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext())
-                .inflate( R.layout.stats_list_item, parent, false);
-
+        View view = LayoutInflater.from(parent.getContext()).inflate( R.layout.stats_list_item, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        int vf = valuesFor[position];
-        int va = valuesAgainst[position];
+        float vf = valuesFor[position];
+        float va = valuesAgainst[position];
         int percent = (vf + va == 0) ? 50 : (int)((vf * 100.0f) / (vf + va));
         holder.mProgressBar.setProgress(percent);
-        holder.mStatFor.setText(String.valueOf(vf));
-        holder.mStatAgainst.setText(String.valueOf(va));
+        holder.mStatFor.setText(String.format(Locale.CANADA, floatFormat, vf));
+        holder.mStatAgainst.setText(String.format(Locale.CANADA, floatFormat, va));
         holder.mTitle.setText(Stats.getNameSet()[position]);
     }
 

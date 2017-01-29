@@ -104,8 +104,8 @@ public class AddMatchListLayout extends ScrollView {
     }
 
     private void setPossession(StatsPair statsPair) {
-        int leftPossession = statsPair.getStatsFor().getPossession();
-        int rightPossession = statsPair.getStatsAgainst().getPossession();
+        float leftPossession = statsPair.getStatsFor().getPossession();
+        float rightPossession = statsPair.getStatsAgainst().getPossession();
         if (leftPossession == OcrResultParser.ERROR_VALUE) {
             if (rightPossession != OcrResultParser.ERROR_VALUE) {
                 mPossessionItem.setRightText(rightPossession);

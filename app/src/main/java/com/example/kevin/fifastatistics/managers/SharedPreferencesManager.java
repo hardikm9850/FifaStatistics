@@ -144,7 +144,7 @@ public class SharedPreferencesManager {
 
     /**
      * Retrieves the current user from Shared Preferences.
-     * @return  the curernt user
+     * @return  the current user
      */
     public static User getUser() {
         ObjectMapper mapper = new ObjectMapper();
@@ -152,6 +152,7 @@ public class SharedPreferencesManager {
         try {
             return user == null ? null : mapper.readValue(user, User.class);
         } catch (IOException e) {
+            Log.e("ERROR", e.getMessage());
             return null;
         }
     }

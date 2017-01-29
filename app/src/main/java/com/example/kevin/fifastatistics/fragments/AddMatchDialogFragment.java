@@ -188,8 +188,8 @@ public class AddMatchDialogFragment extends FifaBaseDialogFragment
 
     private boolean userDidWin(User.StatsPair stats, Penalties penalties) {
         if (penalties == null) {
-            int goalsLeft = stats.getStatsFor().getGoals();
-            int goalsRight = stats.getStatsAgainst().getGoals();
+            float goalsLeft = stats.getStatsFor().getGoals();
+            float goalsRight = stats.getStatsAgainst().getGoals();
             return mDidSwapSides != goalsLeft > goalsRight;
         } else {
             return mDidSwapSides != mAddMatchList.isLeftPenaltiesGreater();

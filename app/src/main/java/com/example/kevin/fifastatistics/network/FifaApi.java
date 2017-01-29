@@ -2,6 +2,7 @@ package com.example.kevin.fifastatistics.network;
 
 import com.example.kevin.fifastatistics.models.apiresponses.ApiListResponse;
 import com.example.kevin.fifastatistics.models.databasemodels.match.Match;
+import com.example.kevin.fifastatistics.models.databasemodels.match.MatchProjection;
 import com.example.kevin.fifastatistics.models.databasemodels.match.Series;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
 
@@ -110,7 +111,7 @@ public interface FifaApi
     // MATCHES
 
     @GET("matches")
-    Observable<ApiListResponse<Match>> getMatches();
+    Observable<ApiListResponse<MatchProjection>> getMatches();
 
     @GET("matches/{id}")
     Observable<Match> getMatch(@Path("id") String id);

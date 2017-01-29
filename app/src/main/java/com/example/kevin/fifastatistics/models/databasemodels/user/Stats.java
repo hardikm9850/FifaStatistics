@@ -23,18 +23,18 @@ public class Stats {
                 "Pass Accuracy (%)"
             };
 
-    private int goals;
-    private int shots;
-    private int shotsOnTarget;
-    private int possession;
-    private int tackles;
-    private int fouls;
-    private int yellowCards;
-    private int redCards;
-    private int offsides;
-    private int injuries;
-    private int shotAccuracy;
-    private int passAccuracy;
+    private float goals;
+    private float shots;
+    private float shotsOnTarget;
+    private float possession;
+    private float tackles;
+    private float fouls;
+    private float yellowCards;
+    private float redCards;
+    private float offsides;
+    private float injuries;
+    private float shotAccuracy;
+    private float passAccuracy;
 
     /**
      * Get the set of names representing the items.
@@ -48,42 +48,12 @@ public class Stats {
      * Build the set of values that correlates with the names returned by {@link #getNameSet()}.
      * @return an array of the values.
      */
-    public int[] buildValueSet() {
-        return new int[] {goals, shots, shotsOnTarget, possession, tackles, fouls, yellowCards,
+    public float[] buildValueSet() {
+        return new float[] {goals, shots, shotsOnTarget, possession, tackles, fouls, yellowCards,
                 redCards, offsides, injuries, shotAccuracy, passAccuracy};
     }
 
     public boolean validate() {
         return !(shots < shotsOnTarget || possession > 100 || shotAccuracy > 100 || passAccuracy > 100);
-    }
-
-    public void updateAverages(Stats stats, int totalCount) {
-        goals = (((totalCount - 1) * goals) + stats.goals) / totalCount;
-        shots = (((totalCount - 1) * shots) + stats.shots) / totalCount;
-        shotsOnTarget = (((totalCount - 1) * shotsOnTarget) + stats.shotsOnTarget) / totalCount;
-        possession = (((totalCount - 1) * possession) + stats.possession) / totalCount;
-        tackles = (((totalCount - 1) * tackles) + stats.tackles) / totalCount;
-        fouls = (((totalCount - 1) * fouls) + stats.fouls) / totalCount;
-        yellowCards = (((totalCount - 1) * yellowCards) + stats.yellowCards) / totalCount;
-        redCards = (((totalCount - 1) * redCards) + stats.redCards) / totalCount;
-        offsides = (((totalCount - 1) * offsides) + stats.offsides) / totalCount;
-        injuries = (((totalCount - 1) * injuries) + stats.injuries) / totalCount;
-        shotAccuracy = (((totalCount - 1) * shotAccuracy) + stats.shotAccuracy) / totalCount;
-        passAccuracy = (((totalCount - 1) * passAccuracy) + stats.passAccuracy) / totalCount;
-    }
-
-    public void updateRecords(Stats stats) {
-        goals = (goals > stats.goals) ? goals : stats.goals;
-        shots = (shots > stats.shots) ? shots : stats.shots;
-        shotsOnTarget = (shotsOnTarget > stats.shotsOnTarget) ? shotsOnTarget : stats.shotsOnTarget;
-        possession = (possession > stats.possession) ? possession : stats.possession;
-        tackles = (tackles > stats.tackles) ? tackles : stats.tackles;
-        fouls = (fouls > stats.fouls) ? fouls : stats.fouls;
-        yellowCards = (yellowCards > stats.yellowCards) ? yellowCards : stats.yellowCards;
-        redCards = (redCards > stats.redCards) ? redCards : stats.redCards;
-        offsides = (offsides > stats.offsides) ? offsides : stats.offsides;
-        injuries = (injuries > stats.injuries) ? injuries : stats.injuries;
-        shotAccuracy = (shotAccuracy > stats.shotAccuracy) ? shotAccuracy : stats.shotAccuracy;
-        passAccuracy = (passAccuracy > stats.passAccuracy) ? passAccuracy : stats.passAccuracy;
     }
 }

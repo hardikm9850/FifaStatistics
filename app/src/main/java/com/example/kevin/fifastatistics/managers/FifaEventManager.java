@@ -18,7 +18,6 @@ import com.example.kevin.fifastatistics.network.CreateFailedException;
 import com.example.kevin.fifastatistics.utils.IntentFactory;
 import com.example.kevin.fifastatistics.utils.MatchUtils;
 import com.example.kevin.fifastatistics.utils.ToastUtils;
-import com.example.kevin.fifastatistics.utils.UserUtils;
 
 import lombok.RequiredArgsConstructor;
 
@@ -138,9 +137,6 @@ public class FifaEventManager implements SelectOpponentDialogFragment.SelectOppo
                 d.show();
                 MatchUtils.createMatch(match).subscribe(m -> {
                     d.cancel();
-                    mUser.addMatch(match);
-                    UserUtils.updateUser(mUser).subscribe();
-
                     NotificationSender.addMatch(mUser, mOpponent.getRegistrationToken(), match)
                             .subscribe(response -> {
                                 if (!response.isSuccessful()) {
@@ -152,6 +148,7 @@ public class FifaEventManager implements SelectOpponentDialogFragment.SelectOppo
                             });
                     ToastUtils.showShortToast(mActivity, "Match created successfully");
                     mAddMatchFragment.dismiss();
+                    RetrievalManager.syncCurrentUserWithServer();
                 });
             } catch (CreateFailedException cfe) {
                 d.cancel();

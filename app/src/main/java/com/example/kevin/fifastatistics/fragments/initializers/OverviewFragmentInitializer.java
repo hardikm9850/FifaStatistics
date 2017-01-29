@@ -15,7 +15,7 @@ import com.getbase.floatingactionbutton.FloatingActionsMenu;
  * See {@link FragmentInitializer} and {@link UserOverviewFragment} for more detailed information on
  * those classes.
  */
-public class OverviewFragmentInitializer extends FragmentInitializer {
+public class OverviewFragmentInitializer implements FragmentInitializer {
 
     @Override
     public void setActivityTitle(FifaBaseActivity activity) {

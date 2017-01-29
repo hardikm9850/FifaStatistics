@@ -39,7 +39,6 @@ public class PlayerOverviewFragment extends FifaProgressFragment implements OnBa
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         mUserId = getArguments().getString(ARG_USER_ID);
     }
 
