@@ -60,9 +60,9 @@ public class Match extends DatabaseModel {
      */
     public String getMatchScore(String playerId) {
         if (playerId.equals(winner.getId())) {
-            return stats.getStatsFor().getGoals() + " - " + stats.getStatsAgainst().getGoals();
+            return Math.round(stats.getStatsFor().getGoals()) + " - " + Math.round(stats.getStatsAgainst().getGoals());
         } else {
-            return stats.getStatsAgainst().getGoals() + " - " + stats.getStatsFor().getGoals();
+            return Math.round(stats.getStatsAgainst().getGoals()) + " - " + Math.round(stats.getStatsFor().getGoals());
         }
     }
 

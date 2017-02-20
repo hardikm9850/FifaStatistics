@@ -43,7 +43,7 @@ public class AddMatchListItem extends LinearLayout {
     }
 
     private String getStringForText(float value) {
-        return (value < 0f) ? null : String.valueOf(value);
+        return (value < 0) ? null : String.valueOf(Math.round(value));
     }
 
     public void setTitle(String title) {

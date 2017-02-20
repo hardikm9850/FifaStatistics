@@ -16,8 +16,11 @@
     <dimen name="search_list_item_height">72dp</dimen>
 
     <dimen name="civ_border_width">4dp</dimen>
-
+    <dimen name="progress_loader_item_margin">5dp</dimen>
     <dimen name="stats_list_item_height">60dp</dimen>
+    <dimen name="match_player_margin_internal">8dp</dimen>
+    <dimen name="match_player_margin_external">12dp</dimen>
+    <dimen name="match_score_margin_end">50dp</dimen>
 
     <!-- Card view properties -->
     <dimen name="card_corner_radius">4dp</dimen>

@@ -5,16 +5,17 @@ import android.content.Intent;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 
+import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.activities.FifaBaseActivity;
 import com.example.kevin.fifastatistics.fragments.AddMatchDialogFragment;
 import com.example.kevin.fifastatistics.fragments.SelectOpponentDialogFragment;
+import com.example.kevin.fifastatistics.interfaces.ErrorHandler;
 import com.example.kevin.fifastatistics.interfaces.OnBackPressedHandler;
 import com.example.kevin.fifastatistics.interfaces.OnMatchCreatedListener;
 import com.example.kevin.fifastatistics.models.databasemodels.match.Match;
 import com.example.kevin.fifastatistics.models.databasemodels.user.Friend;
 import com.example.kevin.fifastatistics.models.databasemodels.user.Player;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
-import com.example.kevin.fifastatistics.network.CreateFailedException;
 import com.example.kevin.fifastatistics.utils.IntentFactory;
 import com.example.kevin.fifastatistics.utils.MatchUtils;
 import com.example.kevin.fifastatistics.utils.ToastUtils;
@@ -78,7 +79,7 @@ public class FifaEventManager implements SelectOpponentDialogFragment.SelectOppo
     /** Represents the type of flow (Match or Series) */
     private abstract class Flow implements OnBackPressedHandler {
 
-        public void startNewFlow() {
+        void startNewFlow() {
             SelectOpponentDialogFragment.newInstance(mUser, FifaEventManager.this).show(mActivity.getSupportFragmentManager());
         }
 
@@ -99,18 +100,31 @@ public class FifaEventManager implements SelectOpponentDialogFragment.SelectOppo
         }
     }
 
-    private class MatchFlow extends Flow {
+    private class MatchFlow extends Flow implements ErrorHandler, OnMatchCreatedListener {
 
         private OnMatchCreatedListener mOnMatchCreatedListener;
         private AddMatchDialogFragment mAddMatchFragment;
         private Player mOpponent;
+        private ProgressDialog mMatchUploadingDialog;
 
-        public MatchFlow(OnMatchCreatedListener listener) {
+        MatchFlow(OnMatchCreatedListener listener) {
+            initMatchCreatedListener(listener);
+            initProgressDialog();
+        }
+
+        private void initMatchCreatedListener(OnMatchCreatedListener listener) {
             if (listener == null) {
                 mOnMatchCreatedListener = (this::onSaveMatch);
             } else {
                 mOnMatchCreatedListener = listener;
             }
+        }
+
+        private void initProgressDialog() {
+            mMatchUploadingDialog = new ProgressDialog(mActivity);
+            mMatchUploadingDialog.setTitle(mActivity.getString(R.string.uploading_match));
+            mMatchUploadingDialog.setMessage(mActivity.getString(R.string.please_wait));
+            mMatchUploadingDialog.setCancelable(false);
         }
 
         @Override
@@ -129,32 +143,32 @@ public class FifaEventManager implements SelectOpponentDialogFragment.SelectOppo
         }
 
         private void onSaveMatch(Match match) {
-            ProgressDialog d = new ProgressDialog(mActivity);
-            d.setTitle("Uploading match");
-            d.setMessage("Please wait...");
-            d.setCancelable(false);
-            try {
-                d.show();
-                MatchUtils.createMatch(match).subscribe(m -> {
-                    d.cancel();
-                    NotificationSender.addMatch(mUser, mOpponent.getRegistrationToken(), match)
-                            .subscribe(response -> {
-                                if (!response.isSuccessful()) {
-                                    Log.e("NOTIFICATION", "failed to send add match notification");
-                                    // TODO add resend notification to tasks
-                                } else {
-                                    Log.e("NOTIFICATION", "sending successful");
-                                }
-                            });
-                    ToastUtils.showShortToast(mActivity, "Match created successfully");
-                    mAddMatchFragment.dismiss();
-                    RetrievalManager.syncCurrentUserWithServer();
-                });
-            } catch (CreateFailedException cfe) {
-                d.cancel();
-                ToastUtils.showShortToast(mActivity, "Failed to create match: " + cfe.getErrorCode().getMessage());
-                // TODO save match for retry
-            }
+            mMatchUploadingDialog.show();
+            MatchUtils.createMatch(match, this, this);
+        }
+
+        @Override
+        public void onMatchCreated(Match match) {
+            mMatchUploadingDialog.cancel();
+            NotificationSender.addMatch(mUser, mOpponent.getRegistrationToken(), match)
+                    .subscribe(response -> {
+                        if (!response.isSuccessful()) {
+                            Log.e("NOTIFICATION", "failed to send add match notification");
+                            // TODO add resend notification to tasks
+                        } else {
+                            Log.e("NOTIFICATION", "sending successful");
+                        }
+                    });
+            ToastUtils.showShortToast(mActivity, "Match created successfully");
+            mAddMatchFragment.dismiss();
+            RetrievalManager.syncCurrentUserWithServer();
+        }
+
+        @Override
+        public void handleError(String message, Throwable throwable) {
+            mMatchUploadingDialog.dismiss();
+            ToastUtils.showShortToast(mActivity, message);
+            // TODO save match for retry
         }
 
         @Override

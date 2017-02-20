@@ -21,7 +21,7 @@ import com.example.kevin.fifastatistics.models.databasemodels.user.Player;
 import com.example.kevin.fifastatistics.utils.FabFactory;
 import com.example.kevin.fifastatistics.utils.IntentFactory;
 import com.example.kevin.fifastatistics.utils.ObservableUtils;
-import com.example.kevin.fifastatistics.views.adapters.ViewPagerAdapter;
+import com.example.kevin.fifastatistics.adapters.ViewPagerAdapter;
 import com.example.kevin.fifastatistics.views.wrappers.FifaNavigationDrawer;
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;

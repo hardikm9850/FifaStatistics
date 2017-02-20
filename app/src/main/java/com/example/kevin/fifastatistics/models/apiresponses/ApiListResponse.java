@@ -8,6 +8,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import lombok.Getter;
+
 /**
  * Generic model of a list response from the API (e.g., get users, get matches,
  * etc.). Expects data of the following format:
@@ -31,6 +33,9 @@ public class ApiListResponse<T> {
     @JsonProperty("_embedded")
     private Embedded<T> embedded;
 
+    @JsonProperty("_links")
+    private Links links;
+
     /**
      * Retrieve the list of items from the response.
      * @return  an ArrayList of items, with type specified by the class's generic type
@@ -39,16 +44,16 @@ public class ApiListResponse<T> {
         return embedded.getItems();
     }
 
-    /**
-     * Handles any name for the results ("users", "matches", "series", etc.) by
-     * using @JsonAnySetter to map the results to the 'items' property.
-     */
+    public Links getLinks() {
+        return links;
+    }
+
     public static class Embedded<T> {
 
         private String name;
         private Map<String, List<T>> items = new HashMap<>();
 
-        public List<T> getItems() {
+        List<T> getItems() {
             return items.get(name);
         }
 
@@ -57,5 +62,21 @@ public class ApiListResponse<T> {
             this.name = name;
             items.put(name, results);
         }
+    }
+
+    @Getter
+    public static class Links {
+        private Link first;
+        private Link self;
+        private Link next;
+        private Link prev;
+        private Link last;
+        private Link profile;
+        private Link search;
+    }
+
+    @Getter
+    public static class Link {
+        private String href;
     }
 }

@@ -1,21 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <data>
-        <variable
-            name="matchesViewModel"
-            type="com.example.kevin.fifastatistics.viewmodel.MatchesFragmentViewModel"/>
-
-        <import type="me.tatarka.bindingcollectionadapter.LayoutManagers" />
-
-    </data>
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/matches_recyclerview"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginStart="@dimen/activity_horizontal_margin"
-            android:layout_marginEnd="@dimen/activity_horizontal_margin"/>
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/matches_recyclerview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingStart="@dimen/activity_horizontal_margin"
+        android:paddingEnd="@dimen/activity_horizontal_margin"/>
 
 </layout>

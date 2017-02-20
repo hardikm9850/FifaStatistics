@@ -23,17 +23,17 @@ public class RetrofitErrorManager {
         UNKNOWN_ERROR(-3, ResourceUtils.getStringFromResourceId(R.string.unknown_error)),
         NOT_FOUND(404, ResourceUtils.getStringFromResourceId(R.string.not_found));
 
-        @Getter private int value;
+        @Getter private int code;
         @Getter private String message;
 
         ErrorCode(int value, String message) {
-            this.value = value;
+            this.code = value;
             this.message = message;
         }
 
         public static ErrorCode fromValue(int value) {
             for (ErrorCode code : ErrorCode.values()) {
-                if (code.getValue() == value) {
+                if (code.getCode() == value) {
                     return code;
                 }
             }
@@ -62,7 +62,7 @@ public class RetrofitErrorManager {
         } else if (t instanceof IOException) {
             return handleNoNetwork(activity);
         } else {
-            return handleUnkownError(t, activity);
+            return handleUnknownError(t, activity);
         }
     }
 
@@ -73,7 +73,7 @@ public class RetrofitErrorManager {
                 ToastUtils.showLongToast(activity, ErrorCode.NOT_FOUND.getMessage());
                 break;
             default :
-                handleUnkownError(t, activity);
+                handleUnknownError(t, activity);
         }
 
         return code;
@@ -89,7 +89,7 @@ public class RetrofitErrorManager {
         return ErrorCode.NO_NETWORK;
     }
 
-    private static ErrorCode handleUnkownError(Throwable t, Activity activity) {
+    private static ErrorCode handleUnknownError(Throwable t, Activity activity) {
         Log.e(TAG, "Unknown error: " + t.getMessage() + " |||| " + t.getClass().getName(), t);
         ToastUtils.showLongToast(activity, ErrorCode.UNKNOWN_ERROR.getMessage());
 

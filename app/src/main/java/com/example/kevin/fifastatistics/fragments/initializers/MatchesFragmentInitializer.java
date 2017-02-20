@@ -8,7 +8,7 @@ import com.example.kevin.fifastatistics.activities.FifaBaseActivity;
 import com.example.kevin.fifastatistics.fragments.MatchesFragment;
 import com.example.kevin.fifastatistics.models.databasemodels.user.Player;
 import com.example.kevin.fifastatistics.utils.ResourceUtils;
-import com.example.kevin.fifastatistics.views.adapters.ViewPagerAdapter;
+import com.example.kevin.fifastatistics.adapters.ViewPagerAdapter;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
 
 public class MatchesFragmentInitializer implements FragmentInitializer {

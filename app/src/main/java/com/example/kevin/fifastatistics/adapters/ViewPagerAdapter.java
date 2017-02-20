@@ -1,4 +1,4 @@
-package com.example.kevin.fifastatistics.views.adapters;
+package com.example.kevin.fifastatistics.adapters;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;

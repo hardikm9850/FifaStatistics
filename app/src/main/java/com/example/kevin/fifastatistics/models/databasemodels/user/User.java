@@ -93,7 +93,7 @@ public class User extends DatabaseModel implements Player {
 
     private boolean hasFriendWithIdInList(String id, List<Friend> friendList) {
         for (Friend friend : friendList) {
-            if (friend.getId().equals(id)) {
+            if (friend.getId() != null && friend.getId().equals(id)) {
                 return true;
             }
         }

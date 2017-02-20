@@ -6,7 +6,7 @@
     <data>
         <variable
             name="seriesScoreViewModel"
-            type="com.example.kevin.fifastatistics.viewmodel.CreateSeriesScoreViewModel"/>
+            type="com.example.kevin.fifastatistics.viewmodels.CreateSeriesScoreViewModel"/>
     </data>
 
     <LinearLayout

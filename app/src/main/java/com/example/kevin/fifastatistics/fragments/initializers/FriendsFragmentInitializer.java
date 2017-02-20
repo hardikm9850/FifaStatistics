@@ -7,7 +7,7 @@ import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.activities.FifaBaseActivity;
 import com.example.kevin.fifastatistics.fragments.FriendsFragment;
 import com.example.kevin.fifastatistics.models.Constants;
-import com.example.kevin.fifastatistics.views.adapters.ViewPagerAdapter;
+import com.example.kevin.fifastatistics.adapters.ViewPagerAdapter;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
 
 /**

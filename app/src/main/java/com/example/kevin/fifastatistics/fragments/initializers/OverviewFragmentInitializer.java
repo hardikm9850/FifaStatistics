@@ -6,7 +6,7 @@ import android.view.View;
 import com.example.kevin.fifastatistics.activities.FifaBaseActivity;
 import com.example.kevin.fifastatistics.fragments.UserOverviewFragment;
 import com.example.kevin.fifastatistics.models.Constants;
-import com.example.kevin.fifastatistics.views.adapters.ViewPagerAdapter;
+import com.example.kevin.fifastatistics.adapters.ViewPagerAdapter;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
 
 /**

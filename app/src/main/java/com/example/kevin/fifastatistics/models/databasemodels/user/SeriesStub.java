@@ -16,12 +16,11 @@ public class SeriesStub extends DatabaseModel {
     private List<MatchSummary> matches;
     private boolean didWin;
 
-    @AllArgsConstructor
     @Getter
     public static class MatchSummary {
 
-        private int goalsFor;
-        private int goalsAgainst;
+        private int goalsUser;
+        private int goalsOpponent;
         private boolean didWin;
     }
 

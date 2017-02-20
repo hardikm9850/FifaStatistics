@@ -17,7 +17,7 @@ import com.example.kevin.fifastatistics.interfaces.OnBackPressedHandler;
 import com.example.kevin.fifastatistics.managers.RetrievalManager;
 import com.example.kevin.fifastatistics.models.databasemodels.user.Friend;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
-import com.example.kevin.fifastatistics.views.adapters.FriendsRecyclerViewAdapter;
+import com.example.kevin.fifastatistics.adapters.FriendsRecyclerViewAdapter;
 import com.example.kevin.fifastatistics.views.wrappers.FifaSearchView;
 
 import java.util.List;

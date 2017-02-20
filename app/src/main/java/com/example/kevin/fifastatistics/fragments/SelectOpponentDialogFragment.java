@@ -3,13 +3,12 @@ package com.example.kevin.fifastatistics.fragments;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
 
 import com.example.kevin.fifastatistics.models.databasemodels.user.Friend;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
-import com.example.kevin.fifastatistics.views.adapters.ImageListAdapter;
+import com.example.kevin.fifastatistics.adapters.ImageListAdapter;
 
 import java.util.List;
 

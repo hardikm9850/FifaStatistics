@@ -1,5 +1,7 @@
 package com.example.kevin.fifastatistics.utils;
 
+import android.support.annotation.NonNull;
+
 import com.example.kevin.fifastatistics.FifaApplication;
 
 import lombok.experimental.UtilityClass;
@@ -9,6 +11,10 @@ public class ResourceUtils {
 
     public static String getStringFromResourceId(int id) {
         return FifaApplication.getContext().getResources().getString(id);
+    }
+
+    public static String getStringFromResourceId(int id, @NonNull String... placeholders) {
+        return FifaApplication.getContext().getResources().getString(id, placeholders);
     }
 
     public static float getDimensionFromResourceId(int id) {

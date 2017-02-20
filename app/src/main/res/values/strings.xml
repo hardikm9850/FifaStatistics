@@ -96,6 +96,8 @@
 
     <!-- Matches Fragment -->
     <string name="matches_load_failed">Failed to load matches.</string>
+    <string name="error_create_match">Failed to create match: %1$s</string>
+    <string name="uploading_match">Uploading match</string>
 
     <!-- TOASTS -->
     <string name="not_found">Not found!</string>

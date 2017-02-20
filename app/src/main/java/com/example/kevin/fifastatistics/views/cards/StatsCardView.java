@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
-import com.example.kevin.fifastatistics.views.adapters.StatsRecyclerViewAdapter;
+import com.example.kevin.fifastatistics.adapters.StatsRecyclerViewAdapter;
 
 
 /**

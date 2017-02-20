@@ -4,7 +4,7 @@ import android.support.design.widget.TabLayout;
 
 import com.example.kevin.fifastatistics.activities.FifaBaseActivity;
 import com.example.kevin.fifastatistics.activities.MainActivity;
-import com.example.kevin.fifastatistics.views.adapters.ViewPagerAdapter;
+import com.example.kevin.fifastatistics.adapters.ViewPagerAdapter;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
 
 /**

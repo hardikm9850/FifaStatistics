@@ -15,19 +15,21 @@ import android.view.ViewGroup;
 
 import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.databinding.FragmentMatchesBinding;
+import com.example.kevin.fifastatistics.interfaces.AdapterInteraction;
 import com.example.kevin.fifastatistics.interfaces.OnBackPressedHandler;
+import com.example.kevin.fifastatistics.listeners.EndlessRecyclerViewScrollListener;
 import com.example.kevin.fifastatistics.models.databasemodels.match.MatchProjection;
 import com.example.kevin.fifastatistics.models.databasemodels.user.Player;
 import com.example.kevin.fifastatistics.utils.ToastUtils;
-import com.example.kevin.fifastatistics.viewmodel.MatchesFragmentViewModel;
-import com.example.kevin.fifastatistics.views.adapters.MatchesRecyclerViewAdapter;
+import com.example.kevin.fifastatistics.viewmodels.MatchesFragmentViewModel;
+import com.example.kevin.fifastatistics.adapters.MatchesRecyclerViewAdapter;
 
 import java.util.List;
 
-import it.gmariotti.recyclerview.adapter.AlphaAnimatorAdapter;
 import it.gmariotti.recyclerview.adapter.SlideInBottomAnimatorAdapter;
 
-public class MatchesFragment extends FifaBaseFragment implements MatchesFragmentViewModel.OnMatchesLoadedListener, OnBackPressedHandler {
+public class MatchesFragment extends FifaBaseFragment implements MatchesFragmentViewModel.OnMatchesLoadedListener,
+        OnBackPressedHandler, AdapterInteraction<MatchProjection> {
 
     private MatchesFragmentViewModel mViewModel;
     private MatchesRecyclerViewAdapter mAdapter;
@@ -37,7 +39,7 @@ public class MatchesFragment extends FifaBaseFragment implements MatchesFragment
 
     public static MatchesFragment newInstance(Player user) {
         MatchesFragment fragment = new MatchesFragment();
-        fragment.mViewModel = new MatchesFragmentViewModel(fragment, user);
+        fragment.mViewModel = new MatchesFragmentViewModel(fragment, user, fragment);
         fragment.mUser = user;
         return fragment;
     }
@@ -52,7 +54,6 @@ public class MatchesFragment extends FifaBaseFragment implements MatchesFragment
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_matches, container, false);
-        mBinding.setMatchesViewModel(mViewModel);
         mBinding.executePendingBindings();
         mRecyclerView = mBinding.matchesRecyclerview;
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(mRecyclerView.getContext(), DividerItemDecoration.VERTICAL);
@@ -60,12 +61,17 @@ public class MatchesFragment extends FifaBaseFragment implements MatchesFragment
         return mBinding.getRoot();
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         mAdapter = new MatchesRecyclerViewAdapter(mUser);
-        SlideInBottomAnimatorAdapter<MatchesRecyclerViewAdapter.ViewHolder> animatorAdapter = new SlideInBottomAnimatorAdapter<>(mAdapter, mRecyclerView);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(mBinding.getRoot().getContext()));
+        SlideInBottomAnimatorAdapter<MatchesRecyclerViewAdapter.MatchViewHolder> animatorAdapter = new SlideInBottomAnimatorAdapter<>(mAdapter, mRecyclerView);
+        LinearLayoutManager manager = new LinearLayoutManager(mBinding.getRoot().getContext());
+        mRecyclerView.setLayoutManager(manager);
         mRecyclerView.setAdapter(animatorAdapter);
+        mRecyclerView.addOnScrollListener(new EndlessRecyclerViewScrollListener(manager, ((page, count) -> {
+            mViewModel.loadMore(page);
+        })));
         super.onViewCreated(view, savedInstanceState);
     }
 
@@ -106,6 +112,21 @@ public class MatchesFragment extends FifaBaseFragment implements MatchesFragment
     @Override
     public void onMatchesLoadFailure() {
         ToastUtils.showShortToast(getActivity(), getString(R.string.matches_load_failed));
+    }
+
+    @Override
+    public void notifyLoadingItems() {
+        mAdapter.notifyLoadingMoreItems();
+    }
+
+    @Override
+    public void notifyItemsInserted(int startPosition, int numberOfItems) {
+        mAdapter.notifyItemRangeInserted(startPosition, numberOfItems);
+    }
+
+    @Override
+    public void notifyNoMoreItemsToLoad() {
+        mAdapter.notifyNoMoreItemsToLoad();
     }
 
     @Override

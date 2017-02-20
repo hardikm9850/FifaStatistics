@@ -7,7 +7,7 @@
     <data>
         <variable
             name="listViewModel"
-            type="com.example.kevin.fifastatistics.viewmodel.CreateSeriesMatchListViewModel"/>
+            type="com.example.kevin.fifastatistics.viewmodels.CreateSeriesMatchListViewModel"/>
     </data>
 
     <LinearLayout

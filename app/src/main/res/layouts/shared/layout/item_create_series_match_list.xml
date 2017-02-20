@@ -5,7 +5,7 @@
     <data>
         <variable
             name="listItemViewModel"
-            type="com.example.kevin.fifastatistics.viewmodel.CreateSeriesListItemViewModel"/>
+            type="com.example.kevin.fifastatistics.viewmodels.CreateSeriesListItemViewModel"/>
     </data>
 
     <LinearLayout

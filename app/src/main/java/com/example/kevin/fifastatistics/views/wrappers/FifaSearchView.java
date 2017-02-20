@@ -12,7 +12,7 @@ import com.example.kevin.fifastatistics.models.databasemodels.user.User;
 import com.example.kevin.fifastatistics.network.ApiAdapter;
 import com.example.kevin.fifastatistics.utils.IntentFactory;
 import com.example.kevin.fifastatistics.utils.ObservableUtils;
-import com.example.kevin.fifastatistics.views.adapters.SearchAdapter;
+import com.example.kevin.fifastatistics.adapters.SearchAdapter;
 import com.lapism.searchview.SearchView;
 
 import java.util.List;

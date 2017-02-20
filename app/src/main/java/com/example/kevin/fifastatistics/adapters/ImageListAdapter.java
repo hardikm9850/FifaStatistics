@@ -1,4 +1,4 @@
-package com.example.kevin.fifastatistics.views.adapters;
+package com.example.kevin.fifastatistics.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
