@@ -11,14 +11,14 @@ import com.example.kevin.fifastatistics.interfaces.ProgressAdapter;
 
 public abstract class EndlessProgressAdapter extends RecyclerView.Adapter implements ProgressAdapter {
 
-    boolean noMoreItemsToLoad = true;
+    boolean mIsNoMoreItemsToLoad = true;
     static final int PROGRESS_VIEW_TYPE = 998;
     static final int INVALID_VIEW_TYPE = -1;
 
     @Override
     public void notifyNoMoreItemsToLoad() {
-        if (!noMoreItemsToLoad) {
-            noMoreItemsToLoad = true;
+        if (!mIsNoMoreItemsToLoad) {
+            mIsNoMoreItemsToLoad = true;
             int insertionIndex = getActualItemCount();
             if (insertionIndex >= 0) {
                 notifyItemRemoved(insertionIndex);
@@ -28,8 +28,8 @@ public abstract class EndlessProgressAdapter extends RecyclerView.Adapter implem
 
     @Override
     public void notifyLoadingMoreItems() {
-        if (noMoreItemsToLoad) {
-            noMoreItemsToLoad = false;
+        if (mIsNoMoreItemsToLoad) {
+            mIsNoMoreItemsToLoad = false;
             int insertionIndex = getActualItemCount();
             if (insertionIndex >= 0) {
                 notifyItemInserted(insertionIndex);
@@ -39,7 +39,7 @@ public abstract class EndlessProgressAdapter extends RecyclerView.Adapter implem
 
     @Override
     public int getItemViewType(int position) {
-        if (position == getActualItemCount() && !noMoreItemsToLoad) {
+        if (position == getActualItemCount() && !mIsNoMoreItemsToLoad) {
             return PROGRESS_VIEW_TYPE;
         } else {
             return INVALID_VIEW_TYPE;
@@ -50,7 +50,7 @@ public abstract class EndlessProgressAdapter extends RecyclerView.Adapter implem
 
     @Override
     public final int getItemCount() {
-        if (!noMoreItemsToLoad) {
+        if (!mIsNoMoreItemsToLoad) {
             return getActualItemCount() + 1;
         } else {
             return getActualItemCount();
@@ -73,10 +73,10 @@ public abstract class EndlessProgressAdapter extends RecyclerView.Adapter implem
     }
 
     public boolean isNoMoreItemsToLoad() {
-        return noMoreItemsToLoad;
+        return mIsNoMoreItemsToLoad;
     }
 
-    public void setNoMoreItemsToLoad(boolean noMoreItemsToLoad) {
-        this.noMoreItemsToLoad = noMoreItemsToLoad;
+    public void setNoMoreItemsToLoad(boolean isNoMoreItemsToLoad) {
+        this.mIsNoMoreItemsToLoad = isNoMoreItemsToLoad;
     }
 }

@@ -17,6 +17,7 @@ import retrofit2.http.Path;
 import retrofit2.http.Query;
 import retrofit2.http.Url;
 import rx.Observable;
+import rx.Observer;
 
 public interface FifaApi {
 
@@ -88,4 +89,7 @@ public interface FifaApi {
 
     @GET
     Observable<Series> lookupSeries(@Url String url);
+
+    @GET
+    Observable<ApiListResponse<MatchProjection>> getNextMatches(@Url String url);
 }

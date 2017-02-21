@@ -36,16 +36,20 @@ public class ApiListResponse<T> {
     @JsonProperty("_links")
     private Links links;
 
-    /**
-     * Retrieve the list of items from the response.
-     * @return  an ArrayList of items, with type specified by the class's generic type
-     */
     public List<T> getItems() {
         return embedded.getItems();
     }
 
     public Links getLinks() {
         return links;
+    }
+
+    public boolean hasNext() {
+        return getNext() != null;
+    }
+
+    public String getNext() {
+        return links != null ? (links.getNext() != null ? links.getNext().getHref() : null) : null;
     }
 
     public static class Embedded<T> {
