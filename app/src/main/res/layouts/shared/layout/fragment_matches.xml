@@ -3,8 +3,8 @@
 
     <data>
         <variable
-            name="fragmentMatchesViewModel"
-            type="com.example.kevin.fifastatistics.viewmodels.MatchesFragmentViewModel"/>
+            name="progressViewModel"
+            type="com.example.kevin.fifastatistics.viewmodels.ProgressFragmentViewModel"/>
     </data>
 
     <FrameLayout
@@ -24,7 +24,7 @@
             android:layout_gravity="center"
             android:gravity="center"
             android:indeterminate="true"
-            android:visibility="@{fragmentMatchesViewModel.progressBarVisibility}"
+            android:visibility="@{progressViewModel.progressBarVisibility}"
             style="?android:attr/progressBarStyle"/>
 
     </FrameLayout>

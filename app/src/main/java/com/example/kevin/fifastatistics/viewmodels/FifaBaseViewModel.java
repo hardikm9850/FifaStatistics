@@ -7,7 +7,7 @@ import com.example.kevin.fifastatistics.utils.ObservableUtils;
 import rx.Subscription;
 import rx.subscriptions.CompositeSubscription;
 
-public class FifaBaseViewModel extends BaseObservable {
+public abstract class FifaBaseViewModel extends BaseObservable {
 
     private CompositeSubscription mCompositeSubscription = new CompositeSubscription();
 

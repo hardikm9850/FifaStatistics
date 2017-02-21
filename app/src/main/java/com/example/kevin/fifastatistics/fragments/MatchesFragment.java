@@ -54,7 +54,7 @@ public class MatchesFragment extends FifaBaseFragment implements MatchesFragment
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_matches, container, false);
-        mBinding.setFragmentMatchesViewModel(mViewModel);
+        mBinding.setProgressViewModel(mViewModel);
         mBinding.executePendingBindings();
         mRecyclerView = mBinding.matchesRecyclerview;
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(mRecyclerView.getContext(), DividerItemDecoration.VERTICAL);

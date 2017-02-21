@@ -1,10 +1,7 @@
 package com.example.kevin.fifastatistics.viewmodels;
 
-import android.databinding.Bindable;
 import android.util.Log;
-import android.view.View;
 
-import com.example.kevin.fifastatistics.BR;
 import com.example.kevin.fifastatistics.interfaces.AdapterInteraction;
 import com.example.kevin.fifastatistics.models.apiresponses.ApiListResponse;
 import com.example.kevin.fifastatistics.models.databasemodels.match.MatchProjection;
@@ -18,7 +15,7 @@ import java.util.List;
 import rx.Observer;
 import rx.Subscription;
 
-public class MatchesFragmentViewModel extends FifaBaseViewModel {
+public class MatchesFragmentViewModel extends ProgressFragmentViewModel {
 
     private static final String TAG = "MatchesFragmentVM";
 
@@ -28,13 +25,11 @@ public class MatchesFragmentViewModel extends FifaBaseViewModel {
     private List<MatchProjection> mMatches;
     private String mNextUri;
     private boolean mIsLoadInProgress;
-    private boolean mIsFinishedInitialLoad;
 
     public MatchesFragmentViewModel(OnMatchesLoadedListener listener, Player user, AdapterInteraction<MatchProjection> interaction) {
         mOnMatchesLoadedListener = listener;
         mAdapterInteraction = interaction;
         mUser = user;
-        mIsFinishedInitialLoad = false;
         mMatches = new ArrayList<>();
     }
 
@@ -43,7 +38,7 @@ public class MatchesFragmentViewModel extends FifaBaseViewModel {
         Observer<ApiListResponse<MatchProjection>> matchObserver = new ObservableUtils.EmptyOnCompleteObserver<ApiListResponse<MatchProjection>>() {
             @Override
             public void onError(Throwable e) {
-                notifyDoneInitialLoad();
+                notifyHideProgressBar();
                 Log.e(TAG, e.getMessage());
                 mNextUri = null;
                 mOnMatchesLoadedListener.onMatchesLoadFailure();
@@ -52,7 +47,7 @@ public class MatchesFragmentViewModel extends FifaBaseViewModel {
 
             @Override
             public void onNext(ApiListResponse<MatchProjection> response) {
-                notifyDoneInitialLoad();
+                notifyHideProgressBar();
                 mMatches = response.getItems();
                 mNextUri = response.getNext();
                 mOnMatchesLoadedListener.onMatchesLoadSuccess(mMatches);
@@ -61,11 +56,6 @@ public class MatchesFragmentViewModel extends FifaBaseViewModel {
         };
         Subscription s = ApiAdapter.getFifaApi().getMatches().compose(ObservableUtils.applySchedulers()).subscribe(matchObserver);
         addSubscription(s);
-    }
-
-    private void notifyDoneInitialLoad() {
-        mIsFinishedInitialLoad = true;
-        notifyPropertyChanged(BR.progressBarVisibility);
     }
 
     public void loadMore(int page) {
@@ -104,11 +94,6 @@ public class MatchesFragmentViewModel extends FifaBaseViewModel {
             mAdapterInteraction.notifyNoMoreItemsToLoad();
         }
     };
-
-    @Bindable
-    public int getProgressBarVisibility() {
-        return mIsFinishedInitialLoad ? View.GONE : View.VISIBLE;
-    }
 
     public interface OnMatchesLoadedListener {
         void onMatchesLoadSuccess(List<MatchProjection> matches);
