@@ -7,7 +7,7 @@ import com.example.kevin.fifastatistics.BR;
 
 public abstract class ProgressFragmentViewModel extends FifaBaseViewModel {
 
-    protected boolean mDoShowProgressBar = true;
+    private boolean mDoShowProgressBar = true;
 
     protected void notifyShowProgressBar() {
         doNotify(true);

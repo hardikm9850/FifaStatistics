@@ -29,7 +29,7 @@ import java.util.List;
 import it.gmariotti.recyclerview.adapter.SlideInBottomAnimatorAdapter;
 
 public class MatchesFragment extends FifaBaseFragment implements MatchesFragmentViewModel.OnMatchesLoadedListener,
-        OnBackPressedHandler, AdapterInteraction<MatchProjection> {
+        OnBackPressedHandler, AdapterInteraction {
 
     private MatchesFragmentViewModel mViewModel;
     private MatchesRecyclerViewAdapter mAdapter;

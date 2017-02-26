@@ -1,6 +1,5 @@
 package com.example.kevin.fifastatistics.activities;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
@@ -9,19 +8,16 @@ import android.util.Log;
 import android.view.View;
 
 import com.example.kevin.fifastatistics.R;
-import com.example.kevin.fifastatistics.fragments.FriendsFragment;
+import com.example.kevin.fifastatistics.adapters.ViewPagerAdapter;
 import com.example.kevin.fifastatistics.fragments.initializers.FragmentInitializer;
 import com.example.kevin.fifastatistics.fragments.initializers.FragmentInitializerFactory;
 import com.example.kevin.fifastatistics.interfaces.OnBackPressedHandler;
 import com.example.kevin.fifastatistics.managers.FifaEventManager;
 import com.example.kevin.fifastatistics.managers.RetrievalManager;
 import com.example.kevin.fifastatistics.managers.SharedPreferencesManager;
-import com.example.kevin.fifastatistics.models.databasemodels.user.Friend;
 import com.example.kevin.fifastatistics.models.databasemodels.user.Player;
 import com.example.kevin.fifastatistics.utils.FabFactory;
-import com.example.kevin.fifastatistics.utils.IntentFactory;
 import com.example.kevin.fifastatistics.utils.ObservableUtils;
-import com.example.kevin.fifastatistics.adapters.ViewPagerAdapter;
 import com.example.kevin.fifastatistics.views.wrappers.FifaNavigationDrawer;
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
@@ -36,8 +32,7 @@ import rx.Subscription;
  * The application's main activity class that is loaded on launch, so long as the user is signed in.
  * If the user is not signed in, then {@link SignInActivity} will be launched.
  */
-public class MainActivity extends FifaBaseActivity
-        implements FriendsFragment.FriendsFragmentInteractionListener {
+public class MainActivity extends FifaBaseActivity {
 
     public static final String PAGE_EXTRA = "page";
     public static final String FRAGMENT_EXTRA = "fragment";
@@ -162,12 +157,6 @@ public class MainActivity extends FifaBaseActivity
             manager.startNewFlow();
         });
         mActionMenu.addButton(seriesButton);
-    }
-
-    @Override
-    public void onFriendsFragmentInteraction(Friend friend) {
-        Intent intent = IntentFactory.createPlayerActivityIntent(this, friend);
-        startActivity(intent);
     }
 
     @Override

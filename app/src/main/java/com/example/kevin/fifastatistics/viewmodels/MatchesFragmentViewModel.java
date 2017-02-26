@@ -20,13 +20,13 @@ public class MatchesFragmentViewModel extends ProgressFragmentViewModel {
     private static final String TAG = "MatchesFragmentVM";
 
     private final OnMatchesLoadedListener mOnMatchesLoadedListener;
-    private final AdapterInteraction<MatchProjection> mAdapterInteraction;
+    private final AdapterInteraction mAdapterInteraction;
     private final Player mUser;
     private List<MatchProjection> mMatches;
     private String mNextUri;
     private boolean mIsLoadInProgress;
 
-    public MatchesFragmentViewModel(OnMatchesLoadedListener listener, Player user, AdapterInteraction<MatchProjection> interaction) {
+    public MatchesFragmentViewModel(OnMatchesLoadedListener listener, Player user, AdapterInteraction interaction) {
         mOnMatchesLoadedListener = listener;
         mAdapterInteraction = interaction;
         mUser = user;

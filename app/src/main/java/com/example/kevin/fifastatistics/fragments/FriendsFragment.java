@@ -1,7 +1,8 @@
 package com.example.kevin.fifastatistics.fragments;
 
-import android.content.Context;
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -13,11 +14,12 @@ import android.view.ViewGroup;
 
 import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.activities.FifaBaseActivity;
+import com.example.kevin.fifastatistics.adapters.FriendsRecyclerViewAdapter;
+import com.example.kevin.fifastatistics.databinding.FragmentFriendsBinding;
 import com.example.kevin.fifastatistics.interfaces.OnBackPressedHandler;
 import com.example.kevin.fifastatistics.managers.RetrievalManager;
 import com.example.kevin.fifastatistics.models.databasemodels.user.Friend;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
-import com.example.kevin.fifastatistics.adapters.FriendsRecyclerViewAdapter;
 import com.example.kevin.fifastatistics.views.wrappers.FifaSearchView;
 
 import java.util.List;
@@ -25,27 +27,18 @@ import java.util.List;
 import it.gmariotti.recyclerview.adapter.SlideInBottomAnimatorAdapter;
 import rx.Subscription;
 
-/**
- * A fragment representing a list of players.
- * <p>
- * Activities containing this fragment MUST implement the {@link FriendsFragmentInteractionListener}
- * interface.
- */
 public class FriendsFragment extends FifaBaseFragment implements OnBackPressedHandler {
 
     public static final String VIEW_ARG = "view";
     public static final int FRIENDS_VIEW = 0;
     public static final int REQUESTS_VIEW = 1;
-
     private static final int COLUMN_COUNT = 2;
 
     private FifaSearchView mSearchView;
-    private FriendsFragmentInteractionListener mListener;
-    private View mView = null;
+    private RecyclerView mRecyclerView;
     private boolean mIsSearchViewReady = false;
 
-    public FriendsFragment() {
-    }
+    public FriendsFragment() {}
 
     public static FriendsFragment newInstance(int view) {
         FriendsFragment fragment = new FriendsFragment();
@@ -64,14 +57,19 @@ public class FriendsFragment extends FifaBaseFragment implements OnBackPressedHa
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        mView = inflater.inflate(R.layout.fragment_friends, container, false);
+        FragmentFriendsBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_friends, container, false);
+        mRecyclerView = binding.list;
+        return binding.getRoot();
+    }
 
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         Subscription userSub = RetrievalManager.getCurrentUser().subscribe(user -> {
             initializeSearchView(user);
             setAdapterDataSource(user);
         });
         addSubscription(userSub);
-        return mView;
     }
 
     private void initializeSearchView(User user) {
@@ -96,26 +94,8 @@ public class FriendsFragment extends FifaBaseFragment implements OnBackPressedHa
 
     @Override
     public void onDestroyView() {
-        mView = null;
         mSearchView = null;
         super.onDestroyView();
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof FriendsFragmentInteractionListener) {
-            mListener = (FriendsFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement FriendsFragmentInteractionListener");
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
     }
 
     @Override
@@ -129,7 +109,6 @@ public class FriendsFragment extends FifaBaseFragment implements OnBackPressedHa
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.main, menu);
-
         MenuItem searchItem = menu.findItem(R.id.action_search);
         searchItem.setVisible(mIsSearchViewReady);
     }
@@ -154,18 +133,11 @@ public class FriendsFragment extends FifaBaseFragment implements OnBackPressedHa
         }
     }
 
-    public interface FriendsFragmentInteractionListener {
-        void onFriendsFragmentInteraction(Friend friend);
-    }
-
     private void setAdapter(List<Friend> friends) {
-        if (mView instanceof RecyclerView) {
-            RecyclerView recyclerView = (RecyclerView) mView;
-            FriendsRecyclerViewAdapter adapter = new FriendsRecyclerViewAdapter(friends, mListener);
-            SlideInBottomAnimatorAdapter<FriendsRecyclerViewAdapter.ViewHolder> animatorAdapter =
-                    new SlideInBottomAnimatorAdapter<>(adapter, recyclerView);
-            recyclerView.setLayoutManager(new GridLayoutManager(mView.getContext(), COLUMN_COUNT));
-            recyclerView.setAdapter(animatorAdapter);
-        }
+        FriendsRecyclerViewAdapter adapter = new FriendsRecyclerViewAdapter(friends, this);
+        SlideInBottomAnimatorAdapter<FriendsRecyclerViewAdapter.FriendsItemViewHolder> animatorAdapter =
+                new SlideInBottomAnimatorAdapter<>(adapter, mRecyclerView);
+        mRecyclerView.setLayoutManager(new GridLayoutManager(mRecyclerView.getContext(), COLUMN_COUNT));
+        mRecyclerView.setAdapter(animatorAdapter);
     }
 }

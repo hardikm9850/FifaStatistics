@@ -1,6 +1,6 @@
 package com.example.kevin.fifastatistics.interfaces;
 
-public interface AdapterInteraction<E> {
+public interface AdapterInteraction {
 
     void notifyNoMoreItemsToLoad();
     void notifyLoadingItems();

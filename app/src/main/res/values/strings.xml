@@ -80,6 +80,8 @@
     <string name="notification_accept">ACCEPT</string>
     <string name="notification_decline">DECLINE</string>
 
+    <string name="error_generic">Something went wrong</string>
+
     <!-- PLAYER ACTIVITY -->
     <string name="title_activity_player_activty">Player Activity</string>
 
@@ -136,5 +138,8 @@
     <!-- PERMISSIONS -->
     <string name="request_camera_permission">FIFA Statistics needs camera permission.</string>
     <string name="camera_error">This device doesn\'t support Camera2 API.</string>
+
+    <!-- TRANSITIONS -->
+    <string name="transition_profile_image">transitionProfileImage</string>
 
 </resources>

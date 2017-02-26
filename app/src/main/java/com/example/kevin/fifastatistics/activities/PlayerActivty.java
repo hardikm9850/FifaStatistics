@@ -1,5 +1,6 @@
 package com.example.kevin.fifastatistics.activities;
 
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
@@ -7,10 +8,10 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.example.kevin.fifastatistics.R;
+import com.example.kevin.fifastatistics.adapters.ViewPagerAdapter;
+import com.example.kevin.fifastatistics.databinding.ActivityPlayerBinding;
 import com.example.kevin.fifastatistics.fragments.PlayerOverviewFragment;
 import com.example.kevin.fifastatistics.fragments.SecondFragment;
 import com.example.kevin.fifastatistics.managers.FifaEventManager;
@@ -21,17 +22,15 @@ import com.example.kevin.fifastatistics.models.databasemodels.user.Friend;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
 import com.example.kevin.fifastatistics.utils.FabFactory;
 import com.example.kevin.fifastatistics.utils.SnackbarUtils;
-import com.example.kevin.fifastatistics.adapters.ViewPagerAdapter;
+import com.example.kevin.fifastatistics.utils.TransitionUtils;
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
-import com.nostra13.universalimageloader.core.ImageLoader;
 
 import rx.Subscription;
 
-public class PlayerActivty extends BasePlayerActivity
-        implements PlayerOverviewFragment.OnPlayerFragmentInteractionListener {
+public class PlayerActivty extends BasePlayerActivity implements PlayerOverviewFragment.OnPlayerFragmentInteractionListener {
 
-    private View mParentLayout;
+    private ActivityPlayerBinding mBinding;
     private Toolbar mToolbar;
     private FloatingActionsMenu mFam;
     private User mCurrentUser;
@@ -39,9 +38,8 @@ public class PlayerActivty extends BasePlayerActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_player);
-        setTitle(getIntent().getStringExtra(NAME_EXTRA));
-
+        mBinding = DataBindingUtil.setContentView(this, R.layout.activity_player);
+        supportPostponeEnterTransition();
         initializeMembers();
         initializeToolbar();
         initializeTabs();
@@ -53,30 +51,27 @@ public class PlayerActivty extends BasePlayerActivity
     }
 
     private void initializeMembers() {
-        mParentLayout = findViewById(R.id.coordinator_layout);
-        mFam = (FloatingActionsMenu) findViewById(R.id.fab_menu);
+        mFam = mBinding.fabMenu;
     }
 
     @SuppressWarnings("ConstantConditions")
     private void initializeToolbar() {
-        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        mToolbar = mBinding.toolbarLayout.toolbar;
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-        TextView title = (TextView) findViewById(R.id.toolbar_title);
-        title.setText(getName());
-
-        ImageView userImage = (ImageView) findViewById(R.id.toolbar_profile_imageview);
-        ImageLoader.getInstance().displayImage(getImageUrl(), userImage);
+        mBinding.toolbarLayout.toolbarTitle.setText(getName());
+        mBinding.toolbarLayout.setImageUrl(getImageUrl());
+        mBinding.toolbarLayout.setImageCallback(TransitionUtils.getTransitionStartingImageCallback(this));
     }
 
     @SuppressWarnings("ConstantConditions")
     private void initializeTabs() {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        ViewPager vp = (ViewPager) findViewById(R.id.viewpager);
+        ViewPager vp = mBinding.viewpager;
         vp.setAdapter(adapter);
-        TabLayout tl = (TabLayout) findViewById(R.id.tabs);
+        TabLayout tl = mBinding.tabs;
         tl.setupWithViewPager(vp);
 
         adapter.addFragment(PlayerOverviewFragment.newInstance(getPlayerId()), "Overview");
@@ -239,6 +234,6 @@ public class PlayerActivty extends BasePlayerActivity
 
     @Override
     public View getParentLayout() {
-        return mParentLayout;
+        return mBinding.coordinatorLayout;
     }
 }

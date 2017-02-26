@@ -2,6 +2,7 @@ package com.example.kevin.fifastatistics.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,9 +16,6 @@ import com.example.kevin.fifastatistics.views.UserOverviewLayout;
 
 import rx.Subscription;
 
-/**
- * Overview of a player that is not the current user.
- */
 public class PlayerOverviewFragment extends FifaProgressFragment implements OnBackPressedHandler {
 
     private static final String ARG_USER_ID = "id";
@@ -56,6 +54,7 @@ public class PlayerOverviewFragment extends FifaProgressFragment implements OnBa
         UserOverviewLayout overview = (UserOverviewLayout) mContentView.findViewById(R.id.useroverviewdata);
         Subscription userSub = RetrievalManager.getUser(mUserId)
                 .onErrorReturn(t -> {
+                    Log.e("ERROR", "getUserError: " + t.getMessage());
                     RetrofitErrorManager.showToastForError(t, getActivity());
                     return null;
                 })

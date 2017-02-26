@@ -203,7 +203,6 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ResultView
             mItemClickListeners.add(position, listener);
     }
 
-    @SuppressWarnings("UnusedParameters")
     public interface OnItemClickListener {
         void onItemClick(View view, int position);
     }
@@ -227,7 +226,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ResultView
         public void onClick(View v) {
             if (mItemClickListeners != null) {
                 for (OnItemClickListener listener : mItemClickListeners)
-                    listener.onItemClick(v, getLayoutPosition());
+                    listener.onItemClick(icon_left, getLayoutPosition());
             }
         }
     }

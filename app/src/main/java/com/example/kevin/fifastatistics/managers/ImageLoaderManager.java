@@ -30,7 +30,8 @@ public class ImageLoaderManager {
      */
     public static void initializeDefaultImageLoader(Context context) {
         DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder()
-                .cacheOnDisk(true).cacheInMemory(true)
+                .cacheOnDisk(true)
+                .cacheInMemory(true)
                 .imageScaleType(ImageScaleType.EXACTLY)
                 .displayer(new FadeInBitmapDisplayer(100))
                 .build();

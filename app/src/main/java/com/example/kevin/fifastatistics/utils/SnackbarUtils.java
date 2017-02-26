@@ -2,6 +2,7 @@ package com.example.kevin.fifastatistics.utils;
 
 import android.graphics.Color;
 import android.support.design.widget.Snackbar;
+import android.util.Log;
 import android.view.View;
 
 import com.example.kevin.fifastatistics.activities.FifaBaseActivity;
@@ -10,6 +11,8 @@ import lombok.experimental.UtilityClass;
 
 @UtilityClass
 public class SnackbarUtils {
+
+    private static final String TAG = "Snackbar";
 
     public static Snackbar getShortSnackbar(FifaBaseActivity activity, String message) {
         return Snackbar.make(activity.getParentLayout(), message, Snackbar.LENGTH_SHORT);
@@ -24,5 +27,18 @@ public class SnackbarUtils {
         return getLongSnackbar(activity, message)
                 .setAction("RETRY", listener)
                 .setActionTextColor(Color.RED);
+    }
+
+    public static void show(View container, int snackbarMessageResId, int length) {
+        if (container != null) {
+            container.post(() -> {
+                    try {
+                        Snackbar snackbar = Snackbar.make(container, snackbarMessageResId, length);
+                        snackbar.show();
+                    } catch (Exception ex) {
+                        Log.e(TAG, "Failed to show snackbar: " + ex.getMessage());
+                    }
+                });
+        }
     }
 }

@@ -4,13 +4,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
+import com.example.kevin.fifastatistics.interfaces.TransitionStarter;
 import com.example.kevin.fifastatistics.interfaces.OnBackPressedHandler;
 import com.example.kevin.fifastatistics.utils.ObservableUtils;
 
 import rx.Subscription;
 import rx.subscriptions.CompositeSubscription;
 
-public abstract class FifaBaseActivity extends AppCompatActivity {
+public abstract class FifaBaseActivity extends AppCompatActivity implements TransitionStarter {
 
     private OnBackPressedHandler mBackPressHandler;
     private CompositeSubscription mCompositeSubscription;
@@ -37,6 +38,11 @@ public abstract class FifaBaseActivity extends AppCompatActivity {
         super.onPause();
         ObservableUtils.unsubscribeCompositeSubscription(mCompositeSubscription);
         mCompositeSubscription = new CompositeSubscription();
+    }
+
+    @Override
+    public void startTransition() {
+        supportStartPostponedEnterTransition();
     }
 
     public void addSubscription(Subscription subscription) {

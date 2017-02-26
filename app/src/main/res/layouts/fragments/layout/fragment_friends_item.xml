@@ -1,26 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:paddingTop="@dimen/nav_header_vertical_spacing">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/user_image"
-        android:layout_width="130dp"
-        android:layout_height="130dp"
-        app:civ_border_width="@dimen/civ_border_width"
-        app:civ_border_color="#FFFFFF"
-        android:src="@android:color/white"
-        android:layout_gravity="center_horizontal"/>
+    <data>
+        <variable
+            name="viewModel"
+            type="com.example.kevin.fifastatistics.viewmodels.FriendsItemViewModel" />
+    </data>
 
-    <TextView
-        android:id="@+id/name"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/text_margin"
-        android:gravity="center"
-        android:layout_gravity="center_horizontal" />
+        android:orientation="vertical"
+        android:paddingTop="@dimen/nav_header_vertical_spacing">
 
-</LinearLayout>
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/user_image"
+            android:layout_width="@dimen/friends_fragment_image_height"
+            android:layout_height="@dimen/friends_fragment_image_height"
+            android:src="@android:color/white"
+            android:layout_gravity="center_horizontal"
+            android:transitionName="@string/transition_profile_image"
+            android:onClick="@{(v) -> viewModel.onClick(v)}"
+            app:imageUrl="@{viewModel.imageUrl}"
+            app:civ_border_width="@dimen/civ_border_width"
+            app:civ_border_color="#FFFFFF" />
+
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/text_margin"
+            android:gravity="center"
+            android:layout_gravity="center_horizontal"
+            android:text="@{viewModel.name}"/>
+
+    </LinearLayout>
+
+</layout>

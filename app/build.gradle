@@ -81,7 +81,7 @@ dependencies {
 
     // RX
     compile 'io.reactivex:rxandroid:1.2.1'
-    compile 'io.reactivex:rxjava:1.2.4'
+    compile 'io.reactivex:rxjava:1.2.1'
 
     // Lombok
     provided "org.projectlombok:lombok:1.16.8"
@@ -95,10 +95,11 @@ dependencies {
     // API (HTTP, JSON)
     compile 'com.squareup.okhttp3:okhttp:3.5.0'
     compile 'com.squareup.retrofit2:adapter-rxjava:2.1.0'
-    compile 'com.squareup.retrofit2:converter-jackson:2.1.0'
+    compile 'com.squareup.retrofit2:converter-jackson:2.2.0'
     compile 'com.squareup.retrofit2:retrofit:2.1.0'
     compile 'com.squareup.okhttp3:logging-interceptor:3.5.0'
     compile 'com.google.code.gson:gson:2.8.0'
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: '2.8.7'
 
     // Layout
     compile 'com.getbase:floatingactionbutton:1.10.1'
