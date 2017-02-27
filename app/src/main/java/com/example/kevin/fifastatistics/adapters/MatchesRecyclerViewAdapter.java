@@ -1,86 +1,43 @@
 package com.example.kevin.fifastatistics.adapters;
 
-import android.databinding.DataBindingUtil;
-import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
-import android.view.ViewGroup;
-
 import com.example.kevin.fifastatistics.R;
+import com.example.kevin.fifastatistics.databinding.ItemDateHeaderBinding;
 import com.example.kevin.fifastatistics.databinding.ItemMatchBinding;
 import com.example.kevin.fifastatistics.models.databasemodels.match.MatchProjection;
 import com.example.kevin.fifastatistics.models.databasemodels.user.Player;
 import com.example.kevin.fifastatistics.viewmodels.MatchesItemViewModel;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
-public class MatchesRecyclerViewAdapter extends EndlessProgressAdapter {
+public class MatchesRecyclerViewAdapter extends StickyEndlessProgressAdapter<ItemDateHeaderBinding, ItemMatchBinding, MatchProjection> {
 
-    private static final int MATCH_ITEM_VIEW_TYPE = 1;
-
-    private List<MatchProjection> mMatchProjections;
     private Player mUser;
 
     public MatchesRecyclerViewAdapter(Player user) {
-        mMatchProjections = new ArrayList<>();
+        super(R.layout.item_date_header, R.layout.item_match);
         mUser = user;
     }
 
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        if (viewType == MATCH_ITEM_VIEW_TYPE) {
-            ItemMatchBinding binding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.item_match, parent, false);
-            return new MatchViewHolder(binding);
-        } else {
-            return super.onCreateViewHolder(parent, viewType);
-        }
+    protected BindingViewHolder<ItemMatchBinding, MatchProjection> createEventViewHolder(ItemMatchBinding binding) {
+        return new MatchViewHolder(binding);
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        if (holder instanceof MatchViewHolder) {
-            MatchViewHolder matchHolder = (MatchViewHolder) holder;
-            if (position < mMatchProjections.size()) {
-                matchHolder.bindMatch(mMatchProjections.get(position));
-            }
-            matchHolder.mBinding.executePendingBindings();
-        }
+    protected BindingViewHolder<ItemDateHeaderBinding, MatchProjection> createHeaderViewHolder(ItemDateHeaderBinding binding) {
+        return new HeaderViewHolder(binding);
     }
 
-    @Override
-    public int getItemViewType(int position) {
-        int viewType = super.getItemViewType(position);
-        if (viewType != INVALID_VIEW_TYPE) {
-            return viewType;
-        } else {
-            return MATCH_ITEM_VIEW_TYPE;
-        }
-    }
-
-
-
-    @Override
-    public int getActualItemCount() {
-        return mMatchProjections.size();
-    }
-
-    public void setMatches(List<MatchProjection> matches) {
-        if (matches != null) {
-            mMatchProjections = matches;
-            notifyDataSetChanged();
-        }
-    }
-
-    public class MatchViewHolder extends RecyclerView.ViewHolder {
-
-        private ItemMatchBinding mBinding;
+    public class MatchViewHolder extends BindingViewHolder<ItemMatchBinding, MatchProjection> {
 
         MatchViewHolder(ItemMatchBinding binding) {
-            super(binding.getRoot());
-            mBinding = binding;
+            super(binding);
         }
 
-        void bindMatch(MatchProjection match) {
+        @Override
+        public void bindItem(MatchProjection match) {
             MatchesItemViewModel viewModel = mBinding.getMatchItemViewModel();
             if (viewModel != null) {
                 viewModel.setMatch(match, mUser);
@@ -89,7 +46,20 @@ public class MatchesRecyclerViewAdapter extends EndlessProgressAdapter {
                 mBinding.setMatchItemViewModel(viewModel);
             }
         }
+    }
 
+    public static class HeaderViewHolder extends BindingViewHolder<ItemDateHeaderBinding, MatchProjection> {
 
+        HeaderViewHolder(ItemDateHeaderBinding binding) {
+            super(binding);
+        }
+
+        @Override
+        void bindItem(MatchProjection item) {
+            if (item.getDate() != null) {
+                DateFormat format = SimpleDateFormat.getDateInstance();
+                mBinding.setDate(format.format(item.getDate()));
+            }
+        }
     }
 }

@@ -5,6 +5,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 
+import com.tonicartos.superslim.LayoutManager;
+
 public class EndlessRecyclerViewScrollListener extends RecyclerView.OnScrollListener {
 
     private static final int ROW_COUNT_VISIBLE_THRESHOLD = 5;
@@ -17,6 +19,11 @@ public class EndlessRecyclerViewScrollListener extends RecyclerView.OnScrollList
     private RecyclerView.LayoutManager mLayoutManager;
     private ILoadMoreCallBack mLoadMoreCallBack;
     private final LAYOUT_MANAGER_TYPE mLayoutManagerType;
+
+    public EndlessRecyclerViewScrollListener(LayoutManager layoutManager, ILoadMoreCallBack loadMoreCallBack) {
+        init(layoutManager, loadMoreCallBack);
+        mLayoutManagerType = LAYOUT_MANAGER_TYPE.STICKYLAYOUT;
+    }
 
     public EndlessRecyclerViewScrollListener(LinearLayoutManager layoutManager, ILoadMoreCallBack loadMoreCallBack) {
         init(layoutManager, loadMoreCallBack);
@@ -66,6 +73,9 @@ public class EndlessRecyclerViewScrollListener extends RecyclerView.OnScrollList
     private int getLastVisibleItemPosition() {
         int lastVisibleItemPosition = 0;
         switch (mLayoutManagerType) {
+            case STICKYLAYOUT:
+                lastVisibleItemPosition = ((LayoutManager) mLayoutManager).findLastVisibleItemPosition();
+                break;
             case LINEARLAYOUT:
                 lastVisibleItemPosition = ((LinearLayoutManager) mLayoutManager).findLastVisibleItemPosition();
                 break;
@@ -130,6 +140,7 @@ public class EndlessRecyclerViewScrollListener extends RecyclerView.OnScrollList
     }
 
     enum LAYOUT_MANAGER_TYPE {
+        STICKYLAYOUT,
         LINEARLAYOUT,
         GRIDVIEW,
         STAGGERED_GRIDVIEW

@@ -12,8 +12,6 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/activity_horizontal_margin"
         android:layout_marginStart="@dimen/activity_horizontal_margin"
-        android:paddingEnd="@dimen/activity_horizontal_margin"
-        android:paddingStart="@dimen/activity_horizontal_margin"
         android:background="?android:attr/selectableItemBackground"
         android:onClick="@{view -> matchItemViewModel.openMatchDetail(view)}">
 
@@ -90,6 +88,12 @@
                 android:text="@{matchItemViewModel.bottomScore}"/>
 
         </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignParentBottom="true"
+            android:background="?android:attr/listDivider" />
 
     </RelativeLayout>
 

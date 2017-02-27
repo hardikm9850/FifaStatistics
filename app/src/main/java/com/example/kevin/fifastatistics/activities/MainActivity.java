@@ -18,7 +18,7 @@ import com.example.kevin.fifastatistics.managers.SharedPreferencesManager;
 import com.example.kevin.fifastatistics.models.databasemodels.user.Player;
 import com.example.kevin.fifastatistics.utils.FabFactory;
 import com.example.kevin.fifastatistics.utils.ObservableUtils;
-import com.example.kevin.fifastatistics.views.wrappers.FifaNavigationDrawer;
+import com.example.kevin.fifastatistics.views.FifaNavigationDrawer;
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
 import com.lapism.searchview.SearchView;

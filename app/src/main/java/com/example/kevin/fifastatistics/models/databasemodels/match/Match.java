@@ -19,7 +19,7 @@ import lombok.Getter;
 @JsonDeserialize(builder = Match.MatchBuilder.class)
 @Builder
 @Getter
-public class Match extends DatabaseModel {
+public class Match extends DatabaseModel implements FifaEvent {
 
     private String id;
     private final User.StatsPair stats;

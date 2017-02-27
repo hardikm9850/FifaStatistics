@@ -3,8 +3,6 @@ package com.example.kevin.fifastatistics.fragments;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.DividerItemDecoration;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -14,6 +12,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.kevin.fifastatistics.R;
+import com.example.kevin.fifastatistics.adapters.AlphaUpAnimatorAdapter;
+import com.example.kevin.fifastatistics.adapters.MatchesRecyclerViewAdapter;
 import com.example.kevin.fifastatistics.databinding.FragmentMatchesBinding;
 import com.example.kevin.fifastatistics.interfaces.AdapterInteraction;
 import com.example.kevin.fifastatistics.interfaces.OnBackPressedHandler;
@@ -22,11 +22,9 @@ import com.example.kevin.fifastatistics.models.databasemodels.match.MatchProject
 import com.example.kevin.fifastatistics.models.databasemodels.user.Player;
 import com.example.kevin.fifastatistics.utils.ToastUtils;
 import com.example.kevin.fifastatistics.viewmodels.MatchesFragmentViewModel;
-import com.example.kevin.fifastatistics.adapters.MatchesRecyclerViewAdapter;
+import com.tonicartos.superslim.LayoutManager;
 
 import java.util.List;
-
-import it.gmariotti.recyclerview.adapter.SlideInBottomAnimatorAdapter;
 
 public class MatchesFragment extends FifaBaseFragment implements MatchesFragmentViewModel.OnMatchesLoadedListener,
         OnBackPressedHandler, AdapterInteraction {
@@ -57,23 +55,26 @@ public class MatchesFragment extends FifaBaseFragment implements MatchesFragment
         mBinding.setProgressViewModel(mViewModel);
         mBinding.executePendingBindings();
         mRecyclerView = mBinding.matchesRecyclerview;
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(mRecyclerView.getContext(), DividerItemDecoration.VERTICAL);
-        mRecyclerView.addItemDecoration(dividerItemDecoration);
         return mBinding.getRoot();
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
+        initRecyclerView();
+        super.onViewCreated(view, savedInstanceState);
+    }
+
+    @SuppressWarnings("unchecked")
+    private void initRecyclerView() {
         mAdapter = new MatchesRecyclerViewAdapter(mUser);
-        SlideInBottomAnimatorAdapter<MatchesRecyclerViewAdapter.MatchViewHolder> animatorAdapter = new SlideInBottomAnimatorAdapter<>(mAdapter, mRecyclerView);
-        LinearLayoutManager manager = new LinearLayoutManager(mBinding.getRoot().getContext());
+//        AlphaUpAnimatorAdapter<MatchesRecyclerViewAdapter.MatchViewHolder> animatorAdapter = new AlphaUpAnimatorAdapter<>(mAdapter, mRecyclerView);
+        LayoutManager manager = new LayoutManager(mBinding.getRoot().getContext());
         mRecyclerView.setLayoutManager(manager);
-        mRecyclerView.setAdapter(animatorAdapter);
+//        mRecyclerView.setAdapter(animatorAdapter);
+        mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.addOnScrollListener(new EndlessRecyclerViewScrollListener(manager, ((page, count) -> {
             mViewModel.loadMore(page);
         })));
-        super.onViewCreated(view, savedInstanceState);
     }
 
     @Override
@@ -107,7 +108,7 @@ public class MatchesFragment extends FifaBaseFragment implements MatchesFragment
 
     @Override
     public void onMatchesLoadSuccess(List<MatchProjection> matches) {
-        mAdapter.setMatches(matches);
+        mAdapter.setEvents(matches);
     }
 
     @Override
@@ -122,7 +123,7 @@ public class MatchesFragment extends FifaBaseFragment implements MatchesFragment
 
     @Override
     public void notifyItemsInserted(int startPosition, int numberOfItems) {
-        mAdapter.notifyItemRangeInserted(startPosition, numberOfItems);
+        mAdapter.notifyEventsAdded(startPosition, numberOfItems);
     }
 
     @Override

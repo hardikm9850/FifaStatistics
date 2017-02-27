@@ -72,6 +72,10 @@
         <item name="android:textColor">@android:color/secondary_text_dark</item>
     </style>
 
+    <style name="text_bold_grey_small" parent="text_bold_small">
+        <item name="android:textColor">@android:color/secondary_text_dark</item>
+    </style>
+
 
 
 

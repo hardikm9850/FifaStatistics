@@ -1,4 +1,4 @@
-package com.example.kevin.fifastatistics.adapters;
+package com.example.kevin.fifastatistics.managers;
 
 import android.databinding.BindingAdapter;
 import android.widget.ImageView;

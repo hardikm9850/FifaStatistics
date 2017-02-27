@@ -1,4 +1,4 @@
-package com.example.kevin.fifastatistics.views.wrappers;
+package com.example.kevin.fifastatistics.views;
 
 import android.graphics.drawable.Drawable;
 import android.net.Uri;

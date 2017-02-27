@@ -15,7 +15,7 @@ import java.util.List;
 import lombok.Getter;
 
 @Getter
-public class Series extends DatabaseModel {
+public class Series extends DatabaseModel implements FifaEvent {
 
     public static final int DEFAULT_MAX_SERIES_LENGTH = 7;
 
