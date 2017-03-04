@@ -9,6 +9,7 @@ import android.support.v4.app.ActivityOptionsCompat;
 import android.view.View;
 
 import com.example.kevin.fifastatistics.R;
+import com.example.kevin.fifastatistics.activities.PlayerActivty;
 import com.example.kevin.fifastatistics.interfaces.ActivityLauncher;
 import com.example.kevin.fifastatistics.models.databasemodels.user.Player;
 import com.example.kevin.fifastatistics.utils.IntentFactory;
@@ -47,6 +48,7 @@ public class FriendsItemViewModel extends FifaBaseViewModel {
         if (mLauncher != null) {
             Context context = view.getContext();
             Intent intent = IntentFactory.createPlayerActivityIntent(context, mFriend);
+            intent.putExtra(PlayerActivty.EXTRA_ENTERED_FROM_SEARCH_BAR, false);
             ActivityOptionsCompat options = TransitionUtils.getSceneTransitionOptions(context, view, R.string.transition_profile_image);
             mLauncher.launchActivity(intent, Activity.RESULT_OK, options.toBundle());
         }

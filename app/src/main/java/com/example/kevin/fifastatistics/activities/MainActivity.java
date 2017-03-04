@@ -29,7 +29,7 @@ import rx.Observable;
 import rx.Subscription;
 
 /**
- * The application's main activity class that is loaded on launch, so long as the user is signed in.
+ * The application's menu_main activity class that is loaded on launch, so long as the user is signed in.
  * If the user is not signed in, then {@link SignInActivity} will be launched.
  */
 public class MainActivity extends FifaBaseActivity {

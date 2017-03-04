@@ -18,7 +18,7 @@ import com.example.kevin.fifastatistics.views.UserOverviewLayout;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 /**
- * The main overview fragment for the current user.
+ * The menu_main overview fragment for the current user.
  */
 public class UserOverviewFragment extends FifaBaseFragment implements OnBackPressedHandler {
 
@@ -61,7 +61,7 @@ public class UserOverviewFragment extends FifaBaseFragment implements OnBackPres
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.main, menu);
+        inflater.inflate(R.menu.menu_main, menu);
         menu.findItem(R.id.action_search).setVisible(false);
     }
 

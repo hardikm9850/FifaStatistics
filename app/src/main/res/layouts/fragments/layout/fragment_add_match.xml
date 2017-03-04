@@ -9,40 +9,12 @@
     <android.support.v7.widget.Toolbar
         android:id="@+id/dialog_toolbar"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
+        android:layout_height="wrap_content"
         android:background="@color/accent"
         android:clickable="true"
-        app:popupTheme="@style/AppTheme.PopupOverlay"
-        app:layout_collapseMode="pin">
-
-        <ImageButton
-            android:id="@+id/done_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            android:layout_margin="@dimen/activity_horizontal_margin"
-            android:src="@drawable/ic_check_white_24dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:contentDescription="Done"/>
-
-        <ImageButton
-            android:id="@+id/button_autofill"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_swap_horiz_white_24dp"
-            android:background="?attr/selectableItemBackgroundBorderless"/>
-
-        <ImageButton
-            android:id="@+id/camera_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            android:layout_margin="@dimen/activity_horizontal_margin"
-            android:src="@drawable/ic_camera_alt_white_24dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:contentDescription="Camera"/>
-
-
+        android:minHeight="?attr/actionBarSize"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 
     </android.support.v7.widget.Toolbar>
 

@@ -8,6 +8,7 @@ import android.view.View;
 
 import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.activities.FifaBaseActivity;
+import com.example.kevin.fifastatistics.activities.PlayerActivty;
 import com.example.kevin.fifastatistics.models.apiresponses.ApiListResponse;
 import com.example.kevin.fifastatistics.models.databasemodels.user.Player;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
@@ -84,10 +85,10 @@ public class FifaSearchView {
     private void setBasicSearchViewProperties() {
         mSearchView.setVersion(SearchView.VERSION_MENU_ITEM);
         mSearchView.setVersionMargins(SearchView.VERSION_MARGINS_MENU_ITEM);
-//        mSearchView.setArrowOnly(false);
+        mSearchView.setShouldClearOnClose(true);
         mSearchView.setTheme(SearchView.THEME_LIGHT);
         mSearchView.setVoice(false);
-        mSearchView.setHint("Search Players");
+        mSearchView.setHint(R.string.search_players);
     }
 
     private void setSearchViewListeners(FifaBaseActivity activity) {
@@ -131,6 +132,7 @@ public class FifaSearchView {
     private void launchPlayerActivity(Activity activity, SearchAdapter adapter, View imageView, int position) {
         Player selectedUser = adapter.getPlayerAtPosition(position);
         Intent intent = IntentFactory.createPlayerActivityIntent(activity, selectedUser);
+        intent.putExtra(PlayerActivty.EXTRA_ENTERED_FROM_SEARCH_BAR, true);
         ActivityOptionsCompat options = TransitionUtils.getSceneTransitionOptions(activity, imageView, R.string.transition_profile_image);
         activity.startActivityForResult(intent, Activity.RESULT_OK, options.toBundle());
     }

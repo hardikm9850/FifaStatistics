@@ -30,10 +30,13 @@ import rx.Subscription;
 
 public class PlayerActivty extends BasePlayerActivity implements PlayerOverviewFragment.OnPlayerFragmentInteractionListener {
 
+    public static final String EXTRA_ENTERED_FROM_SEARCH_BAR = "enteredFromSearch";
+
     private ActivityPlayerBinding mBinding;
     private Toolbar mToolbar;
     private FloatingActionsMenu mFam;
     private User mCurrentUser;
+    private boolean mDidEnterFromSearch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +55,7 @@ public class PlayerActivty extends BasePlayerActivity implements PlayerOverviewF
 
     private void initializeMembers() {
         mFam = mBinding.fabMenu;
+        mDidEnterFromSearch = getIntent().getExtras().getBoolean(EXTRA_ENTERED_FROM_SEARCH_BAR);
     }
 
     @SuppressWarnings("ConstantConditions")
@@ -217,9 +221,18 @@ public class PlayerActivty extends BasePlayerActivity implements PlayerOverviewF
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                finish();
+                onBackPressed();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (mDidEnterFromSearch) {
+            finish();
+        } else {
+            supportFinishAfterTransition();
+        }
     }
 
     @Override

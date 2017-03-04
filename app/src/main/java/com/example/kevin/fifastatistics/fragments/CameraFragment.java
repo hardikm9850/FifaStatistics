@@ -226,6 +226,8 @@ public class CameraFragment extends Fragment
      */
     private MatchFactsPreprocessor mPreprocessor;
 
+    private CameraFragmentClosedListener mFragmentClosedListener;
+
     /**
      * This a callback object for the {@link ImageReader}. "onImageAvailable" will be called when a
      * still image is ready to be saved.
@@ -414,9 +416,10 @@ public class CameraFragment extends Fragment
         }
     }
 
-    public static CameraFragment newInstance(ImageCaptureListener listener) {
+    public static CameraFragment newInstance(ImageCaptureListener listener, CameraFragmentClosedListener closedListener) {
         CameraFragment f = new CameraFragment();
         f.mListener = listener;
+        f.mFragmentClosedListener = closedListener;
         return f;
     }
 
@@ -455,6 +458,12 @@ public class CameraFragment extends Fragment
         closeCamera();
         stopBackgroundThread();
         super.onPause();
+    }
+
+    @Override
+    public void onDestroy() {
+        mFragmentClosedListener.onCameraFragmentClosed();
+        super.onDestroy();
     }
 
     private void requestCameraPermission() {
@@ -966,4 +975,7 @@ public class CameraFragment extends Fragment
         void onImageCapture(Bitmap bitmap, MatchFactsPreprocessor processor);
     }
 
+    public interface CameraFragmentClosedListener {
+        void onCameraFragmentClosed();
+    }
 }

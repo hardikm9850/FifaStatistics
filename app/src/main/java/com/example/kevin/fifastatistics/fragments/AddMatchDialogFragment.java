@@ -1,16 +1,22 @@
 package com.example.kevin.fifastatistics.fragments;
 
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 
@@ -41,7 +47,7 @@ import rx.Subscription;
  * See https://developer.android.com/guide/topics/ui/dialogs.html#FullscreenDialog for details.
  */
 public class AddMatchDialogFragment extends FifaBaseDialogFragment
-        implements CameraFragment.ImageCaptureListener, OnBackPressedHandler {
+        implements CameraFragment.ImageCaptureListener, OnBackPressedHandler, CameraFragment.CameraFragmentClosedListener {
 
     private ImageLoader mImageLoader;
     private Toolbar mToolbar;
@@ -58,6 +64,7 @@ public class AddMatchDialogFragment extends FifaBaseDialogFragment
 
     private int mOldStatusBarColor;
     private boolean mDidSwapSides;
+    private boolean mIsCameraFragmentOpen;
 
     public static AddMatchDialogFragment newInstance(User user, Friend opponent,
                                                      OnMatchCreatedListener listener,
@@ -92,6 +99,14 @@ public class AddMatchDialogFragment extends FifaBaseDialogFragment
 
         view = maybeAddPaddingToTop(view);
         return view;
+    }
+
+    @NonNull
+    @Override
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
+        Dialog dialog = super.onCreateDialog(savedInstanceState);
+        dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+        return dialog;
     }
 
     @Override
@@ -130,15 +145,47 @@ public class AddMatchDialogFragment extends FifaBaseDialogFragment
         mToolbar.setTitle("Add Match");
         mToolbar.setNavigationIcon(R.drawable.ic_close_white_24dp);
         mToolbar.setNavigationOnClickListener(v -> maybeDismiss());
-
-        initializeDoneMenuItem();
-        initializeCameraMenuItem();
-        _debug_autoPopulateForm();
+        mToolbar.setOnMenuItemClickListener(this::onMenuItemSelected);
+        mToolbar.inflateMenu(R.menu.menu_new_match);
     }
 
-    private void _debug_autoPopulateForm() {
-        ImageButton b = (ImageButton) mToolbar.findViewById(R.id.button_autofill);
-        b.setOnClickListener(v -> mAddMatchList.setValues(mUser.getAverageStats()));
+    private boolean onMenuItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        switch (id) {
+            case R.id.camera:
+                onCameraItemClick();
+                return true;
+            case R.id.confirm:
+                onDoneItemClick();
+                return true;
+            case R.id.autofill:
+                mAddMatchList.setValues(mUser.getAverageStats());
+            default:
+                return false;
+        }
+    }
+
+    private void onCameraItemClick() {
+        System.gc(); // want to clear memory before heavy bitmap operations
+        UiUtils.hideKeyboard(mActivity);
+        FragmentTransaction t = mActivity.getSupportFragmentManager().beginTransaction();
+        t.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+        mCameraFragment = CameraFragment.newInstance(this, this);
+        t.add(android.R.id.content, mCameraFragment).addToBackStack(null).commit();
+        mIsCameraFragmentOpen = true;
+    }
+
+    private void onDoneItemClick() {
+        User.StatsPair stats;
+        try {
+            stats = mAddMatchList.getValues();
+        } catch (NumberFormatException nfe) {
+            ToastUtils.showShortToast(mActivity, "All values must be integers.");
+            return;
+        }
+
+        Match match = buildMatch(stats);
+        attemptMatchSave(match);
     }
 
     private void maybeDismiss() {
@@ -147,22 +194,6 @@ public class AddMatchDialogFragment extends FifaBaseDialogFragment
         } else {
             dismiss();
         }
-    }
-
-    private void initializeDoneMenuItem() {
-        ImageButton b = (ImageButton) mToolbar.findViewById(R.id.done_button);
-        b.setOnClickListener(v -> {
-            User.StatsPair stats;
-            try {
-                stats = mAddMatchList.getValues();
-            } catch (NumberFormatException nfe) {
-                ToastUtils.showShortToast(mActivity, "All values must be integers.");
-                return;
-            }
-
-            Match match = buildMatch(stats);
-            attemptMatchSave(match);
-        });
     }
 
     private Match buildMatch(User.StatsPair stats) {
@@ -202,18 +233,6 @@ public class AddMatchDialogFragment extends FifaBaseDialogFragment
         } else {
             return stats;
         }
-    }
-
-    private void initializeCameraMenuItem() {
-        ImageButton b = (ImageButton) mToolbar.findViewById(R.id.camera_button);
-        b.setOnClickListener(view -> {
-            System.gc(); // want to clear memory before heavy bitmap operations
-            UiUtils.hideKeyboard(mActivity);
-            FragmentTransaction t = mActivity.getSupportFragmentManager().beginTransaction();
-            t.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-            mCameraFragment = CameraFragment.newInstance(this);
-            t.add(android.R.id.content, mCameraFragment).addToBackStack(null).commit();
-        });
     }
 
     private void setStatusBarColor() {
@@ -307,12 +326,17 @@ public class AddMatchDialogFragment extends FifaBaseDialogFragment
 
     @Override
     public boolean handleBackPress() {
-        if (mAddMatchList.isEdited()) {
+        if (mAddMatchList.isEdited() && !mIsCameraFragmentOpen) {
             showConfirmationDialog();
             return true;
         } else {
             return false;
         }
+    }
+
+    @Override
+    public void onCameraFragmentClosed() {
+        mIsCameraFragmentOpen = false;
     }
 
     private void closeCameraFragment() {

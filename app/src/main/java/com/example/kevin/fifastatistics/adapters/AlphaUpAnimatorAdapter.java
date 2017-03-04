@@ -8,7 +8,9 @@ import android.view.View;
 
 import com.example.kevin.fifastatistics.listeners.StopAnimationScrollListener;
 
-public class AlphaUpAnimatorAdapter<T extends RecyclerView.ViewHolder> extends it.gmariotti.recyclerview.adapter.AnimatorAdapter<T> {
+import it.gmariotti.recyclerview.adapter.AnimatorAdapter;
+
+public class AlphaUpAnimatorAdapter<T extends RecyclerView.ViewHolder> extends AnimatorAdapter<T> {
 
     private static final String TRANSLATION_Y = "translationY";
     private static final String ALPHA = "alpha";

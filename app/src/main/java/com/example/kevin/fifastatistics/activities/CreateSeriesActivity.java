@@ -7,7 +7,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
 import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.fragments.CreateSeriesMatchListFragment;
@@ -18,7 +17,6 @@ import com.example.kevin.fifastatistics.managers.SharedPreferencesManager;
 import com.example.kevin.fifastatistics.models.databasemodels.match.Series;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
 import com.example.kevin.fifastatistics.network.CreateFailedException;
-import com.example.kevin.fifastatistics.utils.MenuUtils;
 import com.example.kevin.fifastatistics.utils.SeriesUtils;
 import com.example.kevin.fifastatistics.utils.ToastUtils;
 

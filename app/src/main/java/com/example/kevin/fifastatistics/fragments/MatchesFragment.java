@@ -12,7 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.kevin.fifastatistics.R;
-import com.example.kevin.fifastatistics.adapters.AlphaUpAnimatorAdapter;
 import com.example.kevin.fifastatistics.adapters.MatchesRecyclerViewAdapter;
 import com.example.kevin.fifastatistics.databinding.FragmentMatchesBinding;
 import com.example.kevin.fifastatistics.interfaces.AdapterInteraction;
@@ -67,10 +66,8 @@ public class MatchesFragment extends FifaBaseFragment implements MatchesFragment
     @SuppressWarnings("unchecked")
     private void initRecyclerView() {
         mAdapter = new MatchesRecyclerViewAdapter(mUser);
-//        AlphaUpAnimatorAdapter<MatchesRecyclerViewAdapter.MatchViewHolder> animatorAdapter = new AlphaUpAnimatorAdapter<>(mAdapter, mRecyclerView);
         LayoutManager manager = new LayoutManager(mBinding.getRoot().getContext());
         mRecyclerView.setLayoutManager(manager);
-//        mRecyclerView.setAdapter(animatorAdapter);
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.addOnScrollListener(new EndlessRecyclerViewScrollListener(manager, ((page, count) -> {
             mViewModel.loadMore(page);

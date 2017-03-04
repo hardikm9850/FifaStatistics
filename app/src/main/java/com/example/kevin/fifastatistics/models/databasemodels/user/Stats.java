@@ -8,7 +8,7 @@ import lombok.Setter;
 /**
  * <b>Class:</b> Stats <br><br>
  * <b>Description:</b> <br>
- * The Stats class represents all of the User's main statistics, and should only exist
+ * The Stats class represents all of the User's menu_main statistics, and should only exist
  * within instances of User objects. All of its properties are ints.
  */
 @Getter

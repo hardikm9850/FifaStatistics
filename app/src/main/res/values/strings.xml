@@ -13,6 +13,8 @@
     <string name="menuItem_search">Search</string>
     <string name="menuItem_requests">Requests</string>
     <string name="menuItem_add_match">Add Match</string>
+    <string name="menuItem_camera">Camera</string>
+    <string name="menuItem_confirm">Confirm</string>
 
     <!-- NAVIGATION DRAWER -->
     <string name="overview">Overview</string>
@@ -25,7 +27,6 @@
     <string name="title_activity_login">Sign in</string>
     <string name="drawer.fifa_legend">FIFA Legend</string>
 
-    <!-- Strings related to login -->
     <!-- Sign-in status messages -->
     <string name="title_text">Google Sign-In\nQuickstart</string>
     <string name="signed_in_fmt">Signed in as: %s</string>
@@ -84,6 +85,7 @@
 
     <!-- PLAYER ACTIVITY -->
     <string name="title_activity_player_activty">Player Activity</string>
+    <string name="search_players">Search Players</string>
 
     <!-- CREATE SERIES ACTIVITY -->
     <string name="title_activity_create_series_activity">New Series</string>
