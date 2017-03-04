@@ -9,11 +9,11 @@ public abstract class ProgressFragmentViewModel extends FifaBaseViewModel {
 
     private boolean mDoShowProgressBar = true;
 
-    protected void notifyShowProgressBar() {
+    public void showProgressBar() {
         doNotify(true);
     }
 
-    protected void notifyHideProgressBar() {
+    public void hideProgressBar() {
         doNotify(false);
     }
 

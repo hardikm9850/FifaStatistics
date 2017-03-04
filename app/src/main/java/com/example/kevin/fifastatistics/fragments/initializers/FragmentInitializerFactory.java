@@ -4,6 +4,7 @@ import com.example.kevin.fifastatistics.activities.FifaBaseActivity;
 import com.example.kevin.fifastatistics.managers.SharedPreferencesManager;
 import com.example.kevin.fifastatistics.models.Constants;
 import com.example.kevin.fifastatistics.models.databasemodels.user.Player;
+import com.example.kevin.fifastatistics.models.databasemodels.user.User;
 import com.example.kevin.fifastatistics.network.ApiAdapter;
 
 import rx.android.schedulers.AndroidSchedulers;

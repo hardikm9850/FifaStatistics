@@ -17,6 +17,9 @@ import rx.subscriptions.CompositeSubscription;
 
 public abstract class FifaBaseFragment extends Fragment implements ActivityLauncher {
 
+    protected static final String ARG_ERROR = "errorMessage";
+    protected static final String ARG_USER = "user";
+
     protected TransitionStarter mTransitionStarter;
     private CompositeSubscription mCompositeSubscription;
 

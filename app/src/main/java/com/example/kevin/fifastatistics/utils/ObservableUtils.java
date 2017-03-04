@@ -13,7 +13,7 @@ public class ObservableUtils {
 
     /**
      * Apply the typical schedulers to an observable. Subscribes on Schedulers.io(), and observers
-     * on the menu_main thread.
+     * on the menu_players thread.
      * <p>
      * Use it inside the compose() method.
      */

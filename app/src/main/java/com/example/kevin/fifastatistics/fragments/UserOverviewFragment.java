@@ -18,24 +18,18 @@ import com.example.kevin.fifastatistics.views.UserOverviewLayout;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 /**
- * The menu_main overview fragment for the current user.
+ * The main overview fragment for the current user.
  */
 public class UserOverviewFragment extends FifaBaseFragment implements OnBackPressedHandler {
 
     private User mUser;
 
-    public UserOverviewFragment() {
-        // Required empty public constructor
-    }
+    public UserOverviewFragment() {}
 
     @Override
-    public void onCreate(Bundle savedInstanceState)
-    {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         mUser = SharedPreferencesManager.getUser();
-        setRetainInstance(true);
-        setHasOptionsMenu(true);
     }
 
     @Override
@@ -57,12 +51,6 @@ public class UserOverviewFragment extends FifaBaseFragment implements OnBackPres
     private void initializeContent(View view) {
         UserOverviewLayout overview = (UserOverviewLayout) view.findViewById(R.id.useroverviewdata);
         overview.setUser(mUser);
-    }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.menu_main, menu);
-        menu.findItem(R.id.action_search).setVisible(false);
     }
 
     @Override

@@ -8,10 +8,9 @@ import com.example.kevin.fifastatistics.models.databasemodels.match.MatchProject
 import com.example.kevin.fifastatistics.models.databasemodels.match.Penalties;
 import com.example.kevin.fifastatistics.models.databasemodels.user.Player;
 
-public class MatchesItemViewModel extends FifaBaseViewModel {
+public class MatchesItemViewModel extends FifaBaseViewModel implements EventViewModel<MatchProjection> {
 
     private MatchProjection mMatchProjection;
-    private Player mUser;
     private String mTopName;
     private String mBottomName;
     private int mTopScore;
@@ -24,14 +23,14 @@ public class MatchesItemViewModel extends FifaBaseViewModel {
         init(match, user);
     }
 
-    public void setMatch(MatchProjection match, Player user) {
+    @Override
+    public void setEvent(MatchProjection match, Player user) {
         init(match, user);
         notifyChange();
     }
 
     private void init(MatchProjection match, Player user) {
         mMatchProjection = match;
-        mUser = user;
         Penalties penalties = match.getPenalties();
         int winnerPenalties = penalties != null ? penalties.getWinner() : 0;
         int loserPenalties = penalties != null ? penalties.getLoser() : 0;

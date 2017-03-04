@@ -1,29 +1,24 @@
 package com.example.kevin.fifastatistics.fragments;
 
-import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 
 import com.example.kevin.fifastatistics.R;
+import com.example.kevin.fifastatistics.interfaces.MatchFactsPreprocessor;
 import com.example.kevin.fifastatistics.interfaces.OnBackPressedHandler;
 import com.example.kevin.fifastatistics.interfaces.OnMatchCreatedListener;
-import com.example.kevin.fifastatistics.interfaces.MatchFactsPreprocessor;
 import com.example.kevin.fifastatistics.managers.OcrManager;
 import com.example.kevin.fifastatistics.models.databasemodels.match.Match;
 import com.example.kevin.fifastatistics.models.databasemodels.match.Penalties;
@@ -50,9 +45,7 @@ public class AddMatchDialogFragment extends FifaBaseDialogFragment
         implements CameraFragment.ImageCaptureListener, OnBackPressedHandler, CameraFragment.CameraFragmentClosedListener {
 
     private ImageLoader mImageLoader;
-    private Toolbar mToolbar;
     private AppCompatActivity mActivity;
-
     private Match mMatch;
     private User mUser;
     private Friend mOpponent;
@@ -66,8 +59,7 @@ public class AddMatchDialogFragment extends FifaBaseDialogFragment
     private boolean mDidSwapSides;
     private boolean mIsCameraFragmentOpen;
 
-    public static AddMatchDialogFragment newInstance(User user, Friend opponent,
-                                                     OnMatchCreatedListener listener,
+    public static AddMatchDialogFragment newInstance(User user, Friend opponent, OnMatchCreatedListener listener,
                                                      AppCompatActivity activity) {
         AddMatchDialogFragment fragment = new AddMatchDialogFragment();
         fragment.mUser = user;
@@ -99,14 +91,6 @@ public class AddMatchDialogFragment extends FifaBaseDialogFragment
 
         view = maybeAddPaddingToTop(view);
         return view;
-    }
-
-    @NonNull
-    @Override
-    public Dialog onCreateDialog(Bundle savedInstanceState) {
-        Dialog dialog = super.onCreateDialog(savedInstanceState);
-        dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
-        return dialog;
     }
 
     @Override
@@ -141,12 +125,12 @@ public class AddMatchDialogFragment extends FifaBaseDialogFragment
     }
 
     private void initializeToolbar(View view) {
-        mToolbar = (Toolbar) view.findViewById(R.id.dialog_toolbar);
-        mToolbar.setTitle("Add Match");
-        mToolbar.setNavigationIcon(R.drawable.ic_close_white_24dp);
-        mToolbar.setNavigationOnClickListener(v -> maybeDismiss());
-        mToolbar.setOnMenuItemClickListener(this::onMenuItemSelected);
-        mToolbar.inflateMenu(R.menu.menu_new_match);
+        Toolbar toolbar = (Toolbar) view.findViewById(R.id.dialog_toolbar);
+        toolbar.setTitle("Add Match");
+        toolbar.setNavigationIcon(R.drawable.ic_close_white_24dp);
+        toolbar.setNavigationOnClickListener(v -> maybeDismiss());
+        toolbar.setOnMenuItemClickListener(this::onMenuItemSelected);
+        toolbar.inflateMenu(R.menu.menu_new_match);
     }
 
     private boolean onMenuItemSelected(MenuItem item) {

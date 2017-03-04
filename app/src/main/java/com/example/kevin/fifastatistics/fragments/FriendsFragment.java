@@ -108,7 +108,7 @@ public class FriendsFragment extends FifaBaseFragment implements OnBackPressedHa
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.menu_main, menu);
+        inflater.inflate(R.menu.menu_players, menu);
         MenuItem searchItem = menu.findItem(R.id.action_search);
         searchItem.setVisible(mIsSearchViewReady);
     }

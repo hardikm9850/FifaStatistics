@@ -6,6 +6,8 @@ import com.example.kevin.fifastatistics.models.databasemodels.match.MatchProject
 import com.example.kevin.fifastatistics.models.databasemodels.match.Series;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
 
+import java.util.Map;
+
 import lombok.Getter;
 import retrofit2.Response;
 import retrofit2.http.Body;
@@ -15,6 +17,7 @@ import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
+import retrofit2.http.QueryMap;
 import retrofit2.http.Url;
 import rx.Observable;
 import rx.Observer;
@@ -71,6 +74,9 @@ public interface FifaApi {
 
     @GET("matches/search/findAllByOrderByDateDesc")
     Observable<ApiListResponse<MatchProjection>> getMatches(@Query("page") int page);
+
+    @GET("matches/filter")
+    Observable<ApiListResponse<MatchProjection>> filterMatches(@QueryMap Map<String, String> filters);
 
     @GET("matches/{id}")
     Observable<Match> getMatch(@Path("id") String id);

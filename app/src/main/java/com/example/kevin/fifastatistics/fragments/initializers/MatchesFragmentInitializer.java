@@ -5,10 +5,11 @@ import android.view.View;
 
 import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.activities.FifaBaseActivity;
-import com.example.kevin.fifastatistics.fragments.MatchesFragment;
+import com.example.kevin.fifastatistics.adapters.ViewPagerAdapter;
+import com.example.kevin.fifastatistics.fragments.EventStreamFragment;
+import com.example.kevin.fifastatistics.fragments.MatchStreamFragment;
 import com.example.kevin.fifastatistics.models.databasemodels.user.Player;
 import com.example.kevin.fifastatistics.utils.ResourceUtils;
-import com.example.kevin.fifastatistics.adapters.ViewPagerAdapter;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
 
 public class MatchesFragmentInitializer implements FragmentInitializer {
@@ -28,7 +29,7 @@ public class MatchesFragmentInitializer implements FragmentInitializer {
     public void changeAdapterDataSet(ViewPagerAdapter adapter) {
         adapter.clear();
         adapter.addFragment(
-                MatchesFragment.newInstance(mUser),
+                EventStreamFragment.newInstance(MatchStreamFragment.class, mUser, R.string.matches_load_failed),
                 ResourceUtils.getStringFromResourceId(R.string.matches));
         adapter.notifyDataSetChanged();
     }
