@@ -5,10 +5,9 @@ import android.view.View;
 
 import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.activities.FifaBaseActivity;
+import com.example.kevin.fifastatistics.adapters.FragmentAdapter;
 import com.example.kevin.fifastatistics.fragments.FriendsFragment;
 import com.example.kevin.fifastatistics.models.Constants;
-import com.example.kevin.fifastatistics.adapters.FragmentAdapter;
-import com.getbase.floatingactionbutton.FloatingActionsMenu;
 
 /**
  * Implementation of the abstract FragmentInitializer class for FriendFragments.
@@ -42,7 +41,7 @@ public class FriendsFragmentInitializer implements FragmentInitializer
     }
 
     @Override
-    public void setFabVisibility(FloatingActionsMenu menu) {
+    public void setFabVisibility(View menu) {
         menu.setVisibility(View.GONE);
     }
 }

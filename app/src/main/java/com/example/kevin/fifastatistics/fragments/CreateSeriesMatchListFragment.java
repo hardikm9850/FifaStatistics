@@ -30,8 +30,6 @@ public class CreateSeriesMatchListFragment extends FifaBaseFragment implements O
     private TickerView mUserTicker;
     private TickerView mOpponentTicker;
 
-    public CreateSeriesMatchListFragment() {}
-
     public static CreateSeriesMatchListFragment newInstance(User user, Friend opponent, OnSeriesCompletedListener seriesCompletedListener) {
         CreateSeriesMatchListFragment f = new CreateSeriesMatchListFragment();
         f.mUser = user;

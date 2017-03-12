@@ -1,10 +1,16 @@
 package com.example.kevin.fifastatistics.activities;
 
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import com.example.kevin.fifastatistics.interfaces.TransitionStarter;
+
+import com.example.kevin.fifastatistics.FifaApplication;
 import com.example.kevin.fifastatistics.interfaces.OnBackPressedHandler;
+import com.example.kevin.fifastatistics.interfaces.TransitionStarter;
+import com.example.kevin.fifastatistics.utils.EventBus;
 import com.example.kevin.fifastatistics.utils.ObservableUtils;
 
 import rx.Subscription;
@@ -14,12 +20,29 @@ public abstract class FifaBaseActivity extends AppCompatActivity implements Tran
 
     private OnBackPressedHandler mBackPressHandler;
     private CompositeSubscription mCompositeSubscription;
+    private EventBus mColorEventBus;
+    protected int mColor;
 
     public abstract Toolbar getToolbar();
     public abstract View getParentLayout();
 
     public FifaBaseActivity() {
         mCompositeSubscription = new CompositeSubscription();
+    }
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mColor = FifaApplication.getAccentColor();
+        mColorEventBus = EventBus.getInstance();
+        mColorEventBus.observeEvents(Integer.class).subscribe(color -> {
+            mColor = color;
+            onColorUpdated();
+        });
+    }
+
+    protected void onColorUpdated() {
+
     }
 
     public void setNavigationLocked(boolean locked) {};
@@ -37,6 +60,11 @@ public abstract class FifaBaseActivity extends AppCompatActivity implements Tran
         super.onPause();
         ObservableUtils.unsubscribeCompositeSubscription(mCompositeSubscription);
         mCompositeSubscription = new CompositeSubscription();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
     }
 
     @Override

@@ -20,11 +20,12 @@ import com.example.kevin.fifastatistics.managers.RetrievalManager;
 import com.example.kevin.fifastatistics.managers.SharedPreferencesManager;
 import com.example.kevin.fifastatistics.models.databasemodels.user.Friend;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
+import com.example.kevin.fifastatistics.utils.ColorUtils;
 import com.example.kevin.fifastatistics.utils.FabFactory;
 import com.example.kevin.fifastatistics.utils.SnackbarUtils;
 import com.example.kevin.fifastatistics.utils.TransitionUtils;
-import com.getbase.floatingactionbutton.FloatingActionButton;
-import com.getbase.floatingactionbutton.FloatingActionsMenu;
+import com.github.clans.fab.FloatingActionButton;
+import com.github.clans.fab.FloatingActionMenu;
 
 import rx.Subscription;
 
@@ -34,7 +35,7 @@ public class PlayerActivty extends BasePlayerActivity implements PlayerOverviewF
 
     private ActivityPlayerBinding mBinding;
     private Toolbar mToolbar;
-    private FloatingActionsMenu mFam;
+    private FloatingActionMenu mFam;
     private User mCurrentUser;
     private boolean mDidEnterFromSearch;
 
@@ -55,6 +56,9 @@ public class PlayerActivty extends BasePlayerActivity implements PlayerOverviewF
 
     private void initializeMembers() {
         mFam = mBinding.fabMenu;
+        mFam.setMenuButtonColorNormal(mColor);
+        mFam.setMenuButtonColorPressed(mColor);
+        mFam.getMenuIconView().setImageDrawable(ColorUtils.getTintedDrawable(R.drawable.ic_add_white_24dp, mColor));
         mDidEnterFromSearch = getIntent().getExtras().getBoolean(EXTRA_ENTERED_FROM_SEARCH_BAR);
     }
 
@@ -73,10 +77,9 @@ public class PlayerActivty extends BasePlayerActivity implements PlayerOverviewF
     @SuppressWarnings("ConstantConditions")
     private void initializeTabs() {
         FragmentAdapter adapter = new FragmentAdapter(getSupportFragmentManager());
-        ViewPager vp = mBinding.viewpager;
-        vp.setAdapter(adapter);
-        TabLayout tl = mBinding.tabs;
-        tl.setupWithViewPager(vp);
+        mBinding.viewpager.setAdapter(adapter);
+        mBinding.tabs.setupWithViewPager(mBinding.viewpager);
+        mBinding.tabs.setSelectedTabIndicatorColor(mColor);
 
         adapter.addFragment(PlayerOverviewFragment.newInstance(getPlayerId()), "Overview");
         adapter.addFragment(new SecondFragment(), "Head to head");
@@ -85,7 +88,7 @@ public class PlayerActivty extends BasePlayerActivity implements PlayerOverviewF
 
     @SuppressWarnings("ConstantConditions")
     private void initializeFab(boolean isFriend) {
-        FabFactory factory = FabFactory.newInstance(this);
+        FabFactory factory = FabFactory.newInstance(this, mColor);
         Friend friend = getFriend();
         if (isFriend) {
             initializeFamForFriend(factory, friend);
@@ -109,37 +112,37 @@ public class PlayerActivty extends BasePlayerActivity implements PlayerOverviewF
     private void initializeAddMatchButton(FabFactory factory, FifaEventManager manager, Friend friend) {
         FloatingActionButton matchButton = factory.createPlayMatchFab();
         matchButton.setOnClickListener(l -> {
-            mFam.collapse();
+            mFam.close(true);
             setOnBackPressHandler(manager);
             manager.setMatchFlow();
             manager.startNewFlow(friend);
         });
-        mFam.addButton(matchButton);
+        mFam.addMenuButton(matchButton);
     }
 
     private void initializeAddSeriesButton(FabFactory factory, FifaEventManager manager, Friend friend) {
         FloatingActionButton seriesButton = factory.createPlaySeriesFab();
         seriesButton.setOnClickListener(l -> {
-            mFam.collapse();
+            mFam.close(true);
             manager.setSeriesFlow();
             manager.startNewFlow(friend);
         });
-        mFam.addButton(seriesButton);
+        mFam.addMenuButton(seriesButton);
     }
 
     private void initializeFamForIncomingFriendRequest(Friend friend, FabFactory factory) {
         FloatingActionButton acceptButton = factory.createAcceptRequestFab();
         FloatingActionButton declineButton = factory.createDeclineRequestFab();
         acceptButton.setOnClickListener(l -> {
-            mFam.collapse();
+            mFam.close(true);
             handleAcceptFriendRequestClick(friend, acceptButton, declineButton, factory);
         });
         declineButton.setOnClickListener(l -> {
-            mFam.collapse();
+            mFam.close(true);
             handleDeclineFriendRequestClick(friend, acceptButton, declineButton, factory);
         });
-        mFam.addButton(declineButton);
-        mFam.addButton(acceptButton);
+        mFam.addMenuButton(declineButton);
+        mFam.addMenuButton(acceptButton);
     }
 
     private void handleAcceptFriendRequestClick(Friend friend, FloatingActionButton acceptButton,
@@ -149,8 +152,8 @@ public class PlayerActivty extends BasePlayerActivity implements PlayerOverviewF
                 SnackbarUtils.getShortSnackbar(this, "Friend request accepted").show();
                 mCurrentUser.acceptIncomingRequest(friend);
                 SharedPreferencesManager.storeUser(mCurrentUser);
-                mFam.removeButton(acceptButton);
-                mFam.removeButton(declineButton);
+                mFam.removeMenuButton(acceptButton);
+                mFam.removeMenuButton(declineButton);
                 initializeFamForFriend(factory, friend);
             } else {
                 SnackbarUtils.getRetrySnackbar(this, "Failed to accept request",
@@ -167,8 +170,8 @@ public class PlayerActivty extends BasePlayerActivity implements PlayerOverviewF
                SnackbarUtils.getShortSnackbar(this, "Friend request declined").show();
                mCurrentUser.declineIncomingRequest(friend);
                SharedPreferencesManager.storeUser(mCurrentUser);
-               mFam.removeButton(declineButton);
-               mFam.removeButton(acceptButon);
+               mFam.removeMenuButton(declineButton);
+               mFam.removeMenuButton(acceptButon);
                initializeFabForNonFriend(friend, factory);
            } else {
                SnackbarUtils.getRetrySnackbar(this, "Failed to decline request",
@@ -179,16 +182,16 @@ public class PlayerActivty extends BasePlayerActivity implements PlayerOverviewF
     }
 
     private void initializeFabForOutgoingFriendRequest(FabFactory factory) {
-        mFam.addButton(factory.createFriendRequestPendingFab());
+        mFam.addMenuButton(factory.createFriendRequestPendingFab());
     }
 
     private void initializeFabForNonFriend(Friend friend, FabFactory factory) {
         FloatingActionButton b = factory.createSendFriendRequestFab();
         b.setOnClickListener(l -> {
-            mFam.collapse();
+            mFam.close(true);
             handleSendFriendRequestClick(friend, b, factory);
         });
-        mFam.addButton(b);
+        mFam.addMenuButton(b);
     }
 
     private void handleSendFriendRequestClick(Friend friend, FloatingActionButton b,
@@ -198,7 +201,7 @@ public class PlayerActivty extends BasePlayerActivity implements PlayerOverviewF
                 SnackbarUtils.getShortSnackbar(this, "Friend request sent").show();
                 mCurrentUser.addOutgoingRequest(friend);
                 SharedPreferencesManager.storeUser(mCurrentUser);
-                mFam.removeButton(b);
+                mFam.removeMenuButton(b);
                 initializeFabForOutgoingFriendRequest(factory);
             } else {
                 SnackbarUtils.getRetrySnackbar(this, "Failed to send friend request",
@@ -212,8 +215,8 @@ public class PlayerActivty extends BasePlayerActivity implements PlayerOverviewF
     @Override
     public void onPause() {
         super.onPause();
-        if (mFam.isExpanded()) {
-            mFam.collapseImmediately();
+        if (mFam.isOpened()) {
+            mFam.close(false);
         }
     }
 

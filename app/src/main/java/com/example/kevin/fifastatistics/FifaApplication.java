@@ -3,11 +3,13 @@ package com.example.kevin.fifastatistics;
 import android.app.Application;
 import android.content.Context;
 import android.content.res.AssetManager;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.example.kevin.fifastatistics.managers.ImageLoaderManager;
 import com.example.kevin.fifastatistics.managers.SharedPreferencesManager;
 import com.example.kevin.fifastatistics.utils.ObservableUtils;
+import com.ftinc.scoop.Scoop;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -16,45 +18,55 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 import rx.Observable;
+import rx.Subscriber;
 
-/**
- * Application class used for global initialization, run before any activity is started.
- * <p>
- * Makes the application context available from any class via {@link #getContext()}.
- */
 public class FifaApplication extends Application {
 
     private static Context instance;
+    private static int colorAccent;
 
-    /**
-     * Retrieve the application context.
-     * @return  the application context
-     */
     public static Context getContext() {
         return instance;
+    }
+
+    public static int getAccentColor() {
+        if (colorAccent == 0) {
+            colorAccent = SharedPreferencesManager.getColorAccent();
+        }
+        return colorAccent;
+    }
+
+    public static void setAccentColor(int color) {
+        colorAccent = color;
     }
 
     @Override
     public void onCreate() {
         super.onCreate();
-
         instance = getApplicationContext();
         ImageLoaderManager.initializeDefaultImageLoader(this);
         SharedPreferencesManager.initialize(this);
         ensureTrainedDataExists();
+        initScoop();
+    }
+
+    private void initScoop() {
+        Scoop.waffleCone()
+                .addFlavor("Default", R.style.Theme_Scoop, true)
+                .addFlavor("Light", R.style.Theme_Scoop_Light)
+                .addDayNightFlavor("DayNight", R.style.Theme_Scoop_DayNight)
+                .addFlavor("Alternate 1", R.style.Theme_Scoop_Alt1)
+                .setSharedPreferences(PreferenceManager.getDefaultSharedPreferences(this))
+                .initialize();
     }
 
     private void ensureTrainedDataExists() {
-        Observable.just("eng.traineddata")
-                .compose(ObservableUtils.applySchedulers())
-                .map(filename -> {
-                    File file = getFileStreamPath(filename);
-                    if (!file.exists()) {
-                        copyAsset("tessdata");
-                    }
-                    return null;
-                })
-                .subscribe();
+        Observable.create(subscriber -> {
+            File file = getFileStreamPath("eng.traineddata");
+            if (!file.exists()) {
+                copyAsset("tessdata");
+            }
+        }).compose(ObservableUtils.applyBackground()).subscribe();
     }
 
     /**

@@ -1,10 +1,14 @@
 package com.example.kevin.fifastatistics.utils;
 
+import android.content.Context;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+import android.support.annotation.ColorInt;
+import android.support.v4.content.ContextCompat;
 
 import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.activities.FifaBaseActivity;
-import com.getbase.floatingactionbutton.FloatingActionButton;
+import com.github.clans.fab.FloatingActionButton;
 
 /**
  * Factory class for Floating Action Buttons that are a part of Floating Action Menus.
@@ -15,13 +19,15 @@ import com.getbase.floatingactionbutton.FloatingActionButton;
 public class FabFactory {
 
     private FifaBaseActivity mActivity;
+    private int mColor;
 
-    public static FabFactory newInstance(FifaBaseActivity activity) {
-        return new FabFactory(activity);
+    public static FabFactory newInstance(FifaBaseActivity activity, @ColorInt int buttonColor) {
+        return new FabFactory(activity, buttonColor);
     }
 
-    private FabFactory(FifaBaseActivity activity) {
+    private FabFactory(FifaBaseActivity activity, int color) {
         mActivity = activity;
+        mColor = color;
     }
 
     public FloatingActionButton createSendFriendRequestFab() {
@@ -54,11 +60,11 @@ public class FabFactory {
 
     private FloatingActionButton createButtonWithAttributes(int titleId, int iconId) {
         FloatingActionButton button = new FloatingActionButton(mActivity);
-        button.setColorNormalResId(R.color.colorAccent);
-        button.setColorPressedResId(R.color.colorAccentDark);
-        button.setSize(FloatingActionButton.SIZE_MINI);
-        button.setIcon(iconId);
-        button.setTitle(ResourceUtils.getStringFromResourceId(titleId));
+        button.setColorNormal(mColor);
+        button.setColorPressed(mColor);
+        button.setButtonSize(FloatingActionButton.SIZE_MINI);
+        button.setImageDrawable(ColorUtils.getTintedDrawable(iconId, mColor));
+        button.setLabelText(ResourceUtils.getStringFromResourceId(titleId));
 
         return button;
     }

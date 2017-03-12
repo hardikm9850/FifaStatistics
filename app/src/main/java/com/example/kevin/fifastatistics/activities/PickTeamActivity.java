@@ -1,6 +1,5 @@
 package com.example.kevin.fifastatistics.activities;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
@@ -10,6 +9,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.example.kevin.fifastatistics.FifaApplication;
 import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.adapters.TeamFragmentAdapter;
 import com.example.kevin.fifastatistics.databinding.ActivityPickTeamBinding;
@@ -17,9 +17,12 @@ import com.example.kevin.fifastatistics.models.apiresponses.ApiListResponse;
 import com.example.kevin.fifastatistics.models.databasemodels.league.League;
 import com.example.kevin.fifastatistics.models.databasemodels.league.Team;
 import com.example.kevin.fifastatistics.network.FifaApi;
+import com.example.kevin.fifastatistics.utils.ColorUtils;
 import com.example.kevin.fifastatistics.utils.ObservableUtils;
 import com.example.kevin.fifastatistics.utils.ToastUtils;
 import com.example.kevin.fifastatistics.viewmodels.TeamItemViewModel;
+
+import rx.Subscription;
 
 public class PickTeamActivity extends FifaBaseActivity implements TeamItemViewModel.OnTeamClickListener {
 
@@ -34,6 +37,7 @@ public class PickTeamActivity extends FifaBaseActivity implements TeamItemViewMo
         super.onCreate(savedInstanceState);
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_pick_team);
         initToolbar();
+        initColors();
         getLeagues();
     }
 
@@ -43,25 +47,31 @@ public class PickTeamActivity extends FifaBaseActivity implements TeamItemViewMo
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
+    private void initColors() {
+        mBinding.tabs.setSelectedTabIndicatorColor(mColor);
+        ColorUtils.setProgressBarColor(mBinding.progressBar, mColor);
+    }
+
     private void getLeagues() {
-        FifaApi.getLeagueApi().getLeagues().compose(ObservableUtils.applySchedulers()).subscribe(
+        Subscription s = FifaApi.getLeagueApi().getLeagues().compose(ObservableUtils.applySchedulers()).subscribe(
                 new ObservableUtils.EmptyOnCompleteObserver<ApiListResponse<League>>() {
             @Override
             public void onError(Throwable e) {
                 Log.d(TAG, "error loading leagues: " + e.getMessage());
                 ToastUtils.showShortToast(PickTeamActivity.this, getString(R.string.error_loading_teams));
-                finishRefreshing();
+                finishLoading();
             }
 
             @Override
             public void onNext(ApiListResponse<League> response) {
-                finishRefreshing();
+                finishLoading();
                 initTabsWithResponse(response);
             }
         });
+        addSubscription(s);
     }
 
-    private void finishRefreshing() {
+    private void finishLoading() {
         mBinding.progressBar.setVisibility(View.GONE);
     }
 

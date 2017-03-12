@@ -3,8 +3,13 @@ package com.example.kevin.fifastatistics.managers;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.support.annotation.ColorInt;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 
+import com.example.kevin.fifastatistics.FifaApplication;
+import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.models.databasemodels.league.Team;
 import com.example.kevin.fifastatistics.models.databasemodels.match.Match;
 import com.example.kevin.fifastatistics.models.databasemodels.match.Series;
@@ -25,11 +30,20 @@ public class SharedPreferencesManager {
     private static final String REGISTRATION_TOKEN = "REGISTRATION_TOKEN";
     private static final String CURRENT_USER = "CURRENT_USER";
     private static final String CURRENT_SERIES = "CURRENT_SERIES";
-    private static final String FAVORITE_TEAM = "FAVORITE_TEAM";
     private static final String RECENT_TEAMS = "RECENT_TEAMS";
+    private static final String COLOR_ACCENT = "COLOR_ACCENT";
+    private static final String FAVORITE_TEAM;
+    private static final String DIRECT_CAMERA;
+    private static final String DARK_THEME;
 
     private static SharedPreferences preferences;
     private static SharedPreferences.Editor editor;
+
+    static {
+        FAVORITE_TEAM = FifaApplication.getContext().getString(R.string.favoriteTeam);
+        DIRECT_CAMERA = FifaApplication.getContext().getString(R.string.openToCamera);
+        DARK_THEME = FifaApplication.getContext().getString(R.string.darkTheme);
+    }
 
     /**
      * Initializes the SharedPreferences with an application context. This method must be called
@@ -126,6 +140,7 @@ public class SharedPreferencesManager {
     public static void setFavoriteTeam(Team team) {
         editor = preferences.edit();
         editor.putString(FAVORITE_TEAM, SerializationUtils.toJson(team));
+        editor.putString(COLOR_ACCENT, team.getColor());
         editor.apply();
     }
 
@@ -133,6 +148,12 @@ public class SharedPreferencesManager {
         editor = preferences.edit();
         editor.putString(RECENT_TEAMS, SerializationUtils.toJson(teams));
         editor.apply();
+    }
+
+    @ColorInt
+    public static int getColorAccent() {
+        String color = preferences.getString(COLOR_ACCENT, null);
+        return color != null ? Color.parseColor(color) : ContextCompat.getColor(FifaApplication.getContext(), R.color.colorAccent);
     }
 
     public static User getUser() {

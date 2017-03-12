@@ -94,6 +94,7 @@
     <string name="create_series_exit_confirmation">"Are you sure you want to discard this series?"</string>
     <string name="dialog_keep_editing">KEEP EDITING</string>
     <string name="dialog_discard">DISCARD</string>
+    <string name="dialog_save">SAVE</string>
     <string name="uploading_series">Uploading series</string>
     <string name="please_wait">Please wait...</string>
     <string name="create_series_failed">Failed to create series</string>
@@ -149,5 +150,10 @@
     <string name="activity_pick_team">Choose a Team</string>
     <string name="error_loading_teams">Failed to load teams</string>
 
+    <!-- preferences -->
+    <string name="pref_dark_theme">Dark Theme</string>
+    <string name="pref_direct_camera">Direct Camera</string>
+    <string name="pref_direct_camera_desc">Immediately open the camera when creating a match</string>
+    <string name="pref_favorite_team">Favourite Team</string>
 
 </resources>

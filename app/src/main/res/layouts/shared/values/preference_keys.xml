@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="darkTheme">darkTheme</string>
+    <string name="openToCamera">openToCamera</string>
+    <string name="favoriteTeam">favouriteTeam</string>
+</resources>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <SwitchPreference
+        android:key="@string/darkTheme"
+        android:title="@string/pref_dark_theme"
+        android:defaultValue="false"/>
+
+    <SwitchPreference
+        android:key="@string/openToCamera"
+        android:title="@string/pref_direct_camera"
+        android:summary="@string/pref_direct_camera_desc"
+        android:defaultValue="false"/>
+
+    <Preference
+        android:key="@string/favoriteTeam"
+        android:title="@string/pref_favorite_team">
+
+        <intent android:action="com.example.kevin.fifastatistics.activities.PickTeamActivity"/>
+
+    </Preference>
+
+</PreferenceScreen>

@@ -1,7 +1,5 @@
 package com.example.kevin.fifastatistics.viewmodels;
 
-import android.util.Log;
-
 import com.example.kevin.fifastatistics.models.apiresponses.ApiListResponse;
 import com.example.kevin.fifastatistics.models.databasemodels.league.League;
 import com.example.kevin.fifastatistics.models.databasemodels.league.Team;
@@ -9,6 +7,8 @@ import com.example.kevin.fifastatistics.network.FifaApi;
 import com.example.kevin.fifastatistics.utils.ObservableUtils;
 
 import java.util.List;
+
+import rx.Subscription;
 
 public class TeamListFragmentViewModel extends ProgressFragmentViewModel {
 
@@ -23,9 +23,10 @@ public class TeamListFragmentViewModel extends ProgressFragmentViewModel {
     public void loadTeams() {
         showProgressBar();
         if (mLeague != null && mLeague.getTeamUrl() != null) {
-            FifaApi.getLeagueApi().getTeams(mLeague.getTeamUrl())
+            Subscription s = FifaApi.getLeagueApi().getTeams(mLeague.getTeamUrl())
                     .compose(ObservableUtils.applySchedulers())
                     .subscribe(getTeamObserver());
+            addSubscription(s);
         } else {
             notifyError();
         }
@@ -42,7 +43,6 @@ public class TeamListFragmentViewModel extends ProgressFragmentViewModel {
         return new ObservableUtils.EmptyOnCompleteObserver<ApiListResponse<Team>>() {
             @Override
             public void onError(Throwable e) {
-                Log.d("VM", "error: " + e.getMessage());
                 notifyError();
             }
 

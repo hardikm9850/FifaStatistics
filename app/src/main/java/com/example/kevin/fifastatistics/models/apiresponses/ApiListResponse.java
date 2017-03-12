@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -69,7 +70,7 @@ public class ApiListResponse<T> {
     }
 
     @Getter
-    public static class Links {
+    public static class Links implements Serializable {
         private Link first;
         private Link self;
         private Link next;
@@ -82,7 +83,7 @@ public class ApiListResponse<T> {
     }
 
     @Getter
-    public static class Link {
+    public static class Link implements Serializable {
         private String href;
     }
 }

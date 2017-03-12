@@ -1,11 +1,11 @@
 package com.example.kevin.fifastatistics.fragments.initializers;
 
 import android.support.design.widget.TabLayout;
+import android.view.View;
 
 import com.example.kevin.fifastatistics.activities.FifaBaseActivity;
 import com.example.kevin.fifastatistics.activities.MainActivity;
 import com.example.kevin.fifastatistics.adapters.FragmentAdapter;
-import com.getbase.floatingactionbutton.FloatingActionsMenu;
 
 /**
  * Prepares the activity for the fragment that will be displayed.
@@ -35,5 +35,5 @@ public interface FragmentInitializer {
     /**
      * Set the visibility of the floating action menu.
      */
-    void setFabVisibility(FloatingActionsMenu menu);
+    void setFabVisibility(View menu);
 }

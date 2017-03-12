@@ -8,12 +8,12 @@ import android.support.v4.view.animation.FastOutSlowInInterpolator;
 import android.util.AttributeSet;
 import android.view.View;
 
-import com.getbase.floatingactionbutton.FloatingActionsMenu;
+import com.github.clans.fab.FloatingActionMenu;
 
 import java.util.List;
 
 @SuppressWarnings("unused")
-public class ActionMenuBehavior extends CoordinatorLayout.Behavior<FloatingActionsMenu> {
+public class ActionMenuBehavior extends CoordinatorLayout.Behavior<FloatingActionMenu> {
 
     private float mTranslationY;
 
@@ -25,7 +25,7 @@ public class ActionMenuBehavior extends CoordinatorLayout.Behavior<FloatingActio
         super(context, attrs);
     }
 
-    private static float getFabTranslationYForSnackbar(CoordinatorLayout parent, FloatingActionsMenu fab) {
+    private static float getFabTranslationYForSnackbar(CoordinatorLayout parent, FloatingActionMenu fab) {
         float minOffset = 0.0F;
         List<View> dependencies = parent.getDependencies(fab);
         int i = 0;
@@ -41,12 +41,12 @@ public class ActionMenuBehavior extends CoordinatorLayout.Behavior<FloatingActio
     }
 
     @Override
-    public boolean layoutDependsOn(CoordinatorLayout parent, FloatingActionsMenu child, View dependency) {
+    public boolean layoutDependsOn(CoordinatorLayout parent, FloatingActionMenu child, View dependency) {
         return dependency instanceof Snackbar.SnackbarLayout;
     }
 
     @Override
-    public boolean onDependentViewChanged(CoordinatorLayout parent, FloatingActionsMenu child, View dependency) {
+    public boolean onDependentViewChanged(CoordinatorLayout parent, FloatingActionMenu child, View dependency) {
         if (dependency instanceof Snackbar.SnackbarLayout) {
             this.updateFabTranslationForSnackbar(parent, child, dependency);
         }
@@ -54,7 +54,7 @@ public class ActionMenuBehavior extends CoordinatorLayout.Behavior<FloatingActio
         return false;
     }
 
-    private void updateFabTranslationForSnackbar(CoordinatorLayout parent, FloatingActionsMenu fab, View snackbar) {
+    private void updateFabTranslationForSnackbar(CoordinatorLayout parent, FloatingActionMenu fab, View snackbar) {
         float translationY = ActionMenuBehavior.getFabTranslationYForSnackbar(parent, fab);
         if (translationY != this.mTranslationY) {
             ViewCompat.animate(fab).cancel();

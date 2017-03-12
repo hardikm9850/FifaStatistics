@@ -17,11 +17,12 @@ import com.example.kevin.fifastatistics.managers.FifaEventManager;
 import com.example.kevin.fifastatistics.managers.RetrievalManager;
 import com.example.kevin.fifastatistics.managers.SharedPreferencesManager;
 import com.example.kevin.fifastatistics.models.databasemodels.user.Player;
+import com.example.kevin.fifastatistics.utils.ColorUtils;
 import com.example.kevin.fifastatistics.utils.FabFactory;
 import com.example.kevin.fifastatistics.utils.ObservableUtils;
 import com.example.kevin.fifastatistics.views.FifaNavigationDrawer;
-import com.getbase.floatingactionbutton.FloatingActionButton;
-import com.getbase.floatingactionbutton.FloatingActionsMenu;
+import com.github.clans.fab.FloatingActionButton;
+import com.github.clans.fab.FloatingActionMenu;
 import com.lapism.searchview.SearchView;
 
 import java.util.concurrent.TimeUnit;
@@ -29,10 +30,6 @@ import java.util.concurrent.TimeUnit;
 import rx.Observable;
 import rx.Subscription;
 
-/**
- * The application's menu_players activity class that is loaded on launch, so long as the user is signed in.
- * If the user is not signed in, then {@link SignInActivity} will be launched.
- */
 public class MainActivity extends FifaBaseActivity {
 
     public static final String PAGE_EXTRA = "page";
@@ -44,16 +41,17 @@ public class MainActivity extends FifaBaseActivity {
     private FragmentAdapter mAdapter;
     private TabLayout mTabLayout;
     private ViewPager mViewPager;
-    private FloatingActionsMenu mActionMenu;
+    private FloatingActionMenu mActionMenu;
+    private FloatingActionButton mMatchButton;
+    private FloatingActionButton mSeriesButton;
+    private FifaEventManager mEventManager;
     private Player mUser;
-
     private int currentDrawerPosition;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         mCoordinatorLayout = findViewById(R.id.coordinator_layout);
         initializeToolbar();
         initializeViewPager();
@@ -89,7 +87,7 @@ public class MainActivity extends FifaBaseActivity {
     }
 
     private void initializeDrawer() {
-        mDrawer = FifaNavigationDrawer.newInstance(this);
+        mDrawer = FifaNavigationDrawer.newInstance(this, mColor);
         mDrawer.setOnDrawerItemClickListener((view, position, drawerItem) -> {
             if (position == currentDrawerPosition) {
                 mDrawer.closeDrawer();
@@ -103,7 +101,7 @@ public class MainActivity extends FifaBaseActivity {
 
     private void handleDrawerClick(int position) {
         if (position == 7) {
-            Intent intent = new Intent(this, PickTeamActivity.class);
+            Intent intent = new Intent(this, SettingsActivity.class);
             startActivity(intent);
             return;
         }
@@ -126,42 +124,60 @@ public class MainActivity extends FifaBaseActivity {
         initializer.changeAdapterDataSet(mAdapter);
         initializer.setTabLayoutVisibility(mTabLayout);
         initializer.setFabVisibility(mActionMenu);
-
+        mTabLayout.setSelectedTabIndicatorColor(mColor);
         int currentPage = getIntent().getIntExtra(PAGE_EXTRA, 0);
         mViewPager.setCurrentItem(currentPage);
         setOnBackPressHandler((OnBackPressedHandler) mAdapter.getItem(currentPage));
     }
 
     private void initializeFab() {
-        mActionMenu = (FloatingActionsMenu) findViewById(R.id.fab_menu);
+        mActionMenu = (FloatingActionMenu) findViewById(R.id.fab_menu);
         Subscription fabSubscription = RetrievalManager.getCurrentUser().subscribe(user -> {
-            FabFactory factory = FabFactory.newInstance(this);
-            FifaEventManager manager = FifaEventManager.newInstance(this, user);
-            initializeAddMatchButton(factory, manager);
-            initializeAddSeriesButton(factory, manager);
+            FabFactory factory = FabFactory.newInstance(this, mColor);
+            mEventManager = FifaEventManager.newInstance(this, user);
+            initializeAddMatchButton(factory, mEventManager);
+            initializeAddSeriesButton(factory, mEventManager);
+            setFabColor();
         });
         addSubscription(fabSubscription);
     }
 
     private void initializeAddMatchButton(FabFactory factory, FifaEventManager manager) {
-        FloatingActionButton matchButton = factory.createPlayMatchFab();
-        matchButton.setOnClickListener(l -> {
-            mActionMenu.collapse();
+        mMatchButton = factory.createPlayMatchFab();
+        mMatchButton.setOnClickListener(l -> {
+            mActionMenu.close(true);
             setOnBackPressHandler(manager);
             manager.setMatchFlow();
             manager.startNewFlow();
         });
-        mActionMenu.addButton(matchButton);
+        mActionMenu.addMenuButton(mMatchButton);
     }
 
     private void initializeAddSeriesButton(FabFactory factory, FifaEventManager manager) {
-        FloatingActionButton seriesButton = factory.createPlaySeriesFab();
-        seriesButton.setOnClickListener(l -> {
-            mActionMenu.collapse();
+        mSeriesButton = factory.createPlaySeriesFab();
+        mSeriesButton.setOnClickListener(l -> {
+            mActionMenu.close(true);
             manager.setSeriesFlow();
             manager.startNewFlow();
         });
-        mActionMenu.addButton(seriesButton);
+        mActionMenu.addMenuButton(mSeriesButton);
+    }
+
+    @Override
+    protected void onColorUpdated() {
+        setFabColor();
+        mActionMenu.removeAllMenuButtons();
+        FabFactory fabFactory = FabFactory.newInstance(this, mColor);
+        initializeAddMatchButton(fabFactory, mEventManager);
+        initializeAddSeriesButton(fabFactory, mEventManager);
+        mTabLayout.setSelectedTabIndicatorColor(mColor);
+        mDrawer.updateColors(mColor);
+    }
+
+    private void setFabColor() {
+        mActionMenu.setMenuButtonColorNormal(mColor);
+        mActionMenu.setMenuButtonColorPressed(mColor);
+        mActionMenu.getMenuIconView().setImageDrawable(ColorUtils.getTintedDrawable(R.drawable.ic_add_white_24dp, mColor));
     }
 
     @Override

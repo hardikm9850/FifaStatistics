@@ -23,6 +23,7 @@ import com.example.kevin.fifastatistics.listeners.EndlessRecyclerViewScrollListe
 import com.example.kevin.fifastatistics.models.apiresponses.ApiListResponse;
 import com.example.kevin.fifastatistics.models.databasemodels.match.FifaEvent;
 import com.example.kevin.fifastatistics.models.databasemodels.user.Player;
+import com.example.kevin.fifastatistics.utils.ColorUtils;
 import com.example.kevin.fifastatistics.utils.ToastUtils;
 import com.example.kevin.fifastatistics.viewmodels.EventStreamFragmentViewModel;
 import com.tonicartos.superslim.LayoutManager;
@@ -83,6 +84,7 @@ public abstract class EventStreamFragment<EVENT extends FifaEvent, ADAPTER exten
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
+        ColorUtils.setProgressBarColor(mBinding.progressBar, mColor);
         initRecyclerView();
     }
 

@@ -6,9 +6,11 @@ import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 
+import com.example.kevin.fifastatistics.FifaApplication;
 import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.interfaces.ActivityLauncher;
 import com.example.kevin.fifastatistics.interfaces.TransitionStarter;
+import com.example.kevin.fifastatistics.utils.EventBus;
 import com.example.kevin.fifastatistics.utils.ObservableUtils;
 import com.example.kevin.fifastatistics.utils.SnackbarUtils;
 
@@ -21,7 +23,9 @@ public abstract class FifaBaseFragment extends Fragment implements ActivityLaunc
     protected static final String ARG_USER = "user";
 
     protected TransitionStarter mTransitionStarter;
+    protected int mColor;
     private CompositeSubscription mCompositeSubscription;
+    private EventBus mColorEventBus;
 
     @Override
     public void onAttach(Context context) {
@@ -35,6 +39,16 @@ public abstract class FifaBaseFragment extends Fragment implements ActivityLaunc
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mCompositeSubscription = new CompositeSubscription();
+        mColor = FifaApplication.getAccentColor();
+        mColorEventBus = EventBus.getInstance();
+        mColorEventBus.observeEvents(Integer.class).subscribe(color -> {
+            mColor = color;
+            onColorUpdated();
+        });
+    }
+
+    protected void onColorUpdated() {
+
     }
 
     @Override

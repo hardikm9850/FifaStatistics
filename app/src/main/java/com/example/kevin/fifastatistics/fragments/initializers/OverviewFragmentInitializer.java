@@ -4,10 +4,9 @@ import android.support.design.widget.TabLayout;
 import android.view.View;
 
 import com.example.kevin.fifastatistics.activities.FifaBaseActivity;
+import com.example.kevin.fifastatistics.adapters.FragmentAdapter;
 import com.example.kevin.fifastatistics.fragments.UserOverviewFragment;
 import com.example.kevin.fifastatistics.models.Constants;
-import com.example.kevin.fifastatistics.adapters.FragmentAdapter;
-import com.getbase.floatingactionbutton.FloatingActionsMenu;
 
 /**
  * Implementation of the abstract FragmentInitializer class for OverviewFragments.
@@ -35,7 +34,7 @@ public class OverviewFragmentInitializer implements FragmentInitializer {
     }
 
     @Override
-    public void setFabVisibility(FloatingActionsMenu menu) {
+    public void setFabVisibility(View menu) {
         menu.setVisibility(View.VISIBLE);
     }
 }

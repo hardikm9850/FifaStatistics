@@ -1,4 +1,4 @@
-package com.example.kevin.fifastatistics.fragments.initializers;
+package com.example.kevin.fifastatistics.fragments;
 
 import android.content.Context;
 import android.databinding.DataBindingUtil;
@@ -12,9 +12,9 @@ import android.view.ViewGroup;
 import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.adapters.TeamListAdapter;
 import com.example.kevin.fifastatistics.databinding.FragmentTeamsBinding;
-import com.example.kevin.fifastatistics.fragments.FifaBaseFragment;
 import com.example.kevin.fifastatistics.models.databasemodels.league.League;
 import com.example.kevin.fifastatistics.models.databasemodels.league.Team;
+import com.example.kevin.fifastatistics.utils.ColorUtils;
 import com.example.kevin.fifastatistics.viewmodels.TeamItemViewModel;
 import com.example.kevin.fifastatistics.viewmodels.TeamListFragmentViewModel;
 
@@ -61,6 +61,7 @@ public class TeamListFragment extends FifaBaseFragment implements TeamListFragme
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        ColorUtils.setProgressBarColor(mBinding.progress, mColor);
         initRecyclerView();
     }
 
@@ -75,6 +76,12 @@ public class TeamListFragment extends FifaBaseFragment implements TeamListFragme
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mViewModel.loadTeams();
+    }
+
+    @Override
+    public void onStop() {
+        mViewModel.unsubscribeAll();
+        super.onStop();
     }
 
     @Override

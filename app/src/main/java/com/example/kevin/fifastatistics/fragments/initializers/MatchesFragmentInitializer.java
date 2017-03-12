@@ -10,7 +10,6 @@ import com.example.kevin.fifastatistics.fragments.EventStreamFragment;
 import com.example.kevin.fifastatistics.fragments.MatchStreamFragment;
 import com.example.kevin.fifastatistics.models.databasemodels.user.Player;
 import com.example.kevin.fifastatistics.utils.ResourceUtils;
-import com.getbase.floatingactionbutton.FloatingActionsMenu;
 
 public class MatchesFragmentInitializer implements FragmentInitializer {
 
@@ -40,7 +39,7 @@ public class MatchesFragmentInitializer implements FragmentInitializer {
     }
 
     @Override
-    public void setFabVisibility(FloatingActionsMenu menu) {
+    public void setFabVisibility(View menu) {
         menu.setVisibility(View.GONE);
     }
 }

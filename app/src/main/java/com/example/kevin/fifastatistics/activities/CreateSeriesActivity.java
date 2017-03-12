@@ -24,7 +24,6 @@ import rx.Subscription;
 
 public class CreateSeriesActivity extends BasePlayerActivity implements OnSeriesCompletedListener {
 
-    private View mParentLayout;
     private Toolbar mToolbar;
     private FifaEventManager mEventManager;
     private CreateSeriesMatchListFragment mFragment;
@@ -56,9 +55,7 @@ public class CreateSeriesActivity extends BasePlayerActivity implements OnSeries
 
     private void initializeFragment(User user) {
         mFragment = CreateSeriesMatchListFragment.newInstance(user, getFriend(), this);
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.content, mFragment)
-                .commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.content, mFragment).commit();
     }
 
     private void initializeEventManager(User currentUser) {
@@ -140,6 +137,9 @@ public class CreateSeriesActivity extends BasePlayerActivity implements OnSeries
         dialog.setMessage(getString(R.string.create_series_exit_confirmation));
         dialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.dialog_keep_editing), (d, w) -> dialog.dismiss());
         dialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.dialog_discard), (d, w) -> finish());
+        dialog.setButton(AlertDialog.BUTTON_NEUTRAL, getString(R.string.dialog_save), (d, w) -> {
+            // TODO
+        });
         dialog.show();
     }
 
@@ -166,6 +166,6 @@ public class CreateSeriesActivity extends BasePlayerActivity implements OnSeries
 
     @Override
     public View getParentLayout() {
-        return mParentLayout;
+        return null;
     }
 }

@@ -2,6 +2,7 @@ package com.example.kevin.fifastatistics.views;
 
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.support.annotation.ColorInt;
 import android.support.v4.widget.DrawerLayout;
 import android.widget.ImageView;
 
@@ -32,44 +33,37 @@ public class FifaNavigationDrawer {
     private static final int FRIENDS_ITEM_IDENTIFIER = 1;
 
     private Drawer mDrawer;
+    private int mSelectedColor;
 
-    /**
-     * Return the navigation drawer instance.
-     *
-     * @param activity the activity the drawer will be in
-     * @return the drawer
-     */
-    public static FifaNavigationDrawer newInstance(FifaBaseActivity activity) {
-        return new FifaNavigationDrawer(activity);
+    public static FifaNavigationDrawer newInstance(FifaBaseActivity activity, @ColorInt int selectedColor) {
+        return new FifaNavigationDrawer(activity, selectedColor);
     }
 
-    /**
-     * Sets the onDrawerItemClickListener.
-     *
-     * @param listener the listener
-     */
     public void setOnDrawerItemClickListener(Drawer.OnDrawerItemClickListener listener) {
         mDrawer.setOnDrawerItemClickListener(listener);
     }
 
-    /**
-     * Close the drawer.
-     */
     public void closeDrawer() {
         mDrawer.closeDrawer();
     }
 
-    /**
-     * Set whether the drawer should be locked or not.
-     *
-     * @param locked true if the drawer should be locked, false otherwise
-     */
+    public void updateColors(@ColorInt int color) {
+        mSelectedColor = color;
+        for (IDrawerItem item : mDrawer.getDrawerItems()) {
+            if (item instanceof PrimaryDrawerItem) {
+                ((PrimaryDrawerItem) item).withSelectedTextColor(color).withSelectedIconColor(color);
+                mDrawer.updateItem(item);
+            }
+        }
+    }
+
     public void setLocked(boolean locked) {
         int mode = locked ? DrawerLayout.LOCK_MODE_LOCKED_CLOSED : DrawerLayout.LOCK_MODE_UNLOCKED;
         mDrawer.getDrawerLayout().setDrawerLockMode(mode);
     }
 
-    private FifaNavigationDrawer(FifaBaseActivity activity) {
+    private FifaNavigationDrawer(FifaBaseActivity activity, int color) {
+        mSelectedColor = color;
         User user = SharedPreferencesManager.getUser();
 
         int incomingRequestsCount = user.getIncomingRequests().size();
@@ -86,6 +80,13 @@ public class FifaNavigationDrawer {
         mDrawer = buildDrawer(user, activity, items);
     }
 
+    private PrimaryDrawerItem getBaseDrawerItem(long identifier) {
+        return new PrimaryDrawerItem().withIconTintingEnabled(true)
+                .withSelectedTextColor(mSelectedColor)
+                .withSelectedIconColor(mSelectedColor)
+                .withIdentifier(identifier);
+    }
+
     private BadgeStyle initializeBadgeStyle() {
         return new BadgeStyle()
                 .withColorRes(R.color.colorAccent)
@@ -93,50 +94,41 @@ public class FifaNavigationDrawer {
     }
 
     private PrimaryDrawerItem initializeOverviewItem() {
-        return new PrimaryDrawerItem()
+        return getBaseDrawerItem(11)
                 .withName(R.string.overview)
-                .withIcon(R.drawable.ic_home_black_24dp)
-                .withIconTintingEnabled(true);
+                .withIcon(R.drawable.ic_home_black_24dp);
     }
 
     private PrimaryDrawerItem initializeMatchesItem() {
-        return new PrimaryDrawerItem()
+        return getBaseDrawerItem(22)
                 .withName(R.string.matches)
-                .withIcon(R.drawable.soccer)
-                .withIconTintingEnabled(true);
+                .withIcon(R.drawable.soccer);
     }
 
     private PrimaryDrawerItem initializeStatisticsItem() {
-        return new PrimaryDrawerItem()
+        return getBaseDrawerItem(33)
                 .withName(R.string.statistics)
-                .withIcon(R.drawable.ic_assessment_black_24dp)
-                .withIconTintingEnabled(true);
+                .withIcon(R.drawable.ic_assessment_black_24dp);
     }
 
     private PrimaryDrawerItem initializeFriendsItem(BadgeStyle style, int incomingRequestsCount) {
-        return new PrimaryDrawerItem()
+        return getBaseDrawerItem(44)
                 .withName(R.string.players)
                 .withIcon(R.drawable.ic_group_black_24dp)
-//                .withBadge(String.valueOf(incomingRequestsCount))
-//                .withBadgeStyle(style)
-                .withIdentifier(FRIENDS_ITEM_IDENTIFIER)
-                .withIconTintingEnabled(true);
+                .withIdentifier(FRIENDS_ITEM_IDENTIFIER);
     }
 
     private PrimaryDrawerItem initializeStarredItem() {
-        return new PrimaryDrawerItem()
+        return getBaseDrawerItem(55)
 //                .withName(R.string.starred)
                 .withName("GET from server")
-                .withIcon(R.drawable.ic_star_black_24dp)
-                .withIconTintingEnabled(true);
+                .withIcon(R.drawable.ic_star_black_24dp);
     }
 
     private PrimaryDrawerItem initializeSettingsItem() {
-        return new PrimaryDrawerItem()
-//                .withName(R.string.settings)
-                .withName("PUT to server")
-                .withIcon(R.drawable.ic_settings_black_24dp)
-                .withIconTintingEnabled(true);
+        return getBaseDrawerItem(66)
+                .withName(R.string.settings)
+                .withIcon(R.drawable.ic_settings_black_24dp);
     }
 
     private Drawer buildDrawer(User user, FifaBaseActivity activity, IDrawerItem... items) {

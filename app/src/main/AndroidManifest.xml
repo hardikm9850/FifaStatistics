@@ -67,6 +67,16 @@
             android:name=".activities.PickTeamActivity"
             android:label="@string/activity_pick_team"
             android:theme="@style/MaterialDrawerTheme">
+            <intent-filter>
+                <action android:name="com.example.kevin.fifastatistics.activities.PickTeamActivity" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".activities.SettingsActivity"
+            android:label="@string/settings"
+            android:theme="@style/AppTheme.Settings">
         </activity>
 
         <!-- [START gcm_listener] -->
