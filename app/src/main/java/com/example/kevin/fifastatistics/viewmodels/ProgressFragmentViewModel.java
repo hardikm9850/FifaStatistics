@@ -7,23 +7,27 @@ import com.example.kevin.fifastatistics.BR;
 
 public abstract class ProgressFragmentViewModel extends FifaBaseViewModel {
 
-    private boolean mDoShowProgressBar = true;
+    private boolean mIsProgressBarShown = true;
 
     public void showProgressBar() {
-        doNotify(true);
+        if (!mIsProgressBarShown) {
+            doNotify(true);
+        }
     }
 
     public void hideProgressBar() {
-        doNotify(false);
+        if (mIsProgressBarShown) {
+            doNotify(false);
+        }
     }
 
     private void doNotify(boolean doShow) {
-        mDoShowProgressBar = doShow;
+        mIsProgressBarShown = doShow;
         notifyPropertyChanged(BR.progressBarVisibility);
     }
 
     @Bindable
     public int getProgressBarVisibility() {
-        return mDoShowProgressBar ? View.VISIBLE : View.GONE;
+        return mIsProgressBarShown ? View.VISIBLE : View.GONE;
     }
 }

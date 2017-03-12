@@ -4,7 +4,7 @@ import android.support.design.widget.TabLayout;
 
 import com.example.kevin.fifastatistics.activities.FifaBaseActivity;
 import com.example.kevin.fifastatistics.activities.MainActivity;
-import com.example.kevin.fifastatistics.adapters.ViewPagerAdapter;
+import com.example.kevin.fifastatistics.adapters.FragmentAdapter;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
 
 /**
@@ -24,7 +24,7 @@ public interface FragmentInitializer {
      * Initialize the fragments that will be present in the activity's ViewPager,
      * and add them to it.
      */
-    void changeAdapterDataSet(ViewPagerAdapter adapter);
+    void changeAdapterDataSet(FragmentAdapter adapter);
 
     /**
      * Set the state of the Tab Layout (The starting page, whether it's visible,

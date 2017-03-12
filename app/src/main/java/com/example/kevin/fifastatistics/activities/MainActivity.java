@@ -1,5 +1,6 @@
 package com.example.kevin.fifastatistics.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
@@ -8,7 +9,7 @@ import android.util.Log;
 import android.view.View;
 
 import com.example.kevin.fifastatistics.R;
-import com.example.kevin.fifastatistics.adapters.ViewPagerAdapter;
+import com.example.kevin.fifastatistics.adapters.FragmentAdapter;
 import com.example.kevin.fifastatistics.fragments.initializers.FragmentInitializer;
 import com.example.kevin.fifastatistics.fragments.initializers.FragmentInitializerFactory;
 import com.example.kevin.fifastatistics.interfaces.OnBackPressedHandler;
@@ -40,7 +41,7 @@ public class MainActivity extends FifaBaseActivity {
     private View mCoordinatorLayout;
     private Toolbar mToolbar;
     private FifaNavigationDrawer mDrawer;
-    private ViewPagerAdapter mAdapter;
+    private FragmentAdapter mAdapter;
     private TabLayout mTabLayout;
     private ViewPager mViewPager;
     private FloatingActionsMenu mActionMenu;
@@ -73,7 +74,7 @@ public class MainActivity extends FifaBaseActivity {
 
     @SuppressWarnings("ConstantConditions")
     private void initializeViewPager() {
-        mAdapter = new ViewPagerAdapter(getSupportFragmentManager());
+        mAdapter = new FragmentAdapter(getSupportFragmentManager());
         mViewPager = (ViewPager) findViewById(R.id.viewpager);
         mViewPager.setAdapter(mAdapter);
         mViewPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
@@ -101,6 +102,11 @@ public class MainActivity extends FifaBaseActivity {
     }
 
     private void handleDrawerClick(int position) {
+        if (position == 7) {
+            Intent intent = new Intent(this, PickTeamActivity.class);
+            startActivity(intent);
+            return;
+        }
         Subscription drawerSubscription = Observable.just(position)
                 .map(p -> currentDrawerPosition = p)
                 .map(p -> FragmentInitializerFactory.createFragmentInitializer(p, mUser))

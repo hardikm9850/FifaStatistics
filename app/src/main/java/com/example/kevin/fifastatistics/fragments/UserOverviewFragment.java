@@ -24,8 +24,6 @@ public class UserOverviewFragment extends FifaBaseFragment implements OnBackPres
 
     private User mUser;
 
-    public UserOverviewFragment() {}
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

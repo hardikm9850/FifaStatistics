@@ -1,9 +1,11 @@
 package com.example.kevin.fifastatistics.models.databasemodels.user.records;
 
+import java.io.Serializable;
+
 import lombok.Getter;
 
 @Getter
-public class Streak {
+public class Streak implements Serializable {
 
     private static final String NO_VALUE_STREAK = "-";
 

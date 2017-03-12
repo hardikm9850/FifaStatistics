@@ -12,8 +12,8 @@ import android.widget.Toast;
 import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.managers.SharedPreferencesManager;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
-import com.example.kevin.fifastatistics.network.ApiAdapter;
 import com.example.kevin.fifastatistics.network.FifaApi;
+import com.example.kevin.fifastatistics.network.UserApi;
 import com.example.kevin.fifastatistics.network.gcmnotifications.RegistrationIntentService;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -47,7 +47,7 @@ public class SignInActivity extends AppCompatActivity implements
     private FirebaseAuth.AuthStateListener mAuthListener;
     private GoogleApiClient mGoogleApiClient;
     private ProgressDialog mProgressDialog;
-    private FifaApi api;
+    private UserApi api;
     private String mRegistrationToken;
     private boolean doCreateUser = false;
 
@@ -142,7 +142,7 @@ public class SignInActivity extends AppCompatActivity implements
 
     private void _debugging_setUserToAccount() {
         String personal = "5704926828878a8c6266cba2";
-        ApiAdapter.getFifaApi().getUser(personal)
+        FifaApi.getUserApi().getUser(personal)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(user -> {
@@ -251,7 +251,7 @@ public class SignInActivity extends AppCompatActivity implements
             return;
         }
 
-        api = ApiAdapter.getFifaApi();
+        api = FifaApi.getUserApi();
 
         api.getUserWithGoogleId(googleId)
                 .onErrorReturn(u -> createNewUser(name, email, googleId, imageUrl))

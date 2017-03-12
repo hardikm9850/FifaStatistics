@@ -1,101 +1,91 @@
 package com.example.kevin.fifastatistics.network;
 
-import com.example.kevin.fifastatistics.models.apiresponses.ApiListResponse;
-import com.example.kevin.fifastatistics.models.databasemodels.match.Match;
-import com.example.kevin.fifastatistics.models.databasemodels.match.MatchProjection;
-import com.example.kevin.fifastatistics.models.databasemodels.match.Series;
-import com.example.kevin.fifastatistics.models.databasemodels.user.User;
+import java.util.concurrent.TimeUnit;
 
-import java.util.Map;
+import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
+import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
+import retrofit2.converter.jackson.JacksonConverterFactory;
 
-import lombok.Getter;
-import retrofit2.Response;
-import retrofit2.http.Body;
-import retrofit2.http.GET;
-import retrofit2.http.PATCH;
-import retrofit2.http.POST;
-import retrofit2.http.PUT;
-import retrofit2.http.Path;
-import retrofit2.http.Query;
-import retrofit2.http.QueryMap;
-import retrofit2.http.Url;
-import rx.Observable;
-import rx.Observer;
+/**
+ * Adapter class to interact with the UserApi.
+ */
+public class FifaApi {
 
-public interface FifaApi {
+//    private static final String FIFA_API_ENDPOINT = "https://fifastatisticsapi.azurewebsites.net/";
+    private static final String FIFA_API_ENDPOINT = "http://192.168.1.110:8080/";
+    private static final String NOTIFICATIONS_API_ENDPOINT = "https://gcm-http.googleapis.com/gcm/";
+    private static final int CONNECT_TIMEOUT_DURATION = 30;
 
-    @GET("users/{id}")
-    Observable<User> getUser(@Path("id") String id);
+    private static UserApi userApi;
+    private static MatchApi matchApi;
+    private static SeriesApi seriesApi;
+    private static LeagueApi leagueApi;
+    private static NotificationsApi notificationsApi;
 
-    @GET("users")
-    Observable<ApiListResponse<User>> getUsers();
+    public static NotificationsApi getNotificationsApi() {
+        if (notificationsApi == null) {
+            notificationsApi = (initializeApi(NotificationsApi.class, NOTIFICATIONS_API_ENDPOINT));
+        }
+        return notificationsApi;
+    }
 
-    @GET("users/search/findByName")
-    Observable<ApiListResponse<User>> getUsersWithName(@Query("name") String name);
+    public static UserApi getUserApi() {
+        if (userApi == null) {
+            userApi = initializeApi(UserApi.class, FIFA_API_ENDPOINT);
+        }
+        return userApi;
+    }
 
+    public static MatchApi getMatchApi() {
+        if (matchApi == null) {
+            matchApi = initializeApi(MatchApi.class, FIFA_API_ENDPOINT);
+        }
+        return matchApi;
+    }
 
-    @GET("users/search/findByNameStartingWithIgnoreCase")
-    Observable<ApiListResponse<User>> getUsersWithNameStartingWith(@Query("name") String name);
+    public static SeriesApi getSeriesApi() {
+        if (seriesApi == null) {
+            seriesApi = initializeApi(SeriesApi.class, FIFA_API_ENDPOINT);
+        }
+        return seriesApi;
+    }
 
-    @GET("users/search/findByGoogleId")
-    Observable<User> getUserWithGoogleId(@Query("googleId") String googleId);
+    public static LeagueApi getLeagueApi() {
+        if (leagueApi == null) {
+            leagueApi = initializeApi(LeagueApi.class, FIFA_API_ENDPOINT);
+        }
+        return leagueApi;
+    }
 
-    /**
-     * Creates a user (Makes a POST request to /users).
-     * <br> To retrieve the response from this request (the user that was
-     * created), chain this call with <code>flatMap</code> to {@link
-     * #lookupUser(String)} using the response's Location header. For example:
-     * <pre>
-     *
-     * {@code api.createUser(user)
-     *        .flatMap(response -> api.lookupUser(response.headers().get("Location")))
-     * }
-     * </pre>
-     * This will create the user and grab the result from the location specified
-     * by the Location header.
-     *
-     * @param user  The User object to be created
-     * @return the Void Response
-     */
-    @POST("users")
-    Observable<Response<Void>> createUser(@Body User user);
+    private static <T> T initializeApi(Class<T> api, String baseUrl) {
+        HttpLoggingInterceptor loggingInterceptor = initializeLoggingInterceptor();
+        OkHttpClient httpClient = initializeHttpClient(loggingInterceptor);
+        Retrofit retrofit = initializeRetrofitObject(httpClient, baseUrl);
+        return retrofit.create(api);
+    }
 
-    @GET
-    Observable<User> lookupUser(@Url String url);
+    private static HttpLoggingInterceptor initializeLoggingInterceptor() {
+        HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
+        loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+        return loggingInterceptor;
+    }
 
-    @PUT("users/{id}")
-    Observable<Response<Void>> updateUser(@Path("id") String id, @Body User user);
+    private static OkHttpClient initializeHttpClient(HttpLoggingInterceptor interceptor) {
+        return new OkHttpClient.Builder()
+                .addInterceptor(interceptor)
+                .connectTimeout(CONNECT_TIMEOUT_DURATION, TimeUnit.SECONDS)
+                .readTimeout(CONNECT_TIMEOUT_DURATION, TimeUnit.SECONDS)
+                .build();
+    }
 
-    @PATCH("users/{id}")
-    Observable<User> patchUser(@Path("id") String id, @Body String body);
-
-    @GET("matches/search/findAllByOrderByDateDesc")
-    Observable<ApiListResponse<MatchProjection>> getMatches();
-
-    @GET("matches/search/findAllByOrderByDateDesc")
-    Observable<ApiListResponse<MatchProjection>> getMatches(@Query("page") int page);
-
-    @GET("matches/filter")
-    Observable<ApiListResponse<MatchProjection>> filterMatches(@QueryMap Map<String, String> filters);
-
-    @GET("matches/{id}")
-    Observable<Match> getMatch(@Path("id") String id);
-
-    @POST("matches")
-    Observable<Response<Void>> createMatch(@Body Match match);
-
-    @GET
-    Observable<Match> lookupMatch(@Url String url);
-
-    @GET("series")
-    Observable<ApiListResponse<Series>> getSeries();
-
-    @POST("series")
-    Observable<Response<Void>> createSeries(@Body Series series);
-
-    @GET
-    Observable<Series> lookupSeries(@Url String url);
-
-    @GET
-    Observable<ApiListResponse<MatchProjection>> getNextMatches(@Url String url);
+    private static Retrofit initializeRetrofitObject(OkHttpClient httpClient, String baseUrl) {
+        return new Retrofit.Builder()
+                .baseUrl(baseUrl)
+                .client(httpClient)
+                .addConverterFactory(JacksonConverterFactory.create())
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .build();
+    }
 }

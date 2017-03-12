@@ -5,7 +5,7 @@ import android.view.View;
 
 import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.activities.FifaBaseActivity;
-import com.example.kevin.fifastatistics.adapters.ViewPagerAdapter;
+import com.example.kevin.fifastatistics.adapters.FragmentAdapter;
 import com.example.kevin.fifastatistics.fragments.EventStreamFragment;
 import com.example.kevin.fifastatistics.fragments.MatchStreamFragment;
 import com.example.kevin.fifastatistics.models.databasemodels.user.Player;
@@ -26,7 +26,7 @@ public class MatchesFragmentInitializer implements FragmentInitializer {
     }
 
     @Override
-    public void changeAdapterDataSet(ViewPagerAdapter adapter) {
+    public void changeAdapterDataSet(FragmentAdapter adapter) {
         adapter.clear();
         adapter.addFragment(
                 EventStreamFragment.newInstance(MatchStreamFragment.class, mUser, R.string.matches_load_failed),

@@ -1,5 +1,7 @@
 package com.example.kevin.fifastatistics.models.databasemodels.match;
 
+import java.io.Serializable;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,7 +14,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Penalties {
+public class Penalties implements Serializable {
 
     private int winner;
     private int loser;

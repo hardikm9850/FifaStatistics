@@ -2,8 +2,8 @@ package com.example.kevin.fifastatistics.utils;
 
 import com.example.kevin.fifastatistics.managers.SharedPreferencesManager;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
-import com.example.kevin.fifastatistics.network.ApiAdapter;
 import com.example.kevin.fifastatistics.network.FifaApi;
+import com.example.kevin.fifastatistics.network.UserApi;
 
 import lombok.experimental.UtilityClass;
 import retrofit2.Response;
@@ -14,7 +14,7 @@ import rx.schedulers.Schedulers;
 @UtilityClass
 public class UserUtils {
 
-    private static final FifaApi API = ApiAdapter.getFifaApi();
+    private static final UserApi API = FifaApi.getUserApi();
 
     /** Write the current user to shared preferences and send a PUT to the server. */
     public static Observable<Response<Void>> updateUser(User user) {

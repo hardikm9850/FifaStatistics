@@ -63,6 +63,12 @@
             android:theme="@style/MaterialDrawerTheme">
         </activity>
 
+        <activity
+            android:name=".activities.PickTeamActivity"
+            android:label="@string/activity_pick_team"
+            android:theme="@style/MaterialDrawerTheme">
+        </activity>
+
         <!-- [START gcm_listener] -->
         <service
             android:name=".network.gcmnotifications.FirebaseListenerService"

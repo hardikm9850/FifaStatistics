@@ -1,20 +1,18 @@
 package com.example.kevin.fifastatistics.managers;
 
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
+import com.example.kevin.fifastatistics.network.UserApi;
 import com.example.kevin.fifastatistics.network.FifaApi;
-import com.example.kevin.fifastatistics.network.ApiAdapter;
 import com.example.kevin.fifastatistics.utils.ObservableUtils;
 
 import rx.Observable;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 /**
  * Manages retrieving DB Objects from either local storage or using the REST API.
  */
 public class RetrievalManager {
 
-    private static final FifaApi API = ApiAdapter.getFifaApi();
+    private static final UserApi API = FifaApi.getUserApi();
 
     /**
      * Retrieve the user with the specified ID.

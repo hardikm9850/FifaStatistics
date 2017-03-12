@@ -77,6 +77,8 @@ public class ApiListResponse<T> {
         private Link last;
         private Link profile;
         private Link search;
+        private Link teams;
+        private Link league;
     }
 
     @Getter

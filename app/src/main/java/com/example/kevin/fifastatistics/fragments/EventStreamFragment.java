@@ -65,11 +65,11 @@ public abstract class EventStreamFragment<EVENT extends FifaEvent, ADAPTER exten
         super.onCreate(savedInstanceState);
         mUser = (Player) getArguments().getSerializable(ARG_USER);
         mLoadingFailedMessage = getArguments().getInt(ARG_ERROR);
-        mViewModel = new EventStreamFragmentViewModel<>(this, this, this::getOnNextObservable);
+        mViewModel = new EventStreamFragmentViewModel<>(this, this, this::getLoadMoreObservable);
         setHasOptionsMenu(true);
     }
 
-    public abstract Observable<ApiListResponse<EVENT>> getOnNextObservable(String nextUri);
+    public abstract Observable<ApiListResponse<EVENT>> getLoadMoreObservable(String nextUri);
 
     @Nullable
     @Override
@@ -84,7 +84,6 @@ public abstract class EventStreamFragment<EVENT extends FifaEvent, ADAPTER exten
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         initRecyclerView();
-        super.onViewCreated(view, savedInstanceState);
     }
 
     private void initRecyclerView() {

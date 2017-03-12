@@ -6,6 +6,7 @@ import com.example.kevin.fifastatistics.utils.SerializationUtils;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import java.io.Serializable;
 import java.util.List;
 
 import lombok.AccessLevel;
@@ -118,7 +119,7 @@ public class User extends DatabaseModel implements Player {
      */
     @AllArgsConstructor
     @Getter
-    public static class StatsPair {
+    public static class StatsPair implements Serializable {
         private Stats statsFor;
         private Stats statsAgainst;
 

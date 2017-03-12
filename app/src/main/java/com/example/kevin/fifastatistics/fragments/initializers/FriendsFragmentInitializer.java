@@ -7,7 +7,7 @@ import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.activities.FifaBaseActivity;
 import com.example.kevin.fifastatistics.fragments.FriendsFragment;
 import com.example.kevin.fifastatistics.models.Constants;
-import com.example.kevin.fifastatistics.adapters.ViewPagerAdapter;
+import com.example.kevin.fifastatistics.adapters.FragmentAdapter;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
 
 /**
@@ -24,7 +24,7 @@ public class FriendsFragmentInitializer implements FragmentInitializer
     }
 
     @Override
-    public void changeAdapterDataSet(ViewPagerAdapter adapter) {
+    public void changeAdapterDataSet(FragmentAdapter adapter) {
         adapter.clear();
         adapter.addFragment(
                 FriendsFragment.newInstance(FriendsFragment.FRIENDS_VIEW),

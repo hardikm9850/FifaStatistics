@@ -13,13 +13,18 @@ public class ObservableUtils {
 
     /**
      * Apply the typical schedulers to an observable. Subscribes on Schedulers.io(), and observers
-     * on the menu_players thread.
+     * on the main thread.
      * <p>
      * Use it inside the compose() method.
      */
     public static <T> Observable.Transformer<T, T> applySchedulers() {
         return observable -> observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    public static <T> Observable.Transformer<T, T> applyBackground() {
+        return observable -> observable.subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.immediate());
     }
 
     /**

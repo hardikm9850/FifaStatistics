@@ -4,8 +4,7 @@ import com.example.kevin.fifastatistics.activities.FifaBaseActivity;
 import com.example.kevin.fifastatistics.managers.SharedPreferencesManager;
 import com.example.kevin.fifastatistics.models.Constants;
 import com.example.kevin.fifastatistics.models.databasemodels.user.Player;
-import com.example.kevin.fifastatistics.models.databasemodels.user.User;
-import com.example.kevin.fifastatistics.network.ApiAdapter;
+import com.example.kevin.fifastatistics.network.FifaApi;
 
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -53,13 +52,13 @@ public class FragmentInitializerFactory {
             case 4:
                 return FragmentInitializerFactory.createFriendsFragmentInitializer();
             case 5:
-                ApiAdapter.getFifaApi().getUser(SharedPreferencesManager.getUser().getId())
+                FifaApi.getUserApi().getUser(SharedPreferencesManager.getUser().getId())
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(SharedPreferencesManager::storeUser);
                 break;
             case 6:
-                ApiAdapter.getFifaApi().updateUser(SharedPreferencesManager.getUser().getId(), SharedPreferencesManager.getUser())
+                FifaApi.getUserApi().updateUser(SharedPreferencesManager.getUser().getId(), SharedPreferencesManager.getUser())
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe();

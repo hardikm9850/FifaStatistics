@@ -38,8 +38,6 @@ public class FriendsFragment extends FifaBaseFragment implements OnBackPressedHa
     private RecyclerView mRecyclerView;
     private boolean mIsSearchViewReady = false;
 
-    public FriendsFragment() {}
-
     public static FriendsFragment newInstance(int view) {
         FriendsFragment fragment = new FriendsFragment();
         Bundle args = new Bundle();

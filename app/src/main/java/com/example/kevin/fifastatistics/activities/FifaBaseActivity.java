@@ -3,7 +3,6 @@ package com.example.kevin.fifastatistics.activities;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-
 import com.example.kevin.fifastatistics.interfaces.TransitionStarter;
 import com.example.kevin.fifastatistics.interfaces.OnBackPressedHandler;
 import com.example.kevin.fifastatistics.utils.ObservableUtils;

@@ -4,20 +4,19 @@ import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.interfaces.ErrorHandler;
 import com.example.kevin.fifastatistics.interfaces.OnMatchCreatedListener;
 import com.example.kevin.fifastatistics.models.databasemodels.match.Match;
-import com.example.kevin.fifastatistics.network.ApiAdapter;
-import com.example.kevin.fifastatistics.network.CreateFailedException;
 import com.example.kevin.fifastatistics.network.FifaApi;
+import com.example.kevin.fifastatistics.network.CreateFailedException;
+import com.example.kevin.fifastatistics.network.MatchApi;
+import com.example.kevin.fifastatistics.network.UserApi;
 
 import lombok.experimental.UtilityClass;
 import retrofit2.Response;
-import rx.Observable;
 import rx.Observer;
-import rx.exceptions.Exceptions;
 
 @UtilityClass
 public class MatchUtils {
 
-    private static final FifaApi API = ApiAdapter.getFifaApi();
+    private static final MatchApi API = FifaApi.getMatchApi();
 
     public static void createMatch(Match match, ErrorHandler errorHandler, OnMatchCreatedListener listener) {
         API.createMatch(match)

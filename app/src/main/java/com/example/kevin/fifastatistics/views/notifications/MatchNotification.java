@@ -4,17 +4,11 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 
 import com.example.kevin.fifastatistics.managers.RetrievalManager;
-import com.example.kevin.fifastatistics.managers.SharedPreferencesManager;
-import com.example.kevin.fifastatistics.models.databasemodels.user.User;
 import com.example.kevin.fifastatistics.models.notifications.notificationbundles.NewMatchBundle;
 import com.example.kevin.fifastatistics.models.notifications.notificationbundles.NotificationBundle;
-import com.example.kevin.fifastatistics.network.ApiAdapter;
 import com.example.kevin.fifastatistics.utils.IntentFactory;
-import com.example.kevin.fifastatistics.utils.ObservableUtils;
-import com.example.kevin.fifastatistics.utils.UserUtils;
 
 public class MatchNotification extends FifaNotification {
 

@@ -24,8 +24,6 @@ public class PlayerOverviewFragment extends FifaProgressFragment implements OnBa
     private View mContentView;
     private OnPlayerFragmentInteractionListener mListener;
 
-    public PlayerOverviewFragment() {} // Required
-
     public static PlayerOverviewFragment newInstance(String userId) {
         PlayerOverviewFragment fragment = new PlayerOverviewFragment();
         Bundle args = new Bundle();
@@ -75,9 +73,6 @@ public class PlayerOverviewFragment extends FifaProgressFragment implements OnBa
         super.onAttach(context);
         if (context instanceof OnPlayerFragmentInteractionListener) {
             mListener = (OnPlayerFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnPlayerFragmentInteractionListener");
         }
     }
 

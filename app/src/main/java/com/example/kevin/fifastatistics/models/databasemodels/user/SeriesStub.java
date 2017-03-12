@@ -2,6 +2,7 @@ package com.example.kevin.fifastatistics.models.databasemodels.user;
 
 import com.example.kevin.fifastatistics.models.databasemodels.DatabaseModel;
 
+import java.io.Serializable;
 import java.util.List;
 
 import lombok.AllArgsConstructor;
@@ -17,7 +18,7 @@ public class SeriesStub extends DatabaseModel {
     private boolean didWin;
 
     @Getter
-    public static class MatchSummary {
+    public static class MatchSummary implements Serializable {
 
         private int goalsUser;
         private int goalsOpponent;

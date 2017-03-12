@@ -2,6 +2,8 @@ package com.example.kevin.fifastatistics.models.databasemodels.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import java.io.Serializable;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,7 +15,7 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-public class Stats {
+public class Stats implements Serializable {
 
     @JsonIgnore
     private static final String[] names =

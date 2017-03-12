@@ -66,8 +66,8 @@ public abstract class EndlessProgressAdapter extends RecyclerView.Adapter implem
         return null;
     }
 
-    public class ProgressViewHolder extends RecyclerView.ViewHolder {
-        public ProgressViewHolder(View itemView) {
+    class ProgressViewHolder extends RecyclerView.ViewHolder {
+        ProgressViewHolder(View itemView) {
             super(itemView);
         }
     }

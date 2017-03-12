@@ -5,24 +5,17 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
 
+import com.example.kevin.fifastatistics.models.databasemodels.league.Team;
 import com.example.kevin.fifastatistics.models.databasemodels.match.Match;
 import com.example.kevin.fifastatistics.models.databasemodels.match.Series;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
 import com.example.kevin.fifastatistics.utils.SerializationUtils;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 import java.util.List;
 
-/**
- * Utility for handling all Shared Preference needs. Any requests to Shared Preferences should be
- * delegated to this class.
- * <p>
- * All methods write to SharedPreferences asynchronously, unless they are suffixed with 'Sync'.
- * <p>
- * Ensure that {@link #initialize(Context)} is called in the onCreate() method of
- * {@link com.example.kevin.fifastatistics.FifaApplication} before this class is used.
- */
 public class SharedPreferencesManager {
 
     private static final String PREFERENCES = "PREFERENCES";
@@ -32,6 +25,8 @@ public class SharedPreferencesManager {
     private static final String REGISTRATION_TOKEN = "REGISTRATION_TOKEN";
     private static final String CURRENT_USER = "CURRENT_USER";
     private static final String CURRENT_SERIES = "CURRENT_SERIES";
+    private static final String FAVORITE_TEAM = "FAVORITE_TEAM";
+    private static final String RECENT_TEAMS = "RECENT_TEAMS";
 
     private static SharedPreferences preferences;
     private static SharedPreferences.Editor editor;
@@ -110,10 +105,6 @@ public class SharedPreferencesManager {
         editor.commit();
     }
 
-    /**
-     * Stores the current user to shared preferences.
-     * @param user  The current user
-     */
     public static void storeUser(User user) {
         editor = preferences.edit();
         editor.putString(CURRENT_USER, user.toString());
@@ -126,31 +117,56 @@ public class SharedPreferencesManager {
         editor.apply();
     }
 
-    public static List<Match> getCurrentSeries() {
-        ObjectMapper mapper = new ObjectMapper();
-        String matches = preferences.getString(CURRENT_SERIES, null);
-        try {
-            return matches == null ? null : mapper.readValue(matches, List.class);
-        } catch (IOException e) {
-            return null;
-        }
-    }
-
     public static void removeCurrentSeries() {
         editor = preferences.edit();
         editor.remove(CURRENT_SERIES);
         editor.apply();
     }
 
-    /**
-     * Retrieves the current user from Shared Preferences.
-     * @return  the current user
-     */
+    public static void setFavoriteTeam(Team team) {
+        editor = preferences.edit();
+        editor.putString(FAVORITE_TEAM, SerializationUtils.toJson(team));
+        editor.apply();
+    }
+
+    public static void setRecentTeams(List<Team> teams) {
+        editor = preferences.edit();
+        editor.putString(RECENT_TEAMS, SerializationUtils.toJson(teams));
+        editor.apply();
+    }
+
     public static User getUser() {
+        return getObject(User.class, CURRENT_USER);
+    }
+
+    public static List<Match> getCurrentSeries() {
+        return getObject(new TypeReference<List<Match>>() {}, CURRENT_SERIES);
+    }
+
+    public static Team getFavoriteTeam() {
+        return getObject(Team.class, FAVORITE_TEAM);
+    }
+
+    public static List<Team> getRecentTeams() {
+        return getObject(new TypeReference<List<Team>>() {}, RECENT_TEAMS);
+    }
+
+    private static <T> T getObject(TypeReference<T> typeReference, String key) {
         ObjectMapper mapper = new ObjectMapper();
-        String user = preferences.getString(CURRENT_USER, null);
+        String object = preferences.getString(key, null);
         try {
-            return user == null ? null : mapper.readValue(user, User.class);
+            return object == null ? null : mapper.readValue(object, typeReference);
+        } catch (IOException e) {
+            Log.e("ERROR", e.getMessage());
+            return null;
+        }
+    }
+
+    private static <T> T getObject(Class<T> clazz, String key) {
+        ObjectMapper mapper = new ObjectMapper();
+        String object = preferences.getString(key, null);
+        try {
+            return object == null ? null : mapper.readValue(object, clazz);
         } catch (IOException e) {
             Log.e("ERROR", e.getMessage());
             return null;

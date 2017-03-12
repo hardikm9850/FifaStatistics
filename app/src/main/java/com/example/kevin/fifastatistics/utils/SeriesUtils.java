@@ -1,8 +1,7 @@
 package com.example.kevin.fifastatistics.utils;
 
-import com.example.kevin.fifastatistics.models.databasemodels.match.Match;
 import com.example.kevin.fifastatistics.models.databasemodels.match.Series;
-import com.example.kevin.fifastatistics.network.ApiAdapter;
+import com.example.kevin.fifastatistics.network.FifaApi;
 import com.example.kevin.fifastatistics.network.CreateFailedException;
 
 import rx.Observable;
@@ -17,7 +16,7 @@ public class SeriesUtils {
      * @throws CreateFailedException if the POST fails.
      */
     public static Observable<Series> createSeries(Series series) throws CreateFailedException {
-        return ApiAdapter.getFifaApi().createSeries(series)
+        return FifaApi.getSeriesApi().createSeries(series)
                 .compose(ObservableUtils.applySchedulers())
                 .onErrorReturn(t -> {throw Exceptions.propagate(new CreateFailedException(t));})
                 .map(response -> {

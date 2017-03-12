@@ -17,7 +17,7 @@ import com.example.kevin.fifastatistics.models.databasemodels.match.Match;
 import com.example.kevin.fifastatistics.models.databasemodels.match.Series;
 import com.example.kevin.fifastatistics.models.databasemodels.user.Friend;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
-import com.example.kevin.fifastatistics.network.ApiAdapter;
+import com.example.kevin.fifastatistics.utils.ObservableUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -25,7 +25,6 @@ import java.util.List;
 
 import me.tatarka.bindingcollectionadapter.ItemView;
 import rx.Observable;
-import rx.Subscriber;
 
 public class CreateSeriesMatchListViewModel extends BaseObservable implements OnMatchUpdatedListener {
 
@@ -102,13 +101,8 @@ public class CreateSeriesMatchListViewModel extends BaseObservable implements On
     }
 
     private void storeSeries() {
-        Observable.create(new Observable.OnSubscribe<Void>() {
-            @Override
-            public void call(Subscriber<? super Void> subscriber) {
-                SharedPreferencesManager.storeCurrentSeries(getMatches());
-                subscriber.onCompleted();
-            }
-        }).subscribe(ApiAdapter.EMPTY_OBSERVER);
+        Observable.create(s -> SharedPreferencesManager.storeCurrentSeries(getMatches()))
+                .compose(ObservableUtils.applyBackground()).subscribe();
     }
 
     @SuppressWarnings("unused")

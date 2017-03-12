@@ -10,7 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.example.kevin.fifastatistics.R;
-import com.example.kevin.fifastatistics.adapters.ViewPagerAdapter;
+import com.example.kevin.fifastatistics.adapters.FragmentAdapter;
 import com.example.kevin.fifastatistics.databinding.ActivityPlayerBinding;
 import com.example.kevin.fifastatistics.fragments.PlayerOverviewFragment;
 import com.example.kevin.fifastatistics.fragments.SecondFragment;
@@ -72,7 +72,7 @@ public class PlayerActivty extends BasePlayerActivity implements PlayerOverviewF
 
     @SuppressWarnings("ConstantConditions")
     private void initializeTabs() {
-        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
+        FragmentAdapter adapter = new FragmentAdapter(getSupportFragmentManager());
         ViewPager vp = mBinding.viewpager;
         vp.setAdapter(adapter);
         TabLayout tl = mBinding.tabs;

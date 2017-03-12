@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import java.io.Serializable;
+
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,7 +15,7 @@ import lombok.NoArgsConstructor;
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE, onConstructor=@__(@JsonCreator))
 @JsonAutoDetect(fieldVisibility= JsonAutoDetect.Visibility.ANY)
-public class UserRecords {
+public class UserRecords implements Serializable {
 
     @Getter private Record overallRecord;
     @Getter private Record lastTenRecord;

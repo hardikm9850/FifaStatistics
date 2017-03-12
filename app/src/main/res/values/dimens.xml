@@ -23,6 +23,7 @@
     <dimen name="match_score_margin_end">50dp</dimen>
     <dimen name="date_header_vertical_margin">5dp</dimen>
     <dimen name="date_header_gradient_height">15dp</dimen>
+    <dimen name="team_item_vertical_margin">10dp</dimen>
 
     <dimen name="friends_fragment_image_height">130dp</dimen>
 

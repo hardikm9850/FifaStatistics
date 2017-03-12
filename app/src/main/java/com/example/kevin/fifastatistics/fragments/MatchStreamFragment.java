@@ -6,7 +6,7 @@ import com.example.kevin.fifastatistics.adapters.MatchStreamRecyclerViewAdapter;
 import com.example.kevin.fifastatistics.models.apiresponses.ApiListResponse;
 import com.example.kevin.fifastatistics.models.databasemodels.match.MatchProjection;
 import com.example.kevin.fifastatistics.models.databasemodels.user.Player;
-import com.example.kevin.fifastatistics.network.ApiAdapter;
+import com.example.kevin.fifastatistics.network.FifaApi;
 
 import java.util.Map;
 
@@ -15,8 +15,8 @@ import rx.Observable;
 public class MatchStreamFragment extends EventStreamFragment<MatchProjection, MatchStreamRecyclerViewAdapter> {
 
     @Override
-    public Observable<ApiListResponse<MatchProjection>> getOnNextObservable(String nextUri) {
-        return ApiAdapter.getFifaApi().getNextMatches(nextUri);
+    public Observable<ApiListResponse<MatchProjection>> getLoadMoreObservable(String nextUri) {
+        return FifaApi.getMatchApi().getNextMatches(nextUri);
     }
 
     @Override
@@ -26,7 +26,7 @@ public class MatchStreamFragment extends EventStreamFragment<MatchProjection, Ma
 
     @Override
     protected Observable<ApiListResponse<MatchProjection>> getLoadEventsObservable() {
-        return ApiAdapter.getFifaApi().getMatches();
+        return FifaApi.getMatchApi().getMatches();
     }
 
     @Override
@@ -36,6 +36,6 @@ public class MatchStreamFragment extends EventStreamFragment<MatchProjection, Ma
 
     @Override
     protected Observable<ApiListResponse<MatchProjection>> getFilterObservable(Map<String, String> queryFilter) {
-        return ApiAdapter.getFifaApi().filterMatches(queryFilter);
+        return FifaApi.getMatchApi().filterMatches(queryFilter);
     }
 }

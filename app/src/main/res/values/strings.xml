@@ -103,6 +103,7 @@
     <string name="matches_load_failed">Failed to load matches.</string>
     <string name="error_create_match">Failed to create match: %1$s</string>
     <string name="uploading_match">Uploading match</string>
+    <string name="team_logo">%1$s logo</string>
 
     <!-- TOASTS -->
     <string name="not_found">Not found!</string>
@@ -144,5 +145,9 @@
 
     <!-- TRANSITIONS -->
     <string name="transition_profile_image">transitionProfileImage</string>
+
+    <string name="activity_pick_team">Choose a Team</string>
+    <string name="error_loading_teams">Failed to load teams</string>
+
 
 </resources>
