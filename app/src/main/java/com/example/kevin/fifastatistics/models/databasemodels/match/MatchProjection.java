@@ -17,6 +17,8 @@ public class MatchProjection extends DatabaseModel implements FifaEvent {
     private String id;
     private String winnerId;
     private String winnerName;
+    private String teamWinnerImageUrl;
+    private String teamLoserImageUrl;
     private String loserId;
     private String loserName;
     private Penalties penalties;

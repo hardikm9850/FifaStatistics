@@ -2,8 +2,11 @@ package com.example.kevin.fifastatistics.managers;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.util.Pair;
 import android.util.Log;
+import android.view.View;
 
 import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.activities.FifaBaseActivity;
@@ -19,6 +22,7 @@ import com.example.kevin.fifastatistics.models.databasemodels.user.User;
 import com.example.kevin.fifastatistics.utils.IntentFactory;
 import com.example.kevin.fifastatistics.utils.MatchUtils;
 import com.example.kevin.fifastatistics.utils.ToastUtils;
+import com.example.kevin.fifastatistics.utils.TransitionUtils;
 
 import lombok.RequiredArgsConstructor;
 
@@ -91,7 +95,9 @@ public class FifaEventManager implements SelectOpponentDialogFragment.SelectOppo
         @Override
         public void startNewFlow(Friend opponent) {
             Intent newSeriesIntent = IntentFactory.createNewSeriesActivityIntent(mActivity, opponent);
-            mActivity.startActivity(newSeriesIntent);
+            final Pair<View, String>[] pairs = TransitionUtils.createSafeTransitionParticipants(mActivity, true);
+            ActivityOptionsCompat transitionActivityOptions = ActivityOptionsCompat.makeSceneTransitionAnimation(mActivity, pairs);
+            mActivity.startActivity(newSeriesIntent, transitionActivityOptions.toBundle());
         }
 
         @Override

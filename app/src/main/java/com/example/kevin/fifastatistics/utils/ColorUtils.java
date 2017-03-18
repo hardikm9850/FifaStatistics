@@ -5,12 +5,10 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.ColorInt;
 import android.support.annotation.DrawableRes;
-import android.support.design.widget.TabLayout;
 import android.support.v4.content.ContextCompat;
 import android.widget.ProgressBar;
 
 import com.example.kevin.fifastatistics.FifaApplication;
-import com.example.kevin.fifastatistics.R;
 
 public class ColorUtils {
 
@@ -19,7 +17,7 @@ public class ColorUtils {
     }
 
     public static boolean isColorDark(int color){
-        double darkness = 1 - (0.299 * Color.red(color) + 0.587 * Color.green(color) + 0.114 * Color.blue(color))/255;
+        double darkness = 1 - (0.299 * Color.red(color) + 0.587 * Color.green(color) + 0.114 * Color.blue(color)) / 255;
         return darkness > 0.5;
     }
 

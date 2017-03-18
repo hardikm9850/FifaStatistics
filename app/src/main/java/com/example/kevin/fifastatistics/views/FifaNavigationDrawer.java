@@ -62,6 +62,10 @@ public class FifaNavigationDrawer {
         mDrawer.getDrawerLayout().setDrawerLockMode(mode);
     }
 
+    public void setPosition(int position) {
+        mDrawer.setSelectionAtPosition(position);
+    }
+
     private FifaNavigationDrawer(FifaBaseActivity activity, int color) {
         mSelectedColor = color;
         User user = SharedPreferencesManager.getUser();

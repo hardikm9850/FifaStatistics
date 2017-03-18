@@ -24,6 +24,7 @@ public class CreateSeriesMatchListFragment extends FifaBaseFragment implements O
 
     private User mUser;
     private Friend mOpponent;
+    private FragmentCreateSeriesMatchListBinding mBinding;
     private CreateSeriesMatchListViewModel mListViewModel;
     private OnSeriesScoreUpdateListener mSeriesUpdateListener;
     private OnSeriesCompletedListener mSeriesCompletedListener;
@@ -47,18 +48,18 @@ public class CreateSeriesMatchListFragment extends FifaBaseFragment implements O
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        FragmentCreateSeriesMatchListBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_create_series_match_list, container, false);
-        initializeSeriesUpdateListener(binding.getRoot());
+        mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_create_series_match_list, container, false);
+        initializeSeriesUpdateListener();
         mListViewModel.setOnSeriesScoreUpdateListener(mSeriesUpdateListener);
-        binding.setListViewModel(mListViewModel);
-        return binding.getRoot();
+        mBinding.setListViewModel(mListViewModel);
+        return mBinding.getRoot();
     }
 
-    private void initializeSeriesUpdateListener(View root) {
-        mUserTicker = (TickerView) root.findViewById(R.id.user_score_ticker);
+    private void initializeSeriesUpdateListener() {
+        mUserTicker = mBinding.createSeriesScoreSummary.userScoreTicker;
         mUserTicker.setCharacterList(TickerUtils.getDefaultNumberList());
         mUserTicker.setText("0");
-        mOpponentTicker = (TickerView) root.findViewById(R.id.opponent_score_ticker);
+        mOpponentTicker = mBinding.createSeriesScoreSummary.opponentScoreTicker;
         mOpponentTicker.setCharacterList(TickerUtils.getDefaultNumberList());
         mOpponentTicker.setText("0");
         mSeriesUpdateListener = new OnSeriesScoreUpdateListener() {

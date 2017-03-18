@@ -13,6 +13,7 @@
         android:background="@color/accent"
         android:clickable="true"
         android:minHeight="?attr/actionBarSize"
+        android:transitionName="@string/transition_match_toolbar"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 

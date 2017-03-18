@@ -17,4 +17,5 @@ public class Team implements Serializable {
     private String code;
     private String crestUrl;
     private String color;
+    private String id;
 }

@@ -20,4 +20,9 @@ public class ResourceUtils {
     public static float getDimensionFromResourceId(int id) {
         return FifaApplication.getContext().getResources().getDimension(id);
     }
+
+    public static int spToPixels(int sp) {
+        float scaledDensity = FifaApplication.getContext().getResources().getDisplayMetrics().scaledDensity;
+        return Math.round(sp * scaledDensity);
+    }
 }

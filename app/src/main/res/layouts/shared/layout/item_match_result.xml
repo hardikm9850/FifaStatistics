@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable name="imageUrl" type="String" />
+        <variable name="name" type="String" />
+        <variable name="goals" type="String" />
+        <variable name="penalties" type="String" />
+        <variable name="appearance" type="Integer" />
+        <variable name="penaltiesVisibility" type="Integer" />
+    </data>
+
+    <RelativeLayout
+        android:id="@+id/top_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/top_logo_imageview"
+            android:layout_width="@dimen/match_team_logo_size"
+            android:layout_height="@dimen/match_team_logo_size"
+            android:layout_marginEnd="@dimen/activity_horizontal_margin"
+            android:layout_gravity="center_vertical"
+            android:scaleType="fitCenter"
+            app:imageUrl="@{imageUrl}"/>
+
+        <TextView
+            android:id="@+id/top_name_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_toEndOf="@id/top_logo_imageview"
+            android:gravity="center_vertical"
+            android:textAppearance="@style/text_small"
+            android:text="@{name}" />
+
+        <TextView
+            android:id="@+id/penalties"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/match_score_margin_end"
+            android:layout_alignParentEnd="true"
+            android:gravity="center"
+            android:visibility="@{penaltiesVisibility}"
+            android:textAppearance="@style/text_grey_small"
+            android:text="@{penalties}" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toStartOf="@id/penalties"
+            android:gravity="center"
+            android:textAppearance="@{appearance}"
+            android:text="@{goals}"/>
+
+    </RelativeLayout>
+
+</layout>

@@ -16,6 +16,7 @@
         android:orientation="vertical">
 
         <include
+            android:id="@+id/create_series_score_summary"
             layout="@layout/create_series_score_summary"
             android:layout_width="match_parent"
             android:layout_height="@dimen/create_series_score_summary_size"

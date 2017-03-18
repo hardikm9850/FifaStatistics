@@ -18,13 +18,14 @@
     <dimen name="civ_border_width">4dp</dimen>
     <dimen name="progress_loader_item_margin">5dp</dimen>
     <dimen name="stats_list_item_height">60dp</dimen>
-    <dimen name="match_player_margin_internal">8dp</dimen>
+    <dimen name="match_player_margin_internal">10dp</dimen>
     <dimen name="match_player_margin_external">12dp</dimen>
     <dimen name="match_score_margin_end">50dp</dimen>
     <dimen name="date_header_vertical_margin">5dp</dimen>
     <dimen name="date_header_gradient_height">15dp</dimen>
     <dimen name="team_item_vertical_margin">10dp</dimen>
     <dimen name="team_item_logo_size">30dp</dimen>
+    <dimen name="match_team_logo_size">20dp</dimen>
 
     <dimen name="friends_fragment_image_height">130dp</dimen>
 

@@ -145,7 +145,8 @@
     <string name="camera_error">This device doesn\'t support Camera2 API.</string>
 
     <!-- TRANSITIONS -->
-    <string name="transition_profile_image">transitionProfileImage</string>
+    <string name="transition_profile_image">fifaTransitionProfileImage</string>
+    <string name="transition_match_toolbar">fifaTransitionMatchToolbar</string>
 
     <string name="activity_pick_team">Choose a Team</string>
     <string name="error_loading_teams">Failed to load teams</string>

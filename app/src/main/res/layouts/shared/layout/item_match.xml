@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:bind="http://schemas.android.com/tools">
 
     <data>
         <variable
@@ -7,94 +8,48 @@
             type="com.example.kevin.fifastatistics.viewmodels.MatchesItemViewModel"/>
     </data>
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/activity_horizontal_margin"
-        android:layout_marginStart="@dimen/activity_horizontal_margin"
+        android:paddingStart="@dimen/activity_horizontal_margin"
+        android:paddingEnd="@dimen/activity_horizontal_margin"
+        android:orientation="vertical"
         android:background="?android:attr/selectableItemBackground"
         android:onClick="@{view -> matchItemViewModel.openMatchDetail(view)}">
 
-        <TextView
-            android:id="@+id/top_name_textview"
-            android:layout_width="wrap_content"
+        <include
+            layout="@layout/item_match_result"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
             android:layout_marginTop="@dimen/match_player_margin_external"
-            android:textAppearance="@style/text_small"
-            android:text="@{matchItemViewModel.topName}" />
+            android:layout_marginBottom="@dimen/match_player_margin_internal"
+            bind:imageUrl="@{matchItemViewModel.topImageUrl}"
+            bind:name="@{matchItemViewModel.topName}"
+            bind:goals="@{matchItemViewModel.topScore}"
+            bind:penalties="@{matchItemViewModel.topPenalties}"
+            bind:penaltiesVisibility="@{matchItemViewModel.penaltiesVisibility}"
+            bind:appearance="@{matchItemViewModel.topScoreTextAppearance}"/>
 
-        <TextView
-            android:layout_width="wrap_content"
+        <include
+            layout="@layout/item_match_result"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/top_name_textview"
-            android:layout_marginTop="@dimen/match_player_margin_internal"
             android:layout_marginBottom="@dimen/match_player_margin_external"
-            android:textAppearance="@style/text_small"
-            android:text="@{matchItemViewModel.bottomName}"/>
-
-        <LinearLayout
-            android:id="@+id/penalties_container"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_marginEnd="@dimen/match_score_margin_end"
-            android:layout_marginStart="@dimen/activity_horizontal_margin"
-            android:layout_marginBottom="@dimen/match_player_margin_external"
-            android:layout_marginTop="@dimen/match_player_margin_external"
-            android:orientation="vertical"
-            android:visibility="@{matchItemViewModel.penaltiesVisibility}">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
-                android:textAppearance="@style/text_grey_small"
-                android:text="@{matchItemViewModel.topPenalties}" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/match_player_margin_internal"
-                android:gravity="center_horizontal"
-                android:textAppearance="@style/text_grey_small"
-                android:text="@{matchItemViewModel.bottomPenalties}" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toStartOf="@id/penalties_container"
-            android:layout_marginStart="@dimen/activity_horizontal_margin"
-            android:layout_marginTop="@dimen/match_player_margin_external"
-            android:layout_marginBottom="@dimen/match_player_margin_external"
-            android:layout_marginEnd="@dimen/activity_horizontal_margin"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
-                android:textAppearance="@{matchItemViewModel.topScoreTextAppearance}"
-                android:text="@{matchItemViewModel.topScore}"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/match_player_margin_internal"
-                android:gravity="center_horizontal"
-                android:textAppearance="@{matchItemViewModel.bottomScoreTextAppearance}"
-                android:text="@{matchItemViewModel.bottomScore}"/>
-
-        </LinearLayout>
+            bind:imageUrl="@{matchItemViewModel.bottomImageUrl}"
+            bind:name="@{matchItemViewModel.bottomName}"
+            bind:goals="@{matchItemViewModel.bottomScore}"
+            bind:penalties="@{matchItemViewModel.bottomPenalties}"
+            bind:penaltiesVisibility="@{matchItemViewModel.penaltiesVisibility}"
+            bind:appearance="@{matchItemViewModel.bottomScoreTextAppearance}"/>
 
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_alignParentBottom="true"
+            android:paddingStart="@dimen/activity_horizontal_margin"
+            android:paddingEnd="@dimen/activity_horizontal_margin"
             android:background="?android:attr/listDivider" />
 
-    </RelativeLayout>
+    </LinearLayout>
 
 </layout>

@@ -3,7 +3,9 @@ package com.example.kevin.fifastatistics.viewmodels;
 import android.databinding.Bindable;
 import android.view.View;
 
+import com.example.kevin.fifastatistics.FifaApplication;
 import com.example.kevin.fifastatistics.R;
+import com.example.kevin.fifastatistics.managers.CrestUrlResizer;
 import com.example.kevin.fifastatistics.models.databasemodels.match.MatchProjection;
 import com.example.kevin.fifastatistics.models.databasemodels.match.Penalties;
 import com.example.kevin.fifastatistics.models.databasemodels.user.Player;
@@ -13,6 +15,8 @@ public class MatchesItemViewModel extends FifaBaseViewModel implements EventView
     private MatchProjection mMatchProjection;
     private String mTopName;
     private String mBottomName;
+    private String mTopImageUrl;
+    private String mBottomImageUrl;
     private int mTopScore;
     private int mBottomScore;
     private int mTopPenalties;
@@ -47,6 +51,8 @@ public class MatchesItemViewModel extends FifaBaseViewModel implements EventView
         if (didWin) {
             mDidTopWin = true;
             mBottomName = match.getLoserName();
+            mTopImageUrl = match.getTeamWinnerImageUrl();
+            mBottomImageUrl = match.getTeamLoserImageUrl();
             mTopScore = match.getGoalsWinner();
             mBottomScore = match.getGoalsLoser();
             mTopPenalties = winnerPenalties;
@@ -54,6 +60,8 @@ public class MatchesItemViewModel extends FifaBaseViewModel implements EventView
         } else {
             mDidTopWin = false;
             mBottomName = match.getWinnerName();
+            mTopImageUrl = match.getTeamLoserImageUrl();
+            mBottomImageUrl = match.getTeamWinnerImageUrl();
             mTopScore = match.getGoalsLoser();
             mBottomScore = match.getGoalsWinner();
             mTopPenalties = loserPenalties;
@@ -65,6 +73,8 @@ public class MatchesItemViewModel extends FifaBaseViewModel implements EventView
         mDidTopWin = true;
         mTopName = match.getWinnerName();
         mBottomName = match.getLoserName();
+        mTopImageUrl = match.getTeamWinnerImageUrl();
+        mBottomImageUrl = match.getTeamLoserImageUrl();
         mTopScore = match.getGoalsWinner();
         mBottomScore = match.getGoalsLoser();
         mTopPenalties = winnerPenalties;
@@ -114,6 +124,16 @@ public class MatchesItemViewModel extends FifaBaseViewModel implements EventView
     @Bindable
     public int getPenaltiesVisibility() {
         return mMatchProjection.getPenalties() != null ? View.VISIBLE : View.INVISIBLE;
+    }
+
+    @Bindable
+    public String getTopImageUrl() {
+        return CrestUrlResizer.resizeSmall(mTopImageUrl);
+    }
+
+    @Bindable
+    public String getBottomImageUrl() {
+        return CrestUrlResizer.resizeSmall(mBottomImageUrl);
     }
 
     public void openMatchDetail(View view) {

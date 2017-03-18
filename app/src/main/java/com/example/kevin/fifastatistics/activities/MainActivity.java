@@ -103,13 +103,14 @@ public class MainActivity extends FifaBaseActivity {
         if (position == 7) {
             Intent intent = new Intent(this, SettingsActivity.class);
             startActivity(intent);
+            mDrawer.setPosition(currentDrawerPosition);
             return;
         }
         Subscription drawerSubscription = Observable.just(position)
                 .map(p -> currentDrawerPosition = p)
                 .map(p -> FragmentInitializerFactory.createFragmentInitializer(p, mUser))
                 .compose(ObservableUtils.applySchedulers())
-                .delaySubscription(450, TimeUnit.MILLISECONDS)
+                .delaySubscription(400, TimeUnit.MILLISECONDS)
                 .subscribe(this::prepareActivityForFragments);
         addSubscription(drawerSubscription);
     }

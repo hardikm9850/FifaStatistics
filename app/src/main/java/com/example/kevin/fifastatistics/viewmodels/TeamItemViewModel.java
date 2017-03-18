@@ -1,8 +1,8 @@
 package com.example.kevin.fifastatistics.viewmodels;
 
 import android.databinding.Bindable;
-import android.view.View;
 
+import com.example.kevin.fifastatistics.managers.CrestUrlResizer;
 import com.example.kevin.fifastatistics.models.databasemodels.league.Team;
 
 public class TeamItemViewModel extends FifaBaseViewModel {
@@ -27,7 +27,7 @@ public class TeamItemViewModel extends FifaBaseViewModel {
 
     @Bindable
     public String getImageUrl() {
-        return mTeam != null ? mTeam.getCrestUrl() : null;
+        return mTeam != null ? CrestUrlResizer.resizeSmall(mTeam.getCrestUrl()) : null;
     }
 
     @Bindable
