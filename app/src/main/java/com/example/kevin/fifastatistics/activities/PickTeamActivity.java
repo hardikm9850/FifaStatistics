@@ -13,6 +13,7 @@ import com.example.kevin.fifastatistics.FifaApplication;
 import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.adapters.TeamFragmentAdapter;
 import com.example.kevin.fifastatistics.databinding.ActivityPickTeamBinding;
+import com.example.kevin.fifastatistics.managers.RetrievalManager;
 import com.example.kevin.fifastatistics.models.apiresponses.ApiListResponse;
 import com.example.kevin.fifastatistics.models.databasemodels.league.League;
 import com.example.kevin.fifastatistics.models.databasemodels.league.Team;
@@ -53,7 +54,7 @@ public class PickTeamActivity extends FifaBaseActivity implements TeamItemViewMo
     }
 
     private void getLeagues() {
-        Subscription s = FifaApi.getLeagueApi().getLeagues().compose(ObservableUtils.applySchedulers()).subscribe(
+        Subscription s = RetrievalManager.getLeagues().subscribe(
                 new ObservableUtils.EmptyOnCompleteObserver<ApiListResponse<League>>() {
             @Override
             public void onError(Throwable e) {

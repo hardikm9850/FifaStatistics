@@ -61,7 +61,6 @@ public class TeamListFragment extends FifaBaseFragment implements TeamListFragme
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        ColorUtils.setProgressBarColor(mBinding.progress, mColor);
         initRecyclerView();
     }
 

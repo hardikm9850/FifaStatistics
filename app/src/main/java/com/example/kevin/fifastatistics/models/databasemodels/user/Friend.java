@@ -40,6 +40,15 @@ public class Friend extends DatabaseModel implements Player
                 .build();
     }
 
+    public static Friend fromPlayer(Player user) {
+        return Friend.builder()
+                .id(user.getId())
+                .imageUrl(user.getImageUrl())
+                .name(user.getName())
+                .registrationToken(user.getRegistrationToken())
+                .build();
+    }
+
     @Override
     public String toString() {
         return SerializationUtils.toJson(this);

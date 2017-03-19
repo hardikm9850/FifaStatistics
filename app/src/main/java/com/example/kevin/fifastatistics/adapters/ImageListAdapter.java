@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.kevin.fifastatistics.R;
-import com.example.kevin.fifastatistics.models.databasemodels.user.Friend;
+import com.example.kevin.fifastatistics.models.databasemodels.user.Player;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.util.List;
@@ -19,24 +19,29 @@ import java.util.List;
  */
 public class ImageListAdapter extends BaseAdapter {
 
-    private List<Friend> mFriends;
+    private List<? extends Player> mPlayers;
     private ImageLoader mImageLoader;
     private LayoutInflater mInflater;
 
-    public ImageListAdapter(Context context, List<Friend> friends) {
-        mFriends = friends;
+    public ImageListAdapter(Context context, List<? extends Player> friends) {
+        mPlayers = friends;
         mImageLoader = ImageLoader.getInstance();
         mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
+    public void setPlayers(List<? extends Player> players) {
+        mPlayers = players;
+        notifyDataSetChanged();
+    }
+
     @Override
     public int getCount() {
-        return mFriends.size();
+        return mPlayers.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return mFriends.get(position);
+        return mPlayers.get(position);
     }
 
     @Override
@@ -56,13 +61,13 @@ public class ImageListAdapter extends BaseAdapter {
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
-        holder.mTextView.setText(mFriends.get(position).getName());
-        mImageLoader.displayImage(mFriends.get(position).getImageUrl(), holder.mImageView);
+        holder.mTextView.setText(mPlayers.get(position).getName());
+        mImageLoader.displayImage(mPlayers.get(position).getImageUrl(), holder.mImageView);
         return convertView;
     }
 
     private static class ViewHolder {
-        public ImageView mImageView;
-        public TextView mTextView;
+        ImageView mImageView;
+        TextView mTextView;
     }
 }

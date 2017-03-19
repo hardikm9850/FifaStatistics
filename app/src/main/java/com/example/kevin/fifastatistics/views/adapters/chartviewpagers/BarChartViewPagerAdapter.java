@@ -31,7 +31,7 @@ public class BarChartViewPagerAdapter extends ChartViewPagerAdapter {
         LayoutInflater inflater = LayoutInflater.from(mContext);
         StatsCardView chartView = (StatsCardView) inflater.inflate(R.layout.stats_chart_view, collection, false);
 
-        chartView.setTitle((position == 0) ? "Averages" : "Records");
+        chartView.setTitle((position == 0) ? mContext.getString(R.string.averages) : mContext.getString(R.string.records));
         chartView.setChartData(stats.get(position), position == 0);
 
         if (mUserName != null) {
@@ -40,18 +40,5 @@ public class BarChartViewPagerAdapter extends ChartViewPagerAdapter {
 
         collection.addView(chartView);
         return chartView;
-    }
-
-    private void setChartAnimation(StatsCardView chartView) {
-
-
-//        int[] order = {1, 0, 2, 3};
-//        final Runnable auxAction = () -> new Handler().postDelayed(() -> {}, 500);
-//        Runnable chartOneAction = () -> auxAction.run();
-//        mChart.show(new Animation()
-//                .setOverlap(.7f, order)
-//                .setEndAction(chartOneAction));
-//
-//        return mChart;
     }
 }

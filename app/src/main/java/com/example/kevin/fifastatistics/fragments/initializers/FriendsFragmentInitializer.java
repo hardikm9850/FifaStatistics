@@ -26,18 +26,14 @@ public class FriendsFragmentInitializer implements FragmentInitializer
     public void changeAdapterDataSet(FragmentAdapter adapter) {
         adapter.clear();
         adapter.addFragment(
-                FriendsFragment.newInstance(FriendsFragment.FRIENDS_VIEW),
+                FriendsFragment.newInstance(),
                 Constants.FRIENDS_FRAGMENT);
-        adapter.addFragment(
-                FriendsFragment.newInstance(FriendsFragment.REQUESTS_VIEW),
-                "Friend Requests");
-
         adapter.notifyDataSetChanged();
     }
 
     @Override
     public void setTabLayoutVisibility(TabLayout tabLayout) {
-        tabLayout.setVisibility(View.VISIBLE);
+        tabLayout.setVisibility(View.GONE);
     }
 
     @Override

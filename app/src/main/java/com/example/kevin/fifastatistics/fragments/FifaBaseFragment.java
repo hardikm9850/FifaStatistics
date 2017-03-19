@@ -25,7 +25,6 @@ public abstract class FifaBaseFragment extends Fragment implements ActivityLaunc
     protected TransitionStarter mTransitionStarter;
     protected int mColor;
     private CompositeSubscription mCompositeSubscription;
-    private EventBus mColorEventBus;
 
     @Override
     public void onAttach(Context context) {
@@ -40,8 +39,7 @@ public abstract class FifaBaseFragment extends Fragment implements ActivityLaunc
         super.onCreate(savedInstanceState);
         mCompositeSubscription = new CompositeSubscription();
         mColor = FifaApplication.getAccentColor();
-        mColorEventBus = EventBus.getInstance();
-        mColorEventBus.observeEvents(Integer.class).subscribe(color -> {
+        EventBus.getInstance().observeEvents(Integer.class).subscribe(color -> {
             mColor = color;
             onColorUpdated();
         });

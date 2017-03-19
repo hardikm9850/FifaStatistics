@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -23,6 +24,7 @@ import com.example.kevin.fifastatistics.managers.OcrManager;
 import com.example.kevin.fifastatistics.models.databasemodels.match.Match;
 import com.example.kevin.fifastatistics.models.databasemodels.match.Penalties;
 import com.example.kevin.fifastatistics.models.databasemodels.user.Friend;
+import com.example.kevin.fifastatistics.models.databasemodels.user.Player;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
 import com.example.kevin.fifastatistics.utils.MatchUtils;
 import com.example.kevin.fifastatistics.utils.ObservableUtils;
@@ -48,7 +50,7 @@ public class AddMatchDialogFragment extends FifaBaseDialogFragment
     private AppCompatActivity mActivity;
     private Match mMatch;
     private User mUser;
-    private Friend mOpponent;
+    private Player mOpponent;
     private Fragment mCameraFragment;
     private OnMatchCreatedListener mListener;
     private AddMatchListLayout mAddMatchList;
@@ -59,7 +61,7 @@ public class AddMatchDialogFragment extends FifaBaseDialogFragment
     private boolean mDidSwapSides;
     private boolean mIsCameraFragmentOpen;
 
-    public static AddMatchDialogFragment newInstance(User user, Friend opponent, OnMatchCreatedListener listener,
+    public static AddMatchDialogFragment newInstance(User user, Player opponent, OnMatchCreatedListener listener,
                                                      AppCompatActivity activity) {
         AddMatchDialogFragment fragment = new AddMatchDialogFragment();
         fragment.mUser = user;
@@ -187,8 +189,8 @@ public class AddMatchDialogFragment extends FifaBaseDialogFragment
         return Match.builder()
                 .stats(stats)
                 .penalties(penalties)
-                .winner(userDidWin ? Friend.fromUser(mUser) : mOpponent)
-                .loser(userDidWin ? mOpponent : Friend.fromUser(mUser))
+                .winner(userDidWin ? Friend.fromUser(mUser) : Friend.fromPlayer(mOpponent))
+                .loser(userDidWin ? Friend.fromPlayer(mOpponent) : Friend.fromUser(mUser))
                 .build();
     }
 
@@ -221,7 +223,7 @@ public class AddMatchDialogFragment extends FifaBaseDialogFragment
 
     private void setStatusBarColor() {
         mOldStatusBarColor = mActivity.getWindow().getStatusBarColor();
-        mActivity.getWindow().setStatusBarColor(getResources().getColor(R.color.colorAccentDark));
+        mActivity.getWindow().setStatusBarColor(ContextCompat.getColor(getContext(), R.color.colorAccentDark));
     }
 
     private void initializeLeftUserImage(View view) {

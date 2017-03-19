@@ -1,6 +1,7 @@
 package com.example.kevin.fifastatistics.utils;
 
 import android.app.Activity;
+import android.support.annotation.StringRes;
 import android.widget.Toast;
 
 import lombok.experimental.UtilityClass;
@@ -12,6 +13,10 @@ import lombok.experimental.UtilityClass;
 public class ToastUtils {
 
     public static void showShortToast(Activity activity, String message) {
+        Toast.makeText(activity, message, Toast.LENGTH_LONG).show();
+    }
+
+    public static void showShortToast(Activity activity, @StringRes int message) {
         Toast.makeText(activity, message, Toast.LENGTH_LONG).show();
     }
 

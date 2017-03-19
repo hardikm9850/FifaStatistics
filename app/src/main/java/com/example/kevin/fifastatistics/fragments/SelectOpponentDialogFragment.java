@@ -6,10 +6,11 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
 
-import com.example.kevin.fifastatistics.models.databasemodels.user.Friend;
-import com.example.kevin.fifastatistics.models.databasemodels.user.User;
 import com.example.kevin.fifastatistics.adapters.ImageListAdapter;
+import com.example.kevin.fifastatistics.managers.RetrievalManager;
+import com.example.kevin.fifastatistics.models.databasemodels.user.Player;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import lombok.NoArgsConstructor;
@@ -23,11 +24,11 @@ public class SelectOpponentDialogFragment extends FifaBaseDialogFragment {
     private static final String TAG = "opponents";
 
     private SelectOpponentListener mListener;
-    private List<Friend> mFriends;
+    private ImageListAdapter mAdapter;
+    private List<? extends Player> mPlayers = new ArrayList<>();
 
-    public static SelectOpponentDialogFragment newInstance(User user, SelectOpponentListener listener) {
+    public static SelectOpponentDialogFragment newInstance(SelectOpponentListener listener) {
         SelectOpponentDialogFragment dialog = new SelectOpponentDialogFragment();
-        dialog.mFriends = user.getFriends();
         dialog.mListener = listener;
         return dialog;
     }
@@ -36,12 +37,21 @@ public class SelectOpponentDialogFragment extends FifaBaseDialogFragment {
     @NonNull
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setAdapter(new ImageListAdapter(getActivity(), mFriends), (dialog, which) ->
-            mListener.onOpponentClick(mFriends.get(which))
+        initAdapter();
+        builder.setAdapter(mAdapter, (dialog, which) ->
+            mListener.onOpponentClick(mPlayers.get(which))
         );
         builder.setCancelable(true);
         builder.setTitle("Select Opponent");
         return builder.create();
+    }
+
+    private void initAdapter() {
+        mAdapter = new ImageListAdapter(getActivity(), mPlayers);
+        RetrievalManager.getUsersWithoutCurrentUser().subscribe(users -> {
+            mPlayers = users;
+            mAdapter.setPlayers(users);
+        });
     }
 
     public void show(FragmentManager manager) {
@@ -49,6 +59,6 @@ public class SelectOpponentDialogFragment extends FifaBaseDialogFragment {
     }
 
     public interface SelectOpponentListener {
-        void onOpponentClick(Friend friend);
+        void onOpponentClick(Player player);
     }
 }

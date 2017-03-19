@@ -1,19 +1,23 @@
 package com.example.kevin.fifastatistics.adapters;
 
 import android.content.Context;
+import android.databinding.DataBindingUtil;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.kevin.fifastatistics.FifaApplication;
 import com.example.kevin.fifastatistics.R;
+import com.example.kevin.fifastatistics.databinding.ItemProgressLoaderBinding;
 import com.example.kevin.fifastatistics.interfaces.ProgressAdapter;
+import com.example.kevin.fifastatistics.utils.ColorUtils;
 
 public abstract class EndlessProgressAdapter extends RecyclerView.Adapter implements ProgressAdapter {
 
-    boolean mIsNoMoreItemsToLoad = true;
-    static final int PROGRESS_VIEW_TYPE = 998;
     static final int INVALID_VIEW_TYPE = -1;
+    private static final int PROGRESS_VIEW_TYPE = 998;
+
+    private boolean mIsNoMoreItemsToLoad = true;
 
     @Override
     public void notifyNoMoreItemsToLoad() {
@@ -61,14 +65,17 @@ public abstract class EndlessProgressAdapter extends RecyclerView.Adapter implem
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         Context context = parent.getContext();
         if (viewType == PROGRESS_VIEW_TYPE) {
-            return new ProgressViewHolder(LayoutInflater.from(context).inflate(R.layout.item_progress_loader, parent, false));
+            ItemProgressLoaderBinding binding = DataBindingUtil.inflate(LayoutInflater.from(context), R.layout.item_progress_loader, parent, false);
+            return new ProgressViewHolder(binding);
         }
         return null;
     }
 
     class ProgressViewHolder extends RecyclerView.ViewHolder {
-        ProgressViewHolder(View itemView) {
-            super(itemView);
+
+        ProgressViewHolder(ItemProgressLoaderBinding binding) {
+            super(binding.getRoot());
+            ColorUtils.setProgressBarColor(binding.progressItem, FifaApplication.getAccentColor());
         }
     }
 

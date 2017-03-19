@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+        <variable
+            name="progressViewModel"
+            type="com.example.kevin.fifastatistics.viewmodels.ProgressFragmentViewModel"/>
+    </data>
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:indeterminate="true"
+        android:visibility="@{progressViewModel.progressBarVisibility}"
+        android:indeterminateTint="@{progressViewModel.color}"
+        style="?android:attr/progressBarStyle"/>
+
+</layout>

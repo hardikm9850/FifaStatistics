@@ -71,7 +71,7 @@ public class FifaEventManager implements SelectOpponentDialogFragment.SelectOppo
     }
 
     @Override
-    public void onOpponentClick(Friend friend) {
+    public void onOpponentClick(Player friend) {
         mFlow.startNewFlow(friend);
     }
 
@@ -84,20 +84,18 @@ public class FifaEventManager implements SelectOpponentDialogFragment.SelectOppo
     private abstract class Flow implements OnBackPressedHandler {
 
         void startNewFlow() {
-            SelectOpponentDialogFragment.newInstance(mUser, FifaEventManager.this).show(mActivity.getSupportFragmentManager());
+            SelectOpponentDialogFragment.newInstance(FifaEventManager.this).show(mActivity.getSupportFragmentManager());
         }
 
-        public abstract void startNewFlow(Friend opponent);
+        public abstract void startNewFlow(Player opponent);
     }
 
     private class SeriesFlow extends Flow {
 
         @Override
-        public void startNewFlow(Friend opponent) {
+        public void startNewFlow(Player opponent) {
             Intent newSeriesIntent = IntentFactory.createNewSeriesActivityIntent(mActivity, opponent);
-            final Pair<View, String>[] pairs = TransitionUtils.createSafeTransitionParticipants(mActivity, true);
-            ActivityOptionsCompat transitionActivityOptions = ActivityOptionsCompat.makeSceneTransitionAnimation(mActivity, pairs);
-            mActivity.startActivity(newSeriesIntent, transitionActivityOptions.toBundle());
+            mActivity.startActivity(newSeriesIntent);
         }
 
         @Override
@@ -134,12 +132,12 @@ public class FifaEventManager implements SelectOpponentDialogFragment.SelectOppo
         }
 
         @Override
-        public void startNewFlow(Friend opponent) {
+        public void startNewFlow(Player opponent) {
             mOpponent = opponent;
             mAddMatchFragment = showAddMatchFragment(mActivity, opponent);
         }
 
-        private AddMatchDialogFragment showAddMatchFragment(FifaBaseActivity parentActivity, Friend opponent) {
+        private AddMatchDialogFragment showAddMatchFragment(FifaBaseActivity parentActivity, Player opponent) {
             FragmentTransaction t = parentActivity.getSupportFragmentManager().beginTransaction();
             t.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
             AddMatchDialogFragment fragment = AddMatchDialogFragment.newInstance(mUser, opponent, mOnMatchCreatedListener, mActivity);

@@ -4,13 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 
-import com.example.kevin.fifastatistics.models.notifications.notificationrequestbodies.AcceptFriendRequestBody;
-import com.example.kevin.fifastatistics.models.notifications.notificationrequestbodies.DeclineFriendRequestBody;
 import com.example.kevin.fifastatistics.models.notifications.notificationrequestbodies.NewMatchBody;
-import com.example.kevin.fifastatistics.models.notifications.notificationrequestbodies.SendFriendRequestBody;
-import com.example.kevin.fifastatistics.views.notifications.friendrequestnotification.AcceptRequestNotification;
-import com.example.kevin.fifastatistics.views.notifications.friendrequestnotification.DeclineRequestNotification;
-import com.example.kevin.fifastatistics.views.notifications.friendrequestnotification.FriendRequestNotification;
 
 public class FifaNotificationFactory
 {
@@ -25,12 +19,6 @@ public class FifaNotificationFactory
         String tag = getTag(bundle);
         Log.e("FACTORY", tag);
         switch (tag) {
-            case SendFriendRequestBody.NOTIFICATION_TAG :
-                return new FriendRequestNotification(context, bundle);
-            case AcceptFriendRequestBody.NOTIFICATION_TAG :
-                return new AcceptRequestNotification(context, bundle);
-            case DeclineFriendRequestBody.NOTIFICATION_TAG :
-                return new DeclineRequestNotification(context, bundle);
             case NewMatchBody.NOTIFICATION_TAG :
                 return new MatchNotification(context, bundle);
             default :

@@ -1,6 +1,5 @@
 package com.example.kevin.fifastatistics.activities;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -18,10 +17,12 @@ import rx.subscriptions.CompositeSubscription;
 
 public abstract class FifaBaseActivity extends AppCompatActivity implements TransitionStarter {
 
+    public static final String EXTRA_HASH_CODE = "extraHashCode";
+
+    protected int mColor;
     private OnBackPressedHandler mBackPressHandler;
     private CompositeSubscription mCompositeSubscription;
-    private EventBus mColorEventBus;
-    protected int mColor;
+    private int mCallingActivityHashCode;
 
     public abstract Toolbar getToolbar();
     public abstract View getParentLayout();
@@ -33,9 +34,13 @@ public abstract class FifaBaseActivity extends AppCompatActivity implements Tran
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        initColors();
+        mCallingActivityHashCode = getIntent() != null ? getIntent().getIntExtra(EXTRA_HASH_CODE, 0) : 0;
+    }
+
+    private void initColors() {
         mColor = FifaApplication.getAccentColor();
-        mColorEventBus = EventBus.getInstance();
-        mColorEventBus.observeEvents(Integer.class).subscribe(color -> {
+        EventBus.getInstance().observeEvents(Integer.class).subscribe(color -> {
             mColor = color;
             onColorUpdated();
         });
@@ -45,7 +50,7 @@ public abstract class FifaBaseActivity extends AppCompatActivity implements Tran
 
     }
 
-    public void setNavigationLocked(boolean locked) {};
+    public void setNavigationLocked(boolean locked) {}
 
     @Override
     public void onBackPressed() {
@@ -65,6 +70,15 @@ public abstract class FifaBaseActivity extends AppCompatActivity implements Tran
     @Override
     protected void onDestroy() {
         super.onDestroy();
+    }
+
+    @Override
+    public void finishAfterTransition() {
+        if (FifaActivityLifecycleCallbacks.isActivityDestroyed(mCallingActivityHashCode)) {
+            finish();
+        } else {
+            super.finishAfterTransition();
+        }
     }
 
     @Override

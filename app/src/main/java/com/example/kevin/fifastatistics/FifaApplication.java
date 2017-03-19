@@ -6,6 +6,7 @@ import android.content.res.AssetManager;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
+import com.example.kevin.fifastatistics.activities.FifaActivityLifecycleCallbacks;
 import com.example.kevin.fifastatistics.managers.ImageLoaderManager;
 import com.example.kevin.fifastatistics.managers.SharedPreferencesManager;
 import com.example.kevin.fifastatistics.utils.ObservableUtils;
@@ -47,6 +48,7 @@ public class FifaApplication extends Application {
         ImageLoaderManager.initializeDefaultImageLoader(this);
         SharedPreferencesManager.initialize(this);
         ensureTrainedDataExists();
+        registerActivityLifecycleCallbacks(new FifaActivityLifecycleCallbacks());
         initScoop();
     }
 

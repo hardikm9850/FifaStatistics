@@ -3,58 +3,34 @@ package com.example.kevin.fifastatistics.views;
 import android.app.Activity;
 import android.content.Intent;
 import android.support.v4.app.ActivityOptionsCompat;
-import android.view.MenuItem;
 import android.view.View;
 
 import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.activities.FifaBaseActivity;
 import com.example.kevin.fifastatistics.activities.PlayerActivty;
-import com.example.kevin.fifastatistics.models.apiresponses.ApiListResponse;
+import com.example.kevin.fifastatistics.adapters.SearchAdapter;
 import com.example.kevin.fifastatistics.models.databasemodels.user.Player;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
-import com.example.kevin.fifastatistics.network.FifaApi;
 import com.example.kevin.fifastatistics.utils.IntentFactory;
-import com.example.kevin.fifastatistics.utils.ObservableUtils;
-import com.example.kevin.fifastatistics.adapters.SearchAdapter;
 import com.example.kevin.fifastatistics.utils.TransitionUtils;
 import com.lapism.searchview.SearchView;
 
 import java.util.List;
-
-import rx.Observable;
 
 /**
  * Wrapper class around {@link com.lapism.searchview.SearchView}.
  */
 public class FifaSearchView {
 
-    private static FifaSearchView mInstance;
-
     private SearchView mSearchView;
     private SearchAdapter mAdapter;
     private boolean mIsAdapterSet;
 
-    /**
-     * Get the SearchView instance. This method will not attach an adapter to the searchview.
-     * This method makes a network call to retrieve the list of users.
-     * @param activity The activity the searchview is in.
-     * @param currentUser The current user
-     * @return the search view, or null if the list of users cannot be retrieved
-     */
-    public static Observable<FifaSearchView> getInstance(FifaBaseActivity activity, User currentUser) {
-        if (mInstance == null) {
-            return FifaApi.getUserApi().getUsers()
-                    .compose(ObservableUtils.applySchedulers())
-                    .map(ApiListResponse::getItems)
-                    .map(users -> { users.remove(currentUser); return users; })
-                    .map(players -> mInstance = new FifaSearchView(activity, players))
-                    .onErrorReturn(t -> null);
-        } else {
-            return Observable.just(mInstance);
-        }
+    public static FifaSearchView getInstance(FifaBaseActivity activity, List<User> users) {
+        return new FifaSearchView(activity, users);
     }
 
-    public void show(boolean animate, MenuItem item) {
+    public void show(boolean animate) {
         mSearchView.open(animate);
     }
 

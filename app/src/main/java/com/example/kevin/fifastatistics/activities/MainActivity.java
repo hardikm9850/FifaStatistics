@@ -110,7 +110,7 @@ public class MainActivity extends FifaBaseActivity {
                 .map(p -> currentDrawerPosition = p)
                 .map(p -> FragmentInitializerFactory.createFragmentInitializer(p, mUser))
                 .compose(ObservableUtils.applySchedulers())
-                .delaySubscription(400, TimeUnit.MILLISECONDS)
+                .delaySubscription(370, TimeUnit.MILLISECONDS)
                 .subscribe(this::prepareActivityForFragments);
         addSubscription(drawerSubscription);
     }

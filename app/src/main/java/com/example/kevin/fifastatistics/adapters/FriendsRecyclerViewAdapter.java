@@ -8,32 +8,31 @@ import android.view.ViewGroup;
 import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.databinding.FragmentFriendsItemBinding;
 import com.example.kevin.fifastatistics.interfaces.ActivityLauncher;
-import com.example.kevin.fifastatistics.models.databasemodels.user.Friend;
 import com.example.kevin.fifastatistics.models.databasemodels.user.Player;
 import com.example.kevin.fifastatistics.viewmodels.FriendsItemViewModel;
 
 import java.util.List;
 
-public class FriendsRecyclerViewAdapter extends RecyclerView.Adapter<FriendsRecyclerViewAdapter.FriendsItemViewHolder> {
+public class FriendsRecyclerViewAdapter extends RecyclerView.Adapter<FriendsRecyclerViewAdapter.PlayerItemViewHolder> {
 
-    private List<Friend> mUsers;
+    private List<? extends Player> mUsers;
     private ActivityLauncher mLauncher;
 
-    public FriendsRecyclerViewAdapter(List<Friend> users, ActivityLauncher launcher) {
+    public FriendsRecyclerViewAdapter(List<? extends Player> users, ActivityLauncher launcher) {
         mUsers = users;
         mLauncher = launcher;
     }
 
     @Override
-    public FriendsItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public PlayerItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         FragmentFriendsItemBinding binding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.fragment_friends_item, parent, false);
-        return new FriendsItemViewHolder(binding);
+        return new PlayerItemViewHolder(binding);
     }
 
     @Override
-    public void onBindViewHolder(final FriendsItemViewHolder holder, int position) {
+    public void onBindViewHolder(final PlayerItemViewHolder holder, int position) {
         if (mUsers != null && position < mUsers.size()) {
-            holder.bindFriend(mUsers.get(position));
+            holder.bindPlayer(mUsers.get(position));
         }
     }
 
@@ -42,21 +41,21 @@ public class FriendsRecyclerViewAdapter extends RecyclerView.Adapter<FriendsRecy
         return mUsers == null ? 0 : mUsers.size();
     }
 
-    public class FriendsItemViewHolder extends RecyclerView.ViewHolder {
+    public class PlayerItemViewHolder extends RecyclerView.ViewHolder {
 
         private FragmentFriendsItemBinding mBinding;
 
-        FriendsItemViewHolder(FragmentFriendsItemBinding binding) {
+        PlayerItemViewHolder(FragmentFriendsItemBinding binding) {
             super(binding.getRoot());
             mBinding = binding;
         }
 
-        void bindFriend(Player friend) {
+        void bindPlayer(Player player) {
             FriendsItemViewModel viewModel = mBinding.getViewModel();
             if (viewModel != null) {
-                viewModel.setFriend(friend);
+                viewModel.setFriend(player);
             } else {
-                viewModel = new FriendsItemViewModel(friend, mLauncher);
+                viewModel = new FriendsItemViewModel(player, mLauncher);
                 mBinding.setViewModel(viewModel);
             }
         }

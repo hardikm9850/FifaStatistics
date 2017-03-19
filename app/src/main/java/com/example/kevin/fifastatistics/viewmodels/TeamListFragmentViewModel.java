@@ -1,5 +1,6 @@
 package com.example.kevin.fifastatistics.viewmodels;
 
+import com.example.kevin.fifastatistics.managers.RetrievalManager;
 import com.example.kevin.fifastatistics.models.apiresponses.ApiListResponse;
 import com.example.kevin.fifastatistics.models.databasemodels.league.League;
 import com.example.kevin.fifastatistics.models.databasemodels.league.Team;
@@ -23,9 +24,7 @@ public class TeamListFragmentViewModel extends ProgressFragmentViewModel {
     public void loadTeams() {
         showProgressBar();
         if (mLeague != null && mLeague.getTeamUrl() != null) {
-            Subscription s = FifaApi.getLeagueApi().getTeams(mLeague.getTeamUrl())
-                    .compose(ObservableUtils.applySchedulers())
-                    .subscribe(getTeamObserver());
+            Subscription s = RetrievalManager.getTeamsForLeague(mLeague).subscribe(getTeamObserver());
             addSubscription(s);
         } else {
             notifyError();

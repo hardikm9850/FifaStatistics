@@ -18,4 +18,18 @@ public class Team implements Serializable {
     private String crestUrl;
     private String color;
     private String id;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Team team = (Team) o;
+        return id.equals(team.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return id.hashCode();
+    }
 }
