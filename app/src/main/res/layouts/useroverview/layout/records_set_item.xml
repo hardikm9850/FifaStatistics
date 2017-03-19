@@ -1,15 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
-                android:layout_height="105dp">
-                <!-- height = card_header_height + record_item_body.height -->
+                android:layout_height="wrap_content">
 
     <include
         layout="@layout/card_view_header"
         android:id="@+id/header"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/card_header_height"
-        android:layout_marginBottom="5dp"
+        android:layout_height="wrap_content"
         android:layout_alignParentTop="true">
     </include>
 
@@ -17,9 +15,9 @@
         layout="@layout/records_value_item"
         android:id="@+id/overall_item"
         android:layout_width="wrap_content"
-        android:layout_height="@dimen/record_value_item_height"
-        android:layout_alignParentLeft="true"
-        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
         android:layout_below="@id/header">
     </include>
 
@@ -27,7 +25,7 @@
         layout="@layout/records_value_item"
         android:id="@+id/last_ten_item"
         android:layout_width="wrap_content"
-        android:layout_height="@dimen/record_value_item_height"
+        android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_below="@id/header">
     </include>
@@ -36,9 +34,9 @@
         layout="@layout/records_value_item"
         android:id="@+id/streak_item"
         android:layout_width="wrap_content"
-        android:layout_height="@dimen/record_value_item_height"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="@dimen/activity_horizontal_margin"
         android:layout_below="@id/header">
     </include>
 

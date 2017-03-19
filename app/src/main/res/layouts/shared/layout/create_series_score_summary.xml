@@ -7,6 +7,7 @@
         <variable
             name="seriesSummaryViewModel"
             type="com.example.kevin.fifastatistics.viewmodels.CreateSeriesScoreViewModel"/>
+        <import type="com.example.kevin.fifastatistics.R.drawable"/>
     </data>
 
     <RelativeLayout
@@ -31,6 +32,19 @@
             app:civ_border_width="2dp"
             app:civ_border_color="#FFFFFF"
             app:imageUrl="@{seriesSummaryViewModel.userImageUrl}"/>
+        
+        <ImageView
+            android:layout_width="@dimen/team_item_logo_size"
+            android:layout_height="@dimen/team_item_logo_size"
+            android:layout_toEndOf="@id/left_user_imageview"
+            android:layout_marginStart="@dimen/activity_horizontal_margin"
+            android:layout_marginBottom="@dimen/activity_vertical_margin"
+            android:layout_alignParentBottom="true"
+            android:layout_gravity="center_vertical"
+            android:scaleType="fitCenter"
+            android:onClick="@{v -> seriesSummaryViewModel.onUserTeamClick()}"
+            app:imageUrl="@{seriesSummaryViewModel.userTeamImageUrl}"
+            app:defaultResId="@{drawable.ic_error_outline_white_24dp}"/>
 
         <LinearLayout
 
@@ -76,6 +90,19 @@
             app:civ_border_width="2dp"
             app:civ_border_color="#FFFFFF"
             app:imageUrl="@{seriesSummaryViewModel.opponentImageUrl}"/>
+
+        <ImageView
+            android:layout_width="@dimen/team_item_logo_size"
+            android:layout_height="@dimen/team_item_logo_size"
+            android:layout_toStartOf="@id/right_user_imageview"
+            android:layout_marginEnd="@dimen/activity_horizontal_margin"
+            android:layout_marginBottom="@dimen/activity_vertical_margin"
+            android:layout_gravity="center_vertical"
+            android:layout_alignParentBottom="true"
+            android:scaleType="fitCenter"
+            android:onClick="@{v -> seriesSummaryViewModel.onOpponentTeamClick()}"
+            app:imageUrl="@{seriesSummaryViewModel.opponentTeamImageUrl}"
+            app:defaultResId="@{drawable.ic_error_outline_white_24dp}"/>
 
     </RelativeLayout>
 

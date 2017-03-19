@@ -121,6 +121,7 @@
     <string name="decline_friend_request">Decline Friend Request</string>
     <string name="friend_request_pending">Friend Request Pending</string>
     <string name="error_loading_players">Failed to load players.</string>
+    <string name="error_select_teams">Please select teams</string>
 
     <!-- STATS -->
     <string name="goals">Goals</string>

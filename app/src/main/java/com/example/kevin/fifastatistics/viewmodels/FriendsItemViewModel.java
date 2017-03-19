@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.databinding.Bindable;
-import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.view.View;
 

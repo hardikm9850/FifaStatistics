@@ -3,13 +3,13 @@ package com.example.kevin.fifastatistics.fragments;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v14.preference.SwitchPreference;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceFragmentCompat;
 
 import com.example.kevin.fifastatistics.FifaApplication;
 import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.activities.PickTeamActivity;
+import com.example.kevin.fifastatistics.interfaces.OnTeamSelectedListener;
 import com.example.kevin.fifastatistics.managers.SharedPreferencesManager;
 import com.example.kevin.fifastatistics.models.databasemodels.league.Team;
 import com.example.kevin.fifastatistics.utils.EventBus;
@@ -17,7 +17,7 @@ import com.example.kevin.fifastatistics.utils.ObservableUtils;
 
 import rx.Observable;
 
-public class SettingsFragment extends PreferenceFragmentCompat {
+public class SettingsFragment extends PreferenceFragmentCompat implements OnTeamSelectedListener {
 
     private static final int SETTINGS_REQUEST_CODE = 5377;
 
@@ -59,20 +59,20 @@ public class SettingsFragment extends PreferenceFragmentCompat {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == SETTINGS_REQUEST_CODE && resultCode == PickTeamActivity.RESULT_TEAM_PICKED) {
             Team team = (Team) data.getExtras().getSerializable(PickTeamActivity.EXTRA_TEAM);
-            SharedPreferencesManager.setFavoriteTeam(team);
-            setFavoriteTeamSummary();
-            updateColors(team);
+            onTeamSelected(team);
         }
+    }
+
+    @Override
+    public void onTeamSelected(Team team) {
+        SharedPreferencesManager.setFavoriteTeam(team);
+        setFavoriteTeamSummary();
+        updateColors(team);
     }
 
     private void updateColors(Team team) {
         int newColor = Color.parseColor(team.getColor());
         FifaApplication.setAccentColor(newColor);
-        updateSwitchColors(newColor);
         mEventBus.post(newColor);
-    }
-
-    private void updateSwitchColors(int color) {
-        Preference themePref = findPreference(getString(R.string.darkTheme));
     }
 }

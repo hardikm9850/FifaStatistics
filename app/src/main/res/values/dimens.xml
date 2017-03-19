@@ -33,9 +33,8 @@
     <dimen name="card_corner_radius">4dp</dimen>
     <dimen name="card_header_height">40dp</dimen>
     <dimen name="card_header_text_size">15sp</dimen>
-
-    <!-- Records Card View -->
-    <dimen name="record_value_item_height">50dp</dimen>
+    <dimen name="record_item_vertical_padding">12dp</dimen>
+    <dimen name="record_header_vertical_padding">5dp</dimen>
 
     <!-- PLAYER ACTIVITY -->
     <dimen name="user_image_height">100dp</dimen>

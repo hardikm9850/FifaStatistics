@@ -4,7 +4,6 @@ import com.example.kevin.fifastatistics.models.apiresponses.ApiListResponse;
 import com.example.kevin.fifastatistics.models.databasemodels.league.League;
 import com.example.kevin.fifastatistics.models.databasemodels.league.Team;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
-import com.example.kevin.fifastatistics.network.UserApi;
 import com.example.kevin.fifastatistics.network.FifaApi;
 import com.example.kevin.fifastatistics.utils.ObservableUtils;
 
@@ -53,7 +52,7 @@ public class RetrievalManager {
         return RetrievalManager.getCurrentUser().flatMap(RetrievalManager::getUsersWithout);
     }
 
-    public static Observable<List<User>> getUsersWithout(User user) {
+    private static Observable<List<User>> getUsersWithout(User user) {
         return getUsers().map(ApiListResponse::getItems).map(users -> {
             users.remove(user);
             return users;

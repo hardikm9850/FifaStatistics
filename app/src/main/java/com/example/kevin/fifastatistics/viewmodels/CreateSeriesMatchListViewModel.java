@@ -9,10 +9,13 @@ import android.widget.AdapterView;
 import com.android.databinding.library.baseAdapters.BR;
 import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.activities.FifaBaseActivity;
+import com.example.kevin.fifastatistics.interfaces.ActivityLauncher;
 import com.example.kevin.fifastatistics.interfaces.OnMatchUpdatedListener;
 import com.example.kevin.fifastatistics.interfaces.OnSeriesCompletedListener;
 import com.example.kevin.fifastatistics.interfaces.OnSeriesScoreUpdateListener;
+import com.example.kevin.fifastatistics.interfaces.OnTeamSelectedListener;
 import com.example.kevin.fifastatistics.managers.SharedPreferencesManager;
+import com.example.kevin.fifastatistics.models.databasemodels.league.Team;
 import com.example.kevin.fifastatistics.models.databasemodels.match.Match;
 import com.example.kevin.fifastatistics.models.databasemodels.match.Series;
 import com.example.kevin.fifastatistics.models.databasemodels.user.Friend;
@@ -26,7 +29,7 @@ import java.util.List;
 import me.tatarka.bindingcollectionadapter.ItemView;
 import rx.Observable;
 
-public class CreateSeriesMatchListViewModel extends BaseObservable implements OnMatchUpdatedListener {
+public class CreateSeriesMatchListViewModel extends BaseObservable implements OnMatchUpdatedListener, OnTeamSelectedListener {
 
     private final ObservableList<CreateSeriesListItemViewModel> mItems;
     private final ItemView mItemView;
@@ -40,15 +43,16 @@ public class CreateSeriesMatchListViewModel extends BaseObservable implements On
     private int mUserWins;
     private int mOpponentWins;
     private int mMaxSeriesLength;
+    private boolean mIsSeriesDone;
 
     public CreateSeriesMatchListViewModel(FifaBaseActivity activity, User user, Friend opponent, OnSeriesScoreUpdateListener scoreUpdateListener,
-                                          OnSeriesCompletedListener seriesCompletedListener) {
+                                          OnSeriesCompletedListener seriesCompletedListener, ActivityLauncher launcher) {
         mItems = new ObservableArrayList<>();
         mItemView = ItemView.of(BR.listItemViewModel, R.layout.item_create_series_match_list);
         mActivity = activity;
         mUser = user;
         mOpponent = opponent;
-        mSeriesScoreViewModel = new CreateSeriesScoreViewModel(user, opponent, scoreUpdateListener);
+        mSeriesScoreViewModel = new CreateSeriesScoreViewModel(user, opponent, scoreUpdateListener, activity, launcher);
         mOnSeriesCompletedListener = seriesCompletedListener;
         mMaxSeriesLength = Series.DEFAULT_MAX_SERIES_LENGTH;
         mOnMatchUpdateListeners = Arrays.asList(mSeriesScoreViewModel, this);
@@ -77,6 +81,7 @@ public class CreateSeriesMatchListViewModel extends BaseObservable implements On
         }
         if (didWinSeries(mUserWins) || didWinSeries(mOpponentWins)) {
             Series series = getSeries();
+            mIsSeriesDone = true;
             mOnSeriesCompletedListener.onSeriesCompleted(series);
         }
     }
@@ -89,6 +94,13 @@ public class CreateSeriesMatchListViewModel extends BaseObservable implements On
         List<Match> matches = getMatches();
         Series series = new Series(Friend.fromUser(mUser), mOpponent);
         series.addAll(matches);
+        if (mUserWins > mOpponentWins) {
+            series.setTeamWinner(mSeriesScoreViewModel.getUserTeam());
+            series.setTeamLoser(mSeriesScoreViewModel.getOpponentTeam());
+        } else {
+            series.setTeamWinner(mSeriesScoreViewModel.getOpponentTeam());
+            series.setTeamLoser(mSeriesScoreViewModel.getUserTeam());
+        }
         return series;
     }
 
@@ -139,6 +151,14 @@ public class CreateSeriesMatchListViewModel extends BaseObservable implements On
 
     public void setOnSeriesScoreUpdateListener(OnSeriesScoreUpdateListener listener) {
         mSeriesScoreViewModel.setSeriesScoreUpdateListener(listener);
+    }
+
+    @Override
+    public void onTeamSelected(Team team) {
+        mSeriesScoreViewModel.onTeamSelected(team);
+        if (mIsSeriesDone) {
+            mOnSeriesCompletedListener.onSeriesCompleted(getSeries());
+        }
     }
 
     public ObservableList<CreateSeriesListItemViewModel> getItems() {

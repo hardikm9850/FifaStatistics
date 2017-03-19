@@ -1,6 +1,7 @@
 package com.example.kevin.fifastatistics.models.databasemodels.match;
 
 import com.example.kevin.fifastatistics.models.databasemodels.DatabaseModel;
+import com.example.kevin.fifastatistics.models.databasemodels.league.Team;
 import com.example.kevin.fifastatistics.models.databasemodels.user.Friend;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
 import com.example.kevin.fifastatistics.utils.SerializationUtils;
@@ -13,6 +14,7 @@ import java.util.Date;
 import java.util.List;
 
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
 public class Series extends DatabaseModel implements FifaEvent {
@@ -29,6 +31,8 @@ public class Series extends DatabaseModel implements FifaEvent {
     private int matchesPlayed;
     private int bestOf;
 
+    @Setter private Team teamWinner;
+    @Setter private Team teamLoser;
     @JsonIgnore private Friend playerOne;
     @JsonIgnore private Friend playerTwo;
     @JsonIgnore private int playerOneWins;

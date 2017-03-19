@@ -90,6 +90,10 @@ public class CreateSeriesActivity extends BasePlayerActivity implements OnSeries
                 mEventManager.startNewFlow(getFriend());
                 return true;
             case R.id.menu_item_complete_series :
+                if (!isSeriesTeamsSet()) {
+                    ToastUtils.showShortToast(this, R.string.error_select_teams);
+                    return true;
+                }
                 uploadSeries();
                 return true;
             case android.R.id.home :
@@ -98,6 +102,10 @@ public class CreateSeriesActivity extends BasePlayerActivity implements OnSeries
             default :
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    private boolean isSeriesTeamsSet() {
+        return (mSeries != null && mSeries.getTeamWinner() != null && mSeries.getTeamLoser() != null);
     }
 
     private void uploadSeries() {

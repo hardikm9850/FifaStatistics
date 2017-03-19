@@ -50,6 +50,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toStartOf="@id/penalties"
+            android:layout_marginEnd="@dimen/activity_horizontal_margin"
             android:gravity="center"
             android:textAppearance="@{appearance}"
             android:text="@{goals}"/>

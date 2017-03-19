@@ -1,5 +1,6 @@
 package com.example.kevin.fifastatistics.fragments;
 
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -9,10 +10,12 @@ import android.view.ViewGroup;
 
 import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.activities.FifaBaseActivity;
+import com.example.kevin.fifastatistics.activities.PickTeamActivity;
 import com.example.kevin.fifastatistics.databinding.FragmentCreateSeriesMatchListBinding;
 import com.example.kevin.fifastatistics.interfaces.OnMatchCreatedListener;
 import com.example.kevin.fifastatistics.interfaces.OnSeriesCompletedListener;
 import com.example.kevin.fifastatistics.interfaces.OnSeriesScoreUpdateListener;
+import com.example.kevin.fifastatistics.models.databasemodels.league.Team;
 import com.example.kevin.fifastatistics.models.databasemodels.match.Match;
 import com.example.kevin.fifastatistics.models.databasemodels.user.Friend;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
@@ -21,6 +24,8 @@ import com.robinhood.ticker.TickerUtils;
 import com.robinhood.ticker.TickerView;
 
 public class CreateSeriesMatchListFragment extends FifaBaseFragment implements OnMatchCreatedListener {
+
+    public static final int CREATE_SERIES_REQUEST_CODE = 5313;
 
     private User mUser;
     private Friend mOpponent;
@@ -42,7 +47,8 @@ public class CreateSeriesMatchListFragment extends FifaBaseFragment implements O
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mListViewModel = new CreateSeriesMatchListViewModel((FifaBaseActivity) getActivity(), mUser, mOpponent, mSeriesUpdateListener, mSeriesCompletedListener);
+        mListViewModel = new CreateSeriesMatchListViewModel((FifaBaseActivity) getActivity(), mUser, mOpponent,
+                mSeriesUpdateListener, mSeriesCompletedListener, this);
     }
 
     @Nullable
@@ -73,6 +79,14 @@ public class CreateSeriesMatchListFragment extends FifaBaseFragment implements O
                 mOpponentTicker.setText(String.valueOf(newScore));
             }
         };
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == CREATE_SERIES_REQUEST_CODE && resultCode == PickTeamActivity.RESULT_TEAM_PICKED) {
+            Team team = (Team) data.getExtras().getSerializable(PickTeamActivity.EXTRA_TEAM);
+            mListViewModel.onTeamSelected(team);
+        }
     }
 
     @Override
