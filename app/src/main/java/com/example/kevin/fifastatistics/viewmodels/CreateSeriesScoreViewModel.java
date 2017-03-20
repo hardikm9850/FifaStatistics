@@ -21,7 +21,6 @@ import com.example.kevin.fifastatistics.models.databasemodels.user.Player;
 import com.example.kevin.fifastatistics.utils.ObservableUtils;
 
 import rx.Observable;
-import rx.Subscriber;
 
 public class CreateSeriesScoreViewModel extends BaseObservable implements OnMatchUpdatedListener, OnTeamSelectedListener {
 
@@ -143,5 +142,10 @@ public class CreateSeriesScoreViewModel extends BaseObservable implements OnMatc
                 incrementOpponentWins();
             }
         }
+    }
+
+    @Override
+    public void setMatchIndex(int index) {
+
     }
 }

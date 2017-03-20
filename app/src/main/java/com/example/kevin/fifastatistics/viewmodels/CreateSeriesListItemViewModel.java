@@ -24,7 +24,6 @@ public class CreateSeriesListItemViewModel extends BaseObservable {
     private Friend mOpponent;
     private FifaBaseActivity mActivity;
     private AddMatchDialogFragment mDialogFragment;
-    private OnMatchCreatedListener mOnMatchCreatedListener;
     private List<OnMatchUpdatedListener> mOnMatchUpdatedListeners;
     private int mMatchNumber;
 
@@ -35,19 +34,16 @@ public class CreateSeriesListItemViewModel extends BaseObservable {
         mOpponent = opponent;
         mMatchNumber = matchNumber;
         mOnMatchUpdatedListeners = listeners;
-        mOnMatchCreatedListener = initializeMatchCreatedListener();
     }
 
-    private OnMatchCreatedListener initializeMatchCreatedListener() {
-        return (match -> {
-            Match oldMatch = mMatch;
-            setMatch(match);
-            if (mDialogFragment != null) {
-                mDialogFragment.dismiss();
-                mActivity.setOnBackPressHandler(null);
-            }
-            notifyMatchUpdatedListeners(oldMatch, match);
-        });
+    public void onMatchUpdated(Match match) {
+        Match oldMatch = mMatch;
+        setMatch(match);
+        if (mDialogFragment != null) {
+            mDialogFragment.dismiss();
+            mActivity.setOnBackPressHandler(null);
+        }
+        notifyMatchUpdatedListeners(oldMatch, match);
     }
 
     private void notifyMatchUpdatedListeners(Match oldMatch, Match newMatch) {
@@ -57,12 +53,19 @@ public class CreateSeriesListItemViewModel extends BaseObservable {
     }
 
     public void onItemClicked() {
+        notifyUpdating();
         FragmentTransaction t = mActivity.getSupportFragmentManager().beginTransaction();
         t.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-        mDialogFragment = AddMatchDialogFragment.newInstance(mUser, mOpponent, mOnMatchCreatedListener, mActivity);
+        mDialogFragment = AddMatchDialogFragment.newInstance(mUser, mOpponent);
         mDialogFragment.setMatch(mMatch);
         mActivity.setOnBackPressHandler(mDialogFragment);
         t.add(android.R.id.content, mDialogFragment).addToBackStack(null).commit();
+    }
+
+    private void notifyUpdating() {
+        for (OnMatchUpdatedListener listener : mOnMatchUpdatedListeners) {
+            listener.setMatchIndex(mMatchNumber -1);
+        }
     }
 
     public void setMatch(Match match) {

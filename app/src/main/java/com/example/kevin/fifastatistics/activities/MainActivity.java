@@ -13,9 +13,11 @@ import com.example.kevin.fifastatistics.adapters.FragmentAdapter;
 import com.example.kevin.fifastatistics.fragments.initializers.FragmentInitializer;
 import com.example.kevin.fifastatistics.fragments.initializers.FragmentInitializerFactory;
 import com.example.kevin.fifastatistics.interfaces.OnBackPressedHandler;
+import com.example.kevin.fifastatistics.interfaces.OnMatchCreatedListener;
 import com.example.kevin.fifastatistics.managers.FifaEventManager;
 import com.example.kevin.fifastatistics.managers.RetrievalManager;
 import com.example.kevin.fifastatistics.managers.SharedPreferencesManager;
+import com.example.kevin.fifastatistics.models.databasemodels.match.Match;
 import com.example.kevin.fifastatistics.models.databasemodels.user.Player;
 import com.example.kevin.fifastatistics.utils.ColorUtils;
 import com.example.kevin.fifastatistics.utils.FabFactory;
@@ -30,10 +32,9 @@ import java.util.concurrent.TimeUnit;
 import rx.Observable;
 import rx.Subscription;
 
-public class MainActivity extends FifaBaseActivity {
+public class MainActivity extends FifaBaseActivity implements OnMatchCreatedListener {
 
     public static final String PAGE_EXTRA = "page";
-    public static final String FRAGMENT_EXTRA = "fragment";
 
     private View mCoordinatorLayout;
     private Toolbar mToolbar;
@@ -179,6 +180,13 @@ public class MainActivity extends FifaBaseActivity {
         mActionMenu.setMenuButtonColorNormal(mColor);
         mActionMenu.setMenuButtonColorPressed(mColor);
         mActionMenu.getMenuIconView().setImageDrawable(ColorUtils.getTintedDrawable(R.drawable.ic_add_white_24dp, mColor));
+    }
+
+    @Override
+    public void onMatchCreated(Match match) {
+        if (mEventManager != null) {
+            mEventManager.onMatchCreated(match);
+        }
     }
 
     @Override

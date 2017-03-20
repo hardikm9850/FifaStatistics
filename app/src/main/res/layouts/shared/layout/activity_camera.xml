@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:camerakit="http://schemas.android.com/apk/res-auto">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <FrameLayout
+            android:id="@+id/shutter_container"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentEnd="true"
+            android:background="@color/colorPrimary">
+
+            <ImageButton
+                android:id="@+id/shutter"
+                android:contentDescription="@string/camera_button_description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="@dimen/shutter_button_margin"
+                android:src="@drawable/ic_camera_alt_white_24dp"/>
+
+        </FrameLayout>
+
+        <com.flurgle.camerakit.CameraView
+            android:id="@+id/camera"
+            android:layout_width="440dp"
+            android:layout_height="242dp"
+            android:layout_centerVertical="true"
+            android:layout_toStartOf="@id/shutter_container"
+            android:layout_marginEnd="70dp"
+            camerakit:ckJpegQuality="100"
+            camerakit:ckCropOutput="true"
+            camerakit:ckFocus="tap"/>
+
+    </RelativeLayout>
+
+</layout>

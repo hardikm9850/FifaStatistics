@@ -10,6 +10,7 @@ import com.android.databinding.library.baseAdapters.BR;
 import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.activities.FifaBaseActivity;
 import com.example.kevin.fifastatistics.interfaces.ActivityLauncher;
+import com.example.kevin.fifastatistics.interfaces.OnMatchCreatedListener;
 import com.example.kevin.fifastatistics.interfaces.OnMatchUpdatedListener;
 import com.example.kevin.fifastatistics.interfaces.OnSeriesCompletedListener;
 import com.example.kevin.fifastatistics.interfaces.OnSeriesScoreUpdateListener;
@@ -20,6 +21,7 @@ import com.example.kevin.fifastatistics.models.databasemodels.match.Match;
 import com.example.kevin.fifastatistics.models.databasemodels.match.Series;
 import com.example.kevin.fifastatistics.models.databasemodels.user.Friend;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
+import com.example.kevin.fifastatistics.utils.CollectionUtils;
 import com.example.kevin.fifastatistics.utils.ObservableUtils;
 
 import java.util.ArrayList;
@@ -29,7 +31,7 @@ import java.util.List;
 import me.tatarka.bindingcollectionadapter.ItemView;
 import rx.Observable;
 
-public class CreateSeriesMatchListViewModel extends BaseObservable implements OnMatchUpdatedListener, OnTeamSelectedListener {
+public class CreateSeriesMatchListViewModel extends BaseObservable implements OnMatchUpdatedListener, OnTeamSelectedListener, OnMatchCreatedListener {
 
     private final ObservableList<CreateSeriesListItemViewModel> mItems;
     private final ItemView mItemView;
@@ -43,6 +45,7 @@ public class CreateSeriesMatchListViewModel extends BaseObservable implements On
     private int mUserWins;
     private int mOpponentWins;
     private int mMaxSeriesLength;
+    private int mUpdatedMatchIndex;
     private boolean mIsSeriesDone;
 
     public CreateSeriesMatchListViewModel(FifaBaseActivity activity, User user, Friend opponent, OnSeriesScoreUpdateListener scoreUpdateListener,
@@ -55,6 +58,7 @@ public class CreateSeriesMatchListViewModel extends BaseObservable implements On
         mSeriesScoreViewModel = new CreateSeriesScoreViewModel(user, opponent, scoreUpdateListener, activity, launcher);
         mOnSeriesCompletedListener = seriesCompletedListener;
         mMaxSeriesLength = Series.DEFAULT_MAX_SERIES_LENGTH;
+        mUpdatedMatchIndex = -1;
         mOnMatchUpdateListeners = Arrays.asList(mSeriesScoreViewModel, this);
     }
 
@@ -159,6 +163,22 @@ public class CreateSeriesMatchListViewModel extends BaseObservable implements On
         if (mIsSeriesDone) {
             mOnSeriesCompletedListener.onSeriesCompleted(getSeries());
         }
+    }
+
+    @Override
+    public void onMatchCreated(Match match) {
+        if (mUpdatedMatchIndex >= 0) {
+            if (mUpdatedMatchIndex < CollectionUtils.getSize(mItems)) {
+                mItems.get(mUpdatedMatchIndex).onMatchUpdated(match);
+            }
+        } else {
+            add(match);
+        }
+    }
+
+    @Override
+    public void setMatchIndex(int index) {
+        mUpdatedMatchIndex = index;
     }
 
     public ObservableList<CreateSeriesListItemViewModel> getItems() {

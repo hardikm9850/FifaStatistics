@@ -1,13 +1,14 @@
 package com.example.kevin.fifastatistics.fragments;
 
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -17,6 +18,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 
 import com.example.kevin.fifastatistics.R;
+import com.example.kevin.fifastatistics.activities.CameraActivity;
 import com.example.kevin.fifastatistics.interfaces.MatchFactsPreprocessor;
 import com.example.kevin.fifastatistics.interfaces.OnBackPressedHandler;
 import com.example.kevin.fifastatistics.interfaces.OnMatchCreatedListener;
@@ -26,6 +28,7 @@ import com.example.kevin.fifastatistics.models.databasemodels.match.Penalties;
 import com.example.kevin.fifastatistics.models.databasemodels.user.Friend;
 import com.example.kevin.fifastatistics.models.databasemodels.user.Player;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
+import com.example.kevin.fifastatistics.utils.ByteHolder;
 import com.example.kevin.fifastatistics.utils.MatchUtils;
 import com.example.kevin.fifastatistics.utils.ObservableUtils;
 import com.example.kevin.fifastatistics.utils.ResourceUtils;
@@ -36,6 +39,8 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.io.IOException;
 
+import rx.Observable;
+import rx.Observer;
 import rx.Subscription;
 
 /**
@@ -43,15 +48,15 @@ import rx.Subscription;
  * <p>
  * See https://developer.android.com/guide/topics/ui/dialogs.html#FullscreenDialog for details.
  */
-public class AddMatchDialogFragment extends FifaBaseDialogFragment
-        implements CameraFragment.ImageCaptureListener, OnBackPressedHandler, CameraFragment.CameraFragmentClosedListener {
+public class AddMatchDialogFragment extends FifaBaseDialogFragment implements OnBackPressedHandler {
+
+    private static final int ADD_MATCH_REQUEST_CODE = 466;
 
     private ImageLoader mImageLoader;
-    private AppCompatActivity mActivity;
+    private FragmentActivity mActivity;
     private Match mMatch;
     private User mUser;
     private Player mOpponent;
-    private Fragment mCameraFragment;
     private OnMatchCreatedListener mListener;
     private AddMatchListLayout mAddMatchList;
     private ImageView mLeftImage;
@@ -59,26 +64,46 @@ public class AddMatchDialogFragment extends FifaBaseDialogFragment
 
     private int mOldStatusBarColor;
     private boolean mDidSwapSides;
-    private boolean mIsCameraFragmentOpen;
 
-    public static AddMatchDialogFragment newInstance(User user, Player opponent, OnMatchCreatedListener listener,
-                                                     AppCompatActivity activity) {
+    public static AddMatchDialogFragment newInstance(User user, Player opponent) {
         AddMatchDialogFragment fragment = new AddMatchDialogFragment();
-        fragment.mUser = user;
-        fragment.mOpponent = opponent;
-        fragment.mListener = listener;
-        fragment.mImageLoader = ImageLoader.getInstance();
-        fragment.mActivity = activity;
-
+        Bundle args = new Bundle();
+        args.putSerializable(USER, user);
+        args.putSerializable(OPPONENT, opponent);
+        fragment.setArguments(args);
         return fragment;
     }
 
-    private void showConfirmationDialog() {
-        AlertDialog dialog = new AlertDialog.Builder(mActivity).create();
-        dialog.setMessage("Are you sure you want to discard this match?");
-        dialog.setButton(AlertDialog.BUTTON_POSITIVE, "KEEP EDITING", (d, w) -> dialog.dismiss());
-        dialog.setButton(AlertDialog.BUTTON_NEGATIVE, "DISCARD", (d, w) -> dismiss());
-        dialog.show();
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof OnMatchCreatedListener) {
+            mListener = (OnMatchCreatedListener) context;
+        }
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (savedInstanceState != null) {
+            initFromBundle(savedInstanceState);
+        } else {
+            initFromBundle(getArguments());
+        }
+    }
+
+    private void initFromBundle(Bundle bundle) {
+        mImageLoader = ImageLoader.getInstance();
+        mActivity = getActivity();
+        mUser = (User) bundle.getSerializable(USER);
+        mOpponent = (Player) bundle.getSerializable(OPPONENT);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putSerializable(USER, mUser);
+        outState.putSerializable(OPPONENT, mOpponent);
     }
 
     @Override
@@ -90,7 +115,6 @@ public class AddMatchDialogFragment extends FifaBaseDialogFragment
         initializeAddMatchList(view);
         initializeSwitchSidesButton(view);
         setStatusBarColor();
-
         view = maybeAddPaddingToTop(view);
         return view;
     }
@@ -154,11 +178,13 @@ public class AddMatchDialogFragment extends FifaBaseDialogFragment
     private void onCameraItemClick() {
         System.gc(); // want to clear memory before heavy bitmap operations
         UiUtils.hideKeyboard(mActivity);
-        FragmentTransaction t = mActivity.getSupportFragmentManager().beginTransaction();
-        t.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-        mCameraFragment = CameraFragment.newInstance(this, this);
-        t.add(android.R.id.content, mCameraFragment).addToBackStack(null).commit();
-        mIsCameraFragmentOpen = true;
+//        FragmentTransaction t = mActivity.getSupportFragmentManager().beginTransaction();
+//        t.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+//        mCameraFragment = CameraFragment.newInstance(this, this);
+//        t.add(android.R.id.content, mCameraFragment).addToBackStack(null).commit();
+//        mIsCameraFragmentOpen = true;
+        Intent intent = new Intent(mActivity, CameraActivity.class);
+        startActivityForResult(intent, ADD_MATCH_REQUEST_CODE);
     }
 
     private void onDoneItemClick() {
@@ -181,6 +207,15 @@ public class AddMatchDialogFragment extends FifaBaseDialogFragment
             dismiss();
         }
     }
+
+    private void showConfirmationDialog() {
+        AlertDialog dialog = new AlertDialog.Builder(mActivity).create();
+        dialog.setMessage("Are you sure you want to discard this match?");
+        dialog.setButton(AlertDialog.BUTTON_POSITIVE, "KEEP EDITING", (d, w) -> dialog.dismiss());
+        dialog.setButton(AlertDialog.BUTTON_NEGATIVE, "DISCARD", (d, w) -> dismiss());
+        dialog.show();
+    }
+
 
     private Match buildMatch(User.StatsPair stats) {
         Penalties penalties = mAddMatchList.getPenalties();
@@ -270,18 +305,45 @@ public class AddMatchDialogFragment extends FifaBaseDialogFragment
     }
 
     @Override
-    public void onImageCapture(Bitmap bitmap, MatchFactsPreprocessor preprocessor) {
-        closeCameraFragment();
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == ADD_MATCH_REQUEST_CODE && resultCode == CameraActivity.PICTURE_TAKEN_RESULT_CODE) {
+            byte[] picture = ByteHolder.getImage();
+            String preprocessor = data.getStringExtra(CameraActivity.EXTRA_PREPROCESSOR);
+            onImageCapture(picture, CameraActivity.Preprocessor.valueOf(preprocessor).getPreprocessor());
+        }
+    }
+
+    private void onImageCapture(final byte[] picture, final MatchFactsPreprocessor preprocessor) {
         ProgressDialog dialog = showProcessingDialog();
-        Subscription bitmapSub = preprocessor.processBitmap(bitmap)
+        Subscription sub = Observable.<Bitmap>create(s -> {
+            Bitmap result = BitmapFactory.decodeByteArray(picture, 0, picture.length);
+            s.onNext(result);
+        })
+                .flatMap(preprocessor::processBitmap)
                 .map(this::getMatchFacts)
                 .compose(ObservableUtils.applySchedulers())
-                .subscribe(facts -> {
-                    maybeSetListValues(facts);
-                    dialog.cancel();
-                    System.gc(); // cleanup bitmap memory
-        });
-        addSubscription(bitmapSub);
+                .subscribe(getStatsObserver(dialog));
+        addSubscription(sub);
+    }
+
+    private Observer<User.StatsPair> getStatsObserver(ProgressDialog dialog) {
+        return new ObservableUtils.EmptyOnCompleteObserver<User.StatsPair>() {
+            @Override
+            public void onError(Throwable e) {
+                ByteHolder.dispose();
+                dialog.cancel();
+                onOcrError();
+                System.gc();
+            }
+
+            @Override
+            public void onNext(User.StatsPair statsPair) {
+                ByteHolder.dispose();
+                maybeSetListValues(statsPair);
+                dialog.cancel();
+                System.gc(); // cleanup bitmap memory
+            }
+        };
     }
 
     private ProgressDialog showProcessingDialog() {
@@ -306,28 +368,21 @@ public class AddMatchDialogFragment extends FifaBaseDialogFragment
         if (facts != null) {
             mAddMatchList.setValues(facts);
         } else {
-            ToastUtils.showShortToast(mActivity, "Failed to parse image.");
+            onOcrError();
         }
+    }
+
+    private void onOcrError() {
+        ToastUtils.showShortToast(mActivity, "Failed to parse image.");
     }
 
     @Override
     public boolean handleBackPress() {
-        if (mAddMatchList.isEdited() && !mIsCameraFragmentOpen) {
+        if (mAddMatchList.isEdited()) {
             showConfirmationDialog();
             return true;
         } else {
             return false;
-        }
-    }
-
-    @Override
-    public void onCameraFragmentClosed() {
-        mIsCameraFragmentOpen = false;
-    }
-
-    private void closeCameraFragment() {
-        if (mCameraFragment != null) {
-            UiUtils.removeFragmentFromBackstack(mActivity, mCameraFragment);
         }
     }
 }

@@ -6,14 +6,19 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
 
+import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.adapters.ImageListAdapter;
 import com.example.kevin.fifastatistics.managers.RetrievalManager;
 import com.example.kevin.fifastatistics.models.databasemodels.user.Player;
+import com.example.kevin.fifastatistics.models.databasemodels.user.User;
+import com.example.kevin.fifastatistics.utils.ObservableUtils;
+import com.example.kevin.fifastatistics.utils.ToastUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import lombok.NoArgsConstructor;
+import rx.Observer;
 
 /**
  * Dialog for selecting an opponent to play against when playing a new series or match.
@@ -48,10 +53,23 @@ public class SelectOpponentDialogFragment extends FifaBaseDialogFragment {
 
     private void initAdapter() {
         mAdapter = new ImageListAdapter(getActivity(), mPlayers);
-        RetrievalManager.getUsersWithoutCurrentUser().subscribe(users -> {
-            mPlayers = users;
-            mAdapter.setPlayers(users);
-        });
+        RetrievalManager.getUsersWithoutCurrentUser().subscribe(getUserObserver());
+    }
+
+    private Observer<List<User>> getUserObserver() {
+        return new ObservableUtils.EmptyOnCompleteObserver<List<User>>() {
+            @Override
+            public void onError(Throwable e) {
+                dismiss();
+                ToastUtils.showShortToast(getActivity(), R.string.error_loading_players);
+            }
+
+            @Override
+            public void onNext(List<User> users) {
+                mPlayers = users;
+                mAdapter.setPlayers(users);
+            }
+        };
     }
 
     public void show(FragmentManager manager) {

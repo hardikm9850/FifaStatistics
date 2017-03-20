@@ -10,10 +10,12 @@ import android.view.View;
 
 import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.fragments.CreateSeriesMatchListFragment;
+import com.example.kevin.fifastatistics.interfaces.OnMatchCreatedListener;
 import com.example.kevin.fifastatistics.interfaces.OnSeriesCompletedListener;
 import com.example.kevin.fifastatistics.managers.FifaEventManager;
 import com.example.kevin.fifastatistics.managers.RetrievalManager;
 import com.example.kevin.fifastatistics.managers.SharedPreferencesManager;
+import com.example.kevin.fifastatistics.models.databasemodels.match.Match;
 import com.example.kevin.fifastatistics.models.databasemodels.match.Series;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
 import com.example.kevin.fifastatistics.network.CreateFailedException;
@@ -22,7 +24,7 @@ import com.example.kevin.fifastatistics.utils.ToastUtils;
 
 import rx.Subscription;
 
-public class CreateSeriesActivity extends BasePlayerActivity implements OnSeriesCompletedListener {
+public class CreateSeriesActivity extends BasePlayerActivity implements OnSeriesCompletedListener, OnMatchCreatedListener {
 
     private Toolbar mToolbar;
     private FifaEventManager mEventManager;
@@ -87,6 +89,7 @@ public class CreateSeriesActivity extends BasePlayerActivity implements OnSeries
         switch (item.getItemId()) {
             case R.id.menu_item_add_match :
                 setOnBackPressHandler(mEventManager);
+                mFragment.notifyCreatingNewMatch();
                 mEventManager.startNewFlow(getFriend());
                 return true;
             case R.id.menu_item_complete_series :
@@ -149,6 +152,13 @@ public class CreateSeriesActivity extends BasePlayerActivity implements OnSeries
             // TODO
         });
         dialog.show();
+    }
+
+    @Override
+    public void onMatchCreated(Match match) {
+        if (mFragment != null) {
+            mFragment.onMatchCreated(match);
+        }
     }
 
     @Override

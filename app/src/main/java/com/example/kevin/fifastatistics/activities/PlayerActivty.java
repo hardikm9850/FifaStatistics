@@ -11,8 +11,10 @@ import com.example.kevin.fifastatistics.adapters.FragmentAdapter;
 import com.example.kevin.fifastatistics.databinding.ActivityPlayerBinding;
 import com.example.kevin.fifastatistics.fragments.PlayerOverviewFragment;
 import com.example.kevin.fifastatistics.fragments.SecondFragment;
+import com.example.kevin.fifastatistics.interfaces.OnMatchCreatedListener;
 import com.example.kevin.fifastatistics.managers.FifaEventManager;
 import com.example.kevin.fifastatistics.managers.RetrievalManager;
+import com.example.kevin.fifastatistics.models.databasemodels.match.Match;
 import com.example.kevin.fifastatistics.models.databasemodels.user.Friend;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
 import com.example.kevin.fifastatistics.utils.ColorUtils;
@@ -21,7 +23,7 @@ import com.example.kevin.fifastatistics.utils.TransitionUtils;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 
-public class PlayerActivty extends BasePlayerActivity implements PlayerOverviewFragment.OnPlayerFragmentInteractionListener {
+public class PlayerActivty extends BasePlayerActivity implements PlayerOverviewFragment.OnPlayerFragmentInteractionListener, OnMatchCreatedListener {
 
     public static final String EXTRA_ENTERED_FROM_SEARCH_BAR = "enteredFromSearch";
 
@@ -29,6 +31,7 @@ public class PlayerActivty extends BasePlayerActivity implements PlayerOverviewF
     private Toolbar mToolbar;
     private FloatingActionMenu mFam;
     private User mCurrentUser;
+    private FifaEventManager mManager;
     private boolean mDidEnterFromSearch;
 
     @Override
@@ -85,28 +88,28 @@ public class PlayerActivty extends BasePlayerActivity implements PlayerOverviewF
     }
 
     private void initializeFamForFriend(FabFactory factory, Friend friend) {
-        FifaEventManager manager = FifaEventManager.newInstance(this, mCurrentUser);
-        initializeAddMatchButton(factory, manager, friend);
-        initializeAddSeriesButton(factory, manager, friend);
+        mManager = FifaEventManager.newInstance(this, mCurrentUser);
+        initializeAddMatchButton(factory, friend);
+        initializeAddSeriesButton(factory, friend);
     }
 
-    private void initializeAddMatchButton(FabFactory factory, FifaEventManager manager, Friend friend) {
+    private void initializeAddMatchButton(FabFactory factory, Friend friend) {
         FloatingActionButton matchButton = factory.createPlayMatchFab();
         matchButton.setOnClickListener(l -> {
             mFam.close(true);
-            setOnBackPressHandler(manager);
-            manager.setMatchFlow();
-            manager.startNewFlow(friend);
+            setOnBackPressHandler(mManager);
+            mManager.setMatchFlow();
+            mManager.startNewFlow(friend);
         });
         mFam.addMenuButton(matchButton);
     }
 
-    private void initializeAddSeriesButton(FabFactory factory, FifaEventManager manager, Friend friend) {
+    private void initializeAddSeriesButton(FabFactory factory, Friend friend) {
         FloatingActionButton seriesButton = factory.createPlaySeriesFab();
         seriesButton.setOnClickListener(l -> {
             mFam.close(true);
-            manager.setSeriesFlow();
-            manager.startNewFlow(friend);
+            mManager.setSeriesFlow();
+            mManager.startNewFlow(friend);
         });
         mFam.addMenuButton(seriesButton);
     }
@@ -133,13 +136,18 @@ public class PlayerActivty extends BasePlayerActivity implements PlayerOverviewF
         if (mDidEnterFromSearch) {
             finish();
         } else {
-            supportFinishAfterTransition();
+            finishAfterTransition();
         }
     }
 
     @Override
     public void onPlayerFragmentInteraction(User user) {
 
+    }
+
+    @Override
+    public void onMatchCreated(Match match) {
+        mManager.onMatchCreated(match);
     }
 
     @Override

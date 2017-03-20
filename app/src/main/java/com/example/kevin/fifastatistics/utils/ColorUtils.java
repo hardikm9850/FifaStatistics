@@ -6,11 +6,21 @@ import android.graphics.drawable.Drawable;
 import android.support.annotation.ColorInt;
 import android.support.annotation.DrawableRes;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.graphics.drawable.DrawableCompat;
 import android.widget.ProgressBar;
 
 import com.example.kevin.fifastatistics.FifaApplication;
 
 public class ColorUtils {
+
+    private static final int LIGHT_TINT;
+    private static final int DARK_TINT;
+
+    static {
+        Context context = FifaApplication.getContext();
+        LIGHT_TINT = ContextCompat.getColor(context, android.R.color.white);
+        DARK_TINT = ContextCompat.getColor(context, android.R.color.secondary_text_light);
+    }
 
     public static void setProgressBarColor(ProgressBar progressBar, @ColorInt int color) {
         progressBar.getIndeterminateDrawable().setColorFilter(color, android.graphics.PorterDuff.Mode.SRC_ATOP);
@@ -25,12 +35,15 @@ public class ColorUtils {
         Context context = FifaApplication.getContext();
         Drawable icon = context.getDrawable(drawable);
         if (icon != null) {
+            icon = DrawableCompat.wrap(icon);
             if (!ColorUtils.isColorDark(color)) {
-                icon.setTint(ContextCompat.getColor(context, android.R.color.secondary_text_light));
+                DrawableCompat.setTint(icon.mutate(), DARK_TINT);
             } else {
-                icon.setTint(ContextCompat.getColor(context, android.R.color.white));
+                DrawableCompat.setTint(icon.mutate(), LIGHT_TINT);
             }
+            return icon;
+        } else {
+            return null;
         }
-        return icon;
     }
 }

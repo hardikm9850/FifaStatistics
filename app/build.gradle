@@ -93,6 +93,7 @@ dependencies {
     compile 'com.h6ah4i.android.materialshadowninepatch:materialshadowninepatch:0.6.5'
     compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
     compile 'com.rmtheis:tess-two:6.0.4'
+    compile 'com.flurgle:camerakit:0.9.15'
 
     // API (HTTP, JSON)
     compile 'com.squareup.okhttp3:okhttp:3.5.0'
@@ -111,8 +112,6 @@ dependencies {
     compile 'com.google.android:flexbox:0.2.5'
     compile 'com.github.fiskurgit:ChipCloud:3.0.3'
     compile 'com.52inc:scoops:1.0.0'
-
-    // Graphs
     compile 'com.diogobernardino:williamchart:2.2'
 
     // Navigation Drawer

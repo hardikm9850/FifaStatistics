@@ -91,7 +91,11 @@ public class CreateSeriesMatchListFragment extends FifaBaseFragment implements O
 
     @Override
     public void onMatchCreated(Match match) {
-        mListViewModel.add(match);
+        mListViewModel.onMatchCreated(match);
+    }
+
+    public void notifyCreatingNewMatch() {
+        mListViewModel.setMatchIndex(-1);
     }
 
     public boolean isSeriesStarted() {

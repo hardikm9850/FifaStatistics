@@ -3,12 +3,13 @@ package com.example.kevin.fifastatistics.fragments;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 
+import com.example.kevin.fifastatistics.interfaces.FragmentArguments;
 import com.example.kevin.fifastatistics.utils.ObservableUtils;
 
 import rx.Subscription;
 import rx.subscriptions.CompositeSubscription;
 
-public abstract class FifaBaseDialogFragment extends DialogFragment {
+public abstract class FifaBaseDialogFragment extends DialogFragment implements FragmentArguments{
 
     private CompositeSubscription mCompositeSubscription;
 

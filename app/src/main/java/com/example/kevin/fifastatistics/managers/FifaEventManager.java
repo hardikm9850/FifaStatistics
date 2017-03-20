@@ -30,7 +30,8 @@ import lombok.RequiredArgsConstructor;
  * Manager for adding new matches and series.
  */
 @RequiredArgsConstructor
-public class FifaEventManager implements SelectOpponentDialogFragment.SelectOpponentListener, OnBackPressedHandler {
+public class FifaEventManager implements SelectOpponentDialogFragment.SelectOpponentListener,
+        OnBackPressedHandler, OnMatchCreatedListener {
 
     private final FifaBaseActivity mActivity;
     private final User mUser;
@@ -80,6 +81,13 @@ public class FifaEventManager implements SelectOpponentDialogFragment.SelectOppo
         return (mFlow != null) && mFlow.handleBackPress();
     }
 
+    @Override
+    public void onMatchCreated(Match match) {
+        if (mFlow instanceof OnMatchCreatedListener) {
+            ((OnMatchCreatedListener) mFlow).onMatchCreated(match);
+        }
+    }
+
     /** Represents the type of flow (Match or Series) */
     private abstract class Flow implements OnBackPressedHandler {
 
@@ -106,22 +114,12 @@ public class FifaEventManager implements SelectOpponentDialogFragment.SelectOppo
 
     private class MatchFlow extends Flow implements ErrorHandler, OnMatchCreatedListener {
 
-        private OnMatchCreatedListener mOnMatchCreatedListener;
         private AddMatchDialogFragment mAddMatchFragment;
         private Player mOpponent;
         private ProgressDialog mMatchUploadingDialog;
 
         MatchFlow(OnMatchCreatedListener listener) {
-            initMatchCreatedListener(listener);
             initProgressDialog();
-        }
-
-        private void initMatchCreatedListener(OnMatchCreatedListener listener) {
-            if (listener == null) {
-                mOnMatchCreatedListener = (this::onSaveMatch);
-            } else {
-                mOnMatchCreatedListener = listener;
-            }
         }
 
         private void initProgressDialog() {
@@ -140,7 +138,7 @@ public class FifaEventManager implements SelectOpponentDialogFragment.SelectOppo
         private AddMatchDialogFragment showAddMatchFragment(FifaBaseActivity parentActivity, Player opponent) {
             FragmentTransaction t = parentActivity.getSupportFragmentManager().beginTransaction();
             t.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-            AddMatchDialogFragment fragment = AddMatchDialogFragment.newInstance(mUser, opponent, mOnMatchCreatedListener, mActivity);
+            AddMatchDialogFragment fragment = AddMatchDialogFragment.newInstance(mUser, opponent);
             t.add(android.R.id.content, fragment).addToBackStack(null).commit();
 
             return fragment;
