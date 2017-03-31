@@ -13,6 +13,7 @@ import com.example.kevin.fifastatistics.interfaces.OnMatchUpdatedListener;
 import com.example.kevin.fifastatistics.interfaces.OnSeriesScoreUpdateListener;
 import com.example.kevin.fifastatistics.interfaces.OnTeamSelectedListener;
 import com.example.kevin.fifastatistics.managers.CrestUrlResizer;
+import com.example.kevin.fifastatistics.managers.RetrievalManager;
 import com.example.kevin.fifastatistics.managers.SharedPreferencesManager;
 import com.example.kevin.fifastatistics.models.databasemodels.league.Team;
 import com.example.kevin.fifastatistics.models.databasemodels.match.Match;
@@ -43,13 +44,28 @@ public class CreateSeriesScoreViewModel extends BaseObservable implements OnMatc
         mContext = context;
         mLauncher = launcher;
         getFavoriteTeam();
+        getOpponentFavoriteTeam();
     }
 
     private void getFavoriteTeam() {
         Observable.<Team>create(s -> s.onNext(SharedPreferencesManager.getFavoriteTeam()))
                 .compose(ObservableUtils.applySchedulers()).subscribe(team -> {
-            mUserTeam = team;
-            notifyPropertyChanged(BR.userTeamImageUrl);
+            if (team != null) {
+                mUserTeam = team;
+                notifyPropertyChanged(BR.userTeamImageUrl);
+            }
+        });
+    }
+
+    private void getOpponentFavoriteTeam() {
+        RetrievalManager.getTeam(mOpponent.getFavoriteTeamId()).subscribe(new ObservableUtils.OnNextObserver<Team>() {
+            @Override
+            public void onNext(Team team) {
+                if (team != null) {
+                    mOpponentTeam = team;
+                    notifyPropertyChanged(BR.opponentTeamImageUrl);
+                }
+            }
         });
     }
 

@@ -1,5 +1,7 @@
 package com.example.kevin.fifastatistics.viewmodels;
 
+import android.util.Log;
+
 import com.example.kevin.fifastatistics.managers.RetrievalManager;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
 import com.example.kevin.fifastatistics.utils.ObservableUtils;
@@ -27,6 +29,7 @@ public class PlayersFragmentViewModel extends ProgressFragmentViewModel {
         return new ObservableUtils.EmptyOnCompleteObserver<List<User>>() {
             @Override
             public void onError(Throwable e) {
+                Log.d("ERROR", Log.getStackTraceString(e));
                 hideProgressBar();
                 if (mListener != null) {
                     mListener.onPlayersLoadFailed();

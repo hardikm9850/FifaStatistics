@@ -8,4 +8,5 @@ public interface Player extends Serializable {
     String getName();
     String getImageUrl();
     String getRegistrationToken();
+    String getFavoriteTeamId();
 }

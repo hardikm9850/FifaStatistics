@@ -43,8 +43,6 @@ public class MainActivity extends FifaBaseActivity implements OnMatchCreatedList
     private TabLayout mTabLayout;
     private ViewPager mViewPager;
     private FloatingActionMenu mActionMenu;
-    private FloatingActionButton mMatchButton;
-    private FloatingActionButton mSeriesButton;
     private FifaEventManager mEventManager;
     private Player mUser;
     private int currentDrawerPosition;
@@ -145,24 +143,24 @@ public class MainActivity extends FifaBaseActivity implements OnMatchCreatedList
     }
 
     private void initializeAddMatchButton(FabFactory factory, FifaEventManager manager) {
-        mMatchButton = factory.createPlayMatchFab();
-        mMatchButton.setOnClickListener(l -> {
+        FloatingActionButton matchButton = factory.createPlayMatchFab();
+        matchButton.setOnClickListener(l -> {
             mActionMenu.close(true);
             setOnBackPressHandler(manager);
             manager.setMatchFlow();
             manager.startNewFlow();
         });
-        mActionMenu.addMenuButton(mMatchButton);
+        mActionMenu.addMenuButton(matchButton);
     }
 
     private void initializeAddSeriesButton(FabFactory factory, FifaEventManager manager) {
-        mSeriesButton = factory.createPlaySeriesFab();
-        mSeriesButton.setOnClickListener(l -> {
+        FloatingActionButton seriesButton = factory.createPlaySeriesFab();
+        seriesButton.setOnClickListener(l -> {
             mActionMenu.close(true);
             manager.setSeriesFlow();
             manager.startNewFlow();
         });
-        mActionMenu.addMenuButton(mSeriesButton);
+        mActionMenu.addMenuButton(seriesButton);
     }
 
     @Override

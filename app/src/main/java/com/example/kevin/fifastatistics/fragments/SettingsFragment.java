@@ -10,12 +10,15 @@ import com.example.kevin.fifastatistics.FifaApplication;
 import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.activities.PickTeamActivity;
 import com.example.kevin.fifastatistics.interfaces.OnTeamSelectedListener;
+import com.example.kevin.fifastatistics.managers.RetrievalManager;
 import com.example.kevin.fifastatistics.managers.SharedPreferencesManager;
 import com.example.kevin.fifastatistics.models.databasemodels.league.Team;
 import com.example.kevin.fifastatistics.utils.EventBus;
 import com.example.kevin.fifastatistics.utils.ObservableUtils;
+import com.example.kevin.fifastatistics.utils.UserUtils;
 
 import rx.Observable;
+import rx.Subscription;
 
 public class SettingsFragment extends PreferenceFragmentCompat implements OnTeamSelectedListener {
 
@@ -23,6 +26,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements OnTeam
 
     private Preference mTeamPreference;
     private EventBus mEventBus;
+    private Subscription mUpdateTeamSubscription;
 
     public static SettingsFragment newInstance() {
         return new SettingsFragment();
@@ -50,9 +54,17 @@ public class SettingsFragment extends PreferenceFragmentCompat implements OnTeam
     }
 
     private void setFavoriteTeamSummary() {
-        Observable.just(SharedPreferencesManager.getFavoriteTeam())
+        Observable.<Team>create(subscriber -> subscriber.onNext(SharedPreferencesManager.getFavoriteTeam()))
                 .compose(ObservableUtils.applySchedulers())
                 .subscribe(team -> mTeamPreference.setSummary(team != null ? team.getShortName() : null));
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (mUpdateTeamSubscription != null) {
+            mUpdateTeamSubscription.unsubscribe();
+        }
     }
 
     @Override
@@ -66,8 +78,16 @@ public class SettingsFragment extends PreferenceFragmentCompat implements OnTeam
     @Override
     public void onTeamSelected(Team team) {
         SharedPreferencesManager.setFavoriteTeam(team);
+        syncFavoriteTeamWithServer(team);
         setFavoriteTeamSummary();
         updateColors(team);
+    }
+
+    @SuppressWarnings("unchecked")
+    private void syncFavoriteTeamWithServer(final Team team) {
+        mUpdateTeamSubscription = RetrievalManager.getCurrentUser()
+                .flatMap(user -> UserUtils.patchTeam(user, team))
+                .subscribe(ObservableUtils.EMPTY_OBSERVER);
     }
 
     private void updateColors(Team team) {

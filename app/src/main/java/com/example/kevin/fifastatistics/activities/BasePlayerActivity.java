@@ -18,10 +18,14 @@ public abstract class BasePlayerActivity extends FifaBaseActivity {
     /** The registration token of the user */
     public static final String REG_TOKEN_EXTRA = "registrationToken";
 
+    /** The player's favorite team id */
+    public static final String FAVORITE_TEAM_ID_EXTRA = "favoriteTeam";
+
     private String mPlayerId;
     private String mName;
     private String mImageUrl;
     private String mRegToken;
+    private String mFavoriteTeamId;
     private Friend mFriend;
 
     @Override
@@ -35,27 +39,33 @@ public abstract class BasePlayerActivity extends FifaBaseActivity {
         mName = getIntent().getStringExtra(NAME_EXTRA);
         mImageUrl = getIntent().getStringExtra(IMAGE_URL_EXTRA);
         mRegToken = getIntent().getStringExtra(REG_TOKEN_EXTRA);
+        mFavoriteTeamId = getIntent().getStringExtra(FAVORITE_TEAM_ID_EXTRA);
     }
 
-    public String getPlayerId() {
+    protected String getPlayerId() {
         return mPlayerId;
     }
 
-    public String getName() {
+    protected String getName() {
         return mName;
     }
 
-    public String getImageUrl() {
+    protected String getImageUrl() {
         return mImageUrl;
     }
 
-    public String getRegToken() {
+    protected String getRegToken() {
         return mRegToken;
+    }
+
+    protected String getFavoriteTeamId() {
+        return mFavoriteTeamId;
     }
 
     public Friend getFriend() {
         if (mFriend == null) {
-            mFriend = Friend.builder().id(mPlayerId).imageUrl(mImageUrl).name(mName).registrationToken(mRegToken).build();
+            mFriend = Friend.builder().id(mPlayerId).imageUrl(mImageUrl).name(mName)
+                    .registrationToken(mRegToken).favoriteTeamId(mFavoriteTeamId).build();
         }
         return mFriend;
     }

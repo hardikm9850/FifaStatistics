@@ -70,9 +70,8 @@ public class FifaNavigationDrawer {
         mSelectedColor = color;
         User user = SharedPreferencesManager.getUser();
 
-        int incomingRequestsCount = user.getIncomingRequests().size();
         BadgeStyle badgeStyle = initializeBadgeStyle();
-        PrimaryDrawerItem friendsItem = initializeFriendsItem(badgeStyle, incomingRequestsCount);
+        PrimaryDrawerItem friendsItem = initializeFriendsItem(badgeStyle);
         PrimaryDrawerItem matchesItem = initializeMatchesItem();
         PrimaryDrawerItem overviewItem = initializeOverviewItem();
         PrimaryDrawerItem settingsItem = initializeSettingsItem();
@@ -115,7 +114,7 @@ public class FifaNavigationDrawer {
                 .withIcon(R.drawable.ic_assessment_black_24dp);
     }
 
-    private PrimaryDrawerItem initializeFriendsItem(BadgeStyle style, int incomingRequestsCount) {
+    private PrimaryDrawerItem initializeFriendsItem(BadgeStyle style) {
         return getBaseDrawerItem(44)
                 .withName(R.string.players)
                 .withIcon(R.drawable.ic_group_black_24dp)

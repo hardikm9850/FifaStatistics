@@ -3,6 +3,8 @@ package com.example.kevin.fifastatistics.network;
 import com.example.kevin.fifastatistics.models.apiresponses.ApiListResponse;
 import com.example.kevin.fifastatistics.models.databasemodels.match.Series;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
+import com.example.kevin.fifastatistics.models.patches.Patch;
+import com.example.kevin.fifastatistics.models.patches.UserTeamPatch;
 
 import retrofit2.Response;
 import retrofit2.http.Body;
@@ -25,7 +27,6 @@ public interface UserApi {
 
     @GET("users/search/findByName")
     Observable<ApiListResponse<User>> getUsersWithName(@Query("name") String name);
-
 
     @GET("users/search/findByNameStartingWithIgnoreCase")
     Observable<ApiListResponse<User>> getUsersWithNameStartingWith(@Query("name") String name);
@@ -60,5 +61,5 @@ public interface UserApi {
     Observable<Response<Void>> updateUser(@Path("id") String id, @Body User user);
 
     @PATCH("users/{id}")
-    Observable<User> patchUser(@Path("id") String id, @Body String body);
+    Observable<User> patchTeam(@Path("id") String id, @Body UserTeamPatch body);
 }

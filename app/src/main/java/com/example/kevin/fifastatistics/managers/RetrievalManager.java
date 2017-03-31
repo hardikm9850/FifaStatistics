@@ -22,16 +22,12 @@ public class RetrievalManager {
     private static ApiListResponse<League> cachedLeagues;
     private static Map<League, ApiListResponse<Team>> cachedTeams = new HashMap<>();
 
-    /**
-     * Retrieve the user with the specified ID.
-     * TODO error handling
-     */
     public static Observable<User> getUser(String id) {
         return FifaApi.getUserApi().getUser(id).compose(ObservableUtils.applySchedulers());
     }
 
     public static Observable<User> getCurrentUser() {
-        return Observable.just(SharedPreferencesManager.getUser()).compose(ObservableUtils.applySchedulers());
+        return Observable.<User>create(s -> s.onNext(SharedPreferencesManager.getUser())).compose(ObservableUtils.applySchedulers());
     }
 
     public static void syncCurrentUserWithServer() {
@@ -83,6 +79,14 @@ public class RetrievalManager {
                             return team;
                         });
             }
+        }
+    }
+
+    public static Observable<Team> getTeam(final String id) {
+        if (id == null) {
+            return Observable.just(null);
+        } else {
+            return FifaApi.getLeagueApi().getTeam(id).compose(ObservableUtils.applySchedulers());
         }
     }
 }

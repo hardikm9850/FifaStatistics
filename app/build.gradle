@@ -87,6 +87,7 @@ dependencies {
 
     // Lombok
     provided "org.projectlombok:lombok:1.16.8"
+    annotationProcessor "org.projectlombok:lombok:1.16.8"
 
     // Images
     compile 'de.hdodenhof:circleimageview:2.1.0'

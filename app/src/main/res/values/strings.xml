@@ -100,6 +100,7 @@
     <string name="please_wait">Please wait...</string>
     <string name="create_series_failed">Failed to create series</string>
     <string name="create_series_success">Series created successfully.</string>
+    <string name="series_saved">Series saved</string>
 
     <!-- Matches Fragment -->
     <string name="matches_load_failed">Failed to load matches.</string>
@@ -123,6 +124,7 @@
     <string name="friend_request_pending">Friend Request Pending</string>
     <string name="error_loading_players">Failed to load players.</string>
     <string name="error_select_teams">Please select teams</string>
+    <string name="switch_sides">Switch sides</string>
 
     <!-- STATS -->
     <string name="goals">Goals</string>

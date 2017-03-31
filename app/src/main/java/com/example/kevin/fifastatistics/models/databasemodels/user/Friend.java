@@ -21,6 +21,7 @@ public class Friend extends DatabaseModel implements Player
     private final String id;
     private final String name;
     private final String imageUrl;
+    private String favoriteTeamId;
     private int level;
 
     @Setter
@@ -30,22 +31,13 @@ public class Friend extends DatabaseModel implements Player
     public static final class FriendBuilder {
     }
 
-    public static Friend fromUser(User user) {
-        return Friend.builder()
-                .id(user.getId())
-                .imageUrl(user.getImageUrl())
-                .name(user.getName())
-                .registrationToken(user.getRegistrationToken())
-                .level(user.getLevel())
-                .build();
-    }
-
     public static Friend fromPlayer(Player user) {
         return Friend.builder()
                 .id(user.getId())
                 .imageUrl(user.getImageUrl())
                 .name(user.getName())
                 .registrationToken(user.getRegistrationToken())
+                .favoriteTeamId(user.getFavoriteTeamId())
                 .build();
     }
 

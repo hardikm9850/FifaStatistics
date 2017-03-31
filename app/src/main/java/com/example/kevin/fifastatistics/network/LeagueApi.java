@@ -5,6 +5,7 @@ import com.example.kevin.fifastatistics.models.databasemodels.league.League;
 import com.example.kevin.fifastatistics.models.databasemodels.league.Team;
 
 import retrofit2.http.GET;
+import retrofit2.http.Path;
 import retrofit2.http.Url;
 import rx.Observable;
 
@@ -18,4 +19,7 @@ public interface LeagueApi {
 
     @GET
     Observable<ApiListResponse<Team>> getTeams(@Url String url);
+
+    @GET("teams/{id}")
+    Observable<Team> getTeam(@Path("id") String id);
 }

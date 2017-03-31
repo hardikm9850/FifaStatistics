@@ -1,15 +1,28 @@
 package com.example.kevin.fifastatistics.utils;
 
+import android.util.Log;
+
 import lombok.experimental.UtilityClass;
 import rx.Observable;
 import rx.Observer;
-import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 
 @UtilityClass
 public class ObservableUtils {
+
+    public static final Observer EMPTY_OBSERVER = new EmptyOnCompleteObserver() {
+        @Override
+        public void onError(Throwable e) {
+            Log.d("ERROR", Log.getStackTraceString(e));
+        }
+
+        @Override
+        public void onNext(Object o) {
+
+        }
+    };
 
     /**
      * Apply the typical schedulers to an observable. Subscribes on Schedulers.io(), and observers
@@ -24,16 +37,6 @@ public class ObservableUtils {
 
     public static <T> Observable.Transformer<T, T> applyBackground() {
         return observable -> observable.subscribeOn(Schedulers.io())
-                .observeOn(Schedulers.immediate());
-    }
-
-    /**
-     * Apply the schedulers that observe and subscribe on the calling thread.
-     * <p>
-     * Use it inside the compose() method.
-     */
-    public static <T> Observable.Transformer<T, T> applyImmediateSchedulers() {
-        return observable -> observable.subscribeOn(Schedulers.immediate())
                 .observeOn(Schedulers.immediate());
     }
 
@@ -54,4 +57,11 @@ public class ObservableUtils {
         public abstract void onNext(T t);
     }
 
+    public static abstract class OnNextObserver<T> extends EmptyOnCompleteObserver<T> {
+        @Override
+        public final void onError(Throwable e) {};
+
+        @Override
+        public abstract void onNext(T t);
+    }
 }

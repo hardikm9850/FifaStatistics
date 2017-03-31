@@ -30,13 +30,9 @@ public class User extends DatabaseModel implements Player {
     private String email;
     private String googleId;
     private String imageUrl;
-
-    private List<Friend> friends;
-    private List<Friend> incomingRequests;
-    private List<Friend> outgoingRequests;
+    private String favoriteTeamId;
     private List<MatchStub> matches;
     private List<SeriesStub> series;
-
     private StatsPair recordStats;
     private StatsPair averageStats;
     private UserRecords matchRecords;
@@ -59,55 +55,6 @@ public class User extends DatabaseModel implements Player {
         this.imageUrl = imageUrl;
     }
 
-    public void addIncomingRequest(Friend friend) {
-        incomingRequests.add(friend);
-    }
-
-    public void addOutgoingRequest(Friend friend) {
-        outgoingRequests.add(friend);
-    }
-
-    public void acceptIncomingRequest(Friend friend) {
-        incomingRequests.remove(friend);
-        friends.add(friend);
-    }
-
-    public void declineIncomingRequest(Friend friend) {
-        incomingRequests.remove(friend);
-    }
-
-    public void removeOutgoingRequest(Friend friend) {
-        outgoingRequests.remove(friend);
-    }
-
-    public boolean hasIncomingRequestWithId(String id) {
-        return hasFriendWithIdInList(id, incomingRequests);
-    }
-
-    public boolean hasOutgoingRequestWithId(String id) {
-        return hasFriendWithIdInList(id, outgoingRequests);
-    }
-
-    public boolean hasFriendWithId(String id) {
-        return hasFriendWithIdInList(id, friends);
-    }
-
-    private boolean hasFriendWithIdInList(String id, List<Friend> friendList) {
-        for (Friend friend : friendList) {
-            if (friend.getId() != null && friend.getId().equals(id)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public void addFriend(Friend friend) {
-        friends.add(friend);
-    }
-
-    /**
-     * Serializes the user to JSON format.
-     */
     @Override
     public String toString() {
         return SerializationUtils.toJson(this);

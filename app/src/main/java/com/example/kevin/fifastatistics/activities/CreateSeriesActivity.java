@@ -147,9 +147,13 @@ public class CreateSeriesActivity extends BasePlayerActivity implements OnSeries
         AlertDialog dialog = new AlertDialog.Builder(this).create();
         dialog.setMessage(getString(R.string.create_series_exit_confirmation));
         dialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.dialog_keep_editing), (d, w) -> dialog.dismiss());
-        dialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.dialog_discard), (d, w) -> finish());
+        dialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.dialog_discard), (d, w) -> {
+            SharedPreferencesManager.removeCurrentSeries();
+            finish();
+        });
         dialog.setButton(AlertDialog.BUTTON_NEUTRAL, getString(R.string.dialog_save), (d, w) -> {
-            // TODO
+            ToastUtils.showShortToast(this, R.string.series_saved);
+            finish();
         });
         dialog.show();
     }

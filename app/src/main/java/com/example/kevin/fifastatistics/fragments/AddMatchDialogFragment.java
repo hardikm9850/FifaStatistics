@@ -7,7 +7,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -61,8 +60,6 @@ public class AddMatchDialogFragment extends FifaBaseDialogFragment implements On
     private AddMatchListLayout mAddMatchList;
     private ImageView mLeftImage;
     private ImageView mRightImage;
-
-    private int mOldStatusBarColor;
     private boolean mDidSwapSides;
 
     public static AddMatchDialogFragment newInstance(User user, Player opponent) {
@@ -114,7 +111,6 @@ public class AddMatchDialogFragment extends FifaBaseDialogFragment implements On
         initializeRightUserImage(view);
         initializeAddMatchList(view);
         initializeSwitchSidesButton(view);
-        setStatusBarColor();
         view = maybeAddPaddingToTop(view);
         return view;
     }
@@ -128,17 +124,12 @@ public class AddMatchDialogFragment extends FifaBaseDialogFragment implements On
     @Override
     public void onDestroyView() {
         UiUtils.removeFragmentFromBackstack(mActivity, this);
-        resetStatusBarColor();
         System.gc();
         super.onDestroyView();
     }
 
     public void setMatch(Match match) {
         mMatch = match;
-    }
-
-    private void resetStatusBarColor() {
-        mActivity.getWindow().setStatusBarColor(mOldStatusBarColor);
     }
 
     private View maybeAddPaddingToTop(View view) {
@@ -178,11 +169,6 @@ public class AddMatchDialogFragment extends FifaBaseDialogFragment implements On
     private void onCameraItemClick() {
         System.gc(); // want to clear memory before heavy bitmap operations
         UiUtils.hideKeyboard(mActivity);
-//        FragmentTransaction t = mActivity.getSupportFragmentManager().beginTransaction();
-//        t.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-//        mCameraFragment = CameraFragment.newInstance(this, this);
-//        t.add(android.R.id.content, mCameraFragment).addToBackStack(null).commit();
-//        mIsCameraFragmentOpen = true;
         Intent intent = new Intent(mActivity, CameraActivity.class);
         startActivityForResult(intent, ADD_MATCH_REQUEST_CODE);
     }
@@ -224,8 +210,8 @@ public class AddMatchDialogFragment extends FifaBaseDialogFragment implements On
         return Match.builder()
                 .stats(stats)
                 .penalties(penalties)
-                .winner(userDidWin ? Friend.fromUser(mUser) : Friend.fromPlayer(mOpponent))
-                .loser(userDidWin ? Friend.fromPlayer(mOpponent) : Friend.fromUser(mUser))
+                .winner(userDidWin ? Friend.fromPlayer(mUser) : Friend.fromPlayer(mOpponent))
+                .loser(userDidWin ? Friend.fromPlayer(mOpponent) : Friend.fromPlayer(mUser))
                 .build();
     }
 
@@ -254,11 +240,6 @@ public class AddMatchDialogFragment extends FifaBaseDialogFragment implements On
         } else {
             return stats;
         }
-    }
-
-    private void setStatusBarColor() {
-        mOldStatusBarColor = mActivity.getWindow().getStatusBarColor();
-        mActivity.getWindow().setStatusBarColor(ContextCompat.getColor(getContext(), R.color.colorAccentDark));
     }
 
     private void initializeLeftUserImage(View view) {

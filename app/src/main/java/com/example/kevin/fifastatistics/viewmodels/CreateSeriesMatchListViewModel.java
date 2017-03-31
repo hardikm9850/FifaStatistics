@@ -96,7 +96,7 @@ public class CreateSeriesMatchListViewModel extends BaseObservable implements On
 
     private Series getSeries() {
         List<Match> matches = getMatches();
-        Series series = new Series(Friend.fromUser(mUser), mOpponent);
+        Series series = new Series(Friend.fromPlayer(mUser), mOpponent);
         series.addAll(matches);
         if (mUserWins > mOpponentWins) {
             series.setTeamWinner(mSeriesScoreViewModel.getUserTeam());
