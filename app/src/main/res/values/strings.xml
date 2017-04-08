@@ -101,6 +101,8 @@
     <string name="create_series_failed">Failed to create series</string>
     <string name="create_series_success">Series created successfully.</string>
     <string name="series_saved">Series saved</string>
+    <string name="series">Series</string>
+    <string name="error_load_series">Failed to load series</string>
 
     <!-- Matches Fragment -->
     <string name="matches_load_failed">Failed to load matches.</string>

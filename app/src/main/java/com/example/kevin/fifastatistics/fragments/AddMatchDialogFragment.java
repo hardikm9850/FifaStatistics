@@ -80,6 +80,12 @@ public class AddMatchDialogFragment extends FifaBaseDialogFragment implements On
     }
 
     @Override
+    public void onDetach() {
+        super.onDetach();
+        mListener = null;
+    }
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (savedInstanceState != null) {

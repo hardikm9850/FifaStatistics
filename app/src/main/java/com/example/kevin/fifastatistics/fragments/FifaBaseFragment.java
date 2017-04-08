@@ -35,6 +35,12 @@ public abstract class FifaBaseFragment extends Fragment implements ActivityLaunc
     }
 
     @Override
+    public void onDetach() {
+        super.onDetach();
+        mTransitionStarter = null;
+    }
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mCompositeSubscription = new CompositeSubscription();

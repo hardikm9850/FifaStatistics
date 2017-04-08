@@ -9,15 +9,13 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.example.kevin.fifastatistics.FifaApplication;
 import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.adapters.TeamFragmentAdapter;
 import com.example.kevin.fifastatistics.databinding.ActivityPickTeamBinding;
 import com.example.kevin.fifastatistics.managers.RetrievalManager;
-import com.example.kevin.fifastatistics.models.apiresponses.ApiListResponse;
+import com.example.kevin.fifastatistics.models.ApiListResponse;
 import com.example.kevin.fifastatistics.models.databasemodels.league.League;
 import com.example.kevin.fifastatistics.models.databasemodels.league.Team;
-import com.example.kevin.fifastatistics.network.FifaApi;
 import com.example.kevin.fifastatistics.utils.ColorUtils;
 import com.example.kevin.fifastatistics.utils.ObservableUtils;
 import com.example.kevin.fifastatistics.utils.ToastUtils;

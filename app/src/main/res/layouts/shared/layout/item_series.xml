@@ -4,8 +4,9 @@
 
     <data>
         <variable
-            name="matchItemViewModel"
-            type="com.example.kevin.fifastatistics.viewmodels.MatchesItemViewModel"/>
+            name="seriesItemViewModel"
+            type="com.example.kevin.fifastatistics.viewmodels.SeriesItemViewModel"/>
+        <import type="android.view.View"/>
     </data>
 
     <LinearLayout
@@ -15,7 +16,7 @@
         android:paddingEnd="@dimen/activity_vertical_margin"
         android:orientation="vertical"
         android:background="?android:attr/selectableItemBackground"
-        android:onClick="@{() -> matchItemViewModel.openEventDetail()}">
+        android:onClick="@{() -> seriesItemViewModel.openEventDetail()}">
 
         <include
             layout="@layout/item_match_result"
@@ -23,24 +24,24 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/match_player_margin_external"
             android:layout_marginBottom="@dimen/match_player_margin_internal"
-            bind:imageUrl="@{matchItemViewModel.topImageUrl}"
-            bind:name="@{matchItemViewModel.topName}"
-            bind:goals="@{matchItemViewModel.topScore}"
-            bind:penalties="@{matchItemViewModel.topPenalties}"
-            bind:penaltiesVisibility="@{matchItemViewModel.penaltiesVisibility}"
-            bind:appearance="@{matchItemViewModel.topScoreTextAppearance}"/>
+            bind:imageUrl="@{seriesItemViewModel.topImageUrl}"
+            bind:name="@{seriesItemViewModel.topName}"
+            bind:goals="@{seriesItemViewModel.topScore}"
+            bind:penalties='@{"0"}'
+            bind:penaltiesVisibility="@{View.INVISIBLE}"
+            bind:appearance="@{seriesItemViewModel.topScoreTextAppearance}"/>
 
         <include
             layout="@layout/item_match_result"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/match_player_margin_external"
-            bind:imageUrl="@{matchItemViewModel.bottomImageUrl}"
-            bind:name="@{matchItemViewModel.bottomName}"
-            bind:goals="@{matchItemViewModel.bottomScore}"
-            bind:penalties="@{matchItemViewModel.bottomPenalties}"
-            bind:penaltiesVisibility="@{matchItemViewModel.penaltiesVisibility}"
-            bind:appearance="@{matchItemViewModel.bottomScoreTextAppearance}"/>
+            bind:imageUrl="@{seriesItemViewModel.bottomImageUrl}"
+            bind:name="@{seriesItemViewModel.bottomName}"
+            bind:goals="@{seriesItemViewModel.bottomScore}"
+            bind:penalties='@{"0"}'
+            bind:penaltiesVisibility="@{View.INVISIBLE}"
+            bind:appearance="@{seriesItemViewModel.bottomScoreTextAppearance}"/>
 
         <View
             android:layout_width="match_parent"

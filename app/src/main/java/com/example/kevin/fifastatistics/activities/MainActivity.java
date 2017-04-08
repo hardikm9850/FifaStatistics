@@ -99,7 +99,7 @@ public class MainActivity extends FifaBaseActivity implements OnMatchCreatedList
     }
 
     private void handleDrawerClick(int position) {
-        if (position == 7) {
+        if (position == 8) {
             Intent intent = new Intent(this, SettingsActivity.class);
             startActivity(intent);
             mDrawer.setPosition(currentDrawerPosition);

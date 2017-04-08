@@ -46,6 +46,12 @@ public class TeamListFragment extends FifaBaseFragment implements TeamListFragme
     }
 
     @Override
+    public void onDetach() {
+        super.onDetach();
+        mTeamClickListener = null;
+    }
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         League league = (League) getArguments().getSerializable(ARG_LEAGUE);

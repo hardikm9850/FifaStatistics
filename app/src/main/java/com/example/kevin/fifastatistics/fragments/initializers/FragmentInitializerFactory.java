@@ -50,14 +50,16 @@ public class FragmentInitializerFactory {
             case 3:
                 return new MatchesFragmentInitializer(user);
             case 4:
-                return FragmentInitializerFactory.createFriendsFragmentInitializer();
+                return new SeriesFragmentInitializer(user);
             case 5:
+                return FragmentInitializerFactory.createFriendsFragmentInitializer();
+            case 6:
                 FifaApi.getUserApi().getUser(SharedPreferencesManager.getUser().getId())
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(SharedPreferencesManager::storeUser);
                 break;
-            case 6:
+            case 7:
                 FifaApi.getUserApi().updateUser(SharedPreferencesManager.getUser().getId(), SharedPreferencesManager.getUser())
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())

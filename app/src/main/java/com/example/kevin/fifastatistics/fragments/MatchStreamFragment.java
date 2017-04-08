@@ -3,7 +3,7 @@ package com.example.kevin.fifastatistics.fragments;
 import android.support.v4.app.DialogFragment;
 
 import com.example.kevin.fifastatistics.adapters.MatchStreamRecyclerViewAdapter;
-import com.example.kevin.fifastatistics.models.apiresponses.ApiListResponse;
+import com.example.kevin.fifastatistics.models.ApiListResponse;
 import com.example.kevin.fifastatistics.models.databasemodels.match.MatchProjection;
 import com.example.kevin.fifastatistics.models.databasemodels.user.Player;
 import com.example.kevin.fifastatistics.network.FifaApi;

@@ -73,12 +73,13 @@ public class FifaNavigationDrawer {
         BadgeStyle badgeStyle = initializeBadgeStyle();
         PrimaryDrawerItem friendsItem = initializeFriendsItem(badgeStyle);
         PrimaryDrawerItem matchesItem = initializeMatchesItem();
+        PrimaryDrawerItem seriesItem = initializeSeriesItem();
         PrimaryDrawerItem overviewItem = initializeOverviewItem();
         PrimaryDrawerItem settingsItem = initializeSettingsItem();
         PrimaryDrawerItem statisticsItem = initializeStatisticsItem();
         PrimaryDrawerItem starredItem = initializeStarredItem();
 
-        IDrawerItem[] items = {overviewItem, statisticsItem, matchesItem, friendsItem, starredItem,
+        IDrawerItem[] items = {overviewItem, statisticsItem, matchesItem, seriesItem, friendsItem, starredItem,
                 new DividerDrawerItem(), settingsItem};
         mDrawer = buildDrawer(user, activity, items);
     }
@@ -106,6 +107,12 @@ public class FifaNavigationDrawer {
         return getBaseDrawerItem(22)
                 .withName(R.string.matches)
                 .withIcon(R.drawable.soccer);
+    }
+
+    private PrimaryDrawerItem initializeSeriesItem() {
+        return getBaseDrawerItem(77)
+                .withName(R.string.series)
+                .withIcon(R.drawable.trophy);
     }
 
     private PrimaryDrawerItem initializeStatisticsItem() {

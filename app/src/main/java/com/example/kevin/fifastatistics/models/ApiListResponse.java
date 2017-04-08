@@ -1,4 +1,4 @@
-package com.example.kevin.fifastatistics.models.apiresponses;
+package com.example.kevin.fifastatistics.models;
 
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;

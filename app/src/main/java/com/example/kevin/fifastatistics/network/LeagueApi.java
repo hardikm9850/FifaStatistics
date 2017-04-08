@@ -1,6 +1,6 @@
 package com.example.kevin.fifastatistics.network;
 
-import com.example.kevin.fifastatistics.models.apiresponses.ApiListResponse;
+import com.example.kevin.fifastatistics.models.ApiListResponse;
 import com.example.kevin.fifastatistics.models.databasemodels.league.League;
 import com.example.kevin.fifastatistics.models.databasemodels.league.Team;
 

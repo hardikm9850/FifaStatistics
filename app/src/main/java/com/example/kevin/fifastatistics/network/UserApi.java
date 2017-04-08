@@ -1,9 +1,7 @@
 package com.example.kevin.fifastatistics.network;
 
-import com.example.kevin.fifastatistics.models.apiresponses.ApiListResponse;
-import com.example.kevin.fifastatistics.models.databasemodels.match.Series;
+import com.example.kevin.fifastatistics.models.ApiListResponse;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
-import com.example.kevin.fifastatistics.models.patches.Patch;
 import com.example.kevin.fifastatistics.models.patches.UserTeamPatch;
 
 import retrofit2.Response;

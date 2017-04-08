@@ -17,7 +17,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Getter
-public class Series extends DatabaseModel implements FifaEvent {
+public class Series extends DatabaseModel {
 
     public static final int DEFAULT_MAX_SERIES_LENGTH = 7;
 
@@ -99,6 +99,8 @@ public class Series extends DatabaseModel implements FifaEvent {
     private boolean didPlayerWin(int playerWins) {
         return playerWins > bestOf / 2;
     }
+
+
 
     @Override
     public String toString() {

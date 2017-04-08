@@ -3,7 +3,7 @@ package com.example.kevin.fifastatistics.viewmodels;
 import android.util.Log;
 
 import com.example.kevin.fifastatistics.interfaces.AdapterInteraction;
-import com.example.kevin.fifastatistics.models.apiresponses.ApiListResponse;
+import com.example.kevin.fifastatistics.models.ApiListResponse;
 import com.example.kevin.fifastatistics.models.databasemodels.match.FifaEvent;
 import com.example.kevin.fifastatistics.utils.ObservableUtils;
 

@@ -20,7 +20,7 @@ import com.example.kevin.fifastatistics.interfaces.AdapterInteraction;
 import com.example.kevin.fifastatistics.interfaces.OnBackPressedHandler;
 import com.example.kevin.fifastatistics.interfaces.OnFilterCreatedListener;
 import com.example.kevin.fifastatistics.listeners.EndlessRecyclerViewScrollListener;
-import com.example.kevin.fifastatistics.models.apiresponses.ApiListResponse;
+import com.example.kevin.fifastatistics.models.ApiListResponse;
 import com.example.kevin.fifastatistics.models.databasemodels.match.FifaEvent;
 import com.example.kevin.fifastatistics.models.databasemodels.user.Player;
 import com.example.kevin.fifastatistics.utils.ToastUtils;
