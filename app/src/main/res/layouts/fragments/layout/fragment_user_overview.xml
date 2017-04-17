@@ -1,38 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:fillViewport="true"
-    android:scrollbars="none">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:bind="http://schemas.android.com/tools">
 
-    <LinearLayout
-        android:orientation="vertical"
+    <data>
+        <variable
+            name="viewModel"
+            type="com.example.kevin.fifastatistics.viewmodels.UserOverviewViewModel"/>
+    </data>
+
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:descendantFocusability="blocksDescendants">
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:scrollbars="none">
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/user_header_profile_image"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_marginTop="20dp"
-            app:civ_border_width="@dimen/civ_border_width"
-            app:civ_border_color="#FFFFFF" />
-
-        <TextView
-            android:id="@+id/user_header_name_text"
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:layout_marginTop="15dp"
-            android:textAlignment="center"
-            android:textSize="20sp"
-            android:textStyle="bold"/>
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:descendantFocusability="blocksDescendants">
 
-        <include layout="@layout/divisor"/>
+            <de.hdodenhof.circleimageview.CircleImageView
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/user_header_profile_image"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_marginTop="20dp"
+                app:civ_border_width="@dimen/civ_border_width"
+                app:civ_border_color="#FFFFFF"
+                app:imageUrl="@{viewModel.imageUrl}"/>
 
-        <include layout="@layout/user_overview_data"/>
+            <TextView
+                android:id="@+id/user_header_name_text"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_marginTop="15dp"
+                android:textAlignment="center"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:text="@{viewModel.name}"/>
 
-    </LinearLayout>
-</ScrollView>
+            <include layout="@layout/divisor"/>
+
+            <include
+                layout="@layout/user_overview_data_layout"
+                bind:viewModel="@{viewModel}"/>
+
+        </LinearLayout>
+    </ScrollView>
+</layout>

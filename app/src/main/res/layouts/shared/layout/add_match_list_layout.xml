@@ -40,6 +40,9 @@
         <include android:id="@+id/injuries"
                  layout="@layout/add_match_list_item_layout"/>
 
+        <include android:id="@+id/corners"
+            layout="@layout/add_match_list_item_layout"/>
+
         <include android:id="@+id/shot_accuracy"
                  layout="@layout/add_match_list_item_layout"/>
 

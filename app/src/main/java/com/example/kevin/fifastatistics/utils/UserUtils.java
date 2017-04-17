@@ -5,6 +5,7 @@ import android.util.Log;
 import com.example.kevin.fifastatistics.managers.SharedPreferencesManager;
 import com.example.kevin.fifastatistics.models.databasemodels.league.Team;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
+import com.example.kevin.fifastatistics.models.patches.RegTokenPatch;
 import com.example.kevin.fifastatistics.models.patches.UserTeamPatch;
 import com.example.kevin.fifastatistics.network.FifaApi;
 import com.example.kevin.fifastatistics.network.UserApi;
@@ -44,8 +45,12 @@ public class UserUtils {
     }
 
     public static Observable<User> patchTeam(User user, Team team) {
-        Log.d("USER", SerializationUtils.toFormattedJson(new UserTeamPatch(team.getId())));
         return API.patchTeam(user.getId(), new UserTeamPatch(team.getId()))
+                .compose(ObservableUtils.applySchedulers());
+    }
+
+    public static Observable<User> patchRegToken(String userId, String regToken) {
+        return API.patchRegToken(userId, new RegTokenPatch(regToken))
                 .compose(ObservableUtils.applySchedulers());
     }
 

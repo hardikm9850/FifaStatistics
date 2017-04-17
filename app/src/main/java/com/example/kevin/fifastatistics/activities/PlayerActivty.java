@@ -23,7 +23,7 @@ import com.example.kevin.fifastatistics.utils.TransitionUtils;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 
-public class PlayerActivty extends BasePlayerActivity implements PlayerOverviewFragment.OnPlayerFragmentInteractionListener, OnMatchCreatedListener {
+public class PlayerActivty extends BasePlayerActivity implements OnMatchCreatedListener {
 
     public static final String EXTRA_ENTERED_FROM_SEARCH_BAR = "enteredFromSearch";
 
@@ -138,11 +138,6 @@ public class PlayerActivty extends BasePlayerActivity implements PlayerOverviewF
         } else {
             finishAfterTransition();
         }
-    }
-
-    @Override
-    public void onPlayerFragmentInteraction(User user) {
-
     }
 
     @Override

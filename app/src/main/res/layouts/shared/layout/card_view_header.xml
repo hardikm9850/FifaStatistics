@@ -1,34 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:paddingTop="@dimen/record_header_vertical_padding"
-    android:paddingBottom="@dimen/record_header_vertical_padding"
-    android:background="@color/cardViewHeaderBackground">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <TextView
-        android:id="@+id/header_left_text"
-        android:layout_width="0dp"
+    <data>
+        <variable
+            name="headerLeft"
+            type="String"/>
+        <variable
+            name="headerRight"
+            type="String"/>
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="0.5"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="5dp"
-        android:layout_marginStart="@dimen/activity_horizontal_margin"
-        android:paddingStart="@dimen/activity_horizontal_margin"
-        android:gravity="center_vertical"
-        android:textSize="@dimen/card_header_text_size"/>
+        android:orientation="horizontal"
+        android:paddingTop="@dimen/record_header_vertical_padding"
+        android:paddingBottom="@dimen/record_header_vertical_padding"
+        android:background="@color/cardViewHeaderBackground">
 
-    <TextView
-        android:id="@+id/header_right_text"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="0.5"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="5dp"
-        android:layout_marginEnd="@dimen/activity_horizontal_margin"
-        android:paddingEnd="@dimen/activity_horizontal_margin"
-        android:gravity="center_vertical|end"
-        android:textSize="@dimen/card_header_text_size"/>
+        <TextView
+            android:id="@+id/header_left_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginStart="@dimen/activity_horizontal_margin"
+            android:paddingStart="@dimen/activity_horizontal_margin"
+            android:gravity="center_vertical"
+            android:textSize="@dimen/card_header_text_size"
+            android:text="@{headerLeft}"/>
 
-</LinearLayout>
+        <TextView
+            android:id="@+id/header_right_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginEnd="@dimen/activity_horizontal_margin"
+            android:paddingEnd="@dimen/activity_horizontal_margin"
+            android:gravity="center_vertical|end"
+            android:textSize="@dimen/card_header_text_size"
+            android:text="@{headerRight}"/>
+
+    </LinearLayout>
+</layout>

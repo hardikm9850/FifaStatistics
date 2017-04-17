@@ -1,28 +1,28 @@
 package com.example.kevin.fifastatistics.fragments;
 
-import android.content.Context;
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.util.Log;
+import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.kevin.fifastatistics.R;
+import com.example.kevin.fifastatistics.databinding.FragmentPlayerOverviewBinding;
 import com.example.kevin.fifastatistics.interfaces.OnBackPressedHandler;
-import com.example.kevin.fifastatistics.managers.RetrievalManager;
 import com.example.kevin.fifastatistics.managers.RetrofitErrorManager;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
-import com.example.kevin.fifastatistics.views.UserOverviewLayout;
+import com.example.kevin.fifastatistics.viewmodels.PlayerOverviewFragmentViewModel;
+import com.example.kevin.fifastatistics.viewmodels.UserOverviewViewModel;
 
-import rx.Subscription;
-
-public class PlayerOverviewFragment extends FifaProgressFragment implements OnBackPressedHandler {
+public class PlayerOverviewFragment extends FifaBaseFragment implements OnBackPressedHandler,
+        PlayerOverviewFragmentViewModel.OnPlayerLoadedListener {
 
     private static final String ARG_USER_ID = "id";
 
     private String mUserId;
-    private View mContentView;
-    private OnPlayerFragmentInteractionListener mListener;
+    private FragmentPlayerOverviewBinding mBinding;
+    private PlayerOverviewFragmentViewModel mFragmentViewModel;
 
     public static PlayerOverviewFragment newInstance(String userId) {
         PlayerOverviewFragment fragment = new PlayerOverviewFragment();
@@ -40,54 +40,39 @@ public class PlayerOverviewFragment extends FifaProgressFragment implements OnBa
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        mContentView = inflater.inflate(R.layout.fragment_player_overview, container, false);
-        return super.onCreateView(inflater, container, savedInstanceState);
+        mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_player_overview, container, false);
+        mFragmentViewModel = new PlayerOverviewFragmentViewModel(this);
+        mBinding.setProgressViewModel(mFragmentViewModel);
+        return mBinding.getRoot();
     }
 
     @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        setContentView(mContentView);
-        setContentShown(false);
-        UserOverviewLayout overview = (UserOverviewLayout) mContentView.findViewById(R.id.useroverviewdata);
-        Subscription userSub = RetrievalManager.getUser(mUserId)
-                .onErrorReturn(t -> {
-                    Log.e("ERROR", "getUserError: " + t.getMessage());
-                    RetrofitErrorManager.showToastForError(t, getActivity());
-                    return null;
-                })
-                .subscribe(user -> {
-                    if (user == null) {
-                        getActivity().finish();
-                    } else {
-                        overview.setUsername(user.getName());
-                        overview.setUser(user);
-                        setContentShown(true);
-                    }
-                });
-        addSubscription(userSub);
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        mFragmentViewModel.loadPlayer(mUserId);
     }
 
     @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnPlayerFragmentInteractionListener) {
-            mListener = (OnPlayerFragmentInteractionListener) context;
+    public void onDestroyView() {
+        super.onDestroyView();
+        if (mFragmentViewModel != null) {
+            mFragmentViewModel.destroy();
         }
     }
 
     @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
+    public void onPlayerLoaded(User player) {
+        UserOverviewViewModel viewModel = new UserOverviewViewModel(player);
+        mBinding.setViewModel(viewModel);
+    }
+
+    @Override
+    public void onPlayerLoadFailed(Throwable t) {
+        RetrofitErrorManager.showToastForError(t, getActivity());
+        getActivity().finish();
     }
 
     @Override
     public boolean handleBackPress() {
         return false;
-    }
-
-    public interface OnPlayerFragmentInteractionListener {
-        void onPlayerFragmentInteraction(User user);
     }
 }

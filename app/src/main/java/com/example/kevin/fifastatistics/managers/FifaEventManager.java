@@ -2,14 +2,11 @@ package com.example.kevin.fifastatistics.managers;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.util.Pair;
 import android.util.Log;
-import android.view.View;
 
 import com.example.kevin.fifastatistics.R;
-import com.example.kevin.fifastatistics.activities.FifaBaseActivity;
 import com.example.kevin.fifastatistics.fragments.AddMatchDialogFragment;
 import com.example.kevin.fifastatistics.fragments.SelectOpponentDialogFragment;
 import com.example.kevin.fifastatistics.interfaces.ErrorHandler;
@@ -22,7 +19,6 @@ import com.example.kevin.fifastatistics.models.databasemodels.user.User;
 import com.example.kevin.fifastatistics.utils.IntentFactory;
 import com.example.kevin.fifastatistics.utils.MatchUtils;
 import com.example.kevin.fifastatistics.utils.ToastUtils;
-import com.example.kevin.fifastatistics.utils.TransitionUtils;
 
 import lombok.RequiredArgsConstructor;
 
@@ -33,11 +29,11 @@ import lombok.RequiredArgsConstructor;
 public class FifaEventManager implements SelectOpponentDialogFragment.SelectOpponentListener,
         OnBackPressedHandler, OnMatchCreatedListener {
 
-    private final FifaBaseActivity mActivity;
+    private final FragmentActivity mActivity;
     private final User mUser;
     private Flow mFlow;
 
-    public static FifaEventManager newInstance(FifaBaseActivity activity, User user) {
+    public static FifaEventManager newInstance(FragmentActivity activity, User user) {
         return new FifaEventManager(activity, user);
     }
 
@@ -135,7 +131,7 @@ public class FifaEventManager implements SelectOpponentDialogFragment.SelectOppo
             mAddMatchFragment = showAddMatchFragment(mActivity, opponent);
         }
 
-        private AddMatchDialogFragment showAddMatchFragment(FifaBaseActivity parentActivity, Player opponent) {
+        private AddMatchDialogFragment showAddMatchFragment(FragmentActivity parentActivity, Player opponent) {
             FragmentTransaction t = parentActivity.getSupportFragmentManager().beginTransaction();
             t.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
             AddMatchDialogFragment fragment = AddMatchDialogFragment.newInstance(mUser, opponent);

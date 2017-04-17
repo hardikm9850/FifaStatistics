@@ -1,21 +1,25 @@
 package com.example.kevin.fifastatistics.fragments;
 
-
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.example.kevin.fifastatistics.R;
+import com.example.kevin.fifastatistics.databinding.FragmentUserOverviewBinding;
 import com.example.kevin.fifastatistics.interfaces.OnBackPressedHandler;
+import com.example.kevin.fifastatistics.managers.FifaEventManager;
+import com.example.kevin.fifastatistics.managers.RetrievalManager;
 import com.example.kevin.fifastatistics.managers.SharedPreferencesManager;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
-import com.example.kevin.fifastatistics.views.UserOverviewLayout;
-import com.nostra13.universalimageloader.core.ImageLoader;
+import com.example.kevin.fifastatistics.utils.ColorUtils;
+import com.example.kevin.fifastatistics.utils.FabFactory;
+import com.example.kevin.fifastatistics.viewmodels.UserOverviewViewModel;
+import com.github.clans.fab.FloatingActionButton;
+import com.github.clans.fab.FloatingActionMenu;
+
+import rx.Subscription;
 
 /**
  * The main overview fragment for the current user.
@@ -32,23 +36,9 @@ public class UserOverviewFragment extends FifaBaseFragment implements OnBackPres
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_user_overview, container, false);
-        initializeHeader(view);
-        initializeContent(view);
-        return view;
-    }
-
-    private void initializeHeader(View view) {
-        TextView name = (TextView) view.findViewById(R.id.user_header_name_text);
-        name.setText(mUser.getName());
-
-        ImageView profileImage = (ImageView) view.findViewById(R.id.user_header_profile_image);
-        ImageLoader.getInstance().displayImage(mUser.getImageUrl(), profileImage);
-    }
-
-    private void initializeContent(View view) {
-        UserOverviewLayout overview = (UserOverviewLayout) view.findViewById(R.id.useroverviewdata);
-        overview.setUser(mUser);
+        FragmentUserOverviewBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_user_overview, container, false);
+        binding.setViewModel(new UserOverviewViewModel(mUser));
+        return binding.getRoot();
     }
 
     @Override

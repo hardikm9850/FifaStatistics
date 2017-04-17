@@ -129,6 +129,7 @@
     <string name="switch_sides">Switch sides</string>
 
     <!-- STATS -->
+    <string name="stats">Stats</string>
     <string name="goals">Goals</string>
     <string name="shots">Shots</string>
     <string name="shots_on_target">Shots On Target</string>
@@ -139,11 +140,17 @@
     <string name="red_cards">Red Cards</string>
     <string name="offsides">Offsides</string>
     <string name="injuries">Injuries</string>
+    <string name="corners">Corners</string>
     <string name="shot_accuracy_percent">Shot Accuracy (%)</string>
     <string name="pass_accuracy_percent">Pass Accuracy (%)</string>
     <string name="penalties">Penalties</string>
     <string name="averages">Averages</string>
     <string name="records">Records</string>
+    <string name="overall">OVERALL</string>
+    <string name="last_ten">LAST 10</string>
+    <string name="streak">STREAK</string>
+    <string name="you">You</string>
+    <string name="opponent">Opponent</string>
 
     <!-- MATCHES -->
     <string name="win">Win</string>

@@ -20,6 +20,7 @@ public class StatsRecyclerViewAdapter extends RecyclerView.Adapter<StatsRecycler
 
     private float[] valuesFor;
     private float[] valuesAgainst;
+    private String[] names;
     private String floatFormat;
     private int mColor;
 
@@ -27,6 +28,7 @@ public class StatsRecyclerViewAdapter extends RecyclerView.Adapter<StatsRecycler
         this.valuesFor = statsPair.getStatsFor().buildValueSet();
         this.valuesAgainst = statsPair.getStatsAgainst().buildValueSet();
         floatFormat = doShowDecimal ? "%.1f" : "%.0f";
+        names = Stats.getNameSet();
         initColor();
     }
 
@@ -53,7 +55,7 @@ public class StatsRecyclerViewAdapter extends RecyclerView.Adapter<StatsRecycler
         holder.mProgressBar.setProgress(percent);
         holder.mStatFor.setText(String.format(Locale.CANADA, floatFormat, vf));
         holder.mStatAgainst.setText(String.format(Locale.CANADA, floatFormat, va));
-        holder.mTitle.setText(Stats.getNameSet()[position]);
+        holder.mTitle.setText(names[position]);
     }
 
     @Override

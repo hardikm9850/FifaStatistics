@@ -1,13 +1,9 @@
 package com.example.kevin.fifastatistics.utils;
 
 import android.content.Context;
-import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.support.annotation.ColorInt;
-import android.support.v4.content.ContextCompat;
 
 import com.example.kevin.fifastatistics.R;
-import com.example.kevin.fifastatistics.activities.FifaBaseActivity;
 import com.github.clans.fab.FloatingActionButton;
 
 /**
@@ -18,28 +14,16 @@ import com.github.clans.fab.FloatingActionButton;
  */
 public class FabFactory {
 
-    private FifaBaseActivity mActivity;
+    private Context mContext;
     private int mColor;
 
-    public static FabFactory newInstance(FifaBaseActivity activity, @ColorInt int buttonColor) {
-        return new FabFactory(activity, buttonColor);
+    public static FabFactory newInstance(Context context, @ColorInt int buttonColor) {
+        return new FabFactory(context, buttonColor);
     }
 
-    private FabFactory(FifaBaseActivity activity, int color) {
-        mActivity = activity;
+    private FabFactory(Context context, int color) {
+        mContext = context;
         mColor = color;
-    }
-
-    public FloatingActionButton createSendFriendRequestFab() {
-        return createButtonWithAttributes(R.string.send_friend_request, R.drawable.ic_person_add_white_24dp);
-    }
-
-    public FloatingActionButton createFriendRequestPendingFab() {
-        FloatingActionButton b = createButtonWithAttributes(
-                R.string.friend_request_pending, R.drawable.ic_hourglass_full_white_24dp);
-        b.setClickable(false);
-        b.setColorNormal(Color.LTGRAY);
-        return b;
     }
 
     public FloatingActionButton createPlayMatchFab() {
@@ -59,7 +43,7 @@ public class FabFactory {
     }
 
     private FloatingActionButton createButtonWithAttributes(int titleId, int iconId) {
-        FloatingActionButton button = new FloatingActionButton(mActivity);
+        FloatingActionButton button = new FloatingActionButton(mContext);
         button.setColorNormal(mColor);
         button.setColorPressed(mColor);
         button.setButtonSize(FloatingActionButton.SIZE_MINI);

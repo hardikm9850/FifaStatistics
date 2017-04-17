@@ -1,43 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:bind="http://schemas.android.com/tools">
 
-    <include
-        layout="@layout/card_view_header"
-        android:id="@+id/header"
+    <data>
+        <variable
+            name="viewModel"
+            type="com.example.kevin.fifastatistics.viewmodels.RecordsItemViewModel"/>
+        <variable
+            name="headerLeft"
+            type="String"/>
+    </data>
+
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true">
-    </include>
+        android:layout_height="wrap_content">
 
-    <include
-        layout="@layout/records_value_item"
-        android:id="@+id/overall_item"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_marginStart="@dimen/activity_horizontal_margin"
-        android:layout_below="@id/header">
-    </include>
+        <include
+            layout="@layout/card_view_header"
+            android:id="@+id/header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            bind:headerLeft="@{headerLeft}">
+        </include>
 
-    <include
-        layout="@layout/records_value_item"
-        android:id="@+id/last_ten_item"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@id/header">
-    </include>
+        <include
+            layout="@layout/records_value_item"
+            android:id="@+id/overall_item"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="@dimen/activity_horizontal_margin"
+            android:layout_below="@id/header"
+            bind:title="@{@string/overall}"
+            bind:value="@{viewModel.overall}">
+        </include>
 
-    <include
-        layout="@layout/records_value_item"
-        android:id="@+id/streak_item"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_marginEnd="@dimen/activity_horizontal_margin"
-        android:layout_below="@id/header">
-    </include>
+        <include
+            layout="@layout/records_value_item"
+            android:id="@+id/last_ten_item"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/header"
+            bind:title="@{@string/last_ten}"
+            bind:value="@{viewModel.lastTen}">
+        </include>
 
-</RelativeLayout>
+        <include
+            layout="@layout/records_value_item"
+            android:id="@+id/streak_item"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="@dimen/activity_horizontal_margin"
+            android:layout_below="@id/header"
+            bind:title="@{@string/streak}"
+            bind:value="@{viewModel.streak}">
+        </include>
+
+    </RelativeLayout>
+</layout>

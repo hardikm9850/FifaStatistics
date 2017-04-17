@@ -1,28 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:bind="http://schemas.android.com/tools">
 
-    <TextView
-        android:id="@+id/stats_chart_title"
+    <data>
+        <variable
+            name="viewModel"
+            type="com.example.kevin.fifastatistics.viewmodels.StatsCardViewModel"/>
+    </data>
+
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_marginLeft="10dp"
-        android:gravity="center_vertical"
-        android:textSize="15sp"
-        android:textStyle="bold"/>
+        android:layout_height="match_parent">
 
-    <include
-        layout="@layout/card_view_header"
-        android:id="@+id/header" />
+        <TextView
+            android:id="@+id/stats_chart_title"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginLeft="10dp"
+            android:gravity="center_vertical"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            android:text="@{viewModel.title}"/>
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/stats_recycler_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginLeft="@dimen/activity_horizontal_margin"
-        android:layout_marginRight="@dimen/activity_horizontal_margin">
-    </android.support.v7.widget.RecyclerView>
+        <include
+            layout="@layout/card_view_header"
+            android:id="@+id/header"
+            bind:headerLeft="@{viewModel.leftHeader}"
+            bind:headerRight="@{viewModel.rightHeader}"/>
 
-</LinearLayout>
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/stats_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:nestedScrollingEnabled="false">
+        </android.support.v7.widget.RecyclerView>
+
+    </LinearLayout>
+</layout>

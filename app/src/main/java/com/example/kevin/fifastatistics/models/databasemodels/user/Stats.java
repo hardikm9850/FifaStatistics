@@ -21,9 +21,13 @@ public class Stats implements Serializable {
     private static final String[] names =
             {
                 "Goals", "Shots", "Shots On Target", "Possession (%)", "Tackles", "Fouls",
-                "Yellow Cards", "Red Cards", "Offsides", "Injuries", "Shot Accuracy (%)",
+                "Yellow Cards", "Red Cards", "Offsides", "Injuries", "Corners", "Shot Accuracy (%)",
                 "Pass Accuracy (%)"
             };
+
+    public enum Type {
+        AVERAGES, RECORDS;
+    }
 
     private float goals;
     private float shots;
@@ -34,6 +38,7 @@ public class Stats implements Serializable {
     private float yellowCards;
     private float redCards;
     private float offsides;
+    private float corners;
     private float injuries;
     private float shotAccuracy;
     private float passAccuracy;
@@ -52,7 +57,7 @@ public class Stats implements Serializable {
      */
     public float[] buildValueSet() {
         return new float[] {goals, shots, shotsOnTarget, possession, tackles, fouls, yellowCards,
-                redCards, offsides, injuries, shotAccuracy, passAccuracy};
+                redCards, offsides, injuries, corners, shotAccuracy, passAccuracy};
     }
 
     public boolean validate() {

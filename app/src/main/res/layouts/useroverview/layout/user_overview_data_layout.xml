@@ -1,25 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:bind="http://schemas.android.com/tools">
 
-    <TextView
+    <data>
+        <variable
+            name="viewModel"
+            type="com.example.kevin.fifastatistics.viewmodels.UserOverviewViewModel" />
+    </data>
+
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="25dp"
-        android:layout_marginLeft="@dimen/activity_horizontal_margin"
-        android:layout_marginTop="@dimen/activity_vertical_margin"
-        android:text="Records"/>
+        android:layout_height="wrap_content">
 
-    <include layout="@layout/records_card_view" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/activity_horizontal_margin"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:text="@string/records"/>
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="25dp"
-        android:layout_marginLeft="@dimen/activity_horizontal_margin"
-        android:layout_marginTop="@dimen/activity_vertical_margin"
-        android:text="Stats"/>
+        <include
+            layout="@layout/records_card_view"
+            bind:viewModel="@{viewModel.records}"/>
 
-    <include layout="@layout/card_view_pager" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="25dp"
+            android:layout_marginStart="@dimen/activity_horizontal_margin"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:text="@string/stats"/>
 
-</LinearLayout>
+        <android.support.v7.widget.CardView
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:card_view="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/stats_card_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/activity_horizontal_margin"
+            card_view:cardCornerRadius="@dimen/card_corner_radius"
+            app:cardBackgroundColor="@color/cardViewBackground">
+
+            <com.example.kevin.fifastatistics.views.StatsViewPager
+                android:id="@+id/card_view_pager"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                bind:stats="@{viewModel.stats}"
+                bind:title="@{viewModel.name}"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+        </android.support.v7.widget.CardView>
+
+    </LinearLayout>
+
+</layout>

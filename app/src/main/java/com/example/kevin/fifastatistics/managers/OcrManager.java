@@ -25,8 +25,9 @@ public class OcrManager {
         return INSTANCE;
     }
 
-    public StatsPair retrieveFacts() throws IOException{
+    public StatsPair retrieveFacts() throws IOException {
         String result = getText();
+        mBitmap.recycle();
         return OcrResultParser.newInstance(result).parse();
     }
 

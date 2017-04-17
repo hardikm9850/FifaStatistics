@@ -1,25 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <TextView
-        android:id="@+id/value"
+    <data>
+        <variable
+            name="title"
+            type="String"/>
+        <variable
+            name="value"
+            type="String"/>
+    </data>
+
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:paddingTop="@dimen/record_item_vertical_padding"
-        android:paddingBottom="@dimen/record_header_vertical_padding"
-        android:textColor="@color/white"
-        android:textSize="18sp"/>
+        android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingBottom="@dimen/record_item_vertical_padding"
-        android:gravity="center"/>
+        <TextView
+            android:id="@+id/value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:paddingTop="@dimen/record_item_vertical_padding"
+            android:paddingBottom="@dimen/record_header_vertical_padding"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:text="@{value}"/>
 
-</LinearLayout>
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/record_item_vertical_padding"
+            android:gravity="center"
+            android:text="@{title}"/>
+
+    </LinearLayout>
+
+</layout>

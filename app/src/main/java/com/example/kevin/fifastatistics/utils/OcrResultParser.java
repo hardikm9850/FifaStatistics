@@ -33,7 +33,7 @@ public class OcrResultParser {
     private int RED_CARDS_LINE = 7;
     private int INJURIES_LINE = 8;
     private int OFFSIDES_LINE = 9;
-    private int CORNERS_LINE = 10; //TODO
+    private int CORNERS_LINE = 10;
     private int SHOT_ACCURACY_LINE = 11;
     private int PASS_ACCURACY_LINE = 12;
 
@@ -117,6 +117,10 @@ public class OcrResultParser {
             result = parseLine(lines[OFFSIDES_LINE]);
             sp.getStatsFor().setOffsides(result[0]);
             sp.getStatsAgainst().setOffsides(result[1]);
+
+            result = parseLine(lines[CORNERS_LINE]);
+            sp.getStatsFor().setCorners(result[0]);
+            sp.getStatsAgainst().setCorners(result[1]);
 
             result = parseLine(lines[SHOT_ACCURACY_LINE]);
             sp.getStatsFor().setShotAccuracy(result[0]);
@@ -231,7 +235,7 @@ public class OcrResultParser {
         RED_CARDS_LINE--;
         INJURIES_LINE--;
         OFFSIDES_LINE--;
-        CORNERS_LINE--; //TODO
+        CORNERS_LINE--;
         SHOT_ACCURACY_LINE--;
         PASS_ACCURACY_LINE--;
     }

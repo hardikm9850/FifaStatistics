@@ -61,7 +61,7 @@ public class User extends DatabaseModel implements Player {
     }
 
     /**
-     * A pair of Stats objects, one representing stats 'for' the user, and one representing stats
+     * A pair of Stats objects, one representing mStats 'for' the user, and one representing mStats
      * 'against' the user.
      */
     @AllArgsConstructor

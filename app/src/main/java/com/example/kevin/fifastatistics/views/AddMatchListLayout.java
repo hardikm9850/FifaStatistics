@@ -23,6 +23,7 @@ public class AddMatchListLayout extends ScrollView {
     private AddMatchListItem mRedCardsItem;
     private AddMatchListItem mOffsidesItem;
     private AddMatchListItem mInjuriesItem;
+    private AddMatchListItem mCornersItem;
     private AddMatchListItem mShotAccuracyItem;
     private AddMatchListItem mPassAccuracyItem;
     private AddMatchListItem mPenalties;
@@ -63,6 +64,9 @@ public class AddMatchListLayout extends ScrollView {
         mInjuriesItem = (AddMatchListItem) findViewById(R.id.injuries);
         mInjuriesItem.setTitle(getResources().getString(R.string.injuries));
 
+        mCornersItem = (AddMatchListItem) findViewById(R.id.corners);
+        mCornersItem.setTitle(getResources().getString(R.string.corners));
+
         mShotAccuracyItem = (AddMatchListItem) findViewById(R.id.shot_accuracy);
         mShotAccuracyItem.setTitle(getResources().getString(R.string.shot_accuracy_percent));
 
@@ -84,6 +88,7 @@ public class AddMatchListLayout extends ScrollView {
         mRedCardsItem.setLeftText(leftStats.getRedCards());
         mOffsidesItem.setLeftText(leftStats.getOffsides());
         mInjuriesItem.setLeftText(leftStats.getInjuries());
+        mCornersItem.setLeftText(leftStats.getCorners());
         mShotAccuracyItem.setLeftText(leftStats.getShotAccuracy());
         mPassAccuracyItem.setLeftText(leftStats.getPassAccuracy());
 
@@ -97,6 +102,7 @@ public class AddMatchListLayout extends ScrollView {
         mRedCardsItem.setRightText(rightStats.getRedCards());
         mOffsidesItem.setRightText(rightStats.getOffsides());
         mInjuriesItem.setRightText(rightStats.getInjuries());
+        mCornersItem.setRightText(rightStats.getCorners());
         mShotAccuracyItem.setRightText(rightStats.getShotAccuracy());
         mPassAccuracyItem.setRightText(rightStats.getPassAccuracy());
 
@@ -137,6 +143,7 @@ public class AddMatchListLayout extends ScrollView {
         statsFor.setRedCards(getLeftRedCards());
         statsFor.setOffsides(getLeftOffsides());
         statsFor.setInjuries(getLeftInjuries());
+        statsFor.setCorners(getLeftCorners());
         statsFor.setShotAccuracy(getLeftShotAccuracy());
         statsFor.setPassAccuracy(getLeftPassAccuracy());
 
@@ -151,6 +158,7 @@ public class AddMatchListLayout extends ScrollView {
         statsAgainst.setRedCards(getRightRedCards());
         statsAgainst.setOffsides(getRightOffsides());
         statsAgainst.setInjuries(getRightInjuries());
+        statsAgainst.setCorners(getRightCorners());
         statsAgainst.setShotAccuracy(getRightShotAccuracy());
         statsAgainst.setPassAccuracy(getRightPassAccuracy());
 
@@ -270,6 +278,14 @@ public class AddMatchListLayout extends ScrollView {
 
     public int getRightInjuries() {
         return Integer.valueOf(mInjuriesItem.getRightText());
+    }
+
+    public int getLeftCorners() {
+        return Integer.valueOf(mCornersItem.getLeftText());
+    }
+
+    public int getRightCorners() {
+        return Integer.valueOf(mCornersItem.getRightText());
     }
 
     public int getLeftShotAccuracy() {

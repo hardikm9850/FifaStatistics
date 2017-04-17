@@ -2,6 +2,7 @@ package com.example.kevin.fifastatistics.network;
 
 import com.example.kevin.fifastatistics.models.ApiListResponse;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
+import com.example.kevin.fifastatistics.models.patches.RegTokenPatch;
 import com.example.kevin.fifastatistics.models.patches.UserTeamPatch;
 
 import retrofit2.Response;
@@ -60,4 +61,7 @@ public interface UserApi {
 
     @PATCH("users/{id}")
     Observable<User> patchTeam(@Path("id") String id, @Body UserTeamPatch body);
+
+    @PATCH("users/{id}")
+    Observable<User> patchRegToken(@Path("id") String id, @Body RegTokenPatch body);
 }

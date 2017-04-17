@@ -20,4 +20,8 @@ public abstract class FifaBaseViewModel extends BaseObservable {
     public void unsubscribeAll() {
         ObservableUtils.unsubscribeCompositeSubscription(mCompositeSubscription);
     }
+
+    public void destroy() {
+        unsubscribeAll();
+    }
 }

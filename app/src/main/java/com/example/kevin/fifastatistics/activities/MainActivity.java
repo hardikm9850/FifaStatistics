@@ -165,11 +165,6 @@ public class MainActivity extends FifaBaseActivity implements OnMatchCreatedList
 
     @Override
     protected void onColorUpdated() {
-        setFabColor();
-        mActionMenu.removeAllMenuButtons();
-        FabFactory fabFactory = FabFactory.newInstance(this, mColor);
-        initializeAddMatchButton(fabFactory, mEventManager);
-        initializeAddSeriesButton(fabFactory, mEventManager);
         mTabLayout.setSelectedTabIndicatorColor(mColor);
         mDrawer.updateColors(mColor);
     }
