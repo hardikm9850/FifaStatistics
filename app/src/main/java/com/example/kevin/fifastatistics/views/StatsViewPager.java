@@ -11,7 +11,7 @@ import com.example.kevin.fifastatistics.models.databasemodels.user.User;
 
 import java.util.List;
 
-public class StatsViewPager extends ViewPager {
+public class StatsViewPager extends ViewPager implements StatsPagerAdapter.OnItemAddedListener {
 
     public StatsViewPager(Context context) {
         super(context);
@@ -21,9 +21,6 @@ public class StatsViewPager extends ViewPager {
         super(context, attrs);
     }
 
-    /**
-     * Will wrap its height to the height of its largest child.
-     */
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         int height = 0;
@@ -41,10 +38,18 @@ public class StatsViewPager extends ViewPager {
     }
 
     @BindingAdapter({"stats", "title"})
-    public static void setUser(ViewPager pager, List<User.StatsPair> stats, String title) {
+    public static void setUser(StatsViewPager pager, List<User.StatsPair> stats, String title) {
         if (stats != null) {
-            pager.setAdapter(new StatsPagerAdapter(pager.getContext(), stats, title));
+            pager.setAdapter(new StatsPagerAdapter(pager.getContext(), stats, title, pager));
             pager.setCurrentItem(0);
         }
+    }
+
+    @Override
+    public void onItemAdded() {
+        post(() -> {
+            invalidate();
+            requestLayout();
+        });
     }
 }

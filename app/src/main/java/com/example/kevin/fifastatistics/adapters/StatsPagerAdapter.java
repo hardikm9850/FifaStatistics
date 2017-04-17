@@ -18,14 +18,16 @@ import java.util.List;
 
 public class StatsPagerAdapter extends PagerAdapter {
 
+    private OnItemAddedListener mListener;
     private Context mContext;
     private List<User.StatsPair> mStats;
     private String mUsername;
     private boolean mIsMyStats;
 
-    public StatsPagerAdapter(Context context, List<User.StatsPair> stats, String username) {
+    public StatsPagerAdapter(Context context, List<User.StatsPair> stats, String username, OnItemAddedListener listener) {
         mContext = context;
         mStats = stats;
+        mListener = listener;
         mUsername = username;
         mIsMyStats = username != null;
     }
@@ -73,6 +75,18 @@ public class StatsPagerAdapter extends PagerAdapter {
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
         container.removeView((View) object);
+    }
+
+    @Override
+    public void finishUpdate(ViewGroup container) {
+        super.finishUpdate(container);
+        if (mListener != null) {
+            mListener.onItemAdded();
+        }
+    }
+
+    public interface OnItemAddedListener {
+        void onItemAdded();
     }
 }
 

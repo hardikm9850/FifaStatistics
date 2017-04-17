@@ -2,6 +2,7 @@ package com.example.kevin.fifastatistics.fragments;
 
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +28,7 @@ import rx.Subscription;
 public class UserOverviewFragment extends FifaBaseFragment implements OnBackPressedHandler {
 
     private User mUser;
+    private FragmentUserOverviewBinding mBinding;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -36,9 +38,9 @@ public class UserOverviewFragment extends FifaBaseFragment implements OnBackPres
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        FragmentUserOverviewBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_user_overview, container, false);
-        binding.setViewModel(new UserOverviewViewModel(mUser));
-        return binding.getRoot();
+        mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_user_overview, container, false);
+        mBinding.setViewModel(new UserOverviewViewModel(mUser));
+        return mBinding.getRoot();
     }
 
     @Override
