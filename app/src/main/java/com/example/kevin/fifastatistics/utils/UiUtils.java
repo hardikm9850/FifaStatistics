@@ -2,6 +2,7 @@ package com.example.kevin.fifastatistics.utils;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.res.Configuration;
 import android.graphics.Point;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -40,5 +41,9 @@ public class UiUtils {
         Point size = new Point();
         display.getSize(size);
         return size.x;
+    }
+
+    public static boolean isLandscape(Context context) {
+        return context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE;
     }
 }

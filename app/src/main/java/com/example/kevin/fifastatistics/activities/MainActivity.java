@@ -34,6 +34,8 @@ import rx.Subscription;
 public class MainActivity extends FifaBaseActivity implements OnMatchCreatedListener {
 
     public static final String PAGE_EXTRA = "page";
+    private static final String INITIALIZER = "initializer";
+    private static final String DRAWER_POSITION = "drawerPosition";
 
     private Toolbar mToolbar;
     private FifaNavigationDrawer mDrawer;
@@ -42,6 +44,7 @@ public class MainActivity extends FifaBaseActivity implements OnMatchCreatedList
     private ViewPager mViewPager;
     private FloatingActionMenu mActionMenu;
     private FifaEventManager mEventManager;
+    private FragmentInitializer mInitializer;
     private User mUser;
     private int currentDrawerPosition;
 
@@ -49,12 +52,20 @@ public class MainActivity extends FifaBaseActivity implements OnMatchCreatedList
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        restoreInstance(savedInstanceState);
         initializeToolbar();
         initializeViewPager();
         initializeDrawer();
         initializeFab();
         initializeFragment();
         Log.d("token", SharedPreferencesManager.getRegistrationToken());
+    }
+
+    private void restoreInstance(Bundle savedInstanceState) {
+        if (savedInstanceState != null) {
+            currentDrawerPosition = savedInstanceState.getInt(DRAWER_POSITION);
+            mInitializer = (FragmentInitializer) savedInstanceState.getSerializable(INITIALIZER);
+        }
     }
 
     @SuppressWarnings("ConstantConditions")
@@ -92,6 +103,7 @@ public class MainActivity extends FifaBaseActivity implements OnMatchCreatedList
                 return false;
             }
         });
+        mDrawer.setPosition(currentDrawerPosition);
     }
 
     private void handleDrawerClick(int position) {
@@ -111,11 +123,14 @@ public class MainActivity extends FifaBaseActivity implements OnMatchCreatedList
     }
 
     private void initializeFragment() {
-        FragmentInitializer initializer = FragmentInitializerFactory.createFragmentInitializer(this);
-        prepareActivityForFragments(initializer);
+        if (mInitializer == null) {
+            mInitializer = FragmentInitializerFactory.createFragmentInitializer(this);
+        }
+        prepareActivityForFragments(mInitializer);
     }
 
     private void prepareActivityForFragments(FragmentInitializer initializer) {
+        mInitializer = initializer;
         initializer.setActivityTitle(this);
         initializer.changeAdapterDataSet(mAdapter);
         initializer.setTabLayoutVisibility(mTabLayout);
@@ -161,6 +176,13 @@ public class MainActivity extends FifaBaseActivity implements OnMatchCreatedList
             manager.startNewFlow();
         });
         mActionMenu.addMenuButton(seriesButton);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt(DRAWER_POSITION, currentDrawerPosition);
+        outState.putSerializable(INITIALIZER, mInitializer);
     }
 
     @Override

@@ -20,6 +20,7 @@ import com.example.kevin.fifastatistics.interfaces.OnBackPressedHandler;
 import com.example.kevin.fifastatistics.models.databasemodels.user.Player;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
 import com.example.kevin.fifastatistics.utils.ToastUtils;
+import com.example.kevin.fifastatistics.utils.UiUtils;
 import com.example.kevin.fifastatistics.viewmodels.PlayersFragmentViewModel;
 import com.example.kevin.fifastatistics.views.FifaSearchView;
 
@@ -29,11 +30,13 @@ import it.gmariotti.recyclerview.adapter.SlideInBottomAnimatorAdapter;
 
 public class FriendsFragment extends FifaBaseFragment implements OnBackPressedHandler, PlayersFragmentViewModel.OnPlayersLoadedListener {
 
-    private static final int COLUMN_COUNT = 2;
+    private static final int PORTRAIT_COLUMN_COUNT = 2;
+    private static final int LANDSCAPE_COLUMN_COUNT = 3;
 
     private FifaSearchView mSearchView;
     private RecyclerView mRecyclerView;
     private PlayersFragmentViewModel mViewModel;
+    private int mColumnCount;
     private boolean mIsSearchViewReady = false;
 
     public static FriendsFragment newInstance() {
@@ -57,8 +60,12 @@ public class FriendsFragment extends FifaBaseFragment implements OnBackPressedHa
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+        getColumns();
         mViewModel.loadPlayers();
+    }
+
+    private void getColumns() {
+        mColumnCount = UiUtils.isLandscape(getContext()) ? LANDSCAPE_COLUMN_COUNT : PORTRAIT_COLUMN_COUNT;
     }
 
     @Override
@@ -123,7 +130,7 @@ public class FriendsFragment extends FifaBaseFragment implements OnBackPressedHa
         FriendsRecyclerViewAdapter adapter = new FriendsRecyclerViewAdapter(players, this);
         SlideInBottomAnimatorAdapter<FriendsRecyclerViewAdapter.PlayerItemViewHolder> animatorAdapter =
                 new SlideInBottomAnimatorAdapter<>(adapter, mRecyclerView);
-        mRecyclerView.setLayoutManager(new GridLayoutManager(mRecyclerView.getContext(), COLUMN_COUNT));
+        mRecyclerView.setLayoutManager(new GridLayoutManager(mRecyclerView.getContext(), mColumnCount));
         mRecyclerView.setAdapter(animatorAdapter);
     }
 }

@@ -7,12 +7,12 @@ import com.example.kevin.fifastatistics.activities.FifaBaseActivity;
 import com.example.kevin.fifastatistics.activities.MainActivity;
 import com.example.kevin.fifastatistics.adapters.FragmentAdapter;
 
+import java.io.Serializable;
+
 /**
  * Prepares the activity for the fragment that will be displayed.
  */
-public interface FragmentInitializer {
-
-    String PAGE_EXTRA = MainActivity.PAGE_EXTRA;
+public interface FragmentInitializer extends Serializable {
 
     /**
      * Set the title of the activity's toolbar to what is appropriate for the
