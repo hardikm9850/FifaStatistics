@@ -3,17 +3,19 @@ package com.example.kevin.fifastatistics.fragments;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceFragmentCompat;
 
 import com.example.kevin.fifastatistics.FifaApplication;
 import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.activities.PickTeamActivity;
+import com.example.kevin.fifastatistics.event.ColorChangeEvent;
 import com.example.kevin.fifastatistics.interfaces.OnTeamSelectedListener;
 import com.example.kevin.fifastatistics.managers.RetrievalManager;
 import com.example.kevin.fifastatistics.managers.SharedPreferencesManager;
 import com.example.kevin.fifastatistics.models.databasemodels.league.Team;
-import com.example.kevin.fifastatistics.utils.EventBus;
+import com.example.kevin.fifastatistics.event.EventBus;
 import com.example.kevin.fifastatistics.utils.ObservableUtils;
 import com.example.kevin.fifastatistics.utils.UserUtils;
 
@@ -40,8 +42,10 @@ public class SettingsFragment extends PreferenceFragmentCompat implements OnTeam
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
+        getPreferenceManager().setSharedPreferencesName(SharedPreferencesManager.name());
         addPreferencesFromResource(R.xml.preferences);
         initFavoriteTeamPreference();
+        initTeamAsColorAccentPreferenceChangeListener();
     }
 
     private void initFavoriteTeamPreference() {
@@ -57,6 +61,26 @@ public class SettingsFragment extends PreferenceFragmentCompat implements OnTeam
         Observable.<Team>create(subscriber -> subscriber.onNext(SharedPreferencesManager.getFavoriteTeam()))
                 .compose(ObservableUtils.applySchedulers())
                 .subscribe(team -> mTeamPreference.setSummary(team != null ? team.getShortName() : null));
+    }
+
+    private void initTeamAsColorAccentPreferenceChangeListener() {
+        Preference colorPreference = findPreference(getString(R.string.teamAsColor));
+        colorPreference.setOnPreferenceChangeListener((preference, newValue) -> {
+            if (newValue instanceof Boolean) {
+                boolean useTeamForColor = (Boolean) newValue;
+                Team favTeam = SharedPreferencesManager.getFavoriteTeam();
+                if (favTeam != null) {
+                    if (useTeamForColor) {
+                        updateColors(favTeam);
+                    } else {
+                        int color = ContextCompat.getColor(getContext(), R.color.colorAccent);
+                        FifaApplication.setAccentColor(color);
+                        mEventBus.post(new ColorChangeEvent(color));
+                    }
+                }
+            }
+            return true;
+        });
     }
 
     @Override
@@ -80,7 +104,9 @@ public class SettingsFragment extends PreferenceFragmentCompat implements OnTeam
         SharedPreferencesManager.setFavoriteTeam(team);
         syncFavoriteTeamWithServer(team);
         setFavoriteTeamSummary();
-        updateColors(team);
+        if (SharedPreferencesManager.doUseTeamColorAsAccent()) {
+            updateColors(team);
+        }
     }
 
     @SuppressWarnings("unchecked")
@@ -93,6 +119,6 @@ public class SettingsFragment extends PreferenceFragmentCompat implements OnTeam
     private void updateColors(Team team) {
         int newColor = Color.parseColor(team.getColor());
         FifaApplication.setAccentColor(newColor);
-        mEventBus.post(newColor);
+        mEventBus.post(new ColorChangeEvent(newColor));
     }
 }

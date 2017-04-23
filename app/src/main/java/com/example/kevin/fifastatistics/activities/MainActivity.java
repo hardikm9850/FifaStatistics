@@ -167,6 +167,7 @@ public class MainActivity extends FifaBaseActivity implements OnMatchCreatedList
     protected void onColorUpdated() {
         mTabLayout.setSelectedTabIndicatorColor(mColor);
         mDrawer.updateColors(mColor);
+        setFabColor();
     }
 
     private void setFabColor() {

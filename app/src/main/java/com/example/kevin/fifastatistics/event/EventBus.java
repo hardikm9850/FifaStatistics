@@ -1,4 +1,4 @@
-package com.example.kevin.fifastatistics.utils;
+package com.example.kevin.fifastatistics.event;
 
 import rx.Observable;
 import rx.subjects.PublishSubject;
@@ -15,7 +15,7 @@ public class EventBus {
 
     private final Subject<Object, Object> mEventBusSubject = createSubject();
 
-    protected Subject<Object, Object> createSubject() {
+    private Subject<Object, Object> createSubject() {
         return new SerializedSubject<>(PublishSubject.create());
     }
 
@@ -24,13 +24,13 @@ public class EventBus {
      *
      * @param event     The event to be posted.
      */
-    public <E> void post(E event) {
+    public <E extends Event> void post(E event) {
         if (event != null) {
             mEventBusSubject.onNext(event);
         }
     }
 
-    public <E> Observable<E> observeEvents(Class<E> eventClass) {
+    public <E extends Event> Observable<E> observeEvents(Class<E> eventClass) {
         return mEventBusSubject.ofType(eventClass);
     }
 }

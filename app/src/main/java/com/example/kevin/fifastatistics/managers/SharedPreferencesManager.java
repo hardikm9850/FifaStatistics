@@ -35,14 +35,17 @@ public class SharedPreferencesManager {
     private static final String FAVORITE_TEAM;
     private static final String DIRECT_CAMERA;
     private static final String DARK_THEME;
+    private static final String TEAM_COLOR_AS_ACCENT;
 
     private static SharedPreferences preferences;
     private static SharedPreferences.Editor editor;
 
     static {
-        FAVORITE_TEAM = FifaApplication.getContext().getString(R.string.favoriteTeam);
-        DIRECT_CAMERA = FifaApplication.getContext().getString(R.string.openToCamera);
-        DARK_THEME = FifaApplication.getContext().getString(R.string.darkTheme);
+        Context context = FifaApplication.getContext();
+        FAVORITE_TEAM = context.getString(R.string.favoriteTeam);
+        DIRECT_CAMERA = context.getString(R.string.openToCamera);
+        DARK_THEME = context.getString(R.string.darkTheme);
+        TEAM_COLOR_AS_ACCENT = context.getString(R.string.teamAsColor);
     }
 
     /**
@@ -55,6 +58,10 @@ public class SharedPreferencesManager {
         if (preferences == null) {
             preferences = context.getSharedPreferences(PREFERENCES, Context.MODE_PRIVATE);
         }
+    }
+
+    public static String name() {
+        return PREFERENCES;
     }
 
     /**
@@ -152,8 +159,21 @@ public class SharedPreferencesManager {
 
     @ColorInt
     public static int getColorAccent() {
-        String color = preferences.getString(COLOR_ACCENT, null);
-        return color != null ? Color.parseColor(color) : ContextCompat.getColor(FifaApplication.getContext(), R.color.colorAccent);
+        int accentColor = ContextCompat.getColor(FifaApplication.getContext(), R.color.colorAccent);
+        if (doUseTeamColorAsAccent()) {
+            String color = preferences.getString(COLOR_ACCENT, null);
+            return color != null ? Color.parseColor(color) : accentColor;
+        } else {
+            return accentColor;
+        }
+    }
+
+    public static boolean doUseTeamColorAsAccent() {
+        return preferences.getBoolean(TEAM_COLOR_AS_ACCENT, false);
+    }
+
+    public static boolean openCameraImmediately() {
+        return preferences.getBoolean(DIRECT_CAMERA, false);
     }
 
     public static User getUser() {

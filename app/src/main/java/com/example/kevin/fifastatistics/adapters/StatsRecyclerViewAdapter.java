@@ -10,11 +10,10 @@ import android.widget.TextView;
 
 import com.example.kevin.fifastatistics.FifaApplication;
 import com.example.kevin.fifastatistics.R;
+import com.example.kevin.fifastatistics.event.ColorChangeEvent;
 import com.example.kevin.fifastatistics.models.databasemodels.user.Stats;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
-import com.example.kevin.fifastatistics.utils.EventBus;
-
-import java.util.Locale;
+import com.example.kevin.fifastatistics.event.EventBus;
 
 public class StatsRecyclerViewAdapter extends RecyclerView.Adapter<StatsRecyclerViewAdapter.ViewHolder> {
 
@@ -34,8 +33,8 @@ public class StatsRecyclerViewAdapter extends RecyclerView.Adapter<StatsRecycler
 
     private void initColor() {
         mColor = FifaApplication.getAccentColor();
-        EventBus.getInstance().observeEvents(Integer.class).subscribe(color -> {
-            mColor = color;
+        EventBus.getInstance().observeEvents(ColorChangeEvent.class).subscribe(event -> {
+            mColor = event.color;
             notifyDataSetChanged();
         });
     }

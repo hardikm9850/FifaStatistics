@@ -7,9 +7,10 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 import com.example.kevin.fifastatistics.FifaApplication;
+import com.example.kevin.fifastatistics.event.ColorChangeEvent;
 import com.example.kevin.fifastatistics.interfaces.OnBackPressedHandler;
 import com.example.kevin.fifastatistics.interfaces.TransitionStarter;
-import com.example.kevin.fifastatistics.utils.EventBus;
+import com.example.kevin.fifastatistics.event.EventBus;
 import com.example.kevin.fifastatistics.utils.ObservableUtils;
 
 import rx.Subscription;
@@ -40,8 +41,8 @@ public abstract class FifaBaseActivity extends AppCompatActivity implements Tran
 
     private void initColors() {
         mColor = FifaApplication.getAccentColor();
-        EventBus.getInstance().observeEvents(Integer.class).subscribe(color -> {
-            mColor = color;
+        EventBus.getInstance().observeEvents(ColorChangeEvent.class).subscribe(event -> {
+            mColor = event.color;
             onColorUpdated();
         });
     }

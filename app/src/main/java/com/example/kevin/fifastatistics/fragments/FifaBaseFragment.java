@@ -8,9 +8,10 @@ import android.support.v4.app.Fragment;
 
 import com.example.kevin.fifastatistics.FifaApplication;
 import com.example.kevin.fifastatistics.R;
+import com.example.kevin.fifastatistics.event.ColorChangeEvent;
 import com.example.kevin.fifastatistics.interfaces.ActivityLauncher;
 import com.example.kevin.fifastatistics.interfaces.TransitionStarter;
-import com.example.kevin.fifastatistics.utils.EventBus;
+import com.example.kevin.fifastatistics.event.EventBus;
 import com.example.kevin.fifastatistics.utils.ObservableUtils;
 import com.example.kevin.fifastatistics.utils.SnackbarUtils;
 
@@ -45,8 +46,8 @@ public abstract class FifaBaseFragment extends Fragment implements ActivityLaunc
         super.onCreate(savedInstanceState);
         mCompositeSubscription = new CompositeSubscription();
         mColor = FifaApplication.getAccentColor();
-        EventBus.getInstance().observeEvents(Integer.class).subscribe(color -> {
-            mColor = color;
+        EventBus.getInstance().observeEvents(ColorChangeEvent.class).subscribe(event -> {
+            mColor = event.color;
             onColorUpdated();
         });
     }

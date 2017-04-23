@@ -172,5 +172,6 @@
     <string name="pref_direct_camera">Direct Camera</string>
     <string name="pref_direct_camera_desc">Immediately open the camera when creating a match</string>
     <string name="pref_favorite_team">Favourite Team</string>
+    <string name="pref_team_color_as_accent">Favourite team for accent colour</string>
 
 </resources>

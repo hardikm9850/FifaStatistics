@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
@@ -22,6 +23,7 @@ import com.example.kevin.fifastatistics.interfaces.MatchFactsPreprocessor;
 import com.example.kevin.fifastatistics.interfaces.OnBackPressedHandler;
 import com.example.kevin.fifastatistics.interfaces.OnMatchCreatedListener;
 import com.example.kevin.fifastatistics.managers.OcrManager;
+import com.example.kevin.fifastatistics.managers.SharedPreferencesManager;
 import com.example.kevin.fifastatistics.models.databasemodels.match.Match;
 import com.example.kevin.fifastatistics.models.databasemodels.match.Penalties;
 import com.example.kevin.fifastatistics.models.databasemodels.user.Friend;
@@ -119,6 +121,13 @@ public class AddMatchDialogFragment extends FifaBaseDialogFragment implements On
         initializeSwitchSidesButton(view);
         view = maybeAddPaddingToTop(view);
         return view;
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        if (savedInstanceState == null && SharedPreferencesManager.openCameraImmediately()) {
+            onCameraItemClick();
+        }
     }
 
     @Override

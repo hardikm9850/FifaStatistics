@@ -3,4 +3,5 @@
     <string name="darkTheme">darkTheme</string>
     <string name="openToCamera">openToCamera</string>
     <string name="favoriteTeam">favouriteTeam</string>
+    <string name="teamAsColor">teamAsColor</string>
 </resources>
