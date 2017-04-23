@@ -4,7 +4,6 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
 
 import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.fragments.AddMatchDialogFragment;
@@ -148,15 +147,6 @@ public class FifaEventManager implements SelectOpponentDialogFragment.SelectOppo
         @Override
         public void onMatchCreated(Match match) {
             mMatchUploadingDialog.cancel();
-            NotificationSender.addMatch(mUser, mOpponent.getRegistrationToken(), match)
-                    .subscribe(response -> {
-                        if (!response.isSuccessful()) {
-                            Log.e("NOTIFICATION", "failed to send add match notification");
-                            // TODO add resend notification to tasks
-                        } else {
-                            Log.e("NOTIFICATION", "sending successful");
-                        }
-                    });
             ToastUtils.showShortToast(mActivity, "Match created successfully");
             mAddMatchFragment.dismiss();
             RetrievalManager.syncCurrentUserWithServer();

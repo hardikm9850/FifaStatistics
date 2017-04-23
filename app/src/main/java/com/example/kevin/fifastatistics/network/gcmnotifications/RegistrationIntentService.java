@@ -43,7 +43,7 @@ public class RegistrationIntentService extends FirebaseInstanceIdService {
 
     private void updateTokenOnServerIfChanged(User user, String newToken) {
         String oldToken = SharedPreferencesManager.getRegistrationToken();
-        if (oldToken != null && !oldToken.equals(newToken)) {
+        if ((oldToken != null && !oldToken.equals(newToken)) || !SharedPreferencesManager.didSendRegistrationToken()) {
             SharedPreferencesManager.setDidSendRegistrationToken(false);
             UserUtils.patchRegToken(user.getId(), newToken).subscribe(new ObservableUtils.OnNextObserver<User>() {
                 @Override

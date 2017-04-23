@@ -53,8 +53,8 @@ public class StatsRecyclerViewAdapter extends RecyclerView.Adapter<StatsRecycler
         int percent = (vf + va == 0) ? 50 : (int)((vf * 100.0f) / (vf + va));
         holder.mProgressBar.setProgressTintList(ColorStateList.valueOf(mColor));
         holder.mProgressBar.setProgress(percent);
-        holder.mStatFor.setText(String.format(Locale.CANADA, floatFormat, vf));
-        holder.mStatAgainst.setText(String.format(Locale.CANADA, floatFormat, va));
+        holder.mStatFor.setText(String.format(floatFormat, vf));
+        holder.mStatAgainst.setText(String.format(floatFormat, va));
         holder.mTitle.setText(names[position]);
     }
 

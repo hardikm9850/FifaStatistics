@@ -11,15 +11,14 @@ import com.example.kevin.fifastatistics.utils.IntentFactory;
 
 import java.util.Map;
 
-public class MatchNotification extends FifaNotification {
+public class SeriesNotification extends FifaNotification {
 
     private PendingIntent mContentIntent;
     private EventNotificationData mData;
 
-    public MatchNotification(Context c, Map<String, String> data) {
+    public SeriesNotification(Context c, Map<String, String> data) {
         super(c);
         this.mData = new EventNotificationData(data);
-
         initializeContentIntent(c);
     }
 
@@ -48,5 +47,4 @@ public class MatchNotification extends FifaNotification {
     public void performPreSendActions() {
         RetrievalManager.syncCurrentUserWithServer();
     }
-
 }

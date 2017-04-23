@@ -2,7 +2,7 @@ package com.example.kevin.fifastatistics.views.notifications;
 
 import android.content.Context;
 
-import com.example.kevin.fifastatistics.models.notifications.notificationbundles.NotificationBundle;
+import com.example.kevin.fifastatistics.models.notifications.NotificationData;
 
 /**
  * Null notification object used when no valid notification can be initialized.
@@ -18,10 +18,10 @@ public class NullNotification extends FifaNotification
     }
 
     @Override
-    protected NotificationBundle getNotificationBundle() { return null; }
+    protected NotificationData getNotificationBundle() { return null; }
 
     @Override
-    protected void setDefaultNotificationSettings(NotificationBundle bundle) {}
+    protected void setDefaultNotificationSettings(NotificationData bundle) {}
 
     @Override
     protected void setContentIntent() {}

@@ -1,8 +1,13 @@
 package com.example.kevin.fifastatistics.network;
 
+import com.example.kevin.fifastatistics.managers.SharedPreferencesManager;
+import com.example.kevin.fifastatistics.models.databasemodels.user.User;
+
 import java.util.concurrent.TimeUnit;
 
+import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
+import okhttp3.Request;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
@@ -14,22 +19,12 @@ import retrofit2.converter.jackson.JacksonConverterFactory;
 public class FifaApi {
 
     private static final String FIFA_API_ENDPOINT = "https://fifastatisticsapi.azurewebsites.net/";
-//    private static final String FIFA_API_ENDPOINT = "http://192.168.1.103:8080/";
-    private static final String NOTIFICATIONS_API_ENDPOINT = "https://gcm-http.googleapis.com/gcm/";
     private static final int CONNECT_TIMEOUT_DURATION = 30;
 
     private static UserApi userApi;
     private static MatchApi matchApi;
     private static SeriesApi seriesApi;
     private static LeagueApi leagueApi;
-    private static NotificationsApi notificationsApi;
-
-    public static NotificationsApi getNotificationsApi() {
-        if (notificationsApi == null) {
-            notificationsApi = (initializeApi(NotificationsApi.class, NOTIFICATIONS_API_ENDPOINT));
-        }
-        return notificationsApi;
-    }
 
     public static UserApi getUserApi() {
         if (userApi == null) {
@@ -75,6 +70,7 @@ public class FifaApi {
     private static OkHttpClient initializeHttpClient(HttpLoggingInterceptor interceptor) {
         return new OkHttpClient.Builder()
                 .addInterceptor(interceptor)
+                .addInterceptor(getAuthorizationInterceptor())
                 .connectTimeout(CONNECT_TIMEOUT_DURATION, TimeUnit.SECONDS)
                 .readTimeout(CONNECT_TIMEOUT_DURATION, TimeUnit.SECONDS)
                 .build();
@@ -87,5 +83,16 @@ public class FifaApi {
                 .addConverterFactory(JacksonConverterFactory.create())
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .build();
+    }
+
+    private static Interceptor getAuthorizationInterceptor() {
+        User user = SharedPreferencesManager.getUser();
+        return chain -> {
+            Request request = chain.request();
+            request = request.newBuilder()
+                    .addHeader("Authorization", user.getId())
+                    .build();
+            return chain.proceed(request);
+        };
     }
 }
