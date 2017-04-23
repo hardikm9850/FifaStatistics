@@ -2,48 +2,44 @@ package com.example.kevin.fifastatistics.viewmodels;
 
 import android.content.Context;
 import android.content.Intent;
-import android.databinding.BaseObservable;
 import android.databinding.Bindable;
+import android.view.View;
 
 import com.example.kevin.fifastatistics.BR;
 import com.example.kevin.fifastatistics.activities.PickTeamActivity;
-import com.example.kevin.fifastatistics.fragments.CreateSeriesMatchListFragment;
+import com.example.kevin.fifastatistics.fragments.AddMatchDialogFragment;
 import com.example.kevin.fifastatistics.interfaces.ActivityLauncher;
-import com.example.kevin.fifastatistics.interfaces.OnMatchUpdatedListener;
-import com.example.kevin.fifastatistics.interfaces.OnSeriesScoreUpdateListener;
 import com.example.kevin.fifastatistics.interfaces.OnTeamSelectedListener;
 import com.example.kevin.fifastatistics.managers.CrestUrlResizer;
 import com.example.kevin.fifastatistics.managers.RetrievalManager;
 import com.example.kevin.fifastatistics.managers.SharedPreferencesManager;
 import com.example.kevin.fifastatistics.models.databasemodels.league.Team;
-import com.example.kevin.fifastatistics.models.databasemodels.match.Match;
-import com.example.kevin.fifastatistics.models.databasemodels.user.Friend;
 import com.example.kevin.fifastatistics.models.databasemodels.user.Player;
 import com.example.kevin.fifastatistics.utils.ObservableUtils;
 
 import rx.Observable;
 import rx.Subscription;
 
-public class CreateSeriesScoreViewModel extends FifaBaseViewModel implements OnMatchUpdatedListener, OnTeamSelectedListener {
+public class AddMatchFragmentViewModel extends FifaBaseViewModel implements OnTeamSelectedListener {
 
     private Player mUser;
     private Player mOpponent;
-    private OnSeriesScoreUpdateListener mListener;
     private Context mContext;
     private ActivityLauncher mLauncher;
     private Team mUserTeam;
     private Team mOpponentTeam;
-    private int mUserWins;
-    private int mOpponentWins;
+    private AddMatchFragmentViewModelInteraction mInteraction;
+    private boolean mIsPartOfSeries;
     private boolean mIsSelectedTeamUser;
 
-    public CreateSeriesScoreViewModel(Player user, Player opponent, OnSeriesScoreUpdateListener listener,
-                                      Context context, ActivityLauncher launcher) {
+    public AddMatchFragmentViewModel(Player user, Player opponent, Context context, ActivityLauncher launcher,
+                                     boolean isPartOfSeries, AddMatchFragmentViewModelInteraction interaction) {
         mUser = user;
         mOpponent = opponent;
-        mListener = listener;
         mContext = context;
+        mIsPartOfSeries = isPartOfSeries;
         mLauncher = launcher;
+        mInteraction = interaction;
         getFavoriteTeam();
         getOpponentFavoriteTeam();
     }
@@ -52,10 +48,17 @@ public class CreateSeriesScoreViewModel extends FifaBaseViewModel implements OnM
         Observable.<Team>create(s -> s.onNext(SharedPreferencesManager.getFavoriteTeam()))
                 .compose(ObservableUtils.applySchedulers()).subscribe(team -> {
             if (team != null) {
-                mUserTeam = team;
-                notifyPropertyChanged(BR.userTeamImageUrl);
+                changeUserTeam(team);
             }
         });
+    }
+
+    private void changeUserTeam(Team team) {
+        mUserTeam = team;
+        notifyPropertyChanged(BR.userTeamImageUrl);
+        if (mInteraction != null) {
+            mInteraction.onUserTeamChange(team);
+        }
     }
 
     private void getOpponentFavoriteTeam() {
@@ -63,12 +66,19 @@ public class CreateSeriesScoreViewModel extends FifaBaseViewModel implements OnM
             @Override
             public void onNext(Team team) {
                 if (team != null) {
-                    mOpponentTeam = team;
-                    notifyPropertyChanged(BR.opponentTeamImageUrl);
+                   changeOpponentTeam(team);
                 }
             }
         });
         addSubscription(s);
+    }
+
+    private void changeOpponentTeam(Team team) {
+        mOpponentTeam = team;
+        notifyPropertyChanged(BR.opponentTeamImageUrl);
+        if (mInteraction != null) {
+            mInteraction.onOpponentTeamChange(team);
+        }
     }
 
     public String getUserImageUrl() {
@@ -77,30 +87,6 @@ public class CreateSeriesScoreViewModel extends FifaBaseViewModel implements OnM
 
     public String getOpponentImageUrl() {
         return mOpponent.getImageUrl();
-    }
-
-    public void incrementUserWins() {
-        mListener.onUserScoreUpdate(mUserWins, mUserWins + 1);
-        mUserWins++;
-    }
-
-    public void decrementUserWins() {
-        mListener.onUserScoreUpdate(mUserWins, mUserWins - 1);
-        mUserWins--;
-    }
-
-    public void incrementOpponentWins() {
-        mListener.onOpponentScoreUpdate(mOpponentWins, mOpponentWins + 1);
-        mOpponentWins++;
-    }
-
-    public void decrementOpponentWins() {
-        mListener.onOpponentScoreUpdate(mOpponentWins, mOpponentWins - 1);
-        mOpponentWins--;
-    }
-
-    public void setSeriesScoreUpdateListener(OnSeriesScoreUpdateListener listener) {
-        mListener = listener;
     }
 
     public void onUserTeamClick() {
@@ -115,17 +101,15 @@ public class CreateSeriesScoreViewModel extends FifaBaseViewModel implements OnM
 
     private void launchPickTeamActivity() {
         Intent intent = new Intent(mContext, PickTeamActivity.class);
-        mLauncher.launchActivity(intent, CreateSeriesMatchListFragment.CREATE_SERIES_REQUEST_CODE, null);
+        mLauncher.launchActivity(intent, AddMatchDialogFragment.ADD_MATCH_REQUEST_CODE, null);
     }
 
     @Override
     public void onTeamSelected(Team team) {
         if (mIsSelectedTeamUser) {
-            mUserTeam = team;
-            notifyPropertyChanged(BR.userTeamImageUrl);
+            changeUserTeam(team);
         } else {
-            mOpponentTeam = team;
-            notifyPropertyChanged(BR.opponentTeamImageUrl);
+            changeOpponentTeam(team);
         }
     }
 
@@ -139,31 +123,23 @@ public class CreateSeriesScoreViewModel extends FifaBaseViewModel implements OnM
         return mOpponentTeam != null ? CrestUrlResizer.resizeSmall(mOpponentTeam.getCrestUrl()) : null;
     }
 
-    public Team getUserTeam() {
-        return mUserTeam;
+    public int getTeamVisibility() {
+        return mIsPartOfSeries ? View.GONE : View.VISIBLE;
     }
 
-    public Team getOpponentTeam() {
-        return mOpponentTeam;
-    }
-
-    @Override
-    public void onMatchUpdated(Match oldMatch, Match newMatch) {
-        Friend oldWinner = oldMatch.getWinner();
-        Friend newWinner = newMatch.getWinner();
-        if (!oldWinner.equals(newWinner)) {
-            if (mUser.equals(newWinner)) {
-                incrementUserWins();
-                decrementOpponentWins();
-            } else {
-                decrementUserWins();
-                incrementOpponentWins();
-            }
+    public void swap() {
+        Team temp = mUserTeam;
+        mUserTeam = mOpponentTeam;
+        mOpponentTeam = temp;
+        if (mInteraction != null) {
+            mInteraction.onOpponentTeamChange(mOpponentTeam);
+            mInteraction.onUserTeamChange(mUserTeam);
         }
+        notifyChange();
     }
 
-    @Override
-    public void setMatchIndex(int index) {
-
+    public interface AddMatchFragmentViewModelInteraction {
+        void onUserTeamChange(Team team);
+        void onOpponentTeamChange(Team team);
     }
 }

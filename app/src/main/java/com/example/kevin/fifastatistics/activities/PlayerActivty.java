@@ -98,7 +98,7 @@ public class PlayerActivty extends BasePlayerActivity implements OnMatchCreatedL
         matchButton.setOnClickListener(l -> {
             mFam.close(true);
             setOnBackPressHandler(mManager);
-            mManager.setMatchFlow();
+            mManager.setMatchFlow(false);
             mManager.startNewFlow(friend);
         });
         mFam.addMenuButton(matchButton);

@@ -36,13 +36,13 @@ public class FifaEventManager implements SelectOpponentDialogFragment.SelectOppo
         return new FifaEventManager(activity, user);
     }
 
-    public void setMatchFlow() {
-        setMatchFlow(null);
+    public void setMatchFlow(boolean isPartOfSeries) {
+        setMatchFlow(null, isPartOfSeries);
     }
 
     /** Set the type of flow to a new match type */
-    public void setMatchFlow(OnMatchCreatedListener listener) {
-        mFlow = new MatchFlow(listener);
+    public void setMatchFlow(OnMatchCreatedListener listener, boolean isPartOfSeries) {
+        mFlow = new MatchFlow(listener, isPartOfSeries);
     }
 
     /** Set the type of flow to a new series type */
@@ -112,9 +112,12 @@ public class FifaEventManager implements SelectOpponentDialogFragment.SelectOppo
         private AddMatchDialogFragment mAddMatchFragment;
         private Player mOpponent;
         private ProgressDialog mMatchUploadingDialog;
+        private boolean mIsPartOfSeries;
+        private boolean mIsSaving;
 
-        MatchFlow(OnMatchCreatedListener listener) {
+        MatchFlow(OnMatchCreatedListener listener, boolean isPartOfSeries) {
             initProgressDialog();
+            mIsPartOfSeries = isPartOfSeries;
         }
 
         private void initProgressDialog() {
@@ -133,7 +136,7 @@ public class FifaEventManager implements SelectOpponentDialogFragment.SelectOppo
         private AddMatchDialogFragment showAddMatchFragment(FragmentActivity parentActivity, Player opponent) {
             FragmentTransaction t = parentActivity.getSupportFragmentManager().beginTransaction();
             t.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-            AddMatchDialogFragment fragment = AddMatchDialogFragment.newInstance(mUser, opponent);
+            AddMatchDialogFragment fragment = AddMatchDialogFragment.newInstance(mUser, opponent, mIsPartOfSeries);
             t.add(android.R.id.content, fragment).addToBackStack(null).commit();
 
             return fragment;
@@ -146,6 +149,11 @@ public class FifaEventManager implements SelectOpponentDialogFragment.SelectOppo
 
         @Override
         public void onMatchCreated(Match match) {
+            if (!mIsPartOfSeries && !mIsSaving) {
+                mIsSaving = true;
+                onSaveMatch(match);
+                return;
+            }
             mMatchUploadingDialog.cancel();
             ToastUtils.showShortToast(mActivity, "Match created successfully");
             mAddMatchFragment.dismiss();
@@ -154,6 +162,7 @@ public class FifaEventManager implements SelectOpponentDialogFragment.SelectOppo
 
         @Override
         public void handleError(String message, Throwable throwable) {
+            mIsSaving = false;
             mMatchUploadingDialog.dismiss();
             ToastUtils.showShortToast(mActivity, message);
             // TODO save match for retry

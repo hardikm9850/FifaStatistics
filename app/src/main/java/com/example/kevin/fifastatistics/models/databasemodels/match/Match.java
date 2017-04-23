@@ -1,6 +1,7 @@
 package com.example.kevin.fifastatistics.models.databasemodels.match;
 
 import com.example.kevin.fifastatistics.models.databasemodels.DatabaseModel;
+import com.example.kevin.fifastatistics.models.databasemodels.league.Team;
 import com.example.kevin.fifastatistics.models.databasemodels.user.Friend;
 import com.example.kevin.fifastatistics.models.databasemodels.user.Player;
 import com.example.kevin.fifastatistics.models.databasemodels.user.Stats;
@@ -14,6 +15,7 @@ import java.util.Date;
 
 import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonDeserialize(builder = Match.MatchBuilder.class)
@@ -21,13 +23,14 @@ import lombok.Getter;
 @Getter
 public class Match extends DatabaseModel {
 
-    private String id;
     private final User.StatsPair stats;
     private final Penalties penalties;
     private final Date date;
-
     private final Friend winner;
     private final Friend loser;
+    private String id;
+    @Setter private Team teamWinner;
+    @Setter private Team teamLoser;
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     @JsonPOJOBuilder(withPrefix = "")

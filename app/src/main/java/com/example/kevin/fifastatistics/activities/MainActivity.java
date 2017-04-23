@@ -147,7 +147,7 @@ public class MainActivity extends FifaBaseActivity implements OnMatchCreatedList
         matchButton.setOnClickListener(l -> {
             mActionMenu.close(true);
             setOnBackPressHandler(manager);
-            manager.setMatchFlow();
+            manager.setMatchFlow(false);
             manager.startNewFlow();
         });
         mActionMenu.addMenuButton(matchButton);

@@ -56,7 +56,7 @@ public class CreateSeriesListItemViewModel extends BaseObservable {
         notifyUpdating();
         FragmentTransaction t = mActivity.getSupportFragmentManager().beginTransaction();
         t.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-        mDialogFragment = AddMatchDialogFragment.newInstance(mUser, mOpponent);
+        mDialogFragment = AddMatchDialogFragment.newInstance(mUser, mOpponent, true);
         mDialogFragment.setMatch(mMatch);
         mActivity.setOnBackPressHandler(mDialogFragment);
         t.add(android.R.id.content, mDialogFragment).addToBackStack(null).commit();

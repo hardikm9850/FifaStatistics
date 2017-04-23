@@ -3,6 +3,7 @@ package com.example.kevin.fifastatistics.fragments;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.databinding.DataBindingUtil;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -19,11 +20,15 @@ import android.widget.ImageView;
 
 import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.activities.CameraActivity;
+import com.example.kevin.fifastatistics.activities.PickTeamActivity;
+import com.example.kevin.fifastatistics.databinding.FragmentAddMatchBinding;
 import com.example.kevin.fifastatistics.interfaces.MatchFactsPreprocessor;
 import com.example.kevin.fifastatistics.interfaces.OnBackPressedHandler;
 import com.example.kevin.fifastatistics.interfaces.OnMatchCreatedListener;
+import com.example.kevin.fifastatistics.interfaces.OnTeamSelectedListener;
 import com.example.kevin.fifastatistics.managers.OcrManager;
 import com.example.kevin.fifastatistics.managers.SharedPreferencesManager;
+import com.example.kevin.fifastatistics.models.databasemodels.league.Team;
 import com.example.kevin.fifastatistics.models.databasemodels.match.Match;
 import com.example.kevin.fifastatistics.models.databasemodels.match.Penalties;
 import com.example.kevin.fifastatistics.models.databasemodels.user.Friend;
@@ -35,6 +40,7 @@ import com.example.kevin.fifastatistics.utils.ObservableUtils;
 import com.example.kevin.fifastatistics.utils.ResourceUtils;
 import com.example.kevin.fifastatistics.utils.ToastUtils;
 import com.example.kevin.fifastatistics.utils.UiUtils;
+import com.example.kevin.fifastatistics.viewmodels.AddMatchFragmentViewModel;
 import com.example.kevin.fifastatistics.views.AddMatchListLayout;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
@@ -49,9 +55,10 @@ import rx.Subscription;
  * <p>
  * See https://developer.android.com/guide/topics/ui/dialogs.html#FullscreenDialog for details.
  */
-public class AddMatchDialogFragment extends FifaBaseDialogFragment implements OnBackPressedHandler {
+public class AddMatchDialogFragment extends FifaBaseDialogFragment implements OnBackPressedHandler, AddMatchFragmentViewModel.AddMatchFragmentViewModelInteraction {
 
-    private static final int ADD_MATCH_REQUEST_CODE = 466;
+    public static final int ADD_MATCH_REQUEST_CODE = 466;
+    private static final String SERIES_ARG = "partOfSeries";
 
     private ImageLoader mImageLoader;
     private FragmentActivity mActivity;
@@ -59,16 +66,21 @@ public class AddMatchDialogFragment extends FifaBaseDialogFragment implements On
     private User mUser;
     private Player mOpponent;
     private OnMatchCreatedListener mListener;
+    private AddMatchFragmentViewModel mViewModel;
     private AddMatchListLayout mAddMatchList;
     private ImageView mLeftImage;
     private ImageView mRightImage;
+    private Team mUserTeam;
+    private Team mOpponentTeam;
+    private boolean mIsPartOfSeries;
     private boolean mDidSwapSides;
 
-    public static AddMatchDialogFragment newInstance(User user, Player opponent) {
+    public static AddMatchDialogFragment newInstance(User user, Player opponent, boolean isPartOfSeries) {
         AddMatchDialogFragment fragment = new AddMatchDialogFragment();
         Bundle args = new Bundle();
         args.putSerializable(USER, user);
         args.putSerializable(OPPONENT, opponent);
+        args.putBoolean(SERIES_ARG, isPartOfSeries);
         fragment.setArguments(args);
         return fragment;
     }
@@ -100,6 +112,7 @@ public class AddMatchDialogFragment extends FifaBaseDialogFragment implements On
     private void initFromBundle(Bundle bundle) {
         mImageLoader = ImageLoader.getInstance();
         mActivity = getActivity();
+        mIsPartOfSeries = bundle.getBoolean(SERIES_ARG);
         mUser = (User) bundle.getSerializable(USER);
         mOpponent = (Player) bundle.getSerializable(OPPONENT);
     }
@@ -107,13 +120,18 @@ public class AddMatchDialogFragment extends FifaBaseDialogFragment implements On
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
+        outState.putBoolean(SERIES_ARG, mIsPartOfSeries);
         outState.putSerializable(USER, mUser);
         outState.putSerializable(OPPONENT, mOpponent);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_add_match, container, false);
+        FragmentAddMatchBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_add_match, container, false);
+        AddMatchFragmentViewModel viewModel = new AddMatchFragmentViewModel(mUser, mOpponent, getContext(), this, mIsPartOfSeries, this);
+        binding.setMatchViewModel(viewModel);
+        mViewModel = viewModel;
+        View view = binding.getRoot();
         initializeToolbar(view);
         initializeLeftUserImage(view);
         initializeRightUserImage(view);
@@ -217,7 +235,6 @@ public class AddMatchDialogFragment extends FifaBaseDialogFragment implements On
         dialog.show();
     }
 
-
     private Match buildMatch(User.StatsPair stats) {
         Penalties penalties = mAddMatchList.getPenalties();
         boolean userDidWin = userDidWin(stats, penalties);
@@ -227,6 +244,8 @@ public class AddMatchDialogFragment extends FifaBaseDialogFragment implements On
                 .penalties(penalties)
                 .winner(userDidWin ? Friend.fromPlayer(mUser) : Friend.fromPlayer(mOpponent))
                 .loser(userDidWin ? Friend.fromPlayer(mOpponent) : Friend.fromPlayer(mUser))
+                .teamWinner(mUserTeam)
+                .teamLoser(mOpponentTeam)
                 .build();
     }
 
@@ -296,6 +315,7 @@ public class AddMatchDialogFragment extends FifaBaseDialogFragment implements On
         b.setOnClickListener(v -> {
             setLeftImage(mDidSwapSides ? mUser.getImageUrl() : mOpponent.getImageUrl());
             setRightImage(mDidSwapSides ? mOpponent.getImageUrl() : mUser.getImageUrl());
+            mViewModel.swap();
             mDidSwapSides = !mDidSwapSides;
         });
     }
@@ -306,6 +326,9 @@ public class AddMatchDialogFragment extends FifaBaseDialogFragment implements On
             byte[] picture = ByteHolder.getImage();
             String preprocessor = data.getStringExtra(CameraActivity.EXTRA_PREPROCESSOR);
             onImageCapture(picture, CameraActivity.Preprocessor.valueOf(preprocessor).getPreprocessor());
+        } else if (requestCode == ADD_MATCH_REQUEST_CODE && resultCode == PickTeamActivity.RESULT_TEAM_PICKED) {
+            Team team = (Team) data.getExtras().getSerializable(PickTeamActivity.EXTRA_TEAM);
+            mViewModel.onTeamSelected(team);
         }
     }
 
@@ -370,6 +393,16 @@ public class AddMatchDialogFragment extends FifaBaseDialogFragment implements On
 
     private void onOcrError() {
         ToastUtils.showShortToast(mActivity, "Failed to parse image.");
+    }
+
+    @Override
+    public void onUserTeamChange(Team team) {
+        mUserTeam = team;
+    }
+
+    @Override
+    public void onOpponentTeamChange(Team team) {
+        mOpponentTeam = team;
     }
 
     @Override

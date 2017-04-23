@@ -44,8 +44,10 @@ public class MatchUtils {
     }
 
     public static boolean validateMatch(Match match) {
+        if (match.getTeamWinner() == null || match.getTeamLoser() == null) {
+            return false;
+        }
         boolean didGoToPenalties = match.getPenalties() != null;
-
         float goalsWinner = match.getStats().getStatsFor().getGoals();
         float goalsLoser = match.getStats().getStatsAgainst().getGoals();
         if (didGoToPenalties && ((goalsWinner != goalsLoser) || !match.getPenalties().validate())) {

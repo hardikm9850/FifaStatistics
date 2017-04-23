@@ -62,7 +62,7 @@ public class CreateSeriesActivity extends BasePlayerActivity implements OnSeries
 
     private void initializeEventManager(User currentUser) {
         mEventManager = FifaEventManager.newInstance(this, currentUser);
-        mEventManager.setMatchFlow(mFragment);
+        mEventManager.setMatchFlow(mFragment, true);
     }
 
     @Override
