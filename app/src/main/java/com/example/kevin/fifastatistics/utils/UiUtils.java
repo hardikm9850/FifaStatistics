@@ -2,10 +2,13 @@ package com.example.kevin.fifastatistics.utils;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Point;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.view.Display;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
@@ -29,5 +32,13 @@ public class UiUtils {
         trans.remove(fragment);
         trans.commit();
         manager.popBackStack();
+    }
+
+    public static int getScreenWidth(@NonNull Context context) {
+        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        Display display = wm.getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        return size.x;
     }
 }

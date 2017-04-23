@@ -11,27 +11,26 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_alignParentEnd="true"
-            android:background="@color/colorPrimary">
+            android:background="@android:color/black">
 
             <ImageButton
                 android:id="@+id/shutter"
                 android:contentDescription="@string/camera_button_description"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="57dp"
+                android:layout_height="57dp"
                 android:layout_gravity="center"
                 android:layout_margin="@dimen/shutter_button_margin"
-                android:src="@drawable/ic_camera_alt_white_24dp"/>
+                android:background="@android:color/transparent"
+                android:src="@drawable/shutter"/>
 
         </FrameLayout>
 
         <com.flurgle.camerakit.CameraView
             android:id="@+id/camera"
             android:layout_width="440dp"
-            android:layout_height="242dp"
-            android:layout_centerVertical="true"
+            android:layout_height="match_parent"
             android:layout_toStartOf="@id/shutter_container"
-            android:layout_marginEnd="70dp"
-            camerakit:ckJpegQuality="100"
+            camerakit:ckJpegQuality="95"
             camerakit:ckCropOutput="true"
             camerakit:ckFocus="tap"/>
 
