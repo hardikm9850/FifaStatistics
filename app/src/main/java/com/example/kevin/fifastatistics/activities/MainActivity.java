@@ -6,7 +6,6 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.View;
 
 import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.adapters.FragmentAdapter;
@@ -36,7 +35,6 @@ public class MainActivity extends FifaBaseActivity implements OnMatchCreatedList
 
     public static final String PAGE_EXTRA = "page";
 
-    private View mCoordinatorLayout;
     private Toolbar mToolbar;
     private FifaNavigationDrawer mDrawer;
     private FragmentAdapter mAdapter;
@@ -51,7 +49,6 @@ public class MainActivity extends FifaBaseActivity implements OnMatchCreatedList
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mCoordinatorLayout = findViewById(R.id.coordinator_layout);
         initializeToolbar();
         initializeViewPager();
         initializeDrawer();
@@ -85,7 +82,7 @@ public class MainActivity extends FifaBaseActivity implements OnMatchCreatedList
     }
 
     private void initializeDrawer() {
-        mDrawer = FifaNavigationDrawer.newInstance(this, mColor);
+        mDrawer = FifaNavigationDrawer.newInstance(this, mToolbar, mColor);
         mDrawer.setOnDrawerItemClickListener((view, position, drawerItem) -> {
             if (position == currentDrawerPosition) {
                 mDrawer.closeDrawer();
@@ -188,17 +185,7 @@ public class MainActivity extends FifaBaseActivity implements OnMatchCreatedList
     }
 
     @Override
-    public Toolbar getToolbar() {
-        return mToolbar;
-    }
-
-    @Override
     public void setNavigationLocked(boolean locked) {
         mDrawer.setLocked(locked);
-    }
-
-    @Override
-    public View getParentLayout() {
-        return mCoordinatorLayout;
     }
 }

@@ -25,9 +25,6 @@ public abstract class FifaBaseActivity extends AppCompatActivity implements Tran
     private CompositeSubscription mCompositeSubscription;
     private int mCallingActivityHashCode;
 
-    public abstract Toolbar getToolbar();
-    public abstract View getParentLayout();
-
     public FifaBaseActivity() {
         mCompositeSubscription = new CompositeSubscription();
     }

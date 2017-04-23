@@ -6,7 +6,6 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 
 import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.fragments.CreateSeriesMatchListFragment;
@@ -26,7 +25,6 @@ import rx.Subscription;
 
 public class CreateSeriesActivity extends BasePlayerActivity implements OnSeriesCompletedListener, OnMatchCreatedListener {
 
-    private Toolbar mToolbar;
     private FifaEventManager mEventManager;
     private CreateSeriesMatchListFragment mFragment;
     private Series mSeries;
@@ -42,8 +40,8 @@ public class CreateSeriesActivity extends BasePlayerActivity implements OnSeries
 
     @SuppressWarnings("ConstantConditions")
     private void initializeToolbar() {
-        mToolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(mToolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
@@ -179,15 +177,5 @@ public class CreateSeriesActivity extends BasePlayerActivity implements OnSeries
     private void invalidateMenuForSeriesCompletion(boolean isCompleted) {
         mIsSeriesCompleted = isCompleted;
         invalidateOptionsMenu();
-    }
-
-    @Override
-    public Toolbar getToolbar() {
-        return mToolbar;
-    }
-
-    @Override
-    public View getParentLayout() {
-        return null;
     }
 }

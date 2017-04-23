@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment;
 import com.example.kevin.fifastatistics.FifaApplication;
 import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.event.ColorChangeEvent;
+import com.example.kevin.fifastatistics.event.SnackbarEvent;
 import com.example.kevin.fifastatistics.interfaces.ActivityLauncher;
 import com.example.kevin.fifastatistics.interfaces.TransitionStarter;
 import com.example.kevin.fifastatistics.event.EventBus;
@@ -45,6 +46,11 @@ public abstract class FifaBaseFragment extends Fragment implements ActivityLaunc
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mCompositeSubscription = new CompositeSubscription();
+        observerColorEvents();
+        observeMessageEvents();
+    }
+
+    private void observerColorEvents() {
         mColor = FifaApplication.getAccentColor();
         EventBus.getInstance().observeEvents(ColorChangeEvent.class).subscribe(event -> {
             mColor = event.color;
@@ -52,8 +58,12 @@ public abstract class FifaBaseFragment extends Fragment implements ActivityLaunc
         });
     }
 
-    protected void onColorUpdated() {
+    protected void onColorUpdated() {}
 
+    private void observeMessageEvents() {
+        EventBus.getInstance().observeEvents(SnackbarEvent.class).subscribe(event -> {
+            SnackbarUtils.show(getView(), event.message, event.length);
+        });
     }
 
     @Override

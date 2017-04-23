@@ -2,9 +2,7 @@ package com.example.kevin.fifastatistics.activities;
 
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
-import android.view.View;
 
 import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.adapters.FragmentAdapter;
@@ -28,7 +26,6 @@ public class PlayerActivty extends BasePlayerActivity implements OnMatchCreatedL
     public static final String EXTRA_ENTERED_FROM_SEARCH_BAR = "enteredFromSearch";
 
     private ActivityPlayerBinding mBinding;
-    private Toolbar mToolbar;
     private FloatingActionMenu mFam;
     private User mCurrentUser;
     private FifaEventManager mManager;
@@ -58,8 +55,7 @@ public class PlayerActivty extends BasePlayerActivity implements OnMatchCreatedL
 
     @SuppressWarnings("ConstantConditions")
     private void initializeToolbar() {
-        mToolbar = mBinding.toolbarLayout.toolbar;
-        setSupportActionBar(mToolbar);
+        setSupportActionBar(mBinding.toolbarLayout.toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
@@ -143,15 +139,5 @@ public class PlayerActivty extends BasePlayerActivity implements OnMatchCreatedL
     @Override
     public void onMatchCreated(Match match) {
         mManager.onMatchCreated(match);
-    }
-
-    @Override
-    public Toolbar getToolbar() {
-        return mToolbar;
-    }
-
-    @Override
-    public View getParentLayout() {
-        return mBinding.coordinatorLayout;
     }
 }

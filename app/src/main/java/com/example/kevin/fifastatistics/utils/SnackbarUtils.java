@@ -14,21 +14,6 @@ public class SnackbarUtils {
 
     private static final String TAG = "Snackbar";
 
-    public static Snackbar getShortSnackbar(FifaBaseActivity activity, String message) {
-        return Snackbar.make(activity.getParentLayout(), message, Snackbar.LENGTH_SHORT);
-    }
-
-    public static Snackbar getLongSnackbar(FifaBaseActivity activity, String message) {
-        return Snackbar.make(activity.getParentLayout(), message, Snackbar.LENGTH_LONG);
-    }
-
-    public static Snackbar getRetrySnackbar(FifaBaseActivity activity, String message,
-                                            View.OnClickListener listener) {
-        return getLongSnackbar(activity, message)
-                .setAction("RETRY", listener)
-                .setActionTextColor(Color.RED);
-    }
-
     public static void show(View container, int snackbarMessageResId, int length) {
         if (container != null) {
             container.post(() -> {
