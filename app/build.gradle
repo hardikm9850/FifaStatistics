@@ -79,6 +79,7 @@ dependencies {
     compile "com.android.support:support-v4:$android_support_version"
     compile "com.android.support:support-v13:$android_support_version"
     compile "com.android.support:recyclerview-v7:$android_support_version"
+    compile "com.android.support:percent:$android_support_version"
 
     compile "com.google.firebase:firebase-core:$google_play_services_version"
     compile "com.google.firebase:firebase-auth:$google_play_services_version"

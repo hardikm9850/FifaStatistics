@@ -14,6 +14,7 @@
     <!-- Card view colors -->
     <color name="cardViewBackground">#262523</color>
     <color name="cardViewHeaderBackground">#302F2D</color>
+    <color name="statOpponentColor">#FF484644</color>
 
     <!-- FAB -->
     <color name="white_pressed">#f1f1f1</color>

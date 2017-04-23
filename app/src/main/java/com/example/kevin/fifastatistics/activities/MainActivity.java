@@ -18,7 +18,7 @@ import com.example.kevin.fifastatistics.managers.FifaEventManager;
 import com.example.kevin.fifastatistics.managers.RetrievalManager;
 import com.example.kevin.fifastatistics.managers.SharedPreferencesManager;
 import com.example.kevin.fifastatistics.models.databasemodels.match.Match;
-import com.example.kevin.fifastatistics.models.databasemodels.user.Player;
+import com.example.kevin.fifastatistics.models.databasemodels.user.User;
 import com.example.kevin.fifastatistics.utils.ColorUtils;
 import com.example.kevin.fifastatistics.utils.FabFactory;
 import com.example.kevin.fifastatistics.utils.ObservableUtils;
@@ -44,7 +44,7 @@ public class MainActivity extends FifaBaseActivity implements OnMatchCreatedList
     private ViewPager mViewPager;
     private FloatingActionMenu mActionMenu;
     private FifaEventManager mEventManager;
-    private Player mUser;
+    private User mUser;
     private int currentDrawerPosition;
 
     @Override
@@ -57,7 +57,6 @@ public class MainActivity extends FifaBaseActivity implements OnMatchCreatedList
         initializeDrawer();
         initializeFab();
         initializeFragment();
-        RetrievalManager.getCurrentUser().subscribe(user -> mUser = user);
         Log.d("token", SharedPreferencesManager.getRegistrationToken());
     }
 
@@ -132,14 +131,18 @@ public class MainActivity extends FifaBaseActivity implements OnMatchCreatedList
 
     private void initializeFab() {
         mActionMenu = (FloatingActionMenu) findViewById(R.id.fab_menu);
-        Subscription fabSubscription = RetrievalManager.getCurrentUser().subscribe(user -> {
-            FabFactory factory = FabFactory.newInstance(this, mColor);
-            mEventManager = FifaEventManager.newInstance(this, user);
-            initializeAddMatchButton(factory, mEventManager);
-            initializeAddSeriesButton(factory, mEventManager);
-            setFabColor();
+        RetrievalManager.getCurrentUser().subscribe(user -> {
+            mUser = user;
+            initFabWithUser(mUser);
         });
-        addSubscription(fabSubscription);
+    }
+
+    private void initFabWithUser(User user) {
+        FabFactory factory = FabFactory.newInstance(this, mColor);
+        mEventManager = FifaEventManager.newInstance(this, user);
+        initializeAddMatchButton(factory, mEventManager);
+        initializeAddSeriesButton(factory, mEventManager);
+        setFabColor();
     }
 
     private void initializeAddMatchButton(FabFactory factory, FifaEventManager manager) {
@@ -167,7 +170,8 @@ public class MainActivity extends FifaBaseActivity implements OnMatchCreatedList
     protected void onColorUpdated() {
         mTabLayout.setSelectedTabIndicatorColor(mColor);
         mDrawer.updateColors(mColor);
-        setFabColor();
+        mActionMenu.removeAllMenuButtons();
+        initFabWithUser(mUser);
     }
 
     private void setFabColor() {

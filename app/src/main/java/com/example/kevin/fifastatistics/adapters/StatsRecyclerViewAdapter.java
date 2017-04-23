@@ -1,60 +1,64 @@
 package com.example.kevin.fifastatistics.adapters;
 
-import android.content.res.ColorStateList;
+import android.databinding.DataBindingUtil;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 
 import com.example.kevin.fifastatistics.FifaApplication;
 import com.example.kevin.fifastatistics.R;
+import com.example.kevin.fifastatistics.databinding.StatsListItemBinding;
 import com.example.kevin.fifastatistics.event.ColorChangeEvent;
+import com.example.kevin.fifastatistics.event.EventBus;
 import com.example.kevin.fifastatistics.models.databasemodels.user.Stats;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
-import com.example.kevin.fifastatistics.event.EventBus;
+import com.example.kevin.fifastatistics.viewmodels.StatItemViewModel;
 
 public class StatsRecyclerViewAdapter extends RecyclerView.Adapter<StatsRecyclerViewAdapter.ViewHolder> {
+
+    private static final int DEFAULT_RIGHT_COLOR;
+
+    static {
+        DEFAULT_RIGHT_COLOR = ContextCompat.getColor(FifaApplication.getContext(), R.color.statOpponentColor);
+    }
 
     private float[] valuesFor;
     private float[] valuesAgainst;
     private String[] names;
-    private String floatFormat;
-    private int mColor;
+    private boolean doShowDecimal;
+    private int mAccentColor;
+    private int mRightColor;
 
     public StatsRecyclerViewAdapter(User.StatsPair statsPair, boolean doShowDecimal) {
         this.valuesFor = statsPair.getStatsFor().buildValueSet();
         this.valuesAgainst = statsPair.getStatsAgainst().buildValueSet();
-        floatFormat = doShowDecimal ? "%.1f" : "%.0f";
+        this.doShowDecimal = doShowDecimal;
         names = Stats.getNameSet();
         initColor();
     }
 
     private void initColor() {
-        mColor = FifaApplication.getAccentColor();
+        mRightColor = DEFAULT_RIGHT_COLOR;
+        mAccentColor = FifaApplication.getAccentColor();
         EventBus.getInstance().observeEvents(ColorChangeEvent.class).subscribe(event -> {
-            mColor = event.color;
+            mAccentColor = event.color;
             notifyDataSetChanged();
         });
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate( R.layout.stats_list_item, parent, false);
-        return new ViewHolder(view);
+        StatsListItemBinding binding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.stats_list_item, parent, false);
+        return new ViewHolder(binding);
     }
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         float vf = valuesFor[position];
         float va = valuesAgainst[position];
-        int percent = (vf + va == 0) ? 50 : (int)((vf * 100.0f) / (vf + va));
-        holder.mProgressBar.setProgressTintList(ColorStateList.valueOf(mColor));
-        holder.mProgressBar.setProgress(percent);
-        holder.mStatFor.setText(String.format(floatFormat, vf));
-        holder.mStatAgainst.setText(String.format(floatFormat, va));
-        holder.mTitle.setText(names[position]);
+        String title = names[position];
+        holder.bind(vf, va, mAccentColor, mRightColor, title, doShowDecimal);
     }
 
     @Override
@@ -63,17 +67,22 @@ public class StatsRecyclerViewAdapter extends RecyclerView.Adapter<StatsRecycler
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
-        final ProgressBar mProgressBar;
-        final TextView mTitle;
-        final TextView mStatFor;
-        final TextView mStatAgainst;
+        private StatsListItemBinding mBinding;
 
-        ViewHolder(View view) {
-            super(view);
-            mProgressBar = (ProgressBar) view.findViewById(R.id.stats_progress_bar);
-            mTitle = (TextView) view.findViewById(R.id.stat_title_text_view);
-            mStatFor = (TextView) view.findViewById(R.id.stat_for_text_view);
-            mStatAgainst = (TextView) view.findViewById(R.id.stat_against_text_view);
+        ViewHolder(StatsListItemBinding binding) {
+            super(binding.getRoot());
+            mBinding = binding;
+        }
+
+        void bind(float leftVal, float rightVal, int leftColor, int rightColor, String title, boolean showDecimal) {
+            StatItemViewModel viewModel = mBinding.getViewModel();
+            if (viewModel != null) {
+                viewModel.init(leftVal, rightVal, leftColor, rightColor, title);
+            } else {
+                viewModel = new StatItemViewModel(leftVal, rightVal, leftColor, rightColor, title, showDecimal);
+                mBinding.setViewModel(viewModel);
+            }
+            mBinding.executePendingBindings();
         }
     }
 }

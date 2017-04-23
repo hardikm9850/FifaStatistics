@@ -1,43 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/stats_list_item_height">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <ProgressBar
-        android:id="@+id/stats_progress_bar"
+    <data>
+        <variable
+            name="viewModel"
+            type="com.example.kevin.fifastatistics.viewmodels.StatItemViewModel"/>
+    </data>
+
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="10dp"
-        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-        android:layout_marginRight="@dimen/activity_horizontal_margin"
-        android:layout_marginLeft="@dimen/activity_horizontal_margin"
-        android:layout_marginBottom="@dimen/activity_vertical_margin"
-        android:layout_marginTop="5dp"
-        android:layout_alignParentBottom="true"
-        android:progressTint="@color/accent"/>
+        android:layout_height="@dimen/stats_list_item_height">
 
-    <TextView
-        android:id="@+id/stat_for_text_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/activity_horizontal_margin"
-        android:layout_above="@id/stats_progress_bar"
-        android:layout_alignParentLeft="true"
-        android:textColor="@color/white"/>
+        <android.support.percent.PercentFrameLayout
+            android:id="@+id/percent"
+            android:layout_width="match_parent"
+            android:layout_height="3dp"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginBottom="@dimen/activity_vertical_margin"
+            android:layout_marginTop="6dp"
+            android:layout_alignParentBottom="true">
 
-    <TextView
-        android:id="@+id/stat_against_text_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginRight="@dimen/activity_horizontal_margin"
-        android:layout_above="@id/stats_progress_bar"
-        android:layout_alignParentRight="true"
-        android:textColor="@color/white"/>
+            <View
+                android:id="@+id/stat_left"
+                android:layout_gravity="start"
+                android:layout_height="match_parent"
+                android:background="@drawable/rounded_rectangle"
+                android:backgroundTint="@{viewModel.leftColor}"
+                app:layout_widthPercent="@{viewModel.leftPercentage}"/>
 
-    <TextView
-        android:id="@+id/stat_title_text_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_above="@id/stats_progress_bar"/>
+            <View
+                android:id="@+id/stat_right"
+                android:layout_gravity="end"
+                android:layout_height="match_parent"
+                android:background="@drawable/rounded_rectangle"
+                android:backgroundTint="@{viewModel.rightColor}"
+                app:layout_widthPercent="@{viewModel.rightPercentage}"/>
 
-</RelativeLayout>
+        </android.support.percent.PercentFrameLayout>
+
+        <TextView
+            android:id="@+id/stat_for_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/activity_horizontal_margin"
+            android:layout_above="@id/percent"
+            android:layout_alignParentStart="true"
+            android:textColor="@color/white"
+            android:text="@{viewModel.leftValue}"/>
+
+        <TextView
+            android:id="@+id/stat_against_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/activity_horizontal_margin"
+            android:layout_above="@id/percent"
+            android:layout_alignParentEnd="true"
+            android:textColor="@color/white"
+            android:text="@{viewModel.rightValue}"/>
+
+        <TextView
+            android:id="@+id/stat_title_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_above="@id/percent"
+            android:text="@{viewModel.title}"/>
+
+    </RelativeLayout>
+</layout>
