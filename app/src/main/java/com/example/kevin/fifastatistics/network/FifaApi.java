@@ -90,7 +90,7 @@ public class FifaApi {
         return chain -> {
             Request request = chain.request();
             request = request.newBuilder()
-                    .addHeader("Authorization", user.getId())
+                    .addHeader("Authorization", user == null ? "" : user.getId())
                     .build();
             return chain.proceed(request);
         };

@@ -54,6 +54,14 @@ public class Series extends DatabaseModel {
         return series;
     }
 
+    public static Series with(Collection<Match> matches) {
+        Series series = new Series();
+        if (matches != null) {
+            series.addAll(matches);
+        }
+        return series;
+    }
+
     @JsonCreator private Series() {}
 
     public void addAll(Collection<Match> matches) {

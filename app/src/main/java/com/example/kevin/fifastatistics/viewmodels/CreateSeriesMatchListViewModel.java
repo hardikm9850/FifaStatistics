@@ -14,6 +14,7 @@ import com.example.kevin.fifastatistics.interfaces.OnMatchCreatedListener;
 import com.example.kevin.fifastatistics.interfaces.OnMatchUpdatedListener;
 import com.example.kevin.fifastatistics.interfaces.OnSeriesCompletedListener;
 import com.example.kevin.fifastatistics.interfaces.OnSeriesScoreUpdateListener;
+import com.example.kevin.fifastatistics.interfaces.OnSeriesUpdatedListener;
 import com.example.kevin.fifastatistics.interfaces.OnTeamSelectedListener;
 import com.example.kevin.fifastatistics.managers.SharedPreferencesManager;
 import com.example.kevin.fifastatistics.models.databasemodels.league.Team;
@@ -41,6 +42,7 @@ public class CreateSeriesMatchListViewModel extends BaseObservable implements On
     private CreateSeriesScoreViewModel mSeriesScoreViewModel;
     private List<OnMatchUpdatedListener> mOnMatchUpdateListeners;
     private OnSeriesCompletedListener mOnSeriesCompletedListener;
+    private OnSeriesUpdatedListener mOnSeriesUpdateListener;
 
     private int mUserWins;
     private int mOpponentWins;
@@ -49,22 +51,33 @@ public class CreateSeriesMatchListViewModel extends BaseObservable implements On
     private boolean mIsSeriesDone;
 
     public CreateSeriesMatchListViewModel(FifaBaseActivity activity, User user, Friend opponent, OnSeriesScoreUpdateListener scoreUpdateListener,
-                                          OnSeriesCompletedListener seriesCompletedListener, ActivityLauncher launcher) {
+                                          OnSeriesCompletedListener seriesCompletedListener, ActivityLauncher launcher, OnSeriesUpdatedListener listener, Series series) {
         mItems = new ObservableArrayList<>();
         mItemView = ItemView.of(BR.listItemViewModel, R.layout.item_create_series_match_list);
         mActivity = activity;
         mUser = user;
         mOpponent = opponent;
+        mOnSeriesUpdateListener = listener;
         mSeriesScoreViewModel = new CreateSeriesScoreViewModel(user, opponent, scoreUpdateListener, activity, launcher);
         mOnSeriesCompletedListener = seriesCompletedListener;
         mMaxSeriesLength = Series.DEFAULT_MAX_SERIES_LENGTH;
         mUpdatedMatchIndex = -1;
         mOnMatchUpdateListeners = Arrays.asList(mSeriesScoreViewModel, this);
+        restoreSeries(series);
+    }
+
+    private void restoreSeries(Series series) {
+        if (series != null) {
+            for (Match match : series.getMatches()) {
+                mItems.add(new CreateSeriesListItemViewModel(mActivity, match, mUser, mOpponent, mItems.size() + 1, mOnMatchUpdateListeners));
+            }
+        }
     }
 
     public void add(Match match) {
         mItems.add(new CreateSeriesListItemViewModel(mActivity, match, mUser, mOpponent, mItems.size() + 1, mOnMatchUpdateListeners));
         updateSeriesScoreViewModel(match);
+        notifySeriesUpdated();
         maybeEndSeries(match);
         storeSeries();
     }
@@ -121,6 +134,12 @@ public class CreateSeriesMatchListViewModel extends BaseObservable implements On
                 .compose(ObservableUtils.applyBackground()).subscribe();
     }
 
+    private void notifySeriesUpdated() {
+        if (mOnSeriesUpdateListener != null) {
+            mOnSeriesUpdateListener.onSeriesUpdated(getSeries());
+        }
+    }
+
     @SuppressWarnings("unused")
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         CreateSeriesListItemViewModel item = (CreateSeriesListItemViewModel) parent.getAdapter().getItem(position);
@@ -137,8 +156,11 @@ public class CreateSeriesMatchListViewModel extends BaseObservable implements On
             } else {
                 mUserWins--;
             }
+            notifySeriesUpdated();
             maybeEndSeries(newMatch);
             maybeResumeSeries();
+        } else {
+            notifySeriesUpdated();
         }
         storeSeries();
     }
@@ -187,5 +209,20 @@ public class CreateSeriesMatchListViewModel extends BaseObservable implements On
 
     public ItemView getItemView() {
         return mItemView;
+    }
+
+    public Team getUserTeam() {
+        return mSeriesScoreViewModel.getUserTeam();
+    }
+
+    public Team getOpponentTeam() {
+        return mSeriesScoreViewModel.getOpponentTeam();
+    }
+
+    public void setTeams(Team userTeam, Team opponentTeam) {
+        if (userTeam != null || opponentTeam != null) {
+            mSeriesScoreViewModel.setUserTeam(userTeam);
+            mSeriesScoreViewModel.setOpponentTeam(opponentTeam);
+        }
     }
 }

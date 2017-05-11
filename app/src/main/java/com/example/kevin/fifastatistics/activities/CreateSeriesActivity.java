@@ -11,6 +11,7 @@ import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.fragments.CreateSeriesMatchListFragment;
 import com.example.kevin.fifastatistics.interfaces.OnMatchCreatedListener;
 import com.example.kevin.fifastatistics.interfaces.OnSeriesCompletedListener;
+import com.example.kevin.fifastatistics.interfaces.OnSeriesUpdatedListener;
 import com.example.kevin.fifastatistics.managers.FifaEventManager;
 import com.example.kevin.fifastatistics.managers.RetrievalManager;
 import com.example.kevin.fifastatistics.managers.SharedPreferencesManager;
@@ -23,7 +24,11 @@ import com.example.kevin.fifastatistics.utils.ToastUtils;
 
 import rx.Subscription;
 
-public class CreateSeriesActivity extends BasePlayerActivity implements OnSeriesCompletedListener, OnMatchCreatedListener {
+public class CreateSeriesActivity extends BasePlayerActivity implements
+        OnSeriesCompletedListener, OnMatchCreatedListener, OnSeriesUpdatedListener {
+
+    private static final String SERIES_KEY = "series";
+    private static final String SERIES_ENDED = "ended";
 
     private FifaEventManager mEventManager;
     private CreateSeriesMatchListFragment mFragment;
@@ -34,8 +39,16 @@ public class CreateSeriesActivity extends BasePlayerActivity implements OnSeries
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_series);
+        restoreInstance(savedInstanceState);
         initializeToolbar();
         initializeUsers();
+    }
+
+    private void restoreInstance(Bundle savedInstanceState) {
+        if (savedInstanceState != null) {
+            mSeries = (Series) savedInstanceState.getSerializable(SERIES_KEY);
+            mIsSeriesCompleted = savedInstanceState.getBoolean(SERIES_ENDED);
+        }
     }
 
     @SuppressWarnings("ConstantConditions")
@@ -54,13 +67,20 @@ public class CreateSeriesActivity extends BasePlayerActivity implements OnSeries
     }
 
     private void initializeFragment(User user) {
-        mFragment = CreateSeriesMatchListFragment.newInstance(user, getFriend(), this);
+        mFragment = CreateSeriesMatchListFragment.newInstance(user, getFriend(), mSeries);
         getSupportFragmentManager().beginTransaction().replace(R.id.content, mFragment).commit();
     }
 
     private void initializeEventManager(User currentUser) {
         mEventManager = FifaEventManager.newInstance(this, currentUser);
-        mEventManager.setMatchFlow(mFragment, true);
+        mEventManager.setMatchFlow(this, true);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putSerializable(SERIES_KEY, mSeries);
+        outState.putBoolean(SERIES_ENDED, mIsSeriesCompleted);
     }
 
     @Override
@@ -166,6 +186,11 @@ public class CreateSeriesActivity extends BasePlayerActivity implements OnSeries
     @Override
     public void onSeriesCompleted(Series series) {
         invalidateMenuForSeriesCompletion(true);
+        mSeries = series;
+    }
+
+    @Override
+    public void onSeriesUpdated(Series series) {
         mSeries = series;
     }
 

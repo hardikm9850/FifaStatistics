@@ -121,12 +121,20 @@ public class CreateSeriesScoreViewModel extends FifaBaseViewModel implements OnM
     @Override
     public void onTeamSelected(Team team) {
         if (mIsSelectedTeamUser) {
-            mUserTeam = team;
-            notifyPropertyChanged(BR.userTeamImageUrl);
+            setUserTeam(team);
         } else {
-            mOpponentTeam = team;
-            notifyPropertyChanged(BR.opponentTeamImageUrl);
+            setOpponentTeam(team);
         }
+    }
+
+    public void setUserTeam(Team team) {
+        mUserTeam = team;
+        notifyPropertyChanged(BR.userTeamImageUrl);
+    }
+
+    public void setOpponentTeam(Team team) {
+        mOpponentTeam = team;
+        notifyPropertyChanged(BR.opponentTeamImageUrl);
     }
 
     @Bindable

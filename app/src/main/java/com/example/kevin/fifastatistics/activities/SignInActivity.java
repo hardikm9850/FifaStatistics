@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.example.kevin.fifastatistics.R;
@@ -57,6 +58,7 @@ public class SignInActivity extends AppCompatActivity implements
         checkSignedIn();
 //        _debugging_setUserToAccount();
         setContentView(R.layout.activity_login);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
 
         maybeRegisterGcm();
         setButtonListeners();
@@ -84,8 +86,6 @@ public class SignInActivity extends AppCompatActivity implements
 
     private void setButtonListeners() {
         findViewById(R.id.sign_in_button).setOnClickListener(this);
-        findViewById(R.id.sign_out_button).setOnClickListener(this);
-        findViewById(R.id.disconnect_button).setOnClickListener(this);
     }
 
     private void initializeApiClient() {
@@ -208,12 +208,6 @@ public class SignInActivity extends AppCompatActivity implements
             case R.id.sign_in_button:
                 signIn();
                 break;
-            case R.id.sign_out_button:
-                signOut();
-                break;
-            case R.id.disconnect_button:
-                revokeAccess();
-                break;
         }
     }
 
@@ -316,9 +310,9 @@ public class SignInActivity extends AppCompatActivity implements
     {
         SharedPreferencesManager.storeUserSync(user);
         SharedPreferencesManager.setSignedIn(true);
-        mProgressDialog.dismiss();
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
         startActivity(intent);
+        mProgressDialog.dismiss();
         finish();
     }
 }

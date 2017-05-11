@@ -43,8 +43,8 @@ public class MatchUtils {
         };
     }
 
-    public static boolean validateMatch(Match match) {
-        if (match.getTeamWinner() == null || match.getTeamLoser() == null) {
+    public static boolean validateMatch(Match match, boolean isPartOfSeries) {
+        if (!isPartOfSeries && (match.getTeamWinner() == null || match.getTeamLoser() == null)) {
             return false;
         }
         boolean didGoToPenalties = match.getPenalties() != null;

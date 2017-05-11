@@ -110,13 +110,14 @@ public class FifaEventManager implements SelectOpponentDialogFragment.SelectOppo
     private class MatchFlow extends Flow implements ErrorHandler, OnMatchCreatedListener {
 
         private AddMatchDialogFragment mAddMatchFragment;
-        private Player mOpponent;
+        private OnMatchCreatedListener mListener;
         private ProgressDialog mMatchUploadingDialog;
         private boolean mIsPartOfSeries;
         private boolean mIsSaving;
 
         MatchFlow(OnMatchCreatedListener listener, boolean isPartOfSeries) {
             initProgressDialog();
+            mListener = listener;
             mIsPartOfSeries = isPartOfSeries;
         }
 
@@ -129,7 +130,6 @@ public class FifaEventManager implements SelectOpponentDialogFragment.SelectOppo
 
         @Override
         public void startNewFlow(Player opponent) {
-            mOpponent = opponent;
             mAddMatchFragment = showAddMatchFragment(mActivity, opponent);
         }
 
@@ -152,12 +152,12 @@ public class FifaEventManager implements SelectOpponentDialogFragment.SelectOppo
             if (!mIsPartOfSeries && !mIsSaving) {
                 mIsSaving = true;
                 onSaveMatch(match);
-                return;
+            } else {
+                mMatchUploadingDialog.cancel();
+                ToastUtils.showShortToast(mActivity, "Match created successfully");
+                mAddMatchFragment.dismiss();
+                RetrievalManager.syncCurrentUserWithServer();
             }
-            mMatchUploadingDialog.cancel();
-            ToastUtils.showShortToast(mActivity, "Match created successfully");
-            mAddMatchFragment.dismiss();
-            RetrievalManager.syncCurrentUserWithServer();
         }
 
         @Override

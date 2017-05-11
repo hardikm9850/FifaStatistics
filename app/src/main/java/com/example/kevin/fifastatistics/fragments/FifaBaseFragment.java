@@ -11,6 +11,7 @@ import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.event.ColorChangeEvent;
 import com.example.kevin.fifastatistics.event.SnackbarEvent;
 import com.example.kevin.fifastatistics.interfaces.ActivityLauncher;
+import com.example.kevin.fifastatistics.interfaces.FragmentArguments;
 import com.example.kevin.fifastatistics.interfaces.TransitionStarter;
 import com.example.kevin.fifastatistics.event.EventBus;
 import com.example.kevin.fifastatistics.utils.ObservableUtils;
@@ -19,7 +20,7 @@ import com.example.kevin.fifastatistics.utils.SnackbarUtils;
 import rx.Subscription;
 import rx.subscriptions.CompositeSubscription;
 
-public abstract class FifaBaseFragment extends Fragment implements ActivityLauncher {
+public abstract class FifaBaseFragment extends Fragment implements ActivityLauncher, FragmentArguments {
 
     protected static final String ARG_ERROR = "errorMessage";
     protected static final String ARG_USER = "user";

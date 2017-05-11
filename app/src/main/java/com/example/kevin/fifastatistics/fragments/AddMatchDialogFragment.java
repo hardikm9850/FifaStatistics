@@ -250,7 +250,7 @@ public class AddMatchDialogFragment extends FifaBaseDialogFragment implements On
     }
 
     private void attemptMatchSave(Match match) {
-        if (MatchUtils.validateMatch(match)) {
+        if (MatchUtils.validateMatch(match, mIsPartOfSeries)) {
             mListener.onMatchCreated(match);
             dismiss();
         } else {
