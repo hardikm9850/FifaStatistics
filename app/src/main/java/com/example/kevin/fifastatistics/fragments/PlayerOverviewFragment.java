@@ -61,7 +61,7 @@ public class PlayerOverviewFragment extends FifaBaseFragment implements OnBackPr
 
     @Override
     public void onPlayerLoaded(User player) {
-        UserOverviewViewModel viewModel = new UserOverviewViewModel(player);
+        UserOverviewViewModel viewModel = new UserOverviewViewModel(player, null);
         mBinding.setViewModel(viewModel);
     }
 

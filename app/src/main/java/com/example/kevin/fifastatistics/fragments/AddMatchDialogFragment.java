@@ -34,6 +34,7 @@ import com.example.kevin.fifastatistics.models.databasemodels.match.Penalties;
 import com.example.kevin.fifastatistics.models.databasemodels.user.Friend;
 import com.example.kevin.fifastatistics.models.databasemodels.user.Player;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
+import com.example.kevin.fifastatistics.utils.BuildUtils;
 import com.example.kevin.fifastatistics.utils.ByteHolder;
 import com.example.kevin.fifastatistics.utils.MatchUtils;
 import com.example.kevin.fifastatistics.utils.ObservableUtils;
@@ -180,7 +181,7 @@ public class AddMatchDialogFragment extends FifaBaseDialogFragment implements On
         toolbar.setNavigationIcon(R.drawable.ic_close_white_24dp);
         toolbar.setNavigationOnClickListener(v -> maybeDismiss());
         toolbar.setOnMenuItemClickListener(this::onMenuItemSelected);
-        toolbar.inflateMenu(R.menu.menu_new_match);
+        toolbar.inflateMenu(BuildUtils.isDebug() ? R.menu.menu_new_match_debug : R.menu.menu_new_match);
     }
 
     private boolean onMenuItemSelected(MenuItem item) {

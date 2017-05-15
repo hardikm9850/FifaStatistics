@@ -26,4 +26,9 @@ public class RecordsItemViewModel extends FifaBaseViewModel {
     public String getStreak() {
         return mRecords != null ? mRecords.getStreak() : null;
     }
+
+    public void setRecords(UserRecords records) {
+        mRecords = records;
+        notifyChange();
+    }
 }

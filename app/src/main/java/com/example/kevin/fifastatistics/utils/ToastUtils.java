@@ -13,14 +13,20 @@ import lombok.experimental.UtilityClass;
 public class ToastUtils {
 
     public static void showShortToast(Activity activity, String message) {
-        Toast.makeText(activity, message, Toast.LENGTH_LONG).show();
+        if (activity != null) {
+            Toast.makeText(activity, message, Toast.LENGTH_LONG).show();
+        }
     }
 
     public static void showShortToast(Activity activity, @StringRes int message) {
-        Toast.makeText(activity, message, Toast.LENGTH_LONG).show();
+        if (activity != null) {
+            Toast.makeText(activity, message, Toast.LENGTH_LONG).show();
+        }
     }
 
     public static void showLongToast(Activity activity, String message) {
-        Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
+        if (activity != null) {
+            Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
+        }
     }
 }

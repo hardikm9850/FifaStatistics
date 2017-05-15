@@ -56,9 +56,9 @@ public class OcrResultParser {
         String[] lines = mResult.split("[\\r\\n]+");
         User.StatsPair sp = new User.StatsPair();
 
-        if (lines[0].contains("Shots")) {
+        if (lines[0].contains("Shots") || lines[0].contains("Shuts")) {
             decrementLines();
-            if (lines[0].contains("Target")) {
+            if (lines[0].contains("Target") || lines[0].contains("Talget")) {
                 decrementLines();
             }
         }

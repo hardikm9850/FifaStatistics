@@ -57,8 +57,11 @@ public class CameraActivity extends AppCompatActivity {
         initCamera(binding);
     }
 
-    private void initShutter(ActivityCameraBinding binding) {
-        binding.shutter.setOnClickListener(view -> mCamera.captureImage());
+    private void initShutter(final ActivityCameraBinding binding) {
+        binding.shutter.setOnClickListener(view -> {
+            binding.shutter.setClickable(false);
+            mCamera.captureImage();
+        });
     }
 
     private void initCamera(ActivityCameraBinding binding) {

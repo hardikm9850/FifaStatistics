@@ -78,9 +78,9 @@ public class FifaNavigationDrawer {
         PrimaryDrawerItem overviewItem = initializeOverviewItem();
         PrimaryDrawerItem settingsItem = initializeSettingsItem();
         PrimaryDrawerItem statisticsItem = initializeStatisticsItem();
-        PrimaryDrawerItem starredItem = initializeStarredItem();
+//        PrimaryDrawerItem starredItem = initializeStarredItem();
 
-        IDrawerItem[] items = {overviewItem, statisticsItem, matchesItem, seriesItem, friendsItem, starredItem,
+        IDrawerItem[] items = {overviewItem, statisticsItem, matchesItem, seriesItem, friendsItem,
                 new DividerDrawerItem(), settingsItem};
         mDrawer = buildDrawer(user, activity, toolbar, items);
     }

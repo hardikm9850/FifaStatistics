@@ -111,7 +111,7 @@ public class MainActivity extends FifaBaseActivity implements OnMatchCreatedList
     }
 
     private void handleDrawerClick(int position) {
-        if (position == 8) {
+        if (position == 7) {
             Intent intent = new Intent(this, SettingsActivity.class);
             startActivity(intent);
             mDrawer.setPosition(currentDrawerPosition);
@@ -197,9 +197,12 @@ public class MainActivity extends FifaBaseActivity implements OnMatchCreatedList
             } else{
                 return Observable.empty();
             }
-        }).compose(ObservableUtils.applyBackground()).subscribe(team -> {
-            if (team != null) {
-                SharedPreferencesManager.setFavoriteTeam(team);
+        }).compose(ObservableUtils.applyBackground()).subscribe(new ObservableUtils.OnNextObserver<Team>() {
+            @Override
+            public void onNext(Team team) {
+                if (team != null) {
+                    SharedPreferencesManager.setFavoriteTeam(team);
+                }
             }
         });
         addSubscription(sub);

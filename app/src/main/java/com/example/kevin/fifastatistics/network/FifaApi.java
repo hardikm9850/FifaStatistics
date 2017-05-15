@@ -1,5 +1,6 @@
 package com.example.kevin.fifastatistics.network;
 
+import com.example.kevin.fifastatistics.BuildConfig;
 import com.example.kevin.fifastatistics.managers.SharedPreferencesManager;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
 
@@ -18,8 +19,7 @@ import retrofit2.converter.jackson.JacksonConverterFactory;
  */
 public class FifaApi {
 
-    private static final String FIFA_API_ENDPOINT = "https://fifastatisticsapi.azurewebsites.net/";
-//    private static final String FIFA_API_ENDPOINT = "http://192.168.0.111:8080";
+    private static final String FIFA_API_ENDPOINT = BuildConfig.SERVER_URL;
     private static final int CONNECT_TIMEOUT_DURATION = 60;
 
     private static UserApi userApi;
