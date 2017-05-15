@@ -78,9 +78,6 @@ public class CreateSeriesMatchListFragment extends FifaBaseFragment implements O
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         restoreInstance(savedInstanceState);
-        Series series = (Series) getArguments().getSerializable(SERIES);
-        mListViewModel = new CreateSeriesMatchListViewModel((FifaBaseActivity) getActivity(), mUser, mOpponent,
-                mSeriesScoreUpdateListener, mSeriesCompletedListener, this, mSeriesUpdatedListener, series);
     }
 
     private void restoreInstance(Bundle savedInstanceState) {
@@ -114,6 +111,9 @@ public class CreateSeriesMatchListFragment extends FifaBaseFragment implements O
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_create_series_match_list, container, false);
         initializeSeriesUpdateListener();
+        Series series = (Series) getArguments().getSerializable(SERIES);
+        mListViewModel = new CreateSeriesMatchListViewModel((FifaBaseActivity) getActivity(), mUser, mOpponent,
+                mSeriesScoreUpdateListener, mSeriesCompletedListener, this, mSeriesUpdatedListener, series);
         mBinding.setListViewModel(mListViewModel);
         return mBinding.getRoot();
     }
@@ -131,14 +131,25 @@ public class CreateSeriesMatchListFragment extends FifaBaseFragment implements O
                 mUserScore = newScore;
                 mUserTicker.setText(String.valueOf(newScore));
             }
-
             @Override
             public void onOpponentScoreUpdate(int oldScore, int newScore) {
                 mOpponentScore = newScore;
                 mOpponentTicker.setText(String.valueOf(newScore));
             }
+            @Override
+            public void onUserTeamUpdated(Team team) {
+                if (mSeriesUpdatedListener != null) {
+                    mSeriesUpdatedListener.onUserTeamUpdated(team);
+                }
+            }
+
+            @Override
+            public void onOpponentTeamUpdated(Team team) {
+                if (mSeriesUpdatedListener != null) {
+                    mSeriesUpdatedListener.onOpponentTeamUpdated(team);
+                }
+            }
         };
-        mListViewModel.setOnSeriesScoreUpdateListener(mSeriesScoreUpdateListener);
     }
 
     @Override

@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -15,13 +16,20 @@ import com.example.kevin.fifastatistics.interfaces.OnSeriesUpdatedListener;
 import com.example.kevin.fifastatistics.managers.FifaEventManager;
 import com.example.kevin.fifastatistics.managers.RetrievalManager;
 import com.example.kevin.fifastatistics.managers.SharedPreferencesManager;
+import com.example.kevin.fifastatistics.models.databasemodels.league.Team;
 import com.example.kevin.fifastatistics.models.databasemodels.match.Match;
 import com.example.kevin.fifastatistics.models.databasemodels.match.Series;
+import com.example.kevin.fifastatistics.models.databasemodels.user.Friend;
+import com.example.kevin.fifastatistics.models.databasemodels.user.Player;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
 import com.example.kevin.fifastatistics.network.CreateFailedException;
+import com.example.kevin.fifastatistics.utils.ObservableUtils;
 import com.example.kevin.fifastatistics.utils.SeriesUtils;
 import com.example.kevin.fifastatistics.utils.ToastUtils;
 
+import java.util.List;
+
+import rx.Observable;
 import rx.Subscription;
 
 public class CreateSeriesActivity extends BasePlayerActivity implements
@@ -33,6 +41,7 @@ public class CreateSeriesActivity extends BasePlayerActivity implements
     private FifaEventManager mEventManager;
     private CreateSeriesMatchListFragment mFragment;
     private Series mSeries;
+    private Player mUser;
     private boolean mIsSeriesCompleted;
 
     @Override
@@ -60,6 +69,7 @@ public class CreateSeriesActivity extends BasePlayerActivity implements
 
     private void initializeUsers() {
         Subscription userSub = RetrievalManager.getCurrentUser().subscribe(user -> {
+            mUser = user;
             initializeFragment(user);
             initializeEventManager(user);
         });
@@ -67,6 +77,10 @@ public class CreateSeriesActivity extends BasePlayerActivity implements
     }
 
     private void initializeFragment(User user) {
+        Friend opponent = getFriend();
+        List<Match> savedMatches = SharedPreferencesManager.getCurrentSeries(opponent.getId());
+        mSeries = savedMatches != null ? Series.with(savedMatches, Friend.fromPlayer(user), opponent) : null;
+        Log.d("SERIES", mSeries != null ? mSeries.toString() : "null");
         mFragment = CreateSeriesMatchListFragment.newInstance(user, getFriend(), mSeries);
         getSupportFragmentManager().beginTransaction().replace(R.id.content, mFragment).commit();
     }
@@ -137,7 +151,7 @@ public class CreateSeriesActivity extends BasePlayerActivity implements
         d.show();
         try {
             SeriesUtils.createSeries(mSeries).subscribe(series -> {
-                SharedPreferencesManager.removeCurrentSeries();
+                SharedPreferencesManager.removeCurrentSeries(getPlayerId());
                 d.cancel();
                 RetrievalManager.syncCurrentUserWithServer();
                 ToastUtils.showShortToast(this, getString(R.string.create_series_success));
@@ -166,7 +180,7 @@ public class CreateSeriesActivity extends BasePlayerActivity implements
         dialog.setMessage(getString(R.string.create_series_exit_confirmation));
         dialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.dialog_keep_editing), (d, w) -> dialog.dismiss());
         dialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.dialog_discard), (d, w) -> {
-            SharedPreferencesManager.removeCurrentSeries();
+            SharedPreferencesManager.removeCurrentSeries(getPlayerId());
             finish();
         });
         dialog.setButton(AlertDialog.BUTTON_NEUTRAL, getString(R.string.dialog_save), (d, w) -> {
@@ -192,6 +206,24 @@ public class CreateSeriesActivity extends BasePlayerActivity implements
     @Override
     public void onSeriesUpdated(Series series) {
         mSeries = series;
+    }
+
+    @Override
+    public void onUserTeamUpdated(Team team) {
+        updateSeriesOnTeamUpdate(team, mUser);
+    }
+
+    @Override
+    public void onOpponentTeamUpdated(Team team) {
+        updateSeriesOnTeamUpdate(team, getFriend());
+    }
+
+    private void updateSeriesOnTeamUpdate(Team team, Player player) {
+        if (mSeries != null) {
+            mSeries.updateTeamForPlayer(team, player);
+            Observable.create(s -> SharedPreferencesManager.storeCurrentSeries(mSeries.getMatches(), getPlayerId()))
+                    .compose(ObservableUtils.applyBackground()).subscribe();
+        }
     }
 
     @Override

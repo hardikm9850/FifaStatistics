@@ -244,8 +244,8 @@ public class AddMatchDialogFragment extends FifaBaseDialogFragment implements On
                 .penalties(penalties)
                 .winner(userDidWin ? Friend.fromPlayer(mUser) : Friend.fromPlayer(mOpponent))
                 .loser(userDidWin ? Friend.fromPlayer(mOpponent) : Friend.fromPlayer(mUser))
-                .teamWinner(mUserTeam)
-                .teamLoser(mOpponentTeam)
+                .teamWinner(userDidWin ? mUserTeam : mOpponentTeam)
+                .teamLoser(userDidWin ? mOpponentTeam : mUserTeam)
                 .build();
     }
 

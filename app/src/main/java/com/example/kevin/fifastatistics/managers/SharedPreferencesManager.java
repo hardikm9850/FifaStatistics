@@ -132,15 +132,15 @@ public class SharedPreferencesManager {
         editor.apply();
     }
 
-    public static void storeCurrentSeries(List<Match> matches) {
+    public static void storeCurrentSeries(List<Match> matches, String opponentId) {
         editor = preferences.edit();
-        editor.putString(CURRENT_SERIES, SerializationUtils.toJson(matches));
+        editor.putString(CURRENT_SERIES + opponentId, SerializationUtils.toJson(matches));
         editor.apply();
     }
 
-    public static void removeCurrentSeries() {
+    public static void removeCurrentSeries(String id) {
         editor = preferences.edit();
-        editor.remove(CURRENT_SERIES);
+        editor.remove(CURRENT_SERIES + id);
         editor.apply();
     }
 
@@ -180,8 +180,8 @@ public class SharedPreferencesManager {
         return getObject(User.class, CURRENT_USER);
     }
 
-    public static List<Match> getCurrentSeries() {
-        return getObject(new TypeReference<List<Match>>() {}, CURRENT_SERIES);
+    public static List<Match> getCurrentSeries(String opponentId) {
+        return getObject(new TypeReference<List<Match>>() {}, CURRENT_SERIES + opponentId);
     }
 
     public static Team getFavoriteTeam() {

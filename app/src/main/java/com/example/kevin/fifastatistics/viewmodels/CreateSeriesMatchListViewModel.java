@@ -3,6 +3,7 @@ package com.example.kevin.fifastatistics.viewmodels;
 import android.databinding.BaseObservable;
 import android.databinding.ObservableArrayList;
 import android.databinding.ObservableList;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 
@@ -58,7 +59,7 @@ public class CreateSeriesMatchListViewModel extends BaseObservable implements On
         mUser = user;
         mOpponent = opponent;
         mOnSeriesUpdateListener = listener;
-        mSeriesScoreViewModel = new CreateSeriesScoreViewModel(user, opponent, scoreUpdateListener, activity, launcher);
+        mSeriesScoreViewModel = new CreateSeriesScoreViewModel(user, opponent, scoreUpdateListener, activity, launcher, series);
         mOnSeriesCompletedListener = seriesCompletedListener;
         mMaxSeriesLength = Series.DEFAULT_MAX_SERIES_LENGTH;
         mUpdatedMatchIndex = -1;
@@ -67,7 +68,7 @@ public class CreateSeriesMatchListViewModel extends BaseObservable implements On
     }
 
     private void restoreSeries(Series series) {
-        if (series != null) {
+        if (series != null && series.getMatches() != null) {
             for (Match match : series.getMatches()) {
                 mItems.add(new CreateSeriesListItemViewModel(mActivity, match, mUser, mOpponent, mItems.size() + 1, mOnMatchUpdateListeners));
             }
@@ -130,7 +131,7 @@ public class CreateSeriesMatchListViewModel extends BaseObservable implements On
     }
 
     private void storeSeries() {
-        Observable.create(s -> SharedPreferencesManager.storeCurrentSeries(getMatches()))
+        Observable.create(s -> SharedPreferencesManager.storeCurrentSeries(getMatches(), mOpponent.getId()))
                 .compose(ObservableUtils.applyBackground()).subscribe();
     }
 

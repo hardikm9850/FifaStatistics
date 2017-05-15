@@ -17,6 +17,7 @@ import com.example.kevin.fifastatistics.managers.RetrievalManager;
 import com.example.kevin.fifastatistics.managers.SharedPreferencesManager;
 import com.example.kevin.fifastatistics.models.databasemodels.league.Team;
 import com.example.kevin.fifastatistics.models.databasemodels.match.Match;
+import com.example.kevin.fifastatistics.models.databasemodels.match.Series;
 import com.example.kevin.fifastatistics.models.databasemodels.user.Friend;
 import com.example.kevin.fifastatistics.models.databasemodels.user.Player;
 import com.example.kevin.fifastatistics.utils.ObservableUtils;
@@ -38,14 +39,18 @@ public class CreateSeriesScoreViewModel extends FifaBaseViewModel implements OnM
     private boolean mIsSelectedTeamUser;
 
     public CreateSeriesScoreViewModel(Player user, Player opponent, OnSeriesScoreUpdateListener listener,
-                                      Context context, ActivityLauncher launcher) {
+                                      Context context, ActivityLauncher launcher, Series series) {
         mUser = user;
         mOpponent = opponent;
         mListener = listener;
         mContext = context;
         mLauncher = launcher;
-        getFavoriteTeam();
-        getOpponentFavoriteTeam();
+        if (series == null) {
+            getFavoriteTeam();
+            getOpponentFavoriteTeam();
+        } else {
+            restoreTicker(series);
+        }
     }
 
     private void getFavoriteTeam() {
@@ -69,6 +74,28 @@ public class CreateSeriesScoreViewModel extends FifaBaseViewModel implements OnM
             }
         });
         addSubscription(s);
+    }
+
+    private void restoreTicker(Series savedSeries) {
+        if (savedSeries.getMatches() != null) {
+            for (Match match : savedSeries.getMatches()) {
+                if (match != null) {
+                    if (match.didWin(mUser)) {
+                        mUserWins++;
+                        mUserTeam = match.getTeamWinner();
+                        mOpponentTeam = match.getTeamLoser();
+                    } else {
+                        mOpponentWins++;
+                        mUserTeam = match.getTeamLoser();
+                        mOpponentTeam = match.getTeamWinner();
+                    }
+                }
+            }
+            mListener.onUserScoreUpdate(0, mUserWins);
+            mListener.onOpponentScoreUpdate(0, mOpponentWins);
+            setUserTeam(mUserTeam);
+            setOpponentTeam(mOpponentTeam);
+        }
     }
 
     public String getUserImageUrl() {
@@ -130,11 +157,13 @@ public class CreateSeriesScoreViewModel extends FifaBaseViewModel implements OnM
     public void setUserTeam(Team team) {
         mUserTeam = team;
         notifyPropertyChanged(BR.userTeamImageUrl);
+        mListener.onUserTeamUpdated(team);
     }
 
     public void setOpponentTeam(Team team) {
         mOpponentTeam = team;
         notifyPropertyChanged(BR.opponentTeamImageUrl);
+        mListener.onOpponentTeamUpdated(team);
     }
 
     @Bindable

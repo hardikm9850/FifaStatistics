@@ -16,16 +16,20 @@ import com.example.kevin.fifastatistics.interfaces.OnMatchCreatedListener;
 import com.example.kevin.fifastatistics.managers.FifaEventManager;
 import com.example.kevin.fifastatistics.managers.RetrievalManager;
 import com.example.kevin.fifastatistics.managers.SharedPreferencesManager;
+import com.example.kevin.fifastatistics.models.databasemodels.league.Team;
 import com.example.kevin.fifastatistics.models.databasemodels.match.Match;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
+import com.example.kevin.fifastatistics.network.FifaApi;
 import com.example.kevin.fifastatistics.utils.ColorUtils;
 import com.example.kevin.fifastatistics.utils.FabFactory;
 import com.example.kevin.fifastatistics.utils.ObservableUtils;
+import com.example.kevin.fifastatistics.utils.UserUtils;
 import com.example.kevin.fifastatistics.views.FifaNavigationDrawer;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 import com.lapism.searchview.SearchView;
 
+import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
 
 import rx.Observable;
@@ -146,6 +150,7 @@ public class MainActivity extends FifaBaseActivity implements OnMatchCreatedList
         RetrievalManager.getCurrentUser().subscribe(user -> {
             mUser = user;
             initFabWithUser(mUser);
+            setupFavoriteTeam(mUser);
         });
     }
 
@@ -176,6 +181,28 @@ public class MainActivity extends FifaBaseActivity implements OnMatchCreatedList
             manager.startNewFlow();
         });
         mActionMenu.addMenuButton(seriesButton);
+    }
+
+    private void setupFavoriteTeam(final User user) {
+        Subscription sub = Observable.<String>create(s -> {
+            Team favTeam = SharedPreferencesManager.getFavoriteTeam();
+            if (user.getFavoriteTeamId() != null && favTeam == null) {
+                s.onNext(user.getFavoriteTeamId());
+            } else {
+                s.onNext(null);
+            }
+        }).flatMap(id -> {
+            if (id != null) {
+                return FifaApi.getLeagueApi().getTeam(id);
+            } else{
+                return Observable.empty();
+            }
+        }).compose(ObservableUtils.applyBackground()).subscribe(team -> {
+            if (team != null) {
+                SharedPreferencesManager.setFavoriteTeam(team);
+            }
+        });
+        addSubscription(sub);
     }
 
     @Override

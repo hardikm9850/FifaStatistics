@@ -3,6 +3,7 @@ package com.example.kevin.fifastatistics.models.databasemodels.match;
 import com.example.kevin.fifastatistics.models.databasemodels.DatabaseModel;
 import com.example.kevin.fifastatistics.models.databasemodels.league.Team;
 import com.example.kevin.fifastatistics.models.databasemodels.user.Friend;
+import com.example.kevin.fifastatistics.models.databasemodels.user.Player;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
 import com.example.kevin.fifastatistics.utils.SerializationUtils;
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -54,8 +55,8 @@ public class Series extends DatabaseModel {
         return series;
     }
 
-    public static Series with(Collection<Match> matches) {
-        Series series = new Series();
+    public static Series with(Collection<Match> matches, Friend playerOne, Friend playerTwo) {
+        Series series = new Series(playerOne, playerTwo);
         if (matches != null) {
             series.addAll(matches);
         }
@@ -108,7 +109,19 @@ public class Series extends DatabaseModel {
         return playerWins > bestOf / 2;
     }
 
-
+    public void updateTeamForPlayer(Team team, Player player) {
+        if (matches != null) {
+            for (Match match : matches) {
+                if (match != null) {
+                    if (match.didWin(player)) {
+                        match.setTeamWinner(team);
+                    } else {
+                        match.setTeamLoser(team);
+                    }
+                }
+            }
+        }
+    }
 
     @Override
     public String toString() {
