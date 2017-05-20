@@ -71,6 +71,7 @@ public class CreateSeriesMatchListViewModel extends BaseObservable implements On
         if (series != null && series.getMatches() != null) {
             for (Match match : series.getMatches()) {
                 mItems.add(new CreateSeriesListItemViewModel(mActivity, match, mUser, mOpponent, mItems.size() + 1, mOnMatchUpdateListeners));
+                maybeEndSeries(match);
             }
         }
     }
