@@ -67,7 +67,7 @@ public class MainActivity extends FifaBaseActivity implements OnMatchCreatedList
 
     private void restoreInstance(Bundle savedInstanceState) {
         if (savedInstanceState != null) {
-            currentDrawerPosition = savedInstanceState.getInt(DRAWER_POSITION);
+            currentDrawerPosition = savedInstanceState.getInt(DRAWER_POSITION, 1);
             mInitializer = (FragmentInitializer) savedInstanceState.getSerializable(INITIALIZER);
         }
     }

@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 
 import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.databinding.StatsListViewLayoutBinding;
+import com.example.kevin.fifastatistics.managers.SharedPreferencesManager;
 import com.example.kevin.fifastatistics.models.databasemodels.user.Stats;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
 import com.example.kevin.fifastatistics.viewmodels.StatsCardViewModel;
@@ -29,7 +30,7 @@ public class StatsPagerAdapter extends PagerAdapter {
         mStats = stats;
         mListener = listener;
         mUsername = username;
-        mIsMyStats = username != null;
+        mIsMyStats = username != null && username.equals(SharedPreferencesManager.getUserName());
     }
 
     @Override

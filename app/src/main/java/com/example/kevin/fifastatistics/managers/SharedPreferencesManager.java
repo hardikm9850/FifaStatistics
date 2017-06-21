@@ -32,6 +32,7 @@ public class SharedPreferencesManager {
     private static final String CURRENT_SERIES = "CURRENT_SERIES";
     private static final String RECENT_TEAMS = "RECENT_TEAMS";
     private static final String COLOR_ACCENT = "COLOR_ACCENT";
+    private static final String USERNAME = "USER_NAME";
     private static final String FAVORITE_TEAM;
     private static final String DIRECT_CAMERA;
     private static final String DARK_THEME;
@@ -123,13 +124,19 @@ public class SharedPreferencesManager {
     public static void storeUserSync(User user) {
         editor = preferences.edit();
         editor.putString(CURRENT_USER, user.toString());
+        editor.putString(USERNAME, user.getName());
         editor.commit();
     }
 
     public static void storeUser(User user) {
         editor = preferences.edit();
         editor.putString(CURRENT_USER, user.toString());
+        editor.putString(USERNAME, user.getName());
         editor.apply();
+    }
+
+    public static String getUserName() {
+        return preferences.getString(USERNAME, null);
     }
 
     public static void storeCurrentSeries(List<Match> matches, String opponentId) {
