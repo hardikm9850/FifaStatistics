@@ -2,6 +2,7 @@ package com.example.kevin.fifastatistics.views;
 
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Bundle;
 import android.support.annotation.ColorInt;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.Toolbar;
@@ -37,8 +38,9 @@ public class FifaNavigationDrawer {
     private Drawer mDrawer;
     private int mSelectedColor;
 
-    public static FifaNavigationDrawer newInstance(FifaBaseActivity activity, Toolbar toolbar, @ColorInt int selectedColor) {
-        return new FifaNavigationDrawer(activity, toolbar, selectedColor);
+    public static FifaNavigationDrawer newInstance(FifaBaseActivity activity, Toolbar toolbar, @ColorInt int selectedColor,
+                                                   Bundle savedInstaceState) {
+        return new FifaNavigationDrawer(activity, toolbar, selectedColor, savedInstaceState);
     }
 
     public void setOnDrawerItemClickListener(Drawer.OnDrawerItemClickListener listener) {
@@ -68,7 +70,11 @@ public class FifaNavigationDrawer {
         mDrawer.setSelectionAtPosition(position);
     }
 
-    private FifaNavigationDrawer(FifaBaseActivity activity, Toolbar toolbar, int color) {
+    public Bundle saveInstanceState(Bundle outState) {
+        return mDrawer.saveInstanceState(outState);
+    }
+
+    private FifaNavigationDrawer(FifaBaseActivity activity, Toolbar toolbar, int color, Bundle savedInstanceState) {
         mSelectedColor = color;
         User user = SharedPreferencesManager.getUser();
 
@@ -83,7 +89,7 @@ public class FifaNavigationDrawer {
 
         IDrawerItem[] items = {overviewItem, statisticsItem, matchesItem, seriesItem, friendsItem,
                 new DividerDrawerItem(), settingsItem};
-        mDrawer = buildDrawer(user, activity, toolbar, items);
+        mDrawer = buildDrawer(user, activity, toolbar, savedInstanceState, items);
     }
 
     private PrimaryDrawerItem getBaseDrawerItem(long identifier) {
@@ -143,9 +149,10 @@ public class FifaNavigationDrawer {
                 .withIcon(R.drawable.ic_settings_black_24dp);
     }
 
-    private Drawer buildDrawer(User user, FifaBaseActivity activity, Toolbar toolbar, IDrawerItem... items) {
+    private Drawer buildDrawer(User user, FifaBaseActivity activity, Toolbar toolbar,
+                               Bundle savedInstanceState, IDrawerItem... items) {
         AccountHeader header = initializeDrawerBanner(user, activity);
-        return initializeDrawer(activity, header, toolbar, items);
+        return initializeDrawer(activity, header, toolbar, savedInstanceState, items);
     }
 
     private AccountHeader initializeDrawerBanner(User user, FifaBaseActivity activity) {
@@ -179,7 +186,8 @@ public class FifaNavigationDrawer {
                 .build();
     }
 
-    private Drawer initializeDrawer(FifaBaseActivity activity, AccountHeader header, Toolbar toolbar, IDrawerItem... items) {
+    private Drawer initializeDrawer(FifaBaseActivity activity, AccountHeader header, Toolbar toolbar,
+                                    Bundle savedInstanceState, IDrawerItem... items) {
         return new DrawerBuilder()
                 .withActivity(activity)
                 .withAccountHeader(header)
@@ -187,6 +195,7 @@ public class FifaNavigationDrawer {
                 .withActionBarDrawerToggleAnimated(true)
                 .withToolbar(toolbar)
                 .withSelectedItem(OVERVIEW_ITEM_ID)
+                .withSavedInstance(savedInstanceState)
                 .addDrawerItems(items)
                 .build();
     }

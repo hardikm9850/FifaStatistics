@@ -59,7 +59,7 @@ public class MainActivity extends FifaBaseActivity implements OnMatchCreatedList
         restoreInstance(savedInstanceState);
         initializeToolbar();
         initializeViewPager();
-        initializeDrawer();
+        initializeDrawer(savedInstanceState);
         initializeFab();
         initializeFragment();
         Log.d("token", SharedPreferencesManager.getRegistrationToken());
@@ -67,7 +67,6 @@ public class MainActivity extends FifaBaseActivity implements OnMatchCreatedList
 
     private void restoreInstance(Bundle savedInstanceState) {
         if (savedInstanceState != null) {
-            currentDrawerPosition = savedInstanceState.getInt(DRAWER_POSITION, 1);
             mInitializer = (FragmentInitializer) savedInstanceState.getSerializable(INITIALIZER);
         }
     }
@@ -96,8 +95,8 @@ public class MainActivity extends FifaBaseActivity implements OnMatchCreatedList
         mTabLayout.setupWithViewPager(mViewPager);
     }
 
-    private void initializeDrawer() {
-        mDrawer = FifaNavigationDrawer.newInstance(this, mToolbar, mColor);
+    private void initializeDrawer(Bundle savedInstanceState) {
+        mDrawer = FifaNavigationDrawer.newInstance(this, mToolbar, mColor, savedInstanceState);
         mDrawer.setOnDrawerItemClickListener((view, position, drawerItem) -> {
             if (position == currentDrawerPosition) {
                 mDrawer.closeDrawer();
@@ -215,6 +214,7 @@ public class MainActivity extends FifaBaseActivity implements OnMatchCreatedList
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
+        outState = mDrawer.saveInstanceState(outState);
         super.onSaveInstanceState(outState);
         outState.putInt(DRAWER_POSITION, currentDrawerPosition);
         outState.putSerializable(INITIALIZER, mInitializer);
