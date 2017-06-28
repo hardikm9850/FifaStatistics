@@ -128,11 +128,11 @@ public class PlayerActivty extends BasePlayerActivity implements OnMatchCreatedL
     }
 
     @Override
-    public void onBackPressed() {
+    public void finishAfterTransition() {
         if (mDidEnterFromSearch) {
             finish();
         } else {
-            finishAfterTransition();
+            super.finishAfterTransition();
         }
     }
 
