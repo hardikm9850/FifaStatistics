@@ -1,6 +1,7 @@
 package com.example.kevin.fifastatistics.views;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.widget.EditText;
@@ -8,6 +9,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.kevin.fifastatistics.R;
+import com.example.kevin.fifastatistics.utils.OcrResultParser;
 
 public class AddMatchListItem extends LinearLayout {
 
@@ -27,7 +29,12 @@ public class AddMatchListItem extends LinearLayout {
     }
 
     public String getLeftText() {
-        return mLeftText.getText().toString();
+        return getText(mLeftText);
+    }
+
+    private String getText(EditText text) {
+        return TextUtils.isEmpty(text.getText().toString()) ?
+                String.valueOf(OcrResultParser.ERROR_VALUE) : text.getText().toString();
     }
 
     public void setLeftText(float value) {
@@ -35,7 +42,7 @@ public class AddMatchListItem extends LinearLayout {
     }
 
     public String getRightText() {
-        return mRightText.getText().toString();
+        return getText(mRightText);
     }
 
     public void setRightText(float value) {

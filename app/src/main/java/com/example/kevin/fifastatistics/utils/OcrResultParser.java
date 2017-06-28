@@ -84,7 +84,6 @@ public class OcrResultParser {
             sp.getStatsAgainst().setShots(ERROR_VALUE);
         }
 
-
         try {
             result = parseLine(lines[SHOTS_ON_TARGET_LINE]);
             sp.getStatsFor().setShotsOnTarget(result[0]);
@@ -132,7 +131,9 @@ public class OcrResultParser {
         } catch (ArrayIndexOutOfBoundsException e) {
             throw new IOException("Failed to parse OCR result");
         }
-
+        if (sp.getStatsFor().getTackles() > 30 || sp.getStatsAgainst().getTackles() > 30) {
+            sp = StatsUtils.shiftStatsUpForPair(sp);
+        }
         return sp;
     }
 

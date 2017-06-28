@@ -60,6 +60,8 @@ public class AddMatchDialogFragment extends FifaBaseDialogFragment implements On
 
     public static final int ADD_MATCH_REQUEST_CODE = 466;
     private static final String SERIES_ARG = "partOfSeries";
+    private static final String STATS_ARG = "stats";
+    private static final String SWAPPED_ARG = "swappedSides";
 
     private ImageLoader mImageLoader;
     private FragmentActivity mActivity;
@@ -73,6 +75,8 @@ public class AddMatchDialogFragment extends FifaBaseDialogFragment implements On
     private ImageView mRightImage;
     private Team mUserTeam;
     private Team mOpponentTeam;
+    private User.StatsPair mRestoredStats;
+    private boolean mIsSavedInstance;
     private boolean mIsPartOfSeries;
     private boolean mDidSwapSides;
 
@@ -105,6 +109,8 @@ public class AddMatchDialogFragment extends FifaBaseDialogFragment implements On
         super.onCreate(savedInstanceState);
         if (savedInstanceState != null) {
             initFromBundle(savedInstanceState);
+            mRestoredStats = (User.StatsPair) savedInstanceState.getSerializable(STATS_ARG);
+            mDidSwapSides = savedInstanceState.getBoolean(SWAPPED_ARG);
         } else {
             initFromBundle(getArguments());
         }
@@ -121,9 +127,12 @@ public class AddMatchDialogFragment extends FifaBaseDialogFragment implements On
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
+        mIsSavedInstance = true;
         outState.putBoolean(SERIES_ARG, mIsPartOfSeries);
         outState.putSerializable(USER, mUser);
         outState.putSerializable(OPPONENT, mOpponent);
+        outState.putSerializable(STATS_ARG, mAddMatchList.getValues());
+        outState.putBoolean(SWAPPED_ARG, mDidSwapSides);
     }
 
     @Override
@@ -139,6 +148,9 @@ public class AddMatchDialogFragment extends FifaBaseDialogFragment implements On
         initializeAddMatchList(view);
         initializeSwitchSidesButton(view);
         view = maybeAddPaddingToTop(view);
+        if (mDidSwapSides) {
+            mViewModel.swap();
+        }
         return view;
     }
 
@@ -157,7 +169,9 @@ public class AddMatchDialogFragment extends FifaBaseDialogFragment implements On
 
     @Override
     public void onDestroyView() {
-        UiUtils.removeFragmentFromBackstack(mActivity, this);
+        if (!mIsSavedInstance) {
+            UiUtils.removeFragmentFromBackstack(mActivity, this);
+        }
         System.gc();
         super.onDestroyView();
     }
@@ -286,7 +300,7 @@ public class AddMatchDialogFragment extends FifaBaseDialogFragment implements On
 
     private void initializeLeftUserImage(View view) {
         mLeftImage = (ImageView) view.findViewById(R.id.left_image);
-        setLeftImage(mUser.getImageUrl());
+        setLeftImage(mDidSwapSides ? mOpponent.getImageUrl() : mUser.getImageUrl());
     }
 
     private void setLeftImage(String imageUrl) {
@@ -295,7 +309,7 @@ public class AddMatchDialogFragment extends FifaBaseDialogFragment implements On
 
     private void initializeRightUserImage(View view) {
         mRightImage = (ImageView) view.findViewById(R.id.right_image);
-        setRightImage(mOpponent.getImageUrl());
+        setRightImage(mDidSwapSides ? mUser.getImageUrl() : mOpponent.getImageUrl());
     }
 
     private void setRightImage(String imageUrl) {
@@ -315,6 +329,8 @@ public class AddMatchDialogFragment extends FifaBaseDialogFragment implements On
             }
             mAddMatchList.setValues(mMatch.getStats());
             mAddMatchList.setPenalties(mMatch.getPenalties());
+        } else if (mRestoredStats != null) {
+            mAddMatchList.setValues(mRestoredStats);
         }
     }
 
