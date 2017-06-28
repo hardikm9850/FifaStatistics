@@ -271,10 +271,17 @@ public class AddMatchDialogFragment extends FifaBaseDialogFragment implements On
 
     private User.StatsPair maybeSwapStats(User.StatsPair stats, boolean userDidWin) {
         if ((userDidWin && mDidSwapSides) || (!userDidWin && !mDidSwapSides)) {
+            swapTeams();
             return new User.StatsPair(stats.getStatsAgainst(), stats.getStatsFor());
         } else {
             return stats;
         }
+    }
+
+    private void swapTeams() {
+        Team tempTeam = mUserTeam;
+        mUserTeam = mOpponentTeam;
+        mOpponentTeam = tempTeam;
     }
 
     private void initializeLeftUserImage(View view) {
