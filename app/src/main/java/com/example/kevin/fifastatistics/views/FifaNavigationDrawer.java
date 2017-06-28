@@ -32,6 +32,7 @@ public class FifaNavigationDrawer {
     private static final String DRAWER_PROFILE_TEXT = "FIFA Legend";
     private static final int BADGE_CORNER_RADIUS_DP = 20;
     private static final int FRIENDS_ITEM_IDENTIFIER = 1;
+    private static final int OVERVIEW_ITEM_ID = 11;
 
     private Drawer mDrawer;
     private int mSelectedColor;
@@ -99,7 +100,7 @@ public class FifaNavigationDrawer {
     }
 
     private PrimaryDrawerItem initializeOverviewItem() {
-        return getBaseDrawerItem(11)
+        return getBaseDrawerItem(OVERVIEW_ITEM_ID)
                 .withName(R.string.overview)
                 .withIcon(R.drawable.ic_home_black_24dp);
     }
@@ -185,6 +186,7 @@ public class FifaNavigationDrawer {
                 .withActionBarDrawerToggle(true)
                 .withActionBarDrawerToggleAnimated(true)
                 .withToolbar(toolbar)
+                .withSelectedItem(OVERVIEW_ITEM_ID)
                 .addDrawerItems(items)
                 .build();
     }

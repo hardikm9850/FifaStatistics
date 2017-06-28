@@ -50,7 +50,7 @@ public class MainActivity extends FifaBaseActivity implements OnMatchCreatedList
     private FifaEventManager mEventManager;
     private FragmentInitializer mInitializer;
     private User mUser;
-    private int currentDrawerPosition;
+    private int currentDrawerPosition = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,7 +107,6 @@ public class MainActivity extends FifaBaseActivity implements OnMatchCreatedList
                 return false;
             }
         });
-        mDrawer.setPosition(currentDrawerPosition);
     }
 
     private void handleDrawerClick(int position) {
@@ -206,6 +205,12 @@ public class MainActivity extends FifaBaseActivity implements OnMatchCreatedList
             }
         });
         addSubscription(sub);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mDrawer.setPosition(currentDrawerPosition);
     }
 
     @Override
