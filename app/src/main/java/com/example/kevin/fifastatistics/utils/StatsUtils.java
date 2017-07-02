@@ -25,7 +25,7 @@ public class StatsUtils {
         stats.setInjuries(stats.getOffsides());
         stats.setOffsides(stats.getCorners());
         stats.setCorners(stats.getShotAccuracy());
-        stats.setPassAccuracy(0f);
+        stats.setPassAccuracy(OcrResultParser.ERROR_VALUE);
         return stats;
     }
 }

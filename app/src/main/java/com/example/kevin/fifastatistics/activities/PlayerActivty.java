@@ -3,6 +3,7 @@ package com.example.kevin.fifastatistics.activities;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.adapters.FragmentAdapter;
@@ -10,6 +11,7 @@ import com.example.kevin.fifastatistics.databinding.ActivityPlayerBinding;
 import com.example.kevin.fifastatistics.fragments.PlayerOverviewFragment;
 import com.example.kevin.fifastatistics.fragments.SecondFragment;
 import com.example.kevin.fifastatistics.interfaces.OnMatchCreatedListener;
+import com.example.kevin.fifastatistics.listeners.FabScrollListener;
 import com.example.kevin.fifastatistics.managers.FifaEventManager;
 import com.example.kevin.fifastatistics.managers.RetrievalManager;
 import com.example.kevin.fifastatistics.models.databasemodels.match.Match;
@@ -18,17 +20,18 @@ import com.example.kevin.fifastatistics.models.databasemodels.user.User;
 import com.example.kevin.fifastatistics.utils.ColorUtils;
 import com.example.kevin.fifastatistics.utils.FabFactory;
 import com.example.kevin.fifastatistics.utils.TransitionUtils;
+import com.example.kevin.fifastatistics.views.FifaActionMenu;
 import com.github.clans.fab.FloatingActionButton;
-import com.github.clans.fab.FloatingActionMenu;
 
-public class PlayerActivty extends BasePlayerActivity implements OnMatchCreatedListener {
+public class PlayerActivty extends BasePlayerActivity implements OnMatchCreatedListener, View.OnScrollChangeListener {
 
     public static final String EXTRA_ENTERED_FROM_SEARCH_BAR = "enteredFromSearch";
 
     private ActivityPlayerBinding mBinding;
-    private FloatingActionMenu mFam;
+    private FifaActionMenu mFam;
     private User mCurrentUser;
     private FifaEventManager mManager;
+    private FabScrollListener mFabScrollListener;
     private boolean mDidEnterFromSearch;
 
     @Override
@@ -46,10 +49,12 @@ public class PlayerActivty extends BasePlayerActivity implements OnMatchCreatedL
     }
 
     private void initializeMembers() {
-        mFam = mBinding.fabMenu;
+        mFam = mBinding.famLayout.fabMenu;
+        mFam.setGradient(mBinding.famLayout.gradient);
         mFam.setMenuButtonColorNormal(mColor);
         mFam.setMenuButtonColorPressed(mColor);
         mFam.getMenuIconView().setImageDrawable(ColorUtils.getTintedDrawable(R.drawable.ic_add_white_24dp, mColor));
+        mFabScrollListener = new FabScrollListener(mFam);
         mDidEnterFromSearch = getIntent().getExtras().getBoolean(EXTRA_ENTERED_FROM_SEARCH_BAR);
     }
 
@@ -128,6 +133,15 @@ public class PlayerActivty extends BasePlayerActivity implements OnMatchCreatedL
     }
 
     @Override
+    public void onBackPressed() {
+        if (mFam.isOpened()) {
+            mFam.close(true);
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    @Override
     public void finishAfterTransition() {
         if (mDidEnterFromSearch) {
             finish();
@@ -139,5 +153,10 @@ public class PlayerActivty extends BasePlayerActivity implements OnMatchCreatedL
     @Override
     public void onMatchCreated(Match match) {
         mManager.onMatchCreated(match);
+    }
+
+    @Override
+    public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+        mFabScrollListener.onScrollChange(v, scrollX, scrollY, oldScrollX, oldScrollY);
     }
 }

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.graphics.Point;
+import android.graphics.Rect;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -36,11 +37,33 @@ public class UiUtils {
     }
 
     public static int getScreenWidth(@NonNull Context context) {
+        return getScreenSize(context).x;
+    }
+
+    public static Point getScreenSize(@NonNull Context context) {
         WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         Display display = wm.getDefaultDisplay();
         Point size = new Point();
         display.getSize(size);
-        return size.x;
+        return size;
+    }
+
+    public static int[] getViewBottomRight(@NonNull View view) {
+        Rect r = new Rect();
+        view.getGlobalVisibleRect(r);
+        return new int[] {r.right, r.bottom};
+    }
+
+    public static int[] getCenterCoordinates(View view) {
+        if (view != null) {
+            int[] location = new int[2];
+            view.getLocationOnScreen(location);
+            int x = location[0] + view.getWidth() / 2;
+            int y = location[1] + view.getHeight() / 2;
+            return new int[] {x, y};
+        } else {
+            return new int[] {0, 0};
+        }
     }
 
     public static boolean isLandscape(Context context) {

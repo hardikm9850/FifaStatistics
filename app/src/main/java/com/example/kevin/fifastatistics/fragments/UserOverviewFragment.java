@@ -1,10 +1,13 @@
 package com.example.kevin.fifastatistics.fragments;
 
+import android.content.Context;
 import android.databinding.DataBindingUtil;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ScrollView;
 
 import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.databinding.FragmentUserOverviewBinding;
@@ -23,6 +26,21 @@ public class UserOverviewFragment extends FifaBaseFragment implements OnBackPres
     private User mUser;
     private FragmentUserOverviewBinding mBinding;
     private UserOverviewViewModel mViewModel;
+    private View.OnScrollChangeListener mScrollListener;
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof View.OnScrollChangeListener) {
+            mScrollListener = (View.OnScrollChangeListener) context;
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mScrollListener = null;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -36,6 +54,7 @@ public class UserOverviewFragment extends FifaBaseFragment implements OnBackPres
         mViewModel = new UserOverviewViewModel(mUser, this);
         mBinding.setViewModel(mViewModel);
         mBinding.swiperefresh.setOnRefreshListener(() -> mViewModel.update());
+        mBinding.scrollview.setOnScrollChangeListener(mScrollListener);
         return mBinding.getRoot();
     }
 

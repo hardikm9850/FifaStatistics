@@ -6,6 +6,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.View;
 
 import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.adapters.FragmentAdapter;
@@ -13,6 +14,7 @@ import com.example.kevin.fifastatistics.fragments.initializers.FragmentInitializ
 import com.example.kevin.fifastatistics.fragments.initializers.FragmentInitializerFactory;
 import com.example.kevin.fifastatistics.interfaces.OnBackPressedHandler;
 import com.example.kevin.fifastatistics.interfaces.OnMatchCreatedListener;
+import com.example.kevin.fifastatistics.listeners.FabScrollListener;
 import com.example.kevin.fifastatistics.managers.FifaEventManager;
 import com.example.kevin.fifastatistics.managers.RetrievalManager;
 import com.example.kevin.fifastatistics.managers.SharedPreferencesManager;
@@ -20,22 +22,24 @@ import com.example.kevin.fifastatistics.models.databasemodels.league.Team;
 import com.example.kevin.fifastatistics.models.databasemodels.match.Match;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
 import com.example.kevin.fifastatistics.network.FifaApi;
+import com.example.kevin.fifastatistics.utils.BuildUtils;
 import com.example.kevin.fifastatistics.utils.ColorUtils;
 import com.example.kevin.fifastatistics.utils.FabFactory;
 import com.example.kevin.fifastatistics.utils.ObservableUtils;
-import com.example.kevin.fifastatistics.utils.UserUtils;
+import com.example.kevin.fifastatistics.views.FifaActionMenu;
 import com.example.kevin.fifastatistics.views.FifaNavigationDrawer;
 import com.github.clans.fab.FloatingActionButton;
-import com.github.clans.fab.FloatingActionMenu;
 import com.lapism.searchview.SearchView;
 
-import java.util.Arrays;
+import net.hockeyapp.android.CrashManager;
+import net.hockeyapp.android.UpdateManager;
+
 import java.util.concurrent.TimeUnit;
 
 import rx.Observable;
 import rx.Subscription;
 
-public class MainActivity extends FifaBaseActivity implements OnMatchCreatedListener {
+public class MainActivity extends FifaBaseActivity implements OnMatchCreatedListener, View.OnScrollChangeListener {
 
     public static final String PAGE_EXTRA = "page";
     private static final String INITIALIZER = "initializer";
@@ -46,9 +50,10 @@ public class MainActivity extends FifaBaseActivity implements OnMatchCreatedList
     private FragmentAdapter mAdapter;
     private TabLayout mTabLayout;
     private ViewPager mViewPager;
-    private FloatingActionMenu mActionMenu;
+    private FifaActionMenu mActionMenu;
     private FifaEventManager mEventManager;
     private FragmentInitializer mInitializer;
+    private FabScrollListener mFabScrollListener;
     private User mUser;
     private int currentDrawerPosition = 1;
 
@@ -62,6 +67,7 @@ public class MainActivity extends FifaBaseActivity implements OnMatchCreatedList
         initializeDrawer(savedInstanceState);
         initializeFab();
         initializeFragment();
+        checkForHockeyAppUpdates();
         Log.d("token", SharedPreferencesManager.getRegistrationToken());
     }
 
@@ -144,7 +150,9 @@ public class MainActivity extends FifaBaseActivity implements OnMatchCreatedList
     }
 
     private void initializeFab() {
-        mActionMenu = (FloatingActionMenu) findViewById(R.id.fab_menu);
+        mActionMenu = (FifaActionMenu) findViewById(R.id.fab_menu);
+        mActionMenu.setGradient(findViewById(R.id.gradient));
+        mFabScrollListener = new FabScrollListener(mActionMenu);
         RetrievalManager.getCurrentUser().subscribe(user -> {
             mUser = user;
             initFabWithUser(mUser);
@@ -206,10 +214,34 @@ public class MainActivity extends FifaBaseActivity implements OnMatchCreatedList
         addSubscription(sub);
     }
 
+    private void checkForHockeyAppUpdates() {
+        if (BuildUtils.isHockey()) {
+            UpdateManager.register(this);
+        }
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
-        mDrawer.setPosition(currentDrawerPosition);
+        CrashManager.register(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        unregisterHockeyAppUpdater();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterHockeyAppUpdater();
+    }
+
+    private void unregisterHockeyAppUpdater() {
+        if (BuildUtils.isHockey()) {
+            UpdateManager.unregister();
+        }
     }
 
     @Override
@@ -218,6 +250,15 @@ public class MainActivity extends FifaBaseActivity implements OnMatchCreatedList
         super.onSaveInstanceState(outState);
         outState.putInt(DRAWER_POSITION, currentDrawerPosition);
         outState.putSerializable(INITIALIZER, mInitializer);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (mActionMenu.isOpened()) {
+            mActionMenu.close(true);
+        } else {
+            super.onBackPressed();
+        }
     }
 
     @Override
@@ -244,5 +285,10 @@ public class MainActivity extends FifaBaseActivity implements OnMatchCreatedList
     @Override
     public void setNavigationLocked(boolean locked) {
         mDrawer.setLocked(locked);
+    }
+
+    @Override
+    public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+        mFabScrollListener.onScrollChange(v, scrollX, scrollY, oldScrollX, oldScrollY);
     }
 }

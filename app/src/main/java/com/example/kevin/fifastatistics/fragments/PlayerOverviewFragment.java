@@ -1,5 +1,6 @@
 package com.example.kevin.fifastatistics.fragments;
 
+import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -23,6 +24,7 @@ public class PlayerOverviewFragment extends FifaBaseFragment implements OnBackPr
     private String mUserId;
     private FragmentPlayerOverviewBinding mBinding;
     private PlayerOverviewFragmentViewModel mFragmentViewModel;
+    private View.OnScrollChangeListener mScrollListener;
 
     public static PlayerOverviewFragment newInstance(String userId) {
         PlayerOverviewFragment fragment = new PlayerOverviewFragment();
@@ -30,6 +32,20 @@ public class PlayerOverviewFragment extends FifaBaseFragment implements OnBackPr
         args.putString(ARG_USER_ID, userId);
         fragment.setArguments(args);
         return fragment;
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof View.OnScrollChangeListener) {
+            mScrollListener = (View.OnScrollChangeListener) context;
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mScrollListener = null;
     }
 
     @Override
@@ -43,6 +59,7 @@ public class PlayerOverviewFragment extends FifaBaseFragment implements OnBackPr
         mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_player_overview, container, false);
         mFragmentViewModel = new PlayerOverviewFragmentViewModel(this);
         mBinding.setProgressViewModel(mFragmentViewModel);
+        mBinding.nestedScrollView.setOnScrollChangeListener(mScrollListener);
         return mBinding.getRoot();
     }
 

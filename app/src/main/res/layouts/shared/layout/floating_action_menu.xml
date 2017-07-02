@@ -1,16 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:fab="http://schemas.android.com/apk/res-auto">
+        xmlns:fab="http://schemas.android.com/apk/res-auto">
 
-    <com.github.clans.fab.FloatingActionMenu
-        android:id="@+id/fab_menu"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_gravity="bottom|end"
-        fab:menu_colorNormal="@color/colorAccent"
-        fab:menu_icon="@drawable/ic_add_white_24dp"
-        fab:menu_labels_showAnimation="@anim/fab_scale_up" />
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <View
+            android:id="@+id/gradient"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/fab_gradient"
+            android:visibility="invisible"/>
+
+        <com.example.kevin.fifastatistics.views.FifaActionMenu
+            android:id="@+id/fab_menu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/fab_margin"
+            android:layout_marginEnd="@dimen/fab_margin"
+            android:layout_gravity="bottom|end"
+            fab:menu_buttonSpacing="@dimen/fab_button_margin"
+            fab:menu_colorNormal="@color/colorAccent"
+            fab:menu_icon="@drawable/ic_add_white_24dp"
+            fab:menu_labels_showAnimation="@anim/fab_scale_up"
+            fab:menu_labels_colorNormal="@android:color/transparent"
+            fab:menu_labels_showShadow="false"/>
+
+    </FrameLayout>
 
 </layout>
