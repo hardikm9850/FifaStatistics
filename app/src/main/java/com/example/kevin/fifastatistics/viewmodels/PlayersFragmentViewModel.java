@@ -31,6 +31,7 @@ public class PlayersFragmentViewModel extends ProgressFragmentViewModel {
             public void onError(Throwable e) {
                 Log.d("ERROR", Log.getStackTraceString(e));
                 hideProgressBar();
+                showRetryButton();
                 if (mListener != null) {
                     mListener.onPlayersLoadFailed();
                 }
@@ -44,6 +45,11 @@ public class PlayersFragmentViewModel extends ProgressFragmentViewModel {
                 }
             }
         };
+    }
+
+    @Override
+    public void onRetryButtonClick() {
+        loadPlayers();
     }
 
     public interface OnPlayersLoadedListener {

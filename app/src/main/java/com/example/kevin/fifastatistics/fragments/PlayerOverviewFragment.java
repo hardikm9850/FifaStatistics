@@ -57,7 +57,7 @@ public class PlayerOverviewFragment extends FifaBaseFragment implements OnBackPr
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_player_overview, container, false);
-        mFragmentViewModel = new PlayerOverviewFragmentViewModel(this);
+        mFragmentViewModel = new PlayerOverviewFragmentViewModel(this, mUserId);
         mBinding.setProgressViewModel(mFragmentViewModel);
         mBinding.nestedScrollView.setOnScrollChangeListener(mScrollListener);
         return mBinding.getRoot();
@@ -65,7 +65,7 @@ public class PlayerOverviewFragment extends FifaBaseFragment implements OnBackPr
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        mFragmentViewModel.loadPlayer(mUserId);
+        mFragmentViewModel.loadPlayer();
     }
 
     @Override

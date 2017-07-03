@@ -7,15 +7,50 @@
             type="com.example.kevin.fifastatistics.viewmodels.ProgressFragmentViewModel"/>
     </data>
 
-    <ProgressBar
-        android:id="@+id/progressBar"
+
+    <FrameLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:gravity="center"
-        android:indeterminate="true"
-        android:visibility="@{progressViewModel.progressBarVisibility}"
-        android:indeterminateTint="@{progressViewModel.color}"
-        style="?android:attr/progressBarStyle"/>
+        android:gravity="center">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="@{progressViewModel.retryButtonVisibility}"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="@dimen/retry_icon_size"
+                android:layout_height="@dimen/retry_icon_size"
+                android:tint="@{progressViewModel.color}"
+                android:onClick="@{() -> progressViewModel.onRetryButtonClick()}"
+                android:src="@drawable/ic_refresh_white_24dp"
+                android:scaleType="fitCenter"
+                android:layout_gravity="center_horizontal"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/retry"
+                android:textAppearance="@style/text_grey_small"
+                android:layout_gravity="center_horizontal"
+                android:gravity="center_horizontal"/>
+
+        </LinearLayout>
+
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:indeterminate="true"
+            android:visibility="@{progressViewModel.progressBarVisibility}"
+            android:indeterminateTint="@{progressViewModel.color}"
+            style="?android:attr/progressBarStyle"/>
+
+    </FrameLayout>
 
 </layout>

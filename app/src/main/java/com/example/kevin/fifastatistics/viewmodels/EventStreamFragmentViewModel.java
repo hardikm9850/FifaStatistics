@@ -21,6 +21,7 @@ public class EventStreamFragmentViewModel<T extends FifaEvent> extends ProgressF
     private final OnEventsLoadedListener<T> mOnEventsLoadedListener;
     private final AdapterInteraction mAdapterInteraction;
     private final OnLoadMoreHandler<T> mLoadMoreHandler;
+    private Observable<ApiListResponse<T>> mLoadEventsObservable;
     private List<T> mEvents;
     private String mNextUri;
     private boolean mIsLoadInProgress;
@@ -35,10 +36,12 @@ public class EventStreamFragmentViewModel<T extends FifaEvent> extends ProgressF
 
     public void loadEvents(Observable<ApiListResponse<T>> eventsObservable) {
         mIsLoadInProgress = true;
+        mLoadEventsObservable = eventsObservable;
         Observer<ApiListResponse<T>> eventsObserver = new ObservableUtils.EmptyOnCompleteObserver<ApiListResponse<T>>() {
             @Override
             public void onError(Throwable e) {
                 hideProgressBar();
+                showRetryButton();
                 Log.e(TAG, e.getMessage());
                 mNextUri = null;
                 mOnEventsLoadedListener.onEventsLoadFailure();
@@ -94,6 +97,11 @@ public class EventStreamFragmentViewModel<T extends FifaEvent> extends ProgressF
             mAdapterInteraction.notifyNoMoreItemsToLoad();
         }
     };
+
+    @Override
+    public void onRetryButtonClick() {
+        loadEvents(mLoadEventsObservable);
+    }
 
     public interface OnEventsLoadedListener<T extends FifaEvent> {
         void onEventsLoadSuccess(List<T> events);

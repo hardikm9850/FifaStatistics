@@ -9,8 +9,6 @@ import com.example.kevin.fifastatistics.activities.CreateSeriesActivity;
 import com.example.kevin.fifastatistics.activities.FifaBaseActivity;
 import com.example.kevin.fifastatistics.activities.MainActivity;
 import com.example.kevin.fifastatistics.activities.PlayerActivty;
-import com.example.kevin.fifastatistics.fragments.FriendsFragment;
-import com.example.kevin.fifastatistics.models.Constants;
 import com.example.kevin.fifastatistics.models.databasemodels.user.Player;
 
 public class IntentFactory {

@@ -9,32 +9,52 @@ import com.example.kevin.fifastatistics.FifaApplication;
 
 public abstract class ProgressFragmentViewModel extends FifaBaseViewModel {
 
-    private boolean mIsProgressBarShown = true;
+    private boolean mIsProgressBarVisible = true;
+    private boolean mIsRetryButtonVisible = false;
 
     public void showProgressBar() {
-        if (!mIsProgressBarShown) {
-            doNotify(true);
+        if (!mIsProgressBarVisible) {
+            doNotifyProgressChanged(true);
+            doNotifyRetryChanged(false);
         }
     }
 
     public void hideProgressBar() {
-        if (mIsProgressBarShown) {
-            doNotify(false);
+        if (mIsProgressBarVisible) {
+            doNotifyProgressChanged(false);
         }
     }
 
-    private void doNotify(boolean doShow) {
-        mIsProgressBarShown = doShow;
+    public void showRetryButton() {
+        doNotifyRetryChanged(true);
+    }
+
+    private void doNotifyProgressChanged(boolean doShow) {
+        mIsProgressBarVisible = doShow;
         notifyPropertyChanged(BR.progressBarVisibility);
+    }
+
+    private void doNotifyRetryChanged(boolean doShow) {
+        if (mIsRetryButtonVisible != doShow) {
+            mIsRetryButtonVisible = doShow;
+            notifyPropertyChanged(BR.retryButtonVisibility);
+        }
     }
 
     @Bindable
     public int getProgressBarVisibility() {
-        return mIsProgressBarShown ? View.VISIBLE : View.GONE;
+        return mIsProgressBarVisible ? View.VISIBLE : View.GONE;
+    }
+
+    @Bindable
+    public int getRetryButtonVisibility() {
+        return mIsRetryButtonVisible ? View.VISIBLE : View.GONE;
     }
 
     @ColorRes
     public int getColor() {
         return FifaApplication.getAccentColor();
     }
+
+    public abstract void onRetryButtonClick();
 }

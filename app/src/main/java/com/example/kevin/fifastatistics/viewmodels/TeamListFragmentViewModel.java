@@ -32,6 +32,7 @@ public class TeamListFragmentViewModel extends ProgressFragmentViewModel {
 
     private void notifyError() {
         hideProgressBar();
+        showRetryButton();
         if (mListener != null) {
             mListener.onTeamsLoadFailure();
         }
@@ -52,6 +53,11 @@ public class TeamListFragmentViewModel extends ProgressFragmentViewModel {
                 }
             }
         };
+    }
+
+    @Override
+    public void onRetryButtonClick() {
+        loadTeams();
     }
 
     public interface OnTeamsLoadedListener {

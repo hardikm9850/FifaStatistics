@@ -1,16 +1,16 @@
 package com.example.kevin.fifastatistics.activities;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.view.View;
 
 import com.example.kevin.fifastatistics.FifaApplication;
 import com.example.kevin.fifastatistics.event.ColorChangeEvent;
+import com.example.kevin.fifastatistics.event.EventBus;
 import com.example.kevin.fifastatistics.interfaces.OnBackPressedHandler;
 import com.example.kevin.fifastatistics.interfaces.TransitionStarter;
-import com.example.kevin.fifastatistics.event.EventBus;
 import com.example.kevin.fifastatistics.utils.ObservableUtils;
 
 import rx.Subscription;
@@ -44,9 +44,7 @@ public abstract class FifaBaseActivity extends AppCompatActivity implements Tran
         });
     }
 
-    protected void onColorUpdated() {
-
-    }
+    protected void onColorUpdated() {}
 
     public void setNavigationLocked(boolean locked) {}
 
