@@ -39,16 +39,12 @@ public class PlayerActivty extends BasePlayerActivity implements OnMatchCreatedL
         super.onCreate(savedInstanceState);
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_player);
         supportPostponeEnterTransition();
-        initializeMembers();
         initializeToolbar();
         initializeTabs();
-        RetrievalManager.getCurrentUser().subscribe(user -> {
-            mCurrentUser = user;
-            initializeFab();
-        });
+        initializeFam();
     }
 
-    private void initializeMembers() {
+    private void initializeFam() {
         mFam = mBinding.famLayout.fabMenu;
         mFam.setGradient(mBinding.famLayout.gradient);
         mFam.setMenuButtonColorNormal(mColor);
@@ -56,6 +52,10 @@ public class PlayerActivty extends BasePlayerActivity implements OnMatchCreatedL
         mFam.getMenuIconView().setImageDrawable(ColorUtils.getTintedDrawable(R.drawable.ic_add_white_24dp, mColor));
         mFabScrollListener = new FabScrollListener(mFam);
         mDidEnterFromSearch = getIntent().getExtras().getBoolean(EXTRA_ENTERED_FROM_SEARCH_BAR);
+        RetrievalManager.getCurrentUser().subscribe(user -> {
+            mCurrentUser = user;
+            initializeFab();
+        });
     }
 
     @SuppressWarnings("ConstantConditions")
