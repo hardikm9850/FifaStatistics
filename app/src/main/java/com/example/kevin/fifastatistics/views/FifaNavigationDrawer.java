@@ -182,6 +182,7 @@ public class FifaNavigationDrawer {
         return new AccountHeaderBuilder()
                 .withActivity(activity)
                 .withHeaderBackground(R.drawable.header)
+                .withSelectionListEnabledForSingleProfile(false)
                 .addProfiles(profile)
                 .build();
     }

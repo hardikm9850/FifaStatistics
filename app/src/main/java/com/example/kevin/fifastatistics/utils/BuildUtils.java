@@ -9,14 +9,18 @@ public class BuildUtils {
     private static final String HOCKEYAPP = "hockeyapp";
 
     public static boolean isDebug() {
-        return DEBUG.equals(BuildConfig.BUILD_TYPE);
+        return is(DEBUG);
     }
 
     public static boolean isReleaseBuildType() {
-        return RELEASE.equals(BuildConfig.BUILD_TYPE);
+        return is(RELEASE);
     }
 
     public static boolean isHockey() {
-        return HOCKEYAPP.equals(BuildConfig.BUILD_TYPE);
+        return is(HOCKEYAPP);
+    }
+
+    private static boolean is(String type) {
+        return type.equals(BuildConfig.BUILD_TYPE);
     }
 }

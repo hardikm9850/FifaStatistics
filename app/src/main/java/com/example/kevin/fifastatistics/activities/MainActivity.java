@@ -200,7 +200,7 @@ public class MainActivity extends FifaBaseActivity implements OnMatchCreatedList
         }).flatMap(id -> {
             if (id != null) {
                 return FifaApi.getLeagueApi().getTeam(id);
-            } else{
+            } else {
                 return Observable.empty();
             }
         }).compose(ObservableUtils.applyBackground()).subscribe(new ObservableUtils.OnNextObserver<Team>() {
