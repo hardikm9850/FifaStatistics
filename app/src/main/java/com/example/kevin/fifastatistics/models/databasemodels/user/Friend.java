@@ -2,6 +2,7 @@ package com.example.kevin.fifastatistics.models.databasemodels.user;
 
 import com.example.kevin.fifastatistics.models.databasemodels.DatabaseModel;
 import com.example.kevin.fifastatistics.utils.SerializationUtils;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 
@@ -39,6 +40,11 @@ public class Friend extends DatabaseModel implements Player
                 .registrationToken(user.getRegistrationToken())
                 .favoriteTeamId(user.getFavoriteTeamId())
                 .build();
+    }
+
+    @JsonIgnore
+    public String getFirstName() {
+        return name.split(" ")[0];
     }
 
     @Override

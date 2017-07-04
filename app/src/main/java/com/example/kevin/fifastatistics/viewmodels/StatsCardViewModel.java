@@ -49,13 +49,13 @@ public class StatsCardViewModel extends BaseObservable {
         final String loserName = match.getLoser().getName();
         if (winnerName.equals(username)) {
             viewModel.mLeftHeader = MY_STATS_LEFT_HEADER;
-            viewModel.mRightHeader = loserName;
+            viewModel.mRightHeader = match.getLoser().getFirstName();
         } else if (loserName.equals(username)) {
-            viewModel.mLeftHeader = winnerName;
+            viewModel.mLeftHeader = match.getWinner().getFirstName();
             viewModel.mRightHeader = MY_STATS_LEFT_HEADER;
         } else {
-            viewModel.mLeftHeader = winnerName;
-            viewModel.mRightHeader = loserName;
+            viewModel.mLeftHeader = match.getWinner().getFirstName();
+            viewModel.mRightHeader = match.getLoser().getFirstName();
         }
         return viewModel;
     }

@@ -1,6 +1,8 @@
 package com.example.kevin.fifastatistics.models.databasemodels.user;
 
+import com.example.kevin.fifastatistics.event.Event;
 import com.example.kevin.fifastatistics.models.databasemodels.DatabaseModel;
+import com.example.kevin.fifastatistics.models.databasemodels.match.FifaEvent;
 import com.example.kevin.fifastatistics.models.databasemodels.user.records.UserRecords;
 import com.example.kevin.fifastatistics.utils.SerializationUtils;
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -60,10 +62,10 @@ public class User extends DatabaseModel implements Player {
         return SerializationUtils.toJson(this);
     }
 
-    /**
-     * A pair of Stats objects, one representing mStats 'for' the user, and one representing mStats
-     * 'against' the user.
-     */
+    public boolean participatedIn(FifaEvent event) {
+        return event != null && (id.equals(event.getWinnerId()) || id.equals(event.getLoserId()));
+    }
+
     @AllArgsConstructor
     @Getter
     public static class StatsPair implements Serializable {

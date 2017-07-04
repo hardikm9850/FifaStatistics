@@ -26,39 +26,47 @@ public class FifaApi {
     private static MatchApi matchApi;
     private static SeriesApi seriesApi;
     private static LeagueApi leagueApi;
+    private static MatchUpdateApi updateApi;
 
     public static UserApi getUserApi() {
         if (userApi == null) {
-            userApi = initializeApi(UserApi.class, FIFA_API_ENDPOINT);
+            userApi = initializeApi(UserApi.class);
         }
         return userApi;
     }
 
     public static MatchApi getMatchApi() {
         if (matchApi == null) {
-            matchApi = initializeApi(MatchApi.class, FIFA_API_ENDPOINT);
+            matchApi = initializeApi(MatchApi.class);
         }
         return matchApi;
     }
 
     public static SeriesApi getSeriesApi() {
         if (seriesApi == null) {
-            seriesApi = initializeApi(SeriesApi.class, FIFA_API_ENDPOINT);
+            seriesApi = initializeApi(SeriesApi.class);
         }
         return seriesApi;
     }
 
     public static LeagueApi getLeagueApi() {
         if (leagueApi == null) {
-            leagueApi = initializeApi(LeagueApi.class, FIFA_API_ENDPOINT);
+            leagueApi = initializeApi(LeagueApi.class);
         }
         return leagueApi;
     }
 
-    private static <T> T initializeApi(Class<T> api, String baseUrl) {
+    public static MatchUpdateApi getUpdateApi() {
+        if (updateApi == null) {
+            updateApi = initializeApi(MatchUpdateApi.class);
+        }
+        return updateApi;
+    }
+
+    private static <T> T initializeApi(Class<T> api) {
         HttpLoggingInterceptor loggingInterceptor = initializeLoggingInterceptor();
         OkHttpClient httpClient = initializeHttpClient(loggingInterceptor);
-        Retrofit retrofit = initializeRetrofitObject(httpClient, baseUrl);
+        Retrofit retrofit = initializeRetrofitObject(httpClient, FIFA_API_ENDPOINT);
         return retrofit.create(api);
     }
 

@@ -32,6 +32,9 @@ public class MatchFragmentViewModel extends ProgressFragmentViewModel {
     }
 
     public void loadMatch() {
+        if (mMatch != null) {
+            return;
+        }
         showProgressBar();
         Subscription s = RetrievalManager.getMatch(mProjection.getId()).subscribe(new ObservableUtils.EmptyOnCompleteObserver<Match>() {
             @Override
@@ -86,6 +89,13 @@ public class MatchFragmentViewModel extends ProgressFragmentViewModel {
     @Bindable
     public Match getMatch() {
         return mMatch;
+    }
+
+    public void setMatch(Match match) {
+        mMatch = match;
+        if (match != null && mListener != null) {
+            mListener.onMatchLoaded(match);
+        }
     }
 
     public String getUsername() {

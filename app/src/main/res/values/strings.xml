@@ -16,6 +16,7 @@
     <string name="menuItem_camera">Camera</string>
     <string name="menuItem_confirm">Confirm</string>
     <string name="menuItem_filterMatches">Filter Matches</string>
+    <string name="menuItem_requestUpdate">Request update</string>
 
     <!-- NAVIGATION DRAWER -->
     <string name="overview">Overview</string>
