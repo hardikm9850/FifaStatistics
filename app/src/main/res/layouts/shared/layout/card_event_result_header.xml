@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:bind="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="headerViewModel"
+            type="com.example.kevin.fifastatistics.viewmodels.EventResultHeaderViewModel"/>
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/activity_vertical_margin"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center_horizontal"
+            android:textAppearance="@style/text_bold_grey_small"
+            android:text="@{headerViewModel.date}"/>
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/activity_horizontal_margin"
+            android:layout_marginEnd="@dimen/activity_horizontal_margin"
+            card_view:cardCornerRadius="@dimen/card_corner_radius"
+            app:cardBackgroundColor="@color/cardViewBackground"
+            android:visibility="@{headerViewModel.messageVisibility}">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/activity_horizontal_margin"
+                android:layout_gravity="center_horizontal"
+                android:gravity="center_horizontal"
+                android:textAppearance="@style/text_bold_small"
+                android:text="@{headerViewModel.message}"/>
+
+        </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/activity_horizontal_margin"
+            card_view:cardCornerRadius="@dimen/card_corner_radius"
+            app:cardBackgroundColor="@color/cardViewBackground">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <include
+                    layout="@layout/item_event_header_team_score"
+                    bind:imageUrl="@{headerViewModel.winnerImageUrl}"
+                    bind:name="@{headerViewModel.winnerName}"
+                    bind:score="@{headerViewModel.winnerScore}"/>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:background="@color/cardViewHeaderBackground"
+                    android:layout_marginStart="@dimen/activity_horizontal_margin"
+                    android:layout_marginEnd="@dimen/activity_horizontal_margin"/>
+
+                <include
+                    layout="@layout/item_event_header_team_score"
+                    bind:imageUrl="@{headerViewModel.loserImageUrl}"
+                    bind:name="@{headerViewModel.loserName}"
+                    bind:score="@{headerViewModel.loserScore}"/>
+
+            </LinearLayout>
+
+        </android.support.v7.widget.CardView>
+
+    </LinearLayout>
+
+</layout>

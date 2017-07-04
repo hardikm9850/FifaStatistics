@@ -7,7 +7,6 @@
             type="com.example.kevin.fifastatistics.viewmodels.ProgressFragmentViewModel"/>
     </data>
 
-
     <FrameLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

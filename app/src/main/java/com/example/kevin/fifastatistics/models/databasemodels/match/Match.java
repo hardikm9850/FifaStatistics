@@ -21,7 +21,7 @@ import lombok.Setter;
 @JsonDeserialize(builder = Match.MatchBuilder.class)
 @Builder
 @Getter
-public class Match extends DatabaseModel {
+public class Match extends DatabaseModel implements TeamEvent {
 
     private final User.StatsPair stats;
     private final Penalties penalties;

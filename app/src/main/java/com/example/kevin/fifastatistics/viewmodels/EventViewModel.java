@@ -1,6 +1,7 @@
 package com.example.kevin.fifastatistics.viewmodels;
 
 import android.databinding.Bindable;
+import android.view.View;
 
 import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.managers.CrestUrlResizer;
@@ -114,5 +115,5 @@ public abstract class EventViewModel<T extends FifaEvent> extends FifaBaseViewMo
         return CrestUrlResizer.resizeSmall(mBottomImageUrl);
     }
 
-    public abstract void openEventDetail();
+    public abstract void openEventDetail(View view);
 }

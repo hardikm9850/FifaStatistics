@@ -21,9 +21,9 @@
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
             android:gravity="center_vertical"
-            android:textSize="15sp"
-            android:textStyle="bold"
-            android:text="@{viewModel.title}"/>
+            android:textAppearance="@style/text_bold_grey_small"
+            android:text="@{viewModel.title}"
+            android:visibility="@{viewModel.titleVisibility}"/>
 
         <include
             layout="@layout/card_view_header"

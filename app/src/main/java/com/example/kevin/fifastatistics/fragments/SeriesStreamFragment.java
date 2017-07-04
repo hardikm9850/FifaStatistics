@@ -21,7 +21,7 @@ public class SeriesStreamFragment extends EventStreamFragment<SeriesProjection, 
 
     @Override
     protected SeriesStreamAdapter getAdapter(Player user) {
-        return new SeriesStreamAdapter(mUser);
+        return new SeriesStreamAdapter(mUser, this);
     }
 
     @Override

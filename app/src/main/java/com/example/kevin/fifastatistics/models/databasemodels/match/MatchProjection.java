@@ -2,6 +2,7 @@ package com.example.kevin.fifastatistics.models.databasemodels.match;
 
 import com.example.kevin.fifastatistics.models.databasemodels.DatabaseModel;
 import com.example.kevin.fifastatistics.models.databasemodels.user.Player;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.util.Date;
@@ -32,5 +33,22 @@ public class MatchProjection extends DatabaseModel implements FifaEvent {
 
     public boolean didPlayerLose(Player player) {
         return loserId.equals(player.getId());
+    }
+
+    @JsonIgnore
+    @Override
+    public int getScoreWinner() {
+        return goalsWinner;
+    }
+
+    @JsonIgnore
+    @Override
+    public int getScoreLoser() {
+        return goalsLoser;
+    }
+
+    @JsonIgnore
+    public String getWinnerFirstName() {
+        return winnerName.split(" ")[0];
     }
 }

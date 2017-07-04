@@ -4,14 +4,18 @@ import android.content.Context;
 import android.databinding.BindingAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
 import android.view.View;
 
 import com.example.kevin.fifastatistics.adapters.StatsPagerAdapter;
+import com.example.kevin.fifastatistics.models.databasemodels.match.TeamEvent;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
 
 import java.util.List;
 
 public class StatsViewPager extends ViewPager implements StatsPagerAdapter.OnItemAddedListener {
+
+    private boolean isPagingEnabled = true;
 
     public StatsViewPager(Context context) {
         super(context);
@@ -37,11 +41,24 @@ public class StatsViewPager extends ViewPager implements StatsPagerAdapter.OnIte
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
     }
 
-    @BindingAdapter({"stats", "title"})
-    public static void setUser(StatsViewPager pager, List<User.StatsPair> stats, String title) {
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        return this.isPagingEnabled && super.onTouchEvent(event);
+    }
+
+    @Override
+    public boolean onInterceptTouchEvent(MotionEvent event) {
+        return this.isPagingEnabled && super.onInterceptTouchEvent(event);
+    }
+
+    @BindingAdapter(value = {"stats", "title", "event"}, requireAll = false)
+    public static void setUser(StatsViewPager pager, List<User.StatsPair> stats, String title, TeamEvent event) {
         if (stats != null) {
-            pager.setAdapter(new StatsPagerAdapter(pager.getContext(), stats, title, pager));
+            pager.setAdapter(new StatsPagerAdapter(pager.getContext(), stats, title, pager, event));
             pager.setCurrentItem(0);
+            if (stats.size() < 2) {
+                pager.isPagingEnabled = false;
+            }
         }
     }
 

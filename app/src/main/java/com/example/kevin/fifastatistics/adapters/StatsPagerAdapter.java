@@ -11,6 +11,9 @@ import android.view.ViewGroup;
 import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.databinding.StatsListViewLayoutBinding;
 import com.example.kevin.fifastatistics.managers.SharedPreferencesManager;
+import com.example.kevin.fifastatistics.models.databasemodels.match.FifaEvent;
+import com.example.kevin.fifastatistics.models.databasemodels.match.Match;
+import com.example.kevin.fifastatistics.models.databasemodels.match.TeamEvent;
 import com.example.kevin.fifastatistics.models.databasemodels.user.Stats;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
 import com.example.kevin.fifastatistics.viewmodels.StatsCardViewModel;
@@ -23,14 +26,17 @@ public class StatsPagerAdapter extends PagerAdapter {
     private Context mContext;
     private List<User.StatsPair> mStats;
     private String mUsername;
+    private TeamEvent mEvent;
     private boolean mIsMyStats;
 
-    public StatsPagerAdapter(Context context, List<User.StatsPair> stats, String username, OnItemAddedListener listener) {
+    public StatsPagerAdapter(Context context, List<User.StatsPair> stats, String username,
+                             OnItemAddedListener listener, TeamEvent event) {
         mContext = context;
         mStats = stats;
         mListener = listener;
         mUsername = username;
-        mIsMyStats = username != null && username.equals(SharedPreferencesManager.getUserName());
+        mEvent = event;
+        mIsMyStats = username != null && username.equals(SharedPreferencesManager.getUserName()) && mEvent == null;
     }
 
     @Override
@@ -57,17 +63,19 @@ public class StatsPagerAdapter extends PagerAdapter {
         binding.setViewModel(viewModel);
         binding.statsRecyclerView.setLayoutManager(new LinearLayoutManager(mContext));
         binding.statsRecyclerView.setHasFixedSize(true);
-        binding.statsRecyclerView.setAdapter(new StatsRecyclerViewAdapter(mStats.get(position), isAverages(position)));
+        binding.statsRecyclerView.setAdapter(new StatsRecyclerViewAdapter(mStats.get(position), isAverages(position), mEvent));
     }
 
     private boolean isAverages(int position) {
-        return position == 0;
+        return position == 0 && !(mEvent instanceof Match);
     }
 
     private StatsCardViewModel getViewModelForPosition(int position) {
         Stats.Type type = isAverages(position) ? Stats.Type.AVERAGES: Stats.Type.RECORDS;
         if (mIsMyStats) {
             return StatsCardViewModel.myStats(mContext, type);
+        } else if (mEvent instanceof Match) {
+            return StatsCardViewModel.matchStats(mContext, (Match) mEvent, mUsername);
         } else {
             return StatsCardViewModel.playerStats(mContext, type, mUsername);
         }

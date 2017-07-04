@@ -1,7 +1,5 @@
 package com.example.kevin.fifastatistics.models.databasemodels.match;
 
-import com.example.kevin.fifastatistics.models.databasemodels.user.Player;
-
 import java.util.Date;
 
 public interface FifaEvent {
@@ -13,4 +11,6 @@ public interface FifaEvent {
     String getTeamLoserImageUrl();
     String getWinnerId();
     String getLoserId();
+    int getScoreWinner();
+    int getScoreLoser();
 }

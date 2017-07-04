@@ -7,4 +7,6 @@ public interface FragmentArguments {
     String USER_TEAM = "userTeam";
     String OPPONENT_TEAM = "opponentTeam";
     String SERIES = "series";
+    String MATCH = "match";
+    String MATCH_PROJECTION = "matchProjection";
 }

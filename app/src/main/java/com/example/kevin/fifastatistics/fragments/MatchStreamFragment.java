@@ -21,7 +21,7 @@ public class MatchStreamFragment extends EventStreamFragment<MatchProjection, Ma
 
     @Override
     protected MatchStreamRecyclerViewAdapter getAdapter(Player user) {
-        return new MatchStreamRecyclerViewAdapter(mUser);
+        return new MatchStreamRecyclerViewAdapter(mUser, this);
     }
 
     @Override

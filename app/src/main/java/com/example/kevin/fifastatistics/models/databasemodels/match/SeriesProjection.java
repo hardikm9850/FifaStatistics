@@ -2,6 +2,7 @@ package com.example.kevin.fifastatistics.models.databasemodels.match;
 
 import com.example.kevin.fifastatistics.models.databasemodels.DatabaseModel;
 import com.example.kevin.fifastatistics.models.databasemodels.user.Player;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.util.Date;
@@ -26,4 +27,16 @@ public class SeriesProjection extends DatabaseModel implements FifaEvent {
     private int bestOf;
     private int matchesWinner;
     private int matchesLoser;
+
+    @JsonIgnore
+    @Override
+    public int getScoreWinner() {
+        return matchesWinner;
+    }
+
+    @JsonIgnore
+    @Override
+    public int getScoreLoser() {
+        return matchesLoser;
+    }
 }

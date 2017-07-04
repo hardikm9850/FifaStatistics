@@ -1,6 +1,7 @@
 package com.example.kevin.fifastatistics.adapters;
 
 import android.databinding.DataBindingUtil;
+import android.graphics.Color;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -11,6 +12,8 @@ import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.databinding.StatsListItemBinding;
 import com.example.kevin.fifastatistics.event.ColorChangeEvent;
 import com.example.kevin.fifastatistics.event.EventBus;
+import com.example.kevin.fifastatistics.models.databasemodels.match.FifaEvent;
+import com.example.kevin.fifastatistics.models.databasemodels.match.TeamEvent;
 import com.example.kevin.fifastatistics.models.databasemodels.user.Stats;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
 import com.example.kevin.fifastatistics.viewmodels.StatItemViewModel;
@@ -26,25 +29,32 @@ public class StatsRecyclerViewAdapter extends RecyclerView.Adapter<StatsRecycler
     private float[] valuesFor;
     private float[] valuesAgainst;
     private String[] names;
+    private TeamEvent mEvent;
     private boolean doShowDecimal;
-    private int mAccentColor;
+    private int mLeftColor;
     private int mRightColor;
 
-    public StatsRecyclerViewAdapter(User.StatsPair statsPair, boolean doShowDecimal) {
+    public StatsRecyclerViewAdapter(User.StatsPair statsPair, boolean doShowDecimal, TeamEvent event) {
         this.valuesFor = statsPair.getStatsFor().buildValueSet();
         this.valuesAgainst = statsPair.getStatsAgainst().buildValueSet();
         this.doShowDecimal = doShowDecimal;
+        mEvent = event;
         names = Stats.getNameSet();
         initColor();
     }
 
     private void initColor() {
-        mRightColor = DEFAULT_RIGHT_COLOR;
-        mAccentColor = FifaApplication.getAccentColor();
-        EventBus.getInstance().observeEvents(ColorChangeEvent.class).subscribe(event -> {
-            mAccentColor = event.color;
-            notifyDataSetChanged();
-        });
+        if (mEvent != null) {
+            mRightColor = Color.parseColor(mEvent.getTeamLoser().getColor());
+            mLeftColor = Color.parseColor(mEvent.getTeamWinner().getColor());
+        } else {
+            mRightColor = DEFAULT_RIGHT_COLOR;
+            mLeftColor = FifaApplication.getAccentColor();
+            EventBus.getInstance().observeEvents(ColorChangeEvent.class).subscribe(event -> {
+                mLeftColor = event.color;
+                notifyDataSetChanged();
+            });
+        }
     }
 
     @Override
@@ -58,7 +68,7 @@ public class StatsRecyclerViewAdapter extends RecyclerView.Adapter<StatsRecycler
         float vf = valuesFor[position];
         float va = valuesAgainst[position];
         String title = names[position];
-        holder.bind(vf, va, mAccentColor, mRightColor, title, doShowDecimal);
+        holder.bind(vf, va, mLeftColor, mRightColor, title, doShowDecimal);
     }
 
     @Override

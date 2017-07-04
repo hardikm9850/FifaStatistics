@@ -1,8 +1,13 @@
 package com.example.kevin.fifastatistics.viewmodels;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.databinding.Bindable;
 import android.view.View;
 
+import com.example.kevin.fifastatistics.activities.MatchActivity;
+import com.example.kevin.fifastatistics.interfaces.ActivityLauncher;
 import com.example.kevin.fifastatistics.models.databasemodels.match.MatchProjection;
 import com.example.kevin.fifastatistics.models.databasemodels.match.Penalties;
 import com.example.kevin.fifastatistics.models.databasemodels.user.Player;
@@ -13,9 +18,11 @@ public class MatchesItemViewModel extends EventViewModel<MatchProjection> {
     private int mBottomPenalties;
     private int mWinnerPenalties;
     private int mLoserPenalties;
+    private ActivityLauncher mLauncher;
 
-    public MatchesItemViewModel(MatchProjection match, Player user) {
+    public MatchesItemViewModel(MatchProjection match, Player user, ActivityLauncher launcher) {
         super(match, user);
+        mLauncher = launcher;
     }
 
     @Override
@@ -64,7 +71,9 @@ public class MatchesItemViewModel extends EventViewModel<MatchProjection> {
     }
 
     @Override
-    public void openEventDetail() {
-
+    public void openEventDetail(View view) {
+        Context c = view.getContext();
+        Intent intent = MatchActivity.getLaunchIntent(c, mEvent);
+        mLauncher.launchActivity(intent, Activity.RESULT_OK, null);
     }
 }

@@ -18,7 +18,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Getter
-public class Series extends DatabaseModel {
+public class Series extends DatabaseModel implements TeamEvent {
 
     public static final int DEFAULT_MAX_SERIES_LENGTH = 7;
 

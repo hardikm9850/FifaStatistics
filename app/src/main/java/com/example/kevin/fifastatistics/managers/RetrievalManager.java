@@ -3,6 +3,7 @@ package com.example.kevin.fifastatistics.managers;
 import com.example.kevin.fifastatistics.models.ApiListResponse;
 import com.example.kevin.fifastatistics.models.databasemodels.league.League;
 import com.example.kevin.fifastatistics.models.databasemodels.league.Team;
+import com.example.kevin.fifastatistics.models.databasemodels.match.Match;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
 import com.example.kevin.fifastatistics.network.FifaApi;
 import com.example.kevin.fifastatistics.utils.ObservableUtils;
@@ -87,6 +88,15 @@ public class RetrievalManager {
             return Observable.just(null);
         } else {
             return FifaApi.getLeagueApi().getTeam(id).compose(ObservableUtils.applySchedulers());
+        }
+    }
+
+    public static Observable<Match> getMatch(final String id) {
+        if (id == null) {
+            return Observable.error(new IllegalArgumentException("id is null"));
+        } else {
+            return FifaApi.getMatchApi().getMatch(id)
+                    .compose(ObservableUtils.applySchedulers());
         }
     }
 }

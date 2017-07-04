@@ -30,6 +30,7 @@
     <dimen name="team_item_vertical_margin">10dp</dimen>
     <dimen name="team_item_logo_size">30dp</dimen>
     <dimen name="match_team_logo_size">20dp</dimen>
+    <dimen name="match_team_logo_size_large">60dp</dimen>
     <dimen name="shutter_button_margin">12dp</dimen>
 
     <dimen name="friends_fragment_image_height">130dp</dimen>

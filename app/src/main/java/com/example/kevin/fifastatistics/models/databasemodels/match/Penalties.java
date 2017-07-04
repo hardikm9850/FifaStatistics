@@ -22,4 +22,9 @@ public class Penalties implements Serializable {
     public boolean validate() {
         return winner != loser;
     }
+
+    @Override
+    public String toString() {
+        return winner + "-" + loser;
+    }
 }

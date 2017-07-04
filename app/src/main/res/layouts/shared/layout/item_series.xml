@@ -16,7 +16,7 @@
         android:paddingEnd="@dimen/activity_vertical_margin"
         android:orientation="vertical"
         android:background="?android:attr/selectableItemBackground"
-        android:onClick="@{() -> seriesItemViewModel.openEventDetail()}">
+        android:onClick="@{(v) -> seriesItemViewModel.openEventDetail(v)}">
 
         <include
             layout="@layout/item_match_result"

@@ -156,6 +156,8 @@
     <!-- MATCHES -->
     <string name="win">Win</string>
     <string name="loss">Loss</string>
+    <string name="title_activity_match">Match</string>
+    <string name="match">Match</string>
 
     <!-- PERMISSIONS -->
     <string name="request_camera_permission">FIFA Statistics needs camera permission.</string>

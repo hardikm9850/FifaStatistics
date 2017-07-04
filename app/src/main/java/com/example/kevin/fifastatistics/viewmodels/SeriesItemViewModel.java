@@ -1,12 +1,18 @@
 package com.example.kevin.fifastatistics.viewmodels;
 
+import android.view.View;
+
+import com.example.kevin.fifastatistics.interfaces.ActivityLauncher;
 import com.example.kevin.fifastatistics.models.databasemodels.match.SeriesProjection;
 import com.example.kevin.fifastatistics.models.databasemodels.user.Player;
 
 public class SeriesItemViewModel extends EventViewModel<SeriesProjection> {
 
-    public SeriesItemViewModel(SeriesProjection match, Player user) {
+    private ActivityLauncher mLauncher;
+
+    public SeriesItemViewModel(SeriesProjection match, Player user, ActivityLauncher launcher) {
         super(match, user);
+        mLauncher = launcher;
     }
 
     @Override
@@ -20,7 +26,7 @@ public class SeriesItemViewModel extends EventViewModel<SeriesProjection> {
     }
 
     @Override
-    public void openEventDetail() {
+    public void openEventDetail(View view) {
 
     }
 }
