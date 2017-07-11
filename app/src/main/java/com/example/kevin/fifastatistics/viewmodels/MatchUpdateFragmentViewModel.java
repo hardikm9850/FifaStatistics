@@ -6,10 +6,12 @@ import android.view.View;
 
 import com.example.kevin.fifastatistics.FifaApplication;
 import com.example.kevin.fifastatistics.R;
+import com.example.kevin.fifastatistics.databinding.FragmentMatchUpdateBinding;
 import com.example.kevin.fifastatistics.interfaces.Consumer;
 import com.example.kevin.fifastatistics.listeners.SimpleObserver;
 import com.example.kevin.fifastatistics.models.databasemodels.match.Match;
 import com.example.kevin.fifastatistics.models.databasemodels.match.MatchUpdate;
+import com.example.kevin.fifastatistics.models.databasemodels.user.User;
 import com.example.kevin.fifastatistics.network.FifaApi;
 
 import rx.Observable;
@@ -30,14 +32,16 @@ public class MatchUpdateFragmentViewModel extends FooterButtonsViewModel {
     private MatchUpdate mUpdate;
     private Match mMatch;
     private MatchUpdateInteraction mInteraction;
+    private UpdateStatsCardViewModel mUpdateStatsCardViewModel;
     private final boolean mIsResponse;
 
-    public MatchUpdateFragmentViewModel(boolean isResponse, Match match, MatchUpdate update,
-                                        MatchUpdateInteraction interaction) {
+    public MatchUpdateFragmentViewModel(Match match, MatchUpdate update, User user,
+                                        MatchUpdateInteraction interaction, FragmentMatchUpdateBinding binding) {
         mUpdate = update;
         mMatch = match;
         mIsResponse = !isCreatingNewUpdate();
         mInteraction = interaction;
+        mUpdateStatsCardViewModel = new UpdateStatsCardViewModel(mMatch, mUpdate, user, binding.cardUpdateStatsLayout);
     }
 
     public void load() {
@@ -48,6 +52,8 @@ public class MatchUpdateFragmentViewModel extends FooterButtonsViewModel {
             load(FifaApi.getUpdateApi().getUpdate(mMatch.getUpdateId()), this::setMatchUpdate);
         } else if (mMatch == null && mUpdate != null) {
             load(FifaApi.getMatchApi().getMatch(mUpdate.getMatchId()), this::setMatch);
+        } else {
+
         }
     }
 
@@ -122,10 +128,16 @@ public class MatchUpdateFragmentViewModel extends FooterButtonsViewModel {
 
     public void setMatchUpdate(MatchUpdate update) {
         mUpdate = update;
+        mUpdateStatsCardViewModel.init(mMatch, mUpdate);
     }
 
     private void setMatch(Match match) {
         mMatch = match;
+        mUpdateStatsCardViewModel.init(mMatch, mUpdate);
+    }
+
+    public UpdateStatsCardViewModel getUpdateStatsCardViewModel() {
+        return mUpdateStatsCardViewModel;
     }
 
     public interface MatchUpdateInteraction {

@@ -1,6 +1,7 @@
 package com.example.kevin.fifastatistics.models.databasemodels.match;
 
 import com.example.kevin.fifastatistics.models.databasemodels.DatabaseModel;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.util.HashMap;
@@ -20,6 +21,28 @@ public class MatchUpdate extends DatabaseModel {
     private String creatorId;
     private String message;
     private Updates updates;
+
+    public MatchUpdate() {
+        this.updates = new Updates();
+    }
+
+    @JsonIgnore
+    public Integer getStatFor(String key) {
+        if (updates.statsForUpdates != null) {
+            return updates.statsForUpdates.get(key);
+        } else {
+            return null;
+        }
+    }
+
+    @JsonIgnore
+    public Integer getStatAgainst(String key) {
+        if (updates.statsAgainstUpdates != null) {
+            return updates.statsAgainstUpdates.get(key);
+        } else {
+            return null;
+        }
+    }
 
     @Getter
     @Setter

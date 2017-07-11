@@ -37,6 +37,7 @@ public class EventStreamFragmentViewModel<T extends FifaEvent> extends ProgressF
     public void loadEvents(Observable<ApiListResponse<T>> eventsObservable) {
         mIsLoadInProgress = true;
         mLoadEventsObservable = eventsObservable;
+        showProgressBar();
         Observer<ApiListResponse<T>> eventsObserver = new ObservableUtils.EmptyOnCompleteObserver<ApiListResponse<T>>() {
             @Override
             public void onError(Throwable e) {

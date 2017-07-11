@@ -150,6 +150,11 @@ public class Match extends DatabaseModel implements TeamEvent, FifaEvent, Penalt
         return Math.round(getStatsAgainst().getGoals());
     }
 
+    @JsonIgnore
+    public boolean hasPenalties() {
+        return penalties != null;
+    }
+
     @Override
     public String toString() {
         return SerializationUtils.toJson(this);

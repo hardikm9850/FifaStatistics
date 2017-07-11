@@ -2,6 +2,7 @@ package com.example.kevin.fifastatistics.animation;
 
 import android.content.Context;
 import android.databinding.BindingAdapter;
+import android.support.annotation.NonNull;
 import android.view.View;
 
 import com.example.kevin.fifastatistics.R;
@@ -14,6 +15,12 @@ import com.example.kevin.fifastatistics.interfaces.AnimationListener;
 public class AnimationBindingAdapter {
 
     private static final int CIRCLE_ANIMATION_DURATION_MILLIS = 900;
+    private static final int ALPHA_ANIMATION_DURATION_MILLIS = 300;
+
+    @BindingAdapter("animatedAlpha")
+    public static void setAlpha(@NonNull final View view, float alpha) {
+        view.animate().alpha(alpha).setDuration(ALPHA_ANIMATION_DURATION_MILLIS).start();
+    }
 
     @BindingAdapter(value = {"circularVisibility", "animationDuration"}, requireAll = false)
     public static void setVisbilityWithCircularAnimation(final View view, final int visibility, int duration) {

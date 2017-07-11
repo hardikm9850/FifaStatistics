@@ -113,6 +113,7 @@
     <string name="uploading_match">Uploading match</string>
     <string name="team_logo">%1$s logo</string>
     <string name="retry">Retry</string>
+    <string name="error_goals">Cannot change the match result</string>
 
     <!-- TOASTS -->
     <string name="not_found">Not found!</string>

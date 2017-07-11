@@ -1,47 +1,74 @@
 package com.example.kevin.fifastatistics.viewmodels;
 
-import android.widget.EditText;
-import android.widget.TextView;
+import android.content.res.Resources;
+import android.databinding.Bindable;
 
-import com.example.kevin.fifastatistics.interfaces.Consumer;
+import com.example.kevin.fifastatistics.FifaApplication;
+import com.example.kevin.fifastatistics.R;
+import com.example.kevin.fifastatistics.databinding.CardUpdateStatsBinding;
 import com.example.kevin.fifastatistics.models.databasemodels.match.Match;
 import com.example.kevin.fifastatistics.models.databasemodels.match.MatchUpdate;
+import com.example.kevin.fifastatistics.models.databasemodels.user.Stats;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
 
 public class UpdateStatsCardViewModel extends FifaBaseViewModel {
 
+    private static final String ERROR_GOALS;
+
+    static {
+        Resources r = FifaApplication.getContext().getResources();
+        ERROR_GOALS = r.getString(R.string.error_goals);
+    }
+
     private Match mMatch;
-    private MatchUpdate mUpdate;
     private MatchUpdate.Builder mUpdateBuilder;
     private User mUser;
+    private CardUpdateStatsBinding mBinding;
 
-    public UpdateStatsCardViewModel(Match match, MatchUpdate update, User user) {
+    public UpdateStatsCardViewModel(Match match, MatchUpdate update, User user, CardUpdateStatsBinding binding) {
         mMatch = match;
-        mUpdate = update;
         mUpdateBuilder = new MatchUpdate.Builder(update);
         mUser = user;
+        mBinding = binding;
     }
 
-    public void onGoalsForUpdate(EditText old, EditText update) {
-        onUpdate(old, update, i -> mUpdateBuilder.statsFor().goals(i));
+    public void init(Match match, MatchUpdate update) {
+        mMatch = match;
+        mUpdateBuilder = new MatchUpdate.Builder(update);
+        notifyChange();
     }
 
-    public void onGoalsAgainstUpdate(EditText old, EditText update) {
-        onUpdate(old, update, i -> mUpdateBuilder.statsAgainst().goals(i));
-    }
-
-    private void onUpdate(EditText old, EditText update, Consumer<Integer> consumer) {
-        Integer oldVal = Integer.valueOf(old.getText().toString());
-        Integer newVal = Integer.valueOf(update.getText().toString());
-        if (oldVal.equals(newVal)) {
-            update.setText("");
-            old.setAlpha(1f);
-        } else if (newVal == null) {
-            consumer.accept(MatchUpdate.Builder.REMOVE_VAL);
+    @Bindable
+    public UpdateStatsItemViewModel getGoalsViewModel() {
+        if (mMatch != null) {
+            return UpdateStatsItemViewModel.builder()
+                    .binding(mBinding.goalsStatUpdate)
+                    .statFor(mMatch.getScoreWinner())
+                    .statAgainst(mMatch.getScoreLoser())
+                    .forConsumer(i -> mUpdateBuilder = mUpdateBuilder.statsFor().goals(i).and())
+                    .againstConsumer(i -> mUpdateBuilder = mUpdateBuilder.statsAgainst().goals(i).and())
+                    .forPredicate(this::getGoalsForPredicate)
+                    .againstPredicate(this::getGoalsAgainstPredicate)
+                    .label(Stats.GOALS)
+                    .errorMessage(ERROR_GOALS)
+                    .build();
         } else {
-            consumer.accept(newVal);
-            old.setAlpha(0.5f);
+            return null;
         }
+    }
+
+    private boolean getGoalsForPredicate(Integer newGoalsFor) {
+        Integer updateGoals = mUpdateBuilder.build().getStatAgainst("goals");
+        int goalsAgainst = updateGoals == null ? mMatch.getScoreLoser() : updateGoals;
+        int goalsFor = newGoalsFor == null ? mMatch.getScoreWinner() : newGoalsFor;
+        return (goalsAgainst < goalsFor || (goalsAgainst == goalsFor && !mMatch.hasPenalties()));
+    }
+
+    private boolean getGoalsAgainstPredicate(Integer newGoalsAgainst) {
+        Integer updateGoals = mUpdateBuilder.build().getStatFor("goals");
+        int goalsFor = updateGoals == null ? mMatch.getScoreWinner() : updateGoals;
+        int goalsAgainst = newGoalsAgainst == null ? mMatch.getScoreLoser() : newGoalsAgainst;
+        return (goalsAgainst < goalsFor || (goalsAgainst == goalsFor && !mMatch.hasPenalties()));
     }
 
     public String getLeftHeader() {

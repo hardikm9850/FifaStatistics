@@ -80,4 +80,8 @@
         <item name="android:textColor">@android:color/secondary_text_dark</item>
     </style>
 
+    <style name="text_error" parent="text_small">
+        <item name="android:textColor">@color/error</item>
+    </style>
+
 </resources>

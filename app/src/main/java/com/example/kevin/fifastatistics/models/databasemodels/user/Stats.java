@@ -1,5 +1,9 @@
 package com.example.kevin.fifastatistics.models.databasemodels.user;
 
+import android.content.res.Resources;
+
+import com.example.kevin.fifastatistics.FifaApplication;
+import com.example.kevin.fifastatistics.R;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.io.Serializable;
@@ -17,10 +21,17 @@ import lombok.Setter;
 @Setter
 public class Stats implements Serializable {
 
+    public static final String GOALS;
+
+    static {
+        Resources r = FifaApplication.getContext().getResources();
+        GOALS = r.getString(R.string.goals);
+    }
+
     @JsonIgnore
     private static final String[] names =
             {
-                "Goals", "Shots", "Shots On Target", "Possession (%)", "Tackles", "Fouls",
+                GOALS, "Shots", "Shots On Target", "Possession (%)", "Tackles", "Fouls",
                 "Yellow Cards", "Red Cards", "Offsides", "Injuries", "Corners", "Shot Accuracy (%)",
                 "Pass Accuracy (%)"
             };

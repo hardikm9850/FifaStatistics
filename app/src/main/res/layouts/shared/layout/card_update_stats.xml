@@ -43,6 +43,11 @@
                     bind:headerLeft="@{viewModel.leftHeader}"
                     bind:headerRight="@{viewModel.rightHeader}"/>
 
+                <include
+                    android:id="@+id/goals_stat_update"
+                    layout="@layout/item_stat_update"
+                    bind:viewModel="@{viewModel.goalsViewModel}"/>
+
             </LinearLayout>
 
         </android.support.v7.widget.CardView>
