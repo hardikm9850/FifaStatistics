@@ -48,6 +48,16 @@
                     layout="@layout/item_stat_update"
                     bind:viewModel="@{viewModel.goalsViewModel}"/>
 
+                <include
+                    android:id="@+id/shots_stat_update"
+                    layout="@layout/item_stat_update"
+                    bind:viewModel="@{viewModel.shotsViewModel}"/>
+
+                <include
+                    android:id="@+id/shots_on_target_stat_update"
+                    layout="@layout/item_stat_update"
+                    bind:viewModel="@{viewModel.shotsOnTargetViewModel}"/>
+
             </LinearLayout>
 
         </android.support.v7.widget.CardView>

@@ -114,6 +114,8 @@
     <string name="team_logo">%1$s logo</string>
     <string name="retry">Retry</string>
     <string name="error_goals">Cannot change the match result</string>
+    <string name="error_shots">You cannot have more goals or shots on target than shots</string>
+    <string name="error_shots_on_target">You cannot have more shots on target than shots</string>
 
     <!-- TOASTS -->
     <string name="not_found">Not found!</string>

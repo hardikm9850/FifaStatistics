@@ -147,8 +147,12 @@ public class UpdateStatsItemViewModel extends FifaBaseViewModel {
         }
     }
 
-    private boolean isError() {
+    public boolean isError() {
         return mIsAgainstError || mIsForError;
+    }
+
+    public void test() {
+        // todo
     }
 
     public void onStatForClicked() {

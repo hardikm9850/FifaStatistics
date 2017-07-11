@@ -121,6 +121,14 @@ public class MatchUpdate extends DatabaseModel {
                 return set("goals", goals);
             }
 
+            public UpdatesBuilder shots(int shots) {
+                return set("shots", shots);
+            }
+
+            public UpdatesBuilder shotsOnTarget(int shots) {
+                return set("shotsOnTarget", shots);
+            }
+
             public UpdatesBuilder injuries(int injuries) {
                 return set("injuries", injuries);
             }

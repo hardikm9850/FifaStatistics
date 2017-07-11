@@ -22,16 +22,20 @@ import lombok.Setter;
 public class Stats implements Serializable {
 
     public static final String GOALS;
+    public static final String SHOTS;
+    public static final String SHOTS_ON_TARGET;
 
     static {
         Resources r = FifaApplication.getContext().getResources();
         GOALS = r.getString(R.string.goals);
+        SHOTS = r.getString(R.string.shots);
+        SHOTS_ON_TARGET = r.getString(R.string.shots_on_target);
     }
 
     @JsonIgnore
     private static final String[] names =
             {
-                GOALS, "Shots", "Shots On Target", "Possession (%)", "Tackles", "Fouls",
+                GOALS, SHOTS, "Shots On Target", "Possession (%)", "Tackles", "Fouls",
                 "Yellow Cards", "Red Cards", "Offsides", "Injuries", "Corners", "Shot Accuracy (%)",
                 "Pass Accuracy (%)"
             };
