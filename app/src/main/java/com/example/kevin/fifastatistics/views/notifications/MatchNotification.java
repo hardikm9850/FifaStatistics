@@ -4,10 +4,10 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 
+import com.example.kevin.fifastatistics.activities.MatchActivity;
 import com.example.kevin.fifastatistics.managers.RetrievalManager;
 import com.example.kevin.fifastatistics.models.notifications.EventNotificationData;
 import com.example.kevin.fifastatistics.models.notifications.NotificationData;
-import com.example.kevin.fifastatistics.utils.IntentFactory;
 
 import java.util.Map;
 
@@ -19,14 +19,12 @@ public class MatchNotification extends FifaNotification {
     public MatchNotification(Context c, Map<String, String> data) {
         super(c);
         this.mData = new EventNotificationData(data);
-
         initializeContentIntent(c);
     }
 
     private void initializeContentIntent(Context c) {
-        Intent intent = IntentFactory.createMainActivityIntent(c);
+        Intent intent = MatchActivity.getLaunchIntent(c, mData.getId());
         mContentIntent = PendingIntent.getActivity(c, 0, intent, PendingIntent.FLAG_ONE_SHOT);
-        //TODO
     }
 
     @Override

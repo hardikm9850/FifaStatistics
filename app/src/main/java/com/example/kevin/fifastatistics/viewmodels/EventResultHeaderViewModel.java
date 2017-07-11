@@ -1,10 +1,12 @@
 package com.example.kevin.fifastatistics.viewmodels;
 
+import android.databinding.Bindable;
+import android.support.annotation.Nullable;
 import android.view.View;
 
 import com.example.kevin.fifastatistics.managers.CrestUrlResizer;
 import com.example.kevin.fifastatistics.models.databasemodels.match.FifaEvent;
-import com.example.kevin.fifastatistics.models.databasemodels.match.MatchProjection;
+import com.example.kevin.fifastatistics.models.databasemodels.match.PenaltyEvent;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -14,27 +16,45 @@ public class EventResultHeaderViewModel extends FifaBaseViewModel {
     private static final DateFormat DATE_FORMAT = SimpleDateFormat.getDateInstance();
     private static final String PENALTIES_MESSAGE = "%s wins %s on penalties";
 
-    private final FifaEvent mEvent;
-    private final MatchProjection mMatch;
+    private FifaEvent mEvent;
+    private PenaltyEvent mMatch;
 
-    public EventResultHeaderViewModel(FifaEvent event) {
+    public EventResultHeaderViewModel(@Nullable FifaEvent event) {
+        init(event);
+    }
+
+    private void init(FifaEvent event) {
         mEvent = event;
-        mMatch = (mEvent instanceof MatchProjection) ? (MatchProjection) mEvent : null;
+        mMatch = (mEvent instanceof PenaltyEvent) ? (PenaltyEvent) mEvent : null;
     }
 
+    public void setEvent(FifaEvent event) {
+        init(event);
+        notifyChange();
+    }
+
+    @Bindable
+    public int getHeaderVisibility() {
+        return mEvent != null ? View.VISIBLE : View.GONE;
+    }
+
+    @Bindable
     public String getDate() {
-        return DATE_FORMAT.format(mEvent.getDate());
+        return mEvent != null ? DATE_FORMAT.format(mEvent.getDate()) : null;
     }
 
+    @SuppressWarnings("ConstantConditions")
+    @Bindable
     public String getMessage() {
         if (doesEventHavePenalties()) {
             String penalties = mMatch.getPenalties().toString();
-            return String.format(PENALTIES_MESSAGE, mMatch.getWinnerFirstName(), penalties);
+            return String.format(PENALTIES_MESSAGE, getFirstName(mEvent.getWinnerName()), penalties);
         } else {
             return null;
         }
     }
 
+    @Bindable
     public int getMessageVisibility() {
         return doesEventHavePenalties() ? View.VISIBLE : View.GONE;
     }
@@ -43,28 +63,34 @@ public class EventResultHeaderViewModel extends FifaBaseViewModel {
         return mMatch != null && mMatch.getPenalties() != null;
     }
 
+    @Bindable
     public String getWinnerImageUrl() {
-        return CrestUrlResizer.resizeLarge(mEvent.getTeamWinnerImageUrl());
+        return mEvent != null ? CrestUrlResizer.resizeLarge(mEvent.getTeamWinnerImageUrl()) : null;
     }
 
+    @Bindable
     public String getLoserImageUrl() {
-        return CrestUrlResizer.resizeLarge(mEvent.getTeamLoserImageUrl());
+        return mEvent != null ? CrestUrlResizer.resizeLarge(mEvent.getTeamLoserImageUrl()) : null;
     }
 
+    @Bindable
     public String getWinnerName() {
-        return getFirstName(mEvent.getWinnerName());
+        return mEvent != null ? getFirstName(mEvent.getWinnerName()) : null;
     }
 
+    @Bindable
     public String getLoserName() {
-        return getFirstName(mEvent.getLoserName());
+        return mEvent != null ? getFirstName(mEvent.getLoserName()) : null;
     }
 
+    @Bindable
     public String getWinnerScore() {
-        return String.valueOf(mEvent.getScoreWinner());
+        return mEvent != null ? String.valueOf(mEvent.getScoreWinner()) : null;
     }
 
+    @Bindable
     public String getLoserScore() {
-        return String.valueOf(mEvent.getScoreLoser());
+        return mEvent != null ? String.valueOf(mEvent.getScoreLoser()) : null;
     }
 
     private String getFirstName(String name) {

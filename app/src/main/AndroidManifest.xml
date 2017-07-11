@@ -68,6 +68,12 @@
         </activity>
 
         <activity
+            android:name=".activities.MatchUpdateActivity"
+            android:label="@string/title_activity_match_update"
+            android:theme="@style/MaterialDrawerTheme">
+        </activity>
+
+        <activity
             android:name=".activities.CreateSeriesActivity"
             android:label="@string/title_activity_create_series_activity"
             android:theme="@style/MaterialDrawerTheme">

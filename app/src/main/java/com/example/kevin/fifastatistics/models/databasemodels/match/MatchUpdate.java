@@ -1,6 +1,7 @@
 package com.example.kevin.fifastatistics.models.databasemodels.match;
 
 import com.example.kevin.fifastatistics.models.databasemodels.DatabaseModel;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -11,6 +12,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class MatchUpdate extends DatabaseModel {
 
     private String id;
@@ -41,9 +43,20 @@ public class MatchUpdate extends DatabaseModel {
 
     public static class Builder {
 
-        private MatchUpdate update = new MatchUpdate();
+        public static final int REMOVE_VAL = -1;
 
-        public Builder() {}
+        private MatchUpdate update;
+
+        public Builder(MatchUpdate update) {
+            this();
+            if (update != null) {
+                this.update = update;
+            }
+        }
+
+        public Builder() {
+            update = new MatchUpdate();
+        }
 
         public Builder matchId(String matchId) {
             update.matchId = matchId;
@@ -81,13 +94,24 @@ public class MatchUpdate extends DatabaseModel {
                 this.updates = updates;
             }
 
+            public UpdatesBuilder goals(int goals) {
+                return set("goals", goals);
+            }
+
             public UpdatesBuilder injuries(int injuries) {
-                updates.put("injuries", injuries);
-                return this;
+                return set("injuries", injuries);
             }
 
             public UpdatesBuilder offsides(int offsides) {
-                updates.put("offsides", offsides);
+                return set("offsides", offsides);
+            }
+
+            private UpdatesBuilder set(String name, int val) {
+                if (val == REMOVE_VAL) {
+                    updates.remove(name);
+                } else {
+                    updates.put(name, val);
+                }
                 return this;
             }
 

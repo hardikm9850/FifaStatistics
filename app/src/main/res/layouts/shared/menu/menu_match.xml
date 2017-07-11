@@ -6,4 +6,11 @@
         android:orderInCategory="200"
         android:title="@string/menuItem_requestUpdate"
         app:showAsAction="never" />
+
+    <item
+        android:id="@+id/view_pending_update"
+        android:orderInCategory="300"
+        android:title="@string/menuItem_requestUpdate"
+        app:showAsAction="never" />
+
 </menu>

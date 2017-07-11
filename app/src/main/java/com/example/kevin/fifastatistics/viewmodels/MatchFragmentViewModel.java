@@ -22,12 +22,15 @@ public class MatchFragmentViewModel extends ProgressFragmentViewModel {
     private MatchProjection mProjection;
     private EventResultHeaderViewModel mHeaderViewModel;
     private Match mMatch;
+    private String mMatchId;
     private Player mPlayer;
 
-    public MatchFragmentViewModel(OnMatchLoadedListener listener, MatchProjection projection, Player player) {
+    public MatchFragmentViewModel(OnMatchLoadedListener listener, MatchProjection projection,
+                                  Player player, String matchId) {
         mListener = listener;
         mProjection = projection;
         mPlayer = player;
+        mMatchId = matchId;
         mHeaderViewModel = new EventResultHeaderViewModel(projection);
     }
 
@@ -60,9 +63,14 @@ public class MatchFragmentViewModel extends ProgressFragmentViewModel {
     }
 
     private void notifyMatchLoaded() {
-        notifyPropertyChanged(BR.statsVisibility);
-        notifyPropertyChanged(BR.stats);
-        notifyPropertyChanged(BR.match);
+        if (mProjection != null) {
+            notifyPropertyChanged(BR.statsVisibility);
+            notifyPropertyChanged(BR.stats);
+            notifyPropertyChanged(BR.match);
+        } else {
+            mHeaderViewModel.setEvent(mMatch);
+            notifyChange();
+        }
     }
 
     @Override

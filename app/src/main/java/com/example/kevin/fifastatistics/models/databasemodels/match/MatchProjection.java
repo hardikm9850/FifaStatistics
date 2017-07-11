@@ -13,7 +13,7 @@ import lombok.Setter;
 @Setter
 @Getter
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class MatchProjection extends DatabaseModel implements FifaEvent {
+public class MatchProjection extends DatabaseModel implements FifaEvent, PenaltyEvent {
 
     private String id;
     private String winnerId;

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+        <variable
+            name="buttonsViewModel"
+            type="com.example.kevin.fifastatistics.viewmodels.FooterButtonsViewModel" />
+    </data>
+
+    <LinearLayout
+        android:id="@+id/button_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimaryDark"
+        android:orientation="vertical">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/colorPrimary"/>
+    
+        <LinearLayout style="?android:attr/buttonBarStyle"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/toolbar_height"
+            android:orientation="horizontal"
+            android:layoutDirection="rtl">
+
+            <Button style="?android:attr/buttonBarButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/activity_vertical_margin"
+                android:layout_gravity="center_vertical"
+                android:text="@{buttonsViewModel.rightButtonText}"
+                android:textColor="@{buttonsViewModel.buttonTextColor}"
+                android:onClick="@{(v) -> buttonsViewModel.onRightButtonClick(v)}"/>
+
+            <Button style="?android:attr/buttonBarButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/activity_vertical_margin"
+                android:layout_gravity="center_vertical"
+                android:text="@{buttonsViewModel.leftButtonText}"
+                android:textColor="@{buttonsViewModel.buttonTextColor}"
+                android:onClick="@{(v) -> buttonsViewModel.onLeftButtonClick(v)}"
+                android:visibility="@{buttonsViewModel.leftButtonVisibility}"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+    
+</layout>

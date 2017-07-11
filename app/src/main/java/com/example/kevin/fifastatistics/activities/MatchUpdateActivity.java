@@ -10,32 +10,33 @@ import android.view.MenuItem;
 
 import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.databinding.ActivityMatchBinding;
-import com.example.kevin.fifastatistics.fragments.MatchFragment;
+import com.example.kevin.fifastatistics.databinding.ActivityMatchUpdateBinding;
+import com.example.kevin.fifastatistics.fragments.MatchUpdateFragment;
 import com.example.kevin.fifastatistics.managers.RetrievalManager;
-import com.example.kevin.fifastatistics.models.databasemodels.match.MatchProjection;
+import com.example.kevin.fifastatistics.models.databasemodels.match.Match;
+import com.example.kevin.fifastatistics.models.databasemodels.match.MatchUpdate;
 
-public class MatchActivity extends FifaBaseActivity {
+public class MatchUpdateActivity extends FifaBaseActivity {
 
-    private ActivityMatchBinding mBinding;
+    private ActivityMatchUpdateBinding mBinding;
 
-    public static Intent getLaunchIntent(Context context, MatchProjection projection) {
-        Intent intent = new Intent(context, MatchActivity.class);
-        intent.putExtra(FifaBaseActivity.EXTRA_HASH_CODE, context.hashCode());
-        intent.putExtra(MATCH_PROJECTION, projection);
-        return intent;
+    public static Intent getLaunchIntent(Context context, @Nullable MatchUpdate update) {
+        return getLaunchIntent(context, update, null);
     }
 
-    public static Intent getLaunchIntent(Context context, String matchId) {
-        Intent intent = new Intent(context, MatchActivity.class);
+    public static Intent getLaunchIntent(Context context, @Nullable MatchUpdate update,
+                                         @Nullable Match match) {
+        Intent intent = new Intent(context, MatchUpdateActivity.class);
         intent.putExtra(FifaBaseActivity.EXTRA_HASH_CODE, context.hashCode());
-        intent.putExtra(EVENT_ID, matchId);
+        intent.putExtra(MATCH, match);
+        intent.putExtra(MATCH_UPDATE, update);
         return intent;
     }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mBinding = DataBindingUtil.setContentView(this, R.layout.activity_match);
+        mBinding = DataBindingUtil.setContentView(this, R.layout.activity_match_update);
         initToolbar();
         initFragment();
     }
@@ -48,13 +49,10 @@ public class MatchActivity extends FifaBaseActivity {
 
     private void initFragment() {
         RetrievalManager.getCurrentUser().subscribe(user -> {
-            MatchProjection p = (MatchProjection) getIntent().getSerializableExtra(MATCH_PROJECTION);
-            Fragment f;
-            if (p != null) {
-                f = MatchFragment.newInstance(p, user);
-            } else {
-                f = MatchFragment.newInstance(getIntent().getStringExtra(EVENT_ID), user);
-            }
+            Match match = (Match) getIntent().getSerializableExtra(MATCH);
+            MatchUpdate update = (MatchUpdate) getIntent().getSerializableExtra(MATCH_UPDATE);
+            MatchUpdateFragment f = MatchUpdateFragment.newInstance(update, user, match);
+            setOnBackPressHandler(f);
             getSupportFragmentManager().beginTransaction().replace(R.id.content, f).commit();
         });
     }

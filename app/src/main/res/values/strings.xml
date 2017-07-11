@@ -17,6 +17,7 @@
     <string name="menuItem_confirm">Confirm</string>
     <string name="menuItem_filterMatches">Filter Matches</string>
     <string name="menuItem_requestUpdate">Request update</string>
+    <string name="menuItem_viewPendingUpdate">View pending update</string>
 
     <!-- NAVIGATION DRAWER -->
     <string name="overview">Overview</string>
@@ -83,6 +84,7 @@
     <string name="added_a_new_match">added a new match</string>
     <string name="notification_accept">ACCEPT</string>
     <string name="notification_decline">DECLINE</string>
+    <string name="view">View</string>
 
     <string name="error_generic">Something went wrong</string>
 
@@ -159,6 +161,10 @@
     <string name="loss">Loss</string>
     <string name="title_activity_match">Match</string>
     <string name="match">Match</string>
+    <string name="title_activity_match_update">Request update</string>
+    <string name="create_request">Create</string>
+    <string name="reject">Reject</string>
+    <string name="approve">Approve</string>
 
     <!-- PERMISSIONS -->
     <string name="request_camera_permission">FIFA Statistics needs camera permission.</string>

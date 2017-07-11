@@ -7,6 +7,7 @@ import com.example.kevin.fifastatistics.models.databasemodels.user.Player;
 import com.example.kevin.fifastatistics.models.databasemodels.user.Stats;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
 import com.example.kevin.fifastatistics.utils.SerializationUtils;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
@@ -21,7 +22,7 @@ import lombok.Setter;
 @JsonDeserialize(builder = Match.MatchBuilder.class)
 @Builder
 @Getter
-public class Match extends DatabaseModel implements TeamEvent {
+public class Match extends DatabaseModel implements TeamEvent, FifaEvent, PenaltyEvent {
 
     private final User.StatsPair stats;
     private final Penalties penalties;
@@ -29,6 +30,8 @@ public class Match extends DatabaseModel implements TeamEvent {
     private final Friend winner;
     private final Friend loser;
     private String id;
+    private String updateId;
+    private String seriesId;
     @Setter private Team teamWinner;
     @Setter private Team teamLoser;
 
@@ -87,6 +90,64 @@ public class Match extends DatabaseModel implements TeamEvent {
 
     public Stats getStatsAgainst() {
         return stats.getStatsAgainst();
+    }
+
+    @JsonIgnore
+    @Override
+    public String getLoserName() {
+        return loser.getName();
+    }
+
+    @JsonIgnore
+    @Override
+    public String getWinnerName() {
+        return winner.getName();
+    }
+
+    @JsonIgnore
+    public String getLoserFirstName() {
+        return loser.getName().split(" ")[0];
+    }
+
+    @JsonIgnore
+    public String getWinnerFirstName() {
+        return winner.getName().split(" ")[0];
+    }
+
+    @JsonIgnore
+    @Override
+    public String getTeamWinnerImageUrl() {
+        return teamWinner.getCrestUrl();
+    }
+
+    @JsonIgnore
+    @Override
+    public String getTeamLoserImageUrl() {
+        return teamLoser.getCrestUrl();
+    }
+
+    @JsonIgnore
+    @Override
+    public String getWinnerId() {
+        return winner.getId();
+    }
+
+    @JsonIgnore
+    @Override
+    public String getLoserId() {
+        return loser.getId();
+    }
+
+    @JsonIgnore
+    @Override
+    public int getScoreWinner() {
+        return Math.round(getStatsFor().getGoals());
+    }
+
+    @JsonIgnore
+    @Override
+    public int getScoreLoser() {
+        return Math.round(getStatsAgainst().getGoals());
     }
 
     @Override
