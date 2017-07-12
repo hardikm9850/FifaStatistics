@@ -340,6 +340,23 @@ public class UpdateStatsCardViewModel extends FifaBaseViewModel {
     public String getRightHeader() {
         return !mMatch.didWin(mUser) ? "You" : mMatch.getLoserFirstName();
     }
+    
+    public boolean validate() {
+        return
+                mGoalsViewModel.isValid() &&
+                mShotsViewModel.isValid() &&
+                mShotsOnTargetViewModel.isValid() &&
+                mPossessionViewModel.isValid() &&
+                mTacklesViewModel.isValid() &&
+                mFoulsViewModel.isValid() &&
+                mYellowCardsViewModel.isValid() &&
+                mRedCardsViewModel.isValid() &&
+                mOffsidesViewModel.isValid() &&
+                mInjuriesViewModel.isValid() &&
+                mCornersViewModel.isValid() &&
+                mShotAccuracyViewModel.isValid() &&
+                mPassAccuracyViewModel.isValid();
+    }
 
     public MatchUpdate build() {
         return mUpdateBuilder

@@ -20,11 +20,11 @@ public interface MatchUpdateApi {
     Observable<MatchUpdate> getUpdate(@Path("id") String id);
 
     @POST("updates")
-    Observable<Response<?>> createUpdate(@Body MatchUpdate update);
+    Observable<Response<Void>> createUpdate(@Body MatchUpdate update);
 
     @POST("updates/accept")
-    Observable<Response<?>> acceptUpdate(@Body MatchUpdateResponse response);
+    Observable<Response<Void>> acceptUpdate(@Body MatchUpdateResponse response);
 
     @POST("updates/decline")
-    Observable<Response<?>> declineUpdate(@Body MatchUpdateResponse response);
+    Observable<Response<Void>> declineUpdate(@Body MatchUpdateResponse response);
 }

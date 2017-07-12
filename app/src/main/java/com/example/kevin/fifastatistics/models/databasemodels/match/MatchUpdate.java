@@ -45,6 +45,13 @@ public class MatchUpdate extends DatabaseModel {
         }
     }
 
+    @JsonIgnore
+    public boolean hasUpdates() {
+        return (updates.statsAgainstUpdates != null && updates.statsAgainstUpdates.size() > 0) ||
+                (updates.statsForUpdates != null && updates.statsForUpdates.size() > 0) ||
+                (updates.penaltiesUpdates != null && updates.penaltiesUpdates.isUpdated());
+    }
+
     @Getter
     @Setter
     public static class Updates {
@@ -72,6 +79,11 @@ public class MatchUpdate extends DatabaseModel {
         @Override
         public String toString() {
             return SerializationUtils.toFormattedJson(this);
+        }
+
+        @JsonIgnore
+        private boolean isUpdated() {
+            return winner != null || loser != null;
         }
     }
 

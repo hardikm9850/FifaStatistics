@@ -1,5 +1,7 @@
 package com.example.kevin.fifastatistics.viewmodels;
 
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.res.Resources;
 import android.view.View;
 import android.widget.Toast;
@@ -13,7 +15,10 @@ import com.example.kevin.fifastatistics.models.databasemodels.match.Match;
 import com.example.kevin.fifastatistics.models.databasemodels.match.MatchUpdate;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
 import com.example.kevin.fifastatistics.network.FifaApi;
+import com.example.kevin.fifastatistics.utils.ObservableUtils;
+import com.example.kevin.fifastatistics.utils.ToastUtils;
 
+import retrofit2.Response;
 import rx.Observable;
 
 public class MatchUpdateFragmentViewModel extends FooterButtonsViewModel {
@@ -29,16 +34,18 @@ public class MatchUpdateFragmentViewModel extends FooterButtonsViewModel {
         REQUEST_CHANGE = resources.getString(R.string.create_request);
     }
 
+    private Context mContext;
     private MatchUpdate mUpdate;
     private Match mMatch;
     private MatchUpdateInteraction mInteraction;
     private UpdateStatsCardViewModel mUpdateStatsCardViewModel;
     private final boolean mIsResponse;
 
-    public MatchUpdateFragmentViewModel(Match match, MatchUpdate update, User user,
+    public MatchUpdateFragmentViewModel(Match match, MatchUpdate update, User user, Context context,
                                         MatchUpdateInteraction interaction, FragmentMatchUpdateBinding binding) {
         mUpdate = update;
         mMatch = match;
+        mContext = context;
         mIsResponse = !isCreatingNewUpdate();
         mInteraction = interaction;
         mUpdateStatsCardViewModel = new UpdateStatsCardViewModel(mMatch, mUpdate, user, binding.cardUpdateStatsLayout);
@@ -102,10 +109,36 @@ public class MatchUpdateFragmentViewModel extends FooterButtonsViewModel {
         if (mIsResponse) {
             // approve
         } else {
-            // create
-            Toast.makeText(FifaApplication.getContext(), mUpdateStatsCardViewModel.build().toString(), Toast
-                    .LENGTH_LONG).show();
+            MatchUpdate update = mUpdateStatsCardViewModel.build();
+            if (!update.hasUpdates()) {
+                ToastUtils.showShortToast(mContext, R.string.error_empty_update);
+            } else if (mUpdateStatsCardViewModel.validate()) {
+                createUpdate();
+            }
         }
+    }
+
+    private void createUpdate() {
+        ProgressDialog d = ProgressDialog.show(mContext, "loading", "ok", true);
+        FifaApi.getUpdateApi().createUpdate(mUpdateStatsCardViewModel.build())
+                .compose(ObservableUtils.applySchedulers())
+                .subscribe(new SimpleObserver<Response<Void>>() {
+                    @Override
+                    public void onError(Throwable e) {
+                        d.dismiss();
+                        if (mInteraction != null) {
+                            mInteraction.onUpdateCreateFailed(e);
+                        }
+                    }
+
+                    @Override
+                    public void onNext(Response<Void> response) {
+                        d.dismiss();
+                        if (mInteraction != null) {
+                            mInteraction.onUpdateCreated();
+                        }
+                    }
+                });
     }
 
     @Override
@@ -145,5 +178,7 @@ public class MatchUpdateFragmentViewModel extends FooterButtonsViewModel {
     public interface MatchUpdateInteraction {
         void onUpdateLoaded();
         void onUpdateLoadFailed(Throwable e);
+        void onUpdateCreated();
+        void onUpdateCreateFailed(Throwable e);
     }
 }

@@ -152,8 +152,17 @@ public class UpdateStatsItemViewModel extends FifaBaseViewModel implements StatU
         return mIsAgainstError || mIsForError;
     }
 
-    public void test() {
-        // todo
+    public boolean isValid() {
+        onStatForChanged(binding.statForEdittext.getText());
+        if (!arePredicatesLinked) {
+            onStatAgainstChanged(binding.statAgainstEdittext.getText());
+        }
+        if (isError()) {
+            binding.errorMessage.requestFocus();
+            return false;
+        } else {
+            return true;
+        }
     }
 
     public void onStatForClicked() {

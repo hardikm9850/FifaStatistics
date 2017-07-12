@@ -18,6 +18,7 @@ import com.example.kevin.fifastatistics.managers.RetrofitErrorManager;
 import com.example.kevin.fifastatistics.models.databasemodels.match.Match;
 import com.example.kevin.fifastatistics.models.databasemodels.match.MatchUpdate;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
+import com.example.kevin.fifastatistics.utils.ToastUtils;
 import com.example.kevin.fifastatistics.viewmodels.MatchUpdateFragmentViewModel;
 
 public class MatchUpdateFragment extends FifaBaseFragment implements OnBackPressedHandler,
@@ -70,7 +71,7 @@ public class MatchUpdateFragment extends FifaBaseFragment implements OnBackPress
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         FragmentMatchUpdateBinding b = DataBindingUtil.inflate(inflater, R.layout.fragment_match_update, container, false);
-        mViewModel = new MatchUpdateFragmentViewModel(mMatch, mUpdate, mUser, this, b);
+        mViewModel = new MatchUpdateFragmentViewModel(mMatch, mUpdate, mUser, getContext(), this, b);
         addTransitionCallbackToBinding(b);
         b.setViewModel(mViewModel);
         return b.getRoot();
@@ -113,6 +114,17 @@ public class MatchUpdateFragment extends FifaBaseFragment implements OnBackPress
 
     @Override
     public void onUpdateLoadFailed(Throwable e) {
+        RetrofitErrorManager.showToastForError(e, getActivity());
+    }
+
+    @Override
+    public void onUpdateCreated() {
+        ToastUtils.showShortToast(getContext(), R.string.request_sent);
+        getActivity().finish();
+    }
+
+    @Override
+    public void onUpdateCreateFailed(Throwable e) {
         RetrofitErrorManager.showToastForError(e, getActivity());
     }
 }
