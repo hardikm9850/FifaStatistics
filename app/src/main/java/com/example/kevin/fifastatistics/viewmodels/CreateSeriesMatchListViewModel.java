@@ -3,7 +3,6 @@ package com.example.kevin.fifastatistics.viewmodels;
 import android.databinding.BaseObservable;
 import android.databinding.ObservableArrayList;
 import android.databinding.ObservableList;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 

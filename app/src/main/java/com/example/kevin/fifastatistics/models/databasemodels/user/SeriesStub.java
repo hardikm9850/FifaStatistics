@@ -5,7 +5,6 @@ import com.example.kevin.fifastatistics.models.databasemodels.DatabaseModel;
 import java.io.Serializable;
 import java.util.List;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter

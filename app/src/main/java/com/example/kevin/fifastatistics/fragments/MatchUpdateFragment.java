@@ -2,12 +2,10 @@ package com.example.kevin.fifastatistics.fragments;
 
 import android.databinding.DataBindingUtil;
 import android.databinding.OnRebindCallback;
-import android.databinding.ViewDataBinding;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.transition.TransitionManager;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 

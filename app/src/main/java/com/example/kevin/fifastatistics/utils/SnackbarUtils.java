@@ -1,11 +1,8 @@
 package com.example.kevin.fifastatistics.utils;
 
-import android.graphics.Color;
 import android.support.design.widget.Snackbar;
 import android.util.Log;
 import android.view.View;
-
-import com.example.kevin.fifastatistics.activities.FifaBaseActivity;
 
 import lombok.experimental.UtilityClass;
 

@@ -4,7 +4,6 @@ import android.content.res.ColorStateList;
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 import android.databinding.BindingAdapter;
-import android.graphics.Color;
 import android.support.percent.PercentLayoutHelper;
 import android.view.View;
 

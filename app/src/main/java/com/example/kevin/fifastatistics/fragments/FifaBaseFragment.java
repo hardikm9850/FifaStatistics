@@ -9,11 +9,11 @@ import android.support.v4.app.Fragment;
 import com.example.kevin.fifastatistics.FifaApplication;
 import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.event.ColorChangeEvent;
+import com.example.kevin.fifastatistics.event.EventBus;
 import com.example.kevin.fifastatistics.event.SnackbarEvent;
 import com.example.kevin.fifastatistics.interfaces.ActivityLauncher;
 import com.example.kevin.fifastatistics.interfaces.FragmentArguments;
 import com.example.kevin.fifastatistics.interfaces.TransitionStarter;
-import com.example.kevin.fifastatistics.event.EventBus;
 import com.example.kevin.fifastatistics.utils.ObservableUtils;
 import com.example.kevin.fifastatistics.utils.SnackbarUtils;
 

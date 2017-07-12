@@ -7,8 +7,6 @@ import android.support.v4.app.Fragment;
 
 import com.example.kevin.fifastatistics.interfaces.OnFilterCreatedListener;
 
-import java.util.Map;
-
 public class MatchesFilterDialogFragment extends FifaBaseDialogFragment {
 
     private OnFilterCreatedListener mOnFilterCreatedListener;

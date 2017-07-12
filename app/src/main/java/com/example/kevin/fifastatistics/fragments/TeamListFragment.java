@@ -14,7 +14,6 @@ import com.example.kevin.fifastatistics.adapters.TeamListAdapter;
 import com.example.kevin.fifastatistics.databinding.FragmentTeamsBinding;
 import com.example.kevin.fifastatistics.models.databasemodels.league.League;
 import com.example.kevin.fifastatistics.models.databasemodels.league.Team;
-import com.example.kevin.fifastatistics.utils.ColorUtils;
 import com.example.kevin.fifastatistics.viewmodels.TeamItemViewModel;
 import com.example.kevin.fifastatistics.viewmodels.TeamListFragmentViewModel;
 

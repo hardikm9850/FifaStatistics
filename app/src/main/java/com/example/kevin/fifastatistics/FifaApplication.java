@@ -19,7 +19,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 import rx.Observable;
-import rx.Subscriber;
 
 public class FifaApplication extends Application {
 

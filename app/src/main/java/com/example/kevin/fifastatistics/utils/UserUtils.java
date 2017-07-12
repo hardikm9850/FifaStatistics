@@ -1,7 +1,5 @@
 package com.example.kevin.fifastatistics.utils;
 
-import android.util.Log;
-
 import com.example.kevin.fifastatistics.managers.SharedPreferencesManager;
 import com.example.kevin.fifastatistics.models.databasemodels.league.Team;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;

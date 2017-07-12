@@ -3,7 +3,6 @@ package com.example.kevin.fifastatistics.models.databasemodels.user;
 import com.example.kevin.fifastatistics.models.databasemodels.DatabaseModel;
 import com.example.kevin.fifastatistics.models.databasemodels.match.Penalties;
 
-import java.io.Serializable;
 import java.util.Date;
 
 import lombok.Getter;

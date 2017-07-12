@@ -4,7 +4,6 @@ import android.support.design.widget.TabLayout;
 import android.view.View;
 
 import com.example.kevin.fifastatistics.activities.FifaBaseActivity;
-import com.example.kevin.fifastatistics.activities.MainActivity;
 import com.example.kevin.fifastatistics.adapters.FragmentAdapter;
 
 import java.io.Serializable;

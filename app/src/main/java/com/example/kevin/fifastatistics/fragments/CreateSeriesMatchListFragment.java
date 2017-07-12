@@ -22,7 +22,6 @@ import com.example.kevin.fifastatistics.models.databasemodels.match.Match;
 import com.example.kevin.fifastatistics.models.databasemodels.match.Series;
 import com.example.kevin.fifastatistics.models.databasemodels.user.Friend;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
-import com.example.kevin.fifastatistics.models.databasemodels.user.records.Streak;
 import com.example.kevin.fifastatistics.viewmodels.CreateSeriesMatchListViewModel;
 import com.robinhood.ticker.TickerUtils;
 import com.robinhood.ticker.TickerView;

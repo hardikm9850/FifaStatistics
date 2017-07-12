@@ -1,8 +1,8 @@
 package com.example.kevin.fifastatistics.utils;
 
 import com.example.kevin.fifastatistics.models.databasemodels.match.Series;
-import com.example.kevin.fifastatistics.network.FifaApi;
 import com.example.kevin.fifastatistics.network.CreateFailedException;
+import com.example.kevin.fifastatistics.network.FifaApi;
 
 import rx.Observable;
 import rx.exceptions.Exceptions;

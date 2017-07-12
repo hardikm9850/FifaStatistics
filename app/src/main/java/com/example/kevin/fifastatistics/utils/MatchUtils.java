@@ -4,10 +4,9 @@ import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.interfaces.ErrorHandler;
 import com.example.kevin.fifastatistics.interfaces.OnMatchCreatedListener;
 import com.example.kevin.fifastatistics.models.databasemodels.match.Match;
-import com.example.kevin.fifastatistics.network.FifaApi;
 import com.example.kevin.fifastatistics.network.CreateFailedException;
+import com.example.kevin.fifastatistics.network.FifaApi;
 import com.example.kevin.fifastatistics.network.MatchApi;
-import com.example.kevin.fifastatistics.network.UserApi;
 
 import lombok.experimental.UtilityClass;
 import retrofit2.Response;

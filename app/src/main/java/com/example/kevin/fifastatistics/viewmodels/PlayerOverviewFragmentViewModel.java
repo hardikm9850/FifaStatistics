@@ -1,7 +1,5 @@
 package com.example.kevin.fifastatistics.viewmodels;
 
-import android.view.View;
-
 import com.example.kevin.fifastatistics.managers.RetrievalManager;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
 import com.example.kevin.fifastatistics.utils.ObservableUtils;

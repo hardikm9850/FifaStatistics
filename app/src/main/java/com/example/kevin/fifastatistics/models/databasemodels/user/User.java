@@ -1,6 +1,5 @@
 package com.example.kevin.fifastatistics.models.databasemodels.user;
 
-import com.example.kevin.fifastatistics.event.Event;
 import com.example.kevin.fifastatistics.models.databasemodels.DatabaseModel;
 import com.example.kevin.fifastatistics.models.databasemodels.match.FifaEvent;
 import com.example.kevin.fifastatistics.models.databasemodels.user.records.UserRecords;

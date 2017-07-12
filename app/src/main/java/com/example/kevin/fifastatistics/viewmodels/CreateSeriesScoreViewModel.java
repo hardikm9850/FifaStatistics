@@ -2,7 +2,6 @@ package com.example.kevin.fifastatistics.viewmodels;
 
 import android.content.Context;
 import android.content.Intent;
-import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 
 import com.example.kevin.fifastatistics.BR;
