@@ -112,6 +112,11 @@
     <string name="error_create_match">Failed to create match: %1$s</string>
     <string name="uploading_match">Uploading match</string>
     <string name="request_sent">Request sent</string>
+    <string name="request_approved">Request approved</string>
+    <string name="request_declined">Request denied</string>
+    <string name="confirm_discard_update">Discard this match update?</string>
+    <string name="keep_editing">Keep Editing</string>
+    <string name="discard">Discard</string>
     <string name="team_logo">%1$s logo</string>
     <string name="retry">Retry</string>
     <string name="error_goals">Cannot change the match result</string>
@@ -171,6 +176,7 @@
     <string name="title_activity_match">Match</string>
     <string name="match">Match</string>
     <string name="title_activity_match_update">Request update</string>
+    <string name="review_update">Review update</string>
     <string name="create_request">Create</string>
     <string name="reject">Reject</string>
     <string name="approve">Approve</string>

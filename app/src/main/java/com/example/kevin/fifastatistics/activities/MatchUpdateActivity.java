@@ -16,18 +16,22 @@ import com.example.kevin.fifastatistics.models.databasemodels.match.MatchUpdate;
 
 public class MatchUpdateActivity extends FifaBaseActivity {
 
-    private ActivityMatchUpdateBinding mBinding;
+    private static final String EXTRA_TYPE = "type";
 
-    public static Intent getLaunchIntent(Context context, @Nullable MatchUpdate update) {
-        return getLaunchIntent(context, update, null);
+    public enum MatchEditType {
+        UPDATE, REVIEW, CREATE;
     }
 
-    public static Intent getLaunchIntent(Context context, @Nullable MatchUpdate update,
+    private ActivityMatchUpdateBinding mBinding;
+    private MatchEditType mType;
+
+    public static Intent getLaunchIntent(Context context, MatchEditType type, @Nullable MatchUpdate update,
                                          @Nullable Match match) {
         Intent intent = new Intent(context, MatchUpdateActivity.class);
         intent.putExtra(FifaBaseActivity.EXTRA_HASH_CODE, context.hashCode());
         intent.putExtra(MATCH, match);
         intent.putExtra(MATCH_UPDATE, update);
+        intent.putExtra(EXTRA_TYPE, type);
         return intent;
     }
 
@@ -35,12 +39,14 @@ public class MatchUpdateActivity extends FifaBaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_match_update);
+        mType = (MatchEditType) getIntent().getSerializableExtra(EXTRA_TYPE);
         initToolbar();
         initFragment();
     }
 
     @SuppressWarnings("ConstantConditions")
     private void initToolbar() {
+        mBinding.toolbar.setTitle(mType == MatchEditType.CREATE ? R.string.title_activity_match_update : R.string.review_update);
         setSupportActionBar(mBinding.toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
@@ -49,7 +55,7 @@ public class MatchUpdateActivity extends FifaBaseActivity {
         RetrievalManager.getCurrentUser().subscribe(user -> {
             Match match = (Match) getIntent().getSerializableExtra(MATCH);
             MatchUpdate update = (MatchUpdate) getIntent().getSerializableExtra(MATCH_UPDATE);
-            MatchUpdateFragment f = MatchUpdateFragment.newInstance(update, user, match);
+            MatchUpdateFragment f = MatchUpdateFragment.newInstance(update, user, match, mType);
             setOnBackPressHandler(f);
             getSupportFragmentManager().beginTransaction().replace(R.id.content, f).commit();
         });

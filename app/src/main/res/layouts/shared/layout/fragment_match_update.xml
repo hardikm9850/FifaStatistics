@@ -20,10 +20,12 @@
             android:layout_height="match_parent">
 
             <LinearLayout
+                android:id="@+id/update_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingBottom="@dimen/update_padding_bottom"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:visibility="gone">
 
                 <include
                     android:id="@+id/card_update_stats_layout"
@@ -49,6 +51,7 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/toolbar_height"
             android:layout_gravity="bottom"
+            android:visibility="gone"
             bind:buttonsViewModel="@{viewModel}"/>
 
     </FrameLayout>

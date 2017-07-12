@@ -16,6 +16,8 @@ import com.example.kevin.fifastatistics.models.databasemodels.match.MatchUpdate;
 
 import lombok.Builder;
 
+import static com.example.kevin.fifastatistics.activities.MatchUpdateActivity.MatchEditType;
+
 public class UpdateStatsItemViewModel extends FifaBaseViewModel implements StatUpdater {
 
     private static final float UPDATED_ALPHA = 0.5f;
@@ -32,10 +34,9 @@ public class UpdateStatsItemViewModel extends FifaBaseViewModel implements StatU
     private final int statAgainst;
     private final boolean arePredicatesLinked;
 
+    private final MatchEditType mType;
     private final int updateFor;
     private final int updateAgainst;
-    private final boolean mIsUpdating;
-    private final boolean mIsReviewing;
 
     private boolean mIsForError;
     private boolean mIsAgainstError;
@@ -60,8 +61,7 @@ public class UpdateStatsItemViewModel extends FifaBaseViewModel implements StatU
         this.arePredicatesLinked = arePredicatesLinked;
         this.updateFor = NO_UPDATE;
         this.updateAgainst = NO_UPDATE;
-        mIsUpdating = true;
-        mIsReviewing = false;
+        mType = MatchEditType.UPDATE;
     }
 
     @Builder(builderMethodName = "reviewBuilder")
@@ -73,8 +73,7 @@ public class UpdateStatsItemViewModel extends FifaBaseViewModel implements StatU
         againstPredicate = null;
         errorMessage = null;
         arePredicatesLinked = false;
-        mIsReviewing = true;
-        mIsUpdating = false;
+        mType = MatchEditType.REVIEW;
         this.label = label;
         this.statFor = statFor;
         this.statAgainst = statAgainst;
@@ -217,11 +216,15 @@ public class UpdateStatsItemViewModel extends FifaBaseViewModel implements StatU
     }
 
     public int getEditTextVisibility() {
-        return mIsReviewing ? View.GONE : View.VISIBLE;
+        return isReviewing() ? View.GONE : View.VISIBLE;
     }
 
     public int getUpdateVisibility() {
-        return mIsReviewing ? View.VISIBLE : View.GONE;
+        return isReviewing() ? View.VISIBLE : View.GONE;
+    }
+
+    private boolean isReviewing() {
+        return mType == MatchEditType.REVIEW;
     }
 
     public String getUpdateFor() {

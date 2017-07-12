@@ -13,8 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/activity_horizontal_margin"
         android:layout_marginEnd="@dimen/activity_horizontal_margin"
-        android:layout_marginTop="@dimen/activity_horizontal_margin"
-        >
+        android:layout_marginTop="@dimen/activity_horizontal_margin">
 
         <TextView
             android:id="@+id/stat_for_textview"
@@ -40,7 +39,21 @@
             android:textAppearance="@style/text_bold_white_small"
             android:inputType="number"
             android:maxLength="3"
-            android:afterTextChanged="@{(s) -> viewModel.onStatForChanged(s)}"/>
+            android:afterTextChanged="@{(s) -> viewModel.onStatForChanged(s)}"
+            android:visibility="@{viewModel.editTextVisibility}"/>
+
+        <TextView
+            android:id="@+id/update_for_textview"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/activity_horizontal_margin"
+            android:layout_marginBottom="@dimen/activity_horizontal_margin"
+            android:layout_toEndOf="@id/stat_for_textview"
+            android:layout_alignBottom="@+id/stat_for_edittext"
+            android:paddingBottom="3dp"
+            android:textAppearance="@style/text_bold_white_small"
+            android:text="@{viewModel.updateFor}"
+            android:visibility="@{viewModel.updateVisibility}"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -80,7 +93,21 @@
             android:textAppearance="@style/text_bold_white_small"
             android:inputType="number"
             android:maxLength="3"
-            android:afterTextChanged="@{(s) -> viewModel.onStatAgainstChanged(s)}"/>
+            android:afterTextChanged="@{(s) -> viewModel.onStatAgainstChanged(s)}"
+            android:visibility="@{viewModel.editTextVisibility}"/>
+
+        <TextView
+            android:id="@+id/update_against_textview"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/activity_horizontal_margin"
+            android:layout_marginBottom="@dimen/activity_horizontal_margin"
+            android:layout_toStartOf="@id/stat_against_textview"
+            android:layout_alignBottom="@+id/stat_for_edittext"
+            android:paddingBottom="3dp"
+            android:textAppearance="@style/text_bold_white_small"
+            android:text="@{viewModel.updateAgainst}"
+            android:visibility="@{viewModel.updateVisibility}"/>
 
         <TextView
             android:id="@+id/error_message"

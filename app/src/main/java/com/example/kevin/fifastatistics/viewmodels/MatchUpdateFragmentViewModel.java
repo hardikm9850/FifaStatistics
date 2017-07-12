@@ -12,6 +12,7 @@ import com.example.kevin.fifastatistics.interfaces.Consumer;
 import com.example.kevin.fifastatistics.listeners.SimpleObserver;
 import com.example.kevin.fifastatistics.models.databasemodels.match.Match;
 import com.example.kevin.fifastatistics.models.databasemodels.match.MatchUpdate;
+import com.example.kevin.fifastatistics.models.databasemodels.match.MatchUpdateResponse;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
 import com.example.kevin.fifastatistics.network.FifaApi;
 import com.example.kevin.fifastatistics.utils.ObservableUtils;
@@ -19,6 +20,8 @@ import com.example.kevin.fifastatistics.utils.ToastUtils;
 
 import retrofit2.Response;
 import rx.Observable;
+
+import static com.example.kevin.fifastatistics.activities.MatchUpdateActivity.MatchEditType;
 
 public class MatchUpdateFragmentViewModel extends FooterButtonsViewModel {
 
@@ -38,14 +41,14 @@ public class MatchUpdateFragmentViewModel extends FooterButtonsViewModel {
     private Match mMatch;
     private MatchUpdateInteraction mInteraction;
     private UpdateStatsCardViewModel mUpdateStatsCardViewModel;
-    private final boolean mIsResponse;
+    private final MatchEditType mType;
 
     public MatchUpdateFragmentViewModel(Match match, MatchUpdate update, User user, Context context,
-                                        MatchUpdateInteraction interaction, FragmentMatchUpdateBinding binding) {
+                                        MatchUpdateInteraction interaction, FragmentMatchUpdateBinding binding, MatchEditType type) {
         mUpdate = update;
         mMatch = match;
         mContext = context;
-        mIsResponse = !isCreatingNewUpdate();
+        mType = type;
         mInteraction = interaction;
         mUpdateStatsCardViewModel = new UpdateStatsCardViewModel(mMatch, mUpdate, user, binding.cardUpdateStatsLayout);
     }
@@ -64,7 +67,7 @@ public class MatchUpdateFragmentViewModel extends FooterButtonsViewModel {
     }
 
     private boolean isCreatingNewUpdate() {
-        return mUpdate == null && mMatch != null && mMatch.getUpdateId() == null;
+        return mType == MatchEditType.CREATE;
     }
 
     private <T> void load(Observable<T> observable, final Consumer<T> consumer) {
@@ -96,17 +99,18 @@ public class MatchUpdateFragmentViewModel extends FooterButtonsViewModel {
     public void destroy() {
         super.destroy();
         mInteraction = null;
+        mContext = null;
     }
 
     @Override
     public String getRightButtonText() {
-        return mIsResponse ? APPROVE : REQUEST_CHANGE;
+        return mType == MatchEditType.REVIEW ? APPROVE : REQUEST_CHANGE;
     }
 
     @Override
     public void onRightButtonClick(View button) {
-        if (mIsResponse) {
-            // approve
+        if (mType == MatchEditType.REVIEW) {
+            approveUpdate();
         } else {
             MatchUpdate update = mUpdateStatsCardViewModel.build();
             if (!update.hasUpdates()) {
@@ -115,6 +119,22 @@ public class MatchUpdateFragmentViewModel extends FooterButtonsViewModel {
                 createUpdate();
             }
         }
+    }
+
+    private void approveUpdate() {
+        FifaApi.getUpdateApi().acceptUpdate(new MatchUpdateResponse())
+                .compose(ObservableUtils.applySchedulers())
+                .subscribe(new SimpleObserver<Response<Void>>() {
+                    @Override
+                    public void onNext(Response<Void> v) {
+                        mInteraction.onUpdateAccepted();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        mInteraction.onUpdateAcceptFailed(e);
+                    }
+                });
     }
 
     private void createUpdate() {
@@ -147,12 +167,24 @@ public class MatchUpdateFragmentViewModel extends FooterButtonsViewModel {
 
     @Override
     public int getLeftButtonVisibility() {
-        return mIsResponse ? View.VISIBLE : View.GONE;
+        return mType == MatchEditType.REVIEW ? View.VISIBLE : View.GONE;
     }
 
     @Override
     public void onLeftButtonClick(View button) {
-        // reject
+        FifaApi.getUpdateApi().declineUpdate(new MatchUpdateResponse())
+                .compose(ObservableUtils.applySchedulers())
+                .subscribe(new SimpleObserver<Response<Void>>() {
+                    @Override
+                    public void onNext(Response<Void> response) {
+                        mInteraction.onUpdateDeclined();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        mInteraction.onUpdateDeclineFailed(e);
+                    }
+                });
     }
 
     @Override
@@ -170,6 +202,10 @@ public class MatchUpdateFragmentViewModel extends FooterButtonsViewModel {
         mUpdateStatsCardViewModel.init(mMatch, mUpdate);
     }
 
+    public MatchUpdate getMatchUpdate() {
+        return mUpdateStatsCardViewModel.build();
+    }
+
     public UpdateStatsCardViewModel getUpdateStatsCardViewModel() {
         return mUpdateStatsCardViewModel;
     }
@@ -179,5 +215,9 @@ public class MatchUpdateFragmentViewModel extends FooterButtonsViewModel {
         void onUpdateLoadFailed(Throwable e);
         void onUpdateCreated();
         void onUpdateCreateFailed(Throwable e);
+        void onUpdateAccepted();
+        void onUpdateAcceptFailed(Throwable e);
+        void onUpdateDeclined();
+        void onUpdateDeclineFailed(Throwable e);
     }
 }
