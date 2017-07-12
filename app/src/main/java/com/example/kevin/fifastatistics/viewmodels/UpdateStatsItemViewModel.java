@@ -19,6 +19,7 @@ import lombok.Builder;
 public class UpdateStatsItemViewModel extends FifaBaseViewModel implements StatUpdater {
 
     private static final float UPDATED_ALPHA = 0.5f;
+    private static final int NO_UPDATE = -1;
 
     private ItemStatUpdateBinding binding;
     private final Consumer<Integer> forConsumer;
@@ -30,6 +31,11 @@ public class UpdateStatsItemViewModel extends FifaBaseViewModel implements StatU
     private final int statFor;
     private final int statAgainst;
     private final boolean arePredicatesLinked;
+
+    private final int updateFor;
+    private final int updateAgainst;
+    private final boolean mIsUpdating;
+    private final boolean mIsReviewing;
 
     private boolean mIsForError;
     private boolean mIsAgainstError;
@@ -52,6 +58,28 @@ public class UpdateStatsItemViewModel extends FifaBaseViewModel implements StatU
         this.statFor = statFor;
         this.statAgainst = statAgainst;
         this.arePredicatesLinked = arePredicatesLinked;
+        this.updateFor = NO_UPDATE;
+        this.updateAgainst = NO_UPDATE;
+        mIsUpdating = true;
+        mIsReviewing = false;
+    }
+
+    @Builder(builderMethodName = "reviewBuilder")
+    private UpdateStatsItemViewModel(String label, int statFor, int statAgainst, int updateFor, int updateAgainst) {
+        binding = null;
+        forConsumer = null;
+        againstConsumer = null;
+        forPredicate = null;
+        againstPredicate = null;
+        errorMessage = null;
+        arePredicatesLinked = false;
+        mIsReviewing = true;
+        mIsUpdating = false;
+        this.label = label;
+        this.statFor = statFor;
+        this.statAgainst = statAgainst;
+        this.updateFor = updateFor;
+        this.updateAgainst = updateAgainst;
     }
 
     public String getStatFor() {
@@ -186,5 +214,21 @@ public class UpdateStatsItemViewModel extends FifaBaseViewModel implements StatU
     @Bindable
     public float getAlphaAgainst() {
         return mAlphaAgainst;
+    }
+
+    public int getEditTextVisibility() {
+        return mIsReviewing ? View.GONE : View.VISIBLE;
+    }
+
+    public int getUpdateVisibility() {
+        return mIsReviewing ? View.VISIBLE : View.GONE;
+    }
+
+    public String getUpdateFor() {
+        return updateFor != NO_UPDATE ? String.valueOf(updateFor) : null;
+    }
+
+    public String getUpdateAgainst() {
+        return updateAgainst != NO_UPDATE ? String.valueOf(updateAgainst) : null;
     }
 }
