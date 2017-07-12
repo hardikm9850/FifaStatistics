@@ -39,6 +39,7 @@
             android:layout_toEndOf="@id/stat_for_textview"
             android:textAppearance="@style/text_bold_white_small"
             android:inputType="number"
+            android:maxLength="3"
             android:afterTextChanged="@{(s) -> viewModel.onStatForChanged(s)}"/>
 
         <TextView
@@ -78,6 +79,7 @@
             android:gravity="end"
             android:textAppearance="@style/text_bold_white_small"
             android:inputType="number"
+            android:maxLength="3"
             android:afterTextChanged="@{(s) -> viewModel.onStatAgainstChanged(s)}"/>
 
         <TextView

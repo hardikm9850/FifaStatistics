@@ -9,11 +9,12 @@ import com.example.kevin.fifastatistics.BR;
 import com.example.kevin.fifastatistics.databinding.ItemStatUpdateBinding;
 import com.example.kevin.fifastatistics.interfaces.Consumer;
 import com.example.kevin.fifastatistics.interfaces.Predicate;
+import com.example.kevin.fifastatistics.interfaces.StatUpdater;
 import com.example.kevin.fifastatistics.models.databasemodels.match.MatchUpdate;
 
 import lombok.Builder;
 
-public class UpdateStatsItemViewModel extends FifaBaseViewModel {
+public class UpdateStatsItemViewModel extends FifaBaseViewModel implements StatUpdater {
 
     private static final float UPDATED_ALPHA = 0.5f;
 
@@ -26,9 +27,12 @@ public class UpdateStatsItemViewModel extends FifaBaseViewModel {
     private final String errorMessage;
     private final int statFor;
     private final int statAgainst;
+    private final boolean arePredicatesLinked;
 
     private boolean mIsForError;
     private boolean mIsAgainstError;
+    private boolean mIsCheckingLinkedFor;
+    private boolean mIsCheckingLinkedAgainst;
     private float mAlphaFor = 1f;
     private float mAlphaAgainst = 1f;
 
@@ -36,7 +40,7 @@ public class UpdateStatsItemViewModel extends FifaBaseViewModel {
     public UpdateStatsItemViewModel(Consumer<Integer> forConsumer, Consumer<Integer> againstConsumer,
                                     Predicate<Integer> forPredicate, Predicate<Integer> againstPredicate,
                                     ItemStatUpdateBinding binding, String label, String errorMessage,
-                                    int statFor, int statAgainst) {
+                                    int statFor, int statAgainst, boolean arePredicatesLinked) {
         this.binding = binding;
         this.forConsumer = forConsumer;
         this.againstConsumer = againstConsumer;
@@ -46,6 +50,7 @@ public class UpdateStatsItemViewModel extends FifaBaseViewModel {
         this.errorMessage = errorMessage;
         this.statFor = statFor;
         this.statAgainst = statAgainst;
+        this.arePredicatesLinked = arePredicatesLinked;
     }
 
     public String getStatFor() {
@@ -73,6 +78,14 @@ public class UpdateStatsItemViewModel extends FifaBaseViewModel {
             binding.statForEdittext.setText("");
         } else if (!mIsForError) {
             forConsumer.accept(newVal);
+        }
+        if (arePredicatesLinked && !mIsCheckingLinkedAgainst) {
+            if (newVal != null) {
+                forConsumer.accept(newVal);
+            }
+            mIsCheckingLinkedFor = true;
+            onStatAgainstChanged(binding.statAgainstEdittext.getText());
+            mIsCheckingLinkedFor = false;
         }
         updateAlphaFor(newVal);
         updateError();
@@ -110,6 +123,14 @@ public class UpdateStatsItemViewModel extends FifaBaseViewModel {
             binding.statAgainstEdittext.setText("");
         } else if (!mIsAgainstError) {
             againstConsumer.accept(newVal);
+        }
+        if (arePredicatesLinked && !mIsCheckingLinkedFor) {
+            if (newVal != null) {
+                againstConsumer.accept(newVal);
+            }
+            mIsCheckingLinkedAgainst = true;
+            onStatForChanged(binding.statForEdittext.getText());
+            mIsCheckingLinkedAgainst = false;
         }
         updateAlphaAgainst(newVal);
         updateError();

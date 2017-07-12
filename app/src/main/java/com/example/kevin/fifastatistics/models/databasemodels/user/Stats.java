@@ -24,20 +24,39 @@ public class Stats implements Serializable {
     public static final String GOALS;
     public static final String SHOTS;
     public static final String SHOTS_ON_TARGET;
+    public static final String POSSESSION;
+    public static final String TACKLES;
+    public static final String FOULS;
+    public static final String YELLOW_CARDS;
+    public static final String RED_CARDS;
+    public static final String OFFSIDES;
+    public static final String INJURIES;
+    public static final String CORNERS;
+    public static final String SHOT_ACCURACY;
+    public static final String PASS_ACCURACY;
 
     static {
         Resources r = FifaApplication.getContext().getResources();
         GOALS = r.getString(R.string.goals);
         SHOTS = r.getString(R.string.shots);
         SHOTS_ON_TARGET = r.getString(R.string.shots_on_target);
+        POSSESSION = r.getString(R.string.possession_percent);
+        TACKLES = r.getString(R.string.tackles);
+        FOULS = r.getString(R.string.fouls);
+        YELLOW_CARDS = r.getString(R.string.yellow_cards);
+        RED_CARDS = r.getString(R.string.red_cards);
+        OFFSIDES = r.getString(R.string.offsides);
+        INJURIES = r.getString(R.string.injuries);
+        CORNERS = r.getString(R.string.corners);
+        SHOT_ACCURACY = r.getString(R.string.shot_accuracy_percent);
+        PASS_ACCURACY = r.getString(R.string.pass_accuracy_percent);
     }
 
     @JsonIgnore
     private static final String[] names =
             {
-                GOALS, SHOTS, "Shots On Target", "Possession (%)", "Tackles", "Fouls",
-                "Yellow Cards", "Red Cards", "Offsides", "Injuries", "Corners", "Shot Accuracy (%)",
-                "Pass Accuracy (%)"
+                    GOALS, SHOTS, SHOTS_ON_TARGET, POSSESSION, TACKLES, FOULS, YELLOW_CARDS, RED_CARDS,
+                    OFFSIDES, INJURIES, CORNERS, SHOT_ACCURACY, PASS_ACCURACY
             };
 
     public enum Type {

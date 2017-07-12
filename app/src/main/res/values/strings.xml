@@ -114,8 +114,12 @@
     <string name="team_logo">%1$s logo</string>
     <string name="retry">Retry</string>
     <string name="error_goals">Cannot change the match result</string>
-    <string name="error_shots">You cannot have more goals or shots on target than shots</string>
-    <string name="error_shots_on_target">You cannot have more shots on target than shots</string>
+    <string name="error_shots">You cannot have more Goals or Shots on Target than Shots</string>
+    <string name="error_shots_on_target">You cannot have more Shots on Target than Shots, or fewer
+        than Goals</string>
+    <string name="error_possession">Total Possession must equal 100%</string>
+    <string name="error_shot_accuracy">Shot Accuracy does not match with Shots and Shots on
+    Target</string>
 
     <!-- TOASTS -->
     <string name="not_found">Not found!</string>

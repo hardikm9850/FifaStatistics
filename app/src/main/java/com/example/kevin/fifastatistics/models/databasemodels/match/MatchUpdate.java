@@ -1,6 +1,7 @@
 package com.example.kevin.fifastatistics.models.databasemodels.match;
 
 import com.example.kevin.fifastatistics.models.databasemodels.DatabaseModel;
+import com.example.kevin.fifastatistics.utils.SerializationUtils;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -55,6 +56,11 @@ public class MatchUpdate extends DatabaseModel {
         private Map<String, Integer> statsForUpdates;
         private Map<String, Integer> statsAgainstUpdates;
         private PenaltiesUpdates penaltiesUpdates;
+
+        @Override
+        public String toString() {
+            return SerializationUtils.toFormattedJson(this);
+        }
     }
 
     @Getter
@@ -62,6 +68,11 @@ public class MatchUpdate extends DatabaseModel {
     public static class PenaltiesUpdates {
         private Integer winner;
         private Integer loser;
+
+        @Override
+        public String toString() {
+            return SerializationUtils.toFormattedJson(this);
+        }
     }
 
     public static class Builder {
@@ -129,12 +140,44 @@ public class MatchUpdate extends DatabaseModel {
                 return set("shotsOnTarget", shots);
             }
 
+            public UpdatesBuilder possession(int possession) {
+                return set("possession", possession);
+            }
+
+            public UpdatesBuilder tackles(int tackles) {
+                return set("tackles", tackles);
+            }
+
+            public UpdatesBuilder fouls(int fouls) {
+                return set("fouls", fouls);
+            }
+
+            public UpdatesBuilder yellowCards(int yellowCards) {
+                return set("yellowCards", yellowCards);
+            }
+
+            public UpdatesBuilder redCards(int redCards) {
+                return set("redCards", redCards);
+            }
+
             public UpdatesBuilder injuries(int injuries) {
                 return set("injuries", injuries);
             }
 
             public UpdatesBuilder offsides(int offsides) {
                 return set("offsides", offsides);
+            }
+
+            public UpdatesBuilder corners(int corners) {
+                return set("corners", corners);
+            }
+
+            public UpdatesBuilder shotAccuracy(int shotAccuracy) {
+                return set("shotAccuracy", shotAccuracy);
+            }
+
+            public UpdatesBuilder passAccuracy(int passAccuracy) {
+                return set("passAccuracy", passAccuracy);
             }
 
             private UpdatesBuilder set(String name, int val) {
@@ -154,5 +197,10 @@ public class MatchUpdate extends DatabaseModel {
                 return update;
             }
         }
+    }
+
+    @Override
+    public String toString() {
+        return SerializationUtils.toFormattedJson(this);
     }
 }

@@ -1,8 +1,8 @@
 package com.example.kevin.fifastatistics.viewmodels;
 
-import android.content.Context;
 import android.content.res.Resources;
 import android.view.View;
+import android.widget.Toast;
 
 import com.example.kevin.fifastatistics.FifaApplication;
 import com.example.kevin.fifastatistics.R;
@@ -103,6 +103,8 @@ public class MatchUpdateFragmentViewModel extends FooterButtonsViewModel {
             // approve
         } else {
             // create
+            Toast.makeText(FifaApplication.getContext(), mUpdateStatsCardViewModel.build().toString(), Toast
+                    .LENGTH_LONG).show();
         }
     }
 

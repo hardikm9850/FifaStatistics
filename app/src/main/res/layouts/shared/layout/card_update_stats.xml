@@ -58,6 +58,56 @@
                     layout="@layout/item_stat_update"
                     bind:viewModel="@{viewModel.shotsOnTargetViewModel}"/>
 
+                <include
+                    android:id="@+id/possession_stat_update"
+                    layout="@layout/item_stat_update"
+                    bind:viewModel="@{viewModel.possessionViewModel}"/>
+
+                <include
+                    android:id="@+id/tackles_stat_update"
+                    layout="@layout/item_stat_update"
+                    bind:viewModel="@{viewModel.tacklesViewModel}"/>
+
+                <include
+                    android:id="@+id/fouls_stat_update"
+                    layout="@layout/item_stat_update"
+                    bind:viewModel="@{viewModel.foulsViewModel}"/>
+
+                <include
+                    android:id="@+id/yellow_cards_stat_update"
+                    layout="@layout/item_stat_update"
+                    bind:viewModel="@{viewModel.yellowCardsViewModel}"/>
+
+                <include
+                    android:id="@+id/red_cards_stat_update"
+                    layout="@layout/item_stat_update"
+                    bind:viewModel="@{viewModel.redCardsViewModel}"/>
+
+                <include
+                    android:id="@+id/offsides_stat_update"
+                    layout="@layout/item_stat_update"
+                    bind:viewModel="@{viewModel.offsidesViewModel}"/>
+
+                <include
+                    android:id="@+id/injuries_stat_update"
+                    layout="@layout/item_stat_update"
+                    bind:viewModel="@{viewModel.injuriesViewModel}"/>
+
+                <include
+                    android:id="@+id/corners_stat_update"
+                    layout="@layout/item_stat_update"
+                    bind:viewModel="@{viewModel.cornersViewModel}"/>
+
+                <include
+                    android:id="@+id/shot_accuracy_stat_update"
+                    layout="@layout/item_stat_update"
+                    bind:viewModel="@{viewModel.shotAccuracyViewModel}"/>
+
+                <include
+                    android:id="@+id/pass_accuracy_stat_update"
+                    layout="@layout/item_stat_update"
+                    bind:viewModel="@{viewModel.passAccuracyViewModel}"/>
+
             </LinearLayout>
 
         </android.support.v7.widget.CardView>
