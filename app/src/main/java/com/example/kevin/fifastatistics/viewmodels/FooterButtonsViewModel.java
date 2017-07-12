@@ -1,5 +1,6 @@
 package com.example.kevin.fifastatistics.viewmodels;
 
+import android.databinding.Bindable;
 import android.view.View;
 
 import com.example.kevin.fifastatistics.FifaApplication;
@@ -24,6 +25,7 @@ public abstract class FooterButtonsViewModel extends ProgressFragmentViewModel {
 
     public void onLeftButtonClick(View button) {}
 
+    @Bindable
     public int getFooterVisibility() {
         return View.VISIBLE;
     }

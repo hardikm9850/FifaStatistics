@@ -125,8 +125,8 @@ public class MatchUpdateFragment extends FifaBaseFragment implements OnBackPress
     @Override
     public void onUpdateLoaded() {
         mBinding.updateLayout.setVisibility(View.VISIBLE);
-        mBinding.buttonBarLayout.buttonBar.postDelayed(
-                () -> mBinding.buttonBarLayout.buttonBar.setVisibility(View.VISIBLE), 100);
+        mViewModel.setFooterVisibility(true);
+
     }
 
     @Override
@@ -159,6 +159,7 @@ public class MatchUpdateFragment extends FifaBaseFragment implements OnBackPress
     @Override
     public void onUpdateDeclined() {
         ToastUtils.showShortToast(getContext(), R.string.request_declined);
+        getActivity().finish();
     }
 
     @Override

@@ -22,9 +22,9 @@ public interface MatchUpdateApi {
     @POST("updates")
     Observable<Response<Void>> createUpdate(@Body MatchUpdate update);
 
-    @POST("updates/accept")
-    Observable<Response<Void>> acceptUpdate(@Body MatchUpdateResponse response);
+    @POST("updates/{id}/accept")
+    Observable<Response<Void>> acceptUpdate(@Path("id") String id, @Body MatchUpdateResponse response);
 
-    @POST("updates/decline")
-    Observable<Response<Void>> declineUpdate(@Body MatchUpdateResponse response);
+    @POST("updates/{id}/decline")
+    Observable<Response<Void>> declineUpdate(@Path("id") String id, @Body MatchUpdateResponse response);
 }

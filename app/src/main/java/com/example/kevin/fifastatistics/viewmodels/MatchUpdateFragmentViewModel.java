@@ -3,8 +3,10 @@ package com.example.kevin.fifastatistics.viewmodels;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.res.Resources;
+import android.databinding.Bindable;
 import android.view.View;
 
+import com.example.kevin.fifastatistics.BR;
 import com.example.kevin.fifastatistics.FifaApplication;
 import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.databinding.FragmentMatchUpdateBinding;
@@ -14,6 +16,7 @@ import com.example.kevin.fifastatistics.models.databasemodels.match.Match;
 import com.example.kevin.fifastatistics.models.databasemodels.match.MatchUpdate;
 import com.example.kevin.fifastatistics.models.databasemodels.match.MatchUpdateResponse;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
+import com.example.kevin.fifastatistics.models.databasemodels.user.records.Streak;
 import com.example.kevin.fifastatistics.network.FifaApi;
 import com.example.kevin.fifastatistics.utils.ObservableUtils;
 import com.example.kevin.fifastatistics.utils.ToastUtils;
@@ -41,7 +44,9 @@ public class MatchUpdateFragmentViewModel extends FooterButtonsViewModel {
     private Match mMatch;
     private MatchUpdateInteraction mInteraction;
     private UpdateStatsCardViewModel mUpdateStatsCardViewModel;
+    private User mUser;
     private final MatchEditType mType;
+    private boolean mIsFooterVisible = false;
 
     public MatchUpdateFragmentViewModel(Match match, MatchUpdate update, User user, Context context,
                                         MatchUpdateInteraction interaction, FragmentMatchUpdateBinding binding, MatchEditType type) {
@@ -49,8 +54,9 @@ public class MatchUpdateFragmentViewModel extends FooterButtonsViewModel {
         mMatch = match;
         mContext = context;
         mType = type;
+        mUser = user;
         mInteraction = interaction;
-        mUpdateStatsCardViewModel = new UpdateStatsCardViewModel(mMatch, mUpdate, user, binding.cardUpdateStatsLayout);
+        mUpdateStatsCardViewModel = new UpdateStatsCardViewModel(mMatch, mUpdate, user, binding.cardUpdateStatsLayout, mType);
     }
 
     public void load() {
@@ -72,7 +78,7 @@ public class MatchUpdateFragmentViewModel extends FooterButtonsViewModel {
 
     private <T> void load(Observable<T> observable, final Consumer<T> consumer) {
         showProgressBar();
-        observable.subscribe(
+        observable.compose(ObservableUtils.applySchedulers()).subscribe(
                 new SimpleObserver<T>() {
                     @Override
                     public void onError(Throwable e) {
@@ -109,10 +115,10 @@ public class MatchUpdateFragmentViewModel extends FooterButtonsViewModel {
 
     @Override
     public void onRightButtonClick(View button) {
+        MatchUpdate update = mUpdateStatsCardViewModel.build();
         if (mType == MatchEditType.REVIEW) {
-            approveUpdate();
+            approveUpdate(update.getId());
         } else {
-            MatchUpdate update = mUpdateStatsCardViewModel.build();
             if (!update.hasUpdates()) {
                 ToastUtils.showShortToast(mContext, R.string.error_empty_update);
             } else if (mUpdateStatsCardViewModel.validate()) {
@@ -121,8 +127,8 @@ public class MatchUpdateFragmentViewModel extends FooterButtonsViewModel {
         }
     }
 
-    private void approveUpdate() {
-        FifaApi.getUpdateApi().acceptUpdate(new MatchUpdateResponse())
+    private void approveUpdate(String updateId) {
+        FifaApi.getUpdateApi().acceptUpdate(updateId, new MatchUpdateResponse())
                 .compose(ObservableUtils.applySchedulers())
                 .subscribe(new SimpleObserver<Response<Void>>() {
                     @Override
@@ -172,7 +178,8 @@ public class MatchUpdateFragmentViewModel extends FooterButtonsViewModel {
 
     @Override
     public void onLeftButtonClick(View button) {
-        FifaApi.getUpdateApi().declineUpdate(new MatchUpdateResponse())
+        MatchUpdate update = mUpdateStatsCardViewModel.build();
+        FifaApi.getUpdateApi().declineUpdate(update.getId(), new MatchUpdateResponse())
                 .compose(ObservableUtils.applySchedulers())
                 .subscribe(new SimpleObserver<Response<Void>>() {
                     @Override
@@ -185,6 +192,22 @@ public class MatchUpdateFragmentViewModel extends FooterButtonsViewModel {
                         mInteraction.onUpdateDeclineFailed(e);
                     }
                 });
+    }
+
+    @Bindable
+    @Override
+    public int getFooterVisibility() {
+        return mIsFooterVisible && !shouldFooterStayHidden() ? View.VISIBLE : View.GONE;
+    }
+
+    public void setFooterVisibility(boolean isVisible) {
+        mIsFooterVisible = isVisible;
+        notifyPropertyChanged(BR.footerVisibility);
+    }
+
+    private boolean shouldFooterStayHidden() {
+        boolean isCreatedByUser = mUpdate != null && mUser.getId().equals(mUpdate.getCreatorId());
+        return mType == MatchEditType.REVIEW && isCreatedByUser;
     }
 
     @Override

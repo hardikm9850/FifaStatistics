@@ -80,6 +80,7 @@ public class ApiListResponse<T> {
         private Link search;
         private Link teams;
         private Link league;
+        private Link matchUpdate;
     }
 
     @Getter

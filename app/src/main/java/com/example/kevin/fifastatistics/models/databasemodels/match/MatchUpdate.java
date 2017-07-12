@@ -1,9 +1,12 @@
 package com.example.kevin.fifastatistics.models.databasemodels.match;
 
+import com.example.kevin.fifastatistics.models.ApiListResponse;
 import com.example.kevin.fifastatistics.models.databasemodels.DatabaseModel;
+import com.example.kevin.fifastatistics.utils.NetworkUtils;
 import com.example.kevin.fifastatistics.utils.SerializationUtils;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -21,6 +24,16 @@ public class MatchUpdate extends DatabaseModel {
     private String creatorId;
     private String message;
     private Updates updates;
+
+    @JsonProperty("_links")
+    private ApiListResponse.Links links;
+
+    public String getId() {
+        if (id == null && links != null && links.getSelf() != null) {
+            id = NetworkUtils.getIdFromUrl(links.getSelf().getHref());
+        }
+        return id;
+    }
 
     public MatchUpdate() {
         this.updates = new Updates();

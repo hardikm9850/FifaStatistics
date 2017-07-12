@@ -4,7 +4,10 @@ import android.content.Context;
 import android.databinding.BindingAdapter;
 import android.support.annotation.NonNull;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 
+import com.example.kevin.fifastatistics.FifaApplication;
 import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.interfaces.AnimationListener;
 
@@ -16,6 +19,33 @@ public class AnimationBindingAdapter {
 
     private static final int CIRCLE_ANIMATION_DURATION_MILLIS = 900;
     private static final int ALPHA_ANIMATION_DURATION_MILLIS = 300;
+
+    private static final Animation SLIDE_IN_ANIMATION;
+    private static final Animation SLIDE_OUT_ANIMATION;
+
+    static {
+        Context c = FifaApplication.getContext();
+        SLIDE_IN_ANIMATION = AnimationUtils.loadAnimation(c, R.anim.slide_in_bottom);
+        SLIDE_IN_ANIMATION.setFillAfter(true);
+        SLIDE_OUT_ANIMATION = AnimationUtils.loadAnimation(c, R.anim.slide_out_bottom);
+        SLIDE_IN_ANIMATION.setFillAfter(true);
+    }
+
+    @BindingAdapter(value = {"slideVisibility", "slideDuration"}, requireAll = false)
+    public static void slideInOut(final View view, int visible, long duration) {
+        Animation animation;
+        if (view.getVisibility() == View.VISIBLE && visible != View.VISIBLE) {
+            animation = AnimationUtils.loadAnimation(view.getContext(), R.anim.slide_out_bottom);
+        } else {
+            animation = AnimationUtils.loadAnimation(view.getContext(), R.anim.slide_in_bottom);
+        }
+        if (duration > 0L) {
+            animation.setDuration(duration);
+        }
+        view.setAnimation(animation);
+        view.setVisibility(visible);
+        view.animate();
+    }
 
     @BindingAdapter("animatedAlpha")
     public static void setAlpha(@NonNull final View view, float alpha) {

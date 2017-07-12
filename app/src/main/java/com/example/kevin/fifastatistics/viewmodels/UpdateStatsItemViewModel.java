@@ -21,7 +21,6 @@ import static com.example.kevin.fifastatistics.activities.MatchUpdateActivity.Ma
 public class UpdateStatsItemViewModel extends FifaBaseViewModel implements StatUpdater {
 
     private static final float UPDATED_ALPHA = 0.5f;
-    private static final int NO_UPDATE = -1;
 
     private ItemStatUpdateBinding binding;
     private final Consumer<Integer> forConsumer;
@@ -34,9 +33,9 @@ public class UpdateStatsItemViewModel extends FifaBaseViewModel implements StatU
     private final int statAgainst;
     private final boolean arePredicatesLinked;
 
-    private final MatchEditType mType;
-    private final int updateFor;
-    private final int updateAgainst;
+    private final MatchEditType type;
+    private final Integer updateFor;
+    private final Integer updateAgainst;
 
     private boolean mIsForError;
     private boolean mIsAgainstError;
@@ -48,7 +47,8 @@ public class UpdateStatsItemViewModel extends FifaBaseViewModel implements StatU
     public UpdateStatsItemViewModel(Consumer<Integer> forConsumer, Consumer<Integer> againstConsumer,
                                     Predicate<Integer> forPredicate, Predicate<Integer> againstPredicate,
                                     ItemStatUpdateBinding binding, String label, String errorMessage,
-                                    int statFor, int statAgainst, boolean arePredicatesLinked) {
+                                    int statFor, int statAgainst, boolean arePredicatesLinked,
+                                    Integer updateFor, Integer updateAgainst, MatchEditType type) {
         this.binding = binding;
         this.forConsumer = forConsumer;
         this.againstConsumer = againstConsumer;
@@ -59,26 +59,19 @@ public class UpdateStatsItemViewModel extends FifaBaseViewModel implements StatU
         this.statFor = statFor;
         this.statAgainst = statAgainst;
         this.arePredicatesLinked = arePredicatesLinked;
-        this.updateFor = NO_UPDATE;
-        this.updateAgainst = NO_UPDATE;
-        mType = MatchEditType.UPDATE;
-    }
-
-    @Builder(builderMethodName = "reviewBuilder")
-    private UpdateStatsItemViewModel(String label, int statFor, int statAgainst, int updateFor, int updateAgainst) {
-        binding = null;
-        forConsumer = null;
-        againstConsumer = null;
-        forPredicate = null;
-        againstPredicate = null;
-        errorMessage = null;
-        arePredicatesLinked = false;
-        mType = MatchEditType.REVIEW;
-        this.label = label;
-        this.statFor = statFor;
-        this.statAgainst = statAgainst;
         this.updateFor = updateFor;
         this.updateAgainst = updateAgainst;
+        this.type = type;
+        initAlpha();
+    }
+
+    private void initAlpha() {
+        float alpha = 1f;
+        if (isReviewing()) {
+            alpha = UPDATED_ALPHA;
+        }
+        mAlphaFor = alpha;
+        mAlphaAgainst = alpha;
     }
 
     public String getStatFor() {
@@ -215,6 +208,10 @@ public class UpdateStatsItemViewModel extends FifaBaseViewModel implements StatU
         return mAlphaAgainst;
     }
 
+    public float getBaseAlpha() {
+        return isReviewing() ? UPDATED_ALPHA : 1f;
+    }
+
     public int getEditTextVisibility() {
         return isReviewing() ? View.GONE : View.VISIBLE;
     }
@@ -224,14 +221,14 @@ public class UpdateStatsItemViewModel extends FifaBaseViewModel implements StatU
     }
 
     private boolean isReviewing() {
-        return mType == MatchEditType.REVIEW;
+        return type == MatchEditType.REVIEW;
     }
 
     public String getUpdateFor() {
-        return updateFor != NO_UPDATE ? String.valueOf(updateFor) : null;
+        return updateFor != null ? String.valueOf(updateFor) : null;
     }
 
     public String getUpdateAgainst() {
-        return updateAgainst != NO_UPDATE ? String.valueOf(updateAgainst) : null;
+        return updateAgainst != null ? String.valueOf(updateAgainst) : null;
     }
 }

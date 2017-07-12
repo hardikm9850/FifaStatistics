@@ -5,6 +5,7 @@ import android.databinding.Bindable;
 
 import com.example.kevin.fifastatistics.FifaApplication;
 import com.example.kevin.fifastatistics.R;
+import com.example.kevin.fifastatistics.activities.MatchUpdateActivity;
 import com.example.kevin.fifastatistics.databinding.CardUpdateStatsBinding;
 import com.example.kevin.fifastatistics.models.databasemodels.match.Match;
 import com.example.kevin.fifastatistics.models.databasemodels.match.MatchUpdate;
@@ -31,7 +32,9 @@ public class UpdateStatsCardViewModel extends FifaBaseViewModel {
     private Match mMatch;
     private MatchUpdate.Builder mUpdateBuilder;
     private User mUser;
+    private MatchUpdate mMatchUpdate;
     private CardUpdateStatsBinding mBinding;
+    private MatchUpdateActivity.MatchEditType mType;
 
     private UpdateStatsItemViewModel mGoalsViewModel;
     private UpdateStatsItemViewModel mShotsViewModel;
@@ -47,23 +50,27 @@ public class UpdateStatsCardViewModel extends FifaBaseViewModel {
     private UpdateStatsItemViewModel mShotAccuracyViewModel;
     private UpdateStatsItemViewModel mPassAccuracyViewModel;
 
-    public UpdateStatsCardViewModel(Match match, MatchUpdate update, User user, CardUpdateStatsBinding binding) {
+    public UpdateStatsCardViewModel(Match match, MatchUpdate update, User user,
+                                    CardUpdateStatsBinding binding, MatchUpdateActivity.MatchEditType type) {
         mMatch = match;
         mUpdateBuilder = new MatchUpdate.Builder(update);
         mUser = user;
         mBinding = binding;
+        mMatchUpdate = update;
+        mType = type;
     }
 
     public void init(Match match, MatchUpdate update) {
         mMatch = match;
         mUpdateBuilder = new MatchUpdate.Builder(update);
+        mMatchUpdate = update;
         notifyChange();
     }
 
     @Bindable
     public UpdateStatsItemViewModel getGoalsViewModel() {
         if (mMatch != null) {
-            mGoalsViewModel = UpdateStatsItemViewModel.builder()
+            mGoalsViewModel = getBuilder("goals")
                     .binding(mBinding.goalsStatUpdate)
                     .statFor(mMatch.getScoreWinner())
                     .statAgainst(mMatch.getScoreLoser())
@@ -84,7 +91,7 @@ public class UpdateStatsCardViewModel extends FifaBaseViewModel {
         if (mMatch != null) {
             int shotsFor = Math.round(mMatch.getStatsFor().getShots());
             int shotsAgainst = Math.round(mMatch.getStatsAgainst().getShots());
-            mShotsViewModel = UpdateStatsItemViewModel.builder()
+            mShotsViewModel = getBuilder("shots")
                     .binding(mBinding.shotsStatUpdate)
                     .statFor(shotsFor)
                     .statAgainst(shotsAgainst)
@@ -102,7 +109,7 @@ public class UpdateStatsCardViewModel extends FifaBaseViewModel {
     @Bindable
     public UpdateStatsItemViewModel getShotsOnTargetViewModel() {
         if (mMatch != null) {
-            mShotsOnTargetViewModel = UpdateStatsItemViewModel.builder()
+            mShotsOnTargetViewModel = getBuilder("shotsOnTarget")
                     .binding(mBinding.shotsOnTargetStatUpdate)
                     .statFor(Math.round(mMatch.getStatsFor().getShotsOnTarget()))
                     .statAgainst(Math.round(mMatch.getStatsAgainst().getShotsOnTarget()))
@@ -120,7 +127,7 @@ public class UpdateStatsCardViewModel extends FifaBaseViewModel {
     @Bindable
     public UpdateStatsItemViewModel getPossessionViewModel() {
         if (mMatch != null) {
-            mPossessionViewModel = UpdateStatsItemViewModel.builder()
+            mPossessionViewModel = getBuilder("possession")
                     .binding(mBinding.possessionStatUpdate)
                     .statFor(Math.round(mMatch.getStatsFor().getPossession()))
                     .statAgainst(Math.round(mMatch.getStatsAgainst().getPossession()))
@@ -139,7 +146,7 @@ public class UpdateStatsCardViewModel extends FifaBaseViewModel {
     @Bindable
     public UpdateStatsItemViewModel getTacklesViewModel() {
         if (mMatch != null) {
-            mTacklesViewModel = UpdateStatsItemViewModel.builder()
+            mTacklesViewModel = getBuilder("tackles")
                     .binding(mBinding.tacklesStatUpdate)
                     .statFor(Math.round(mMatch.getStatsFor().getTackles()))
                     .statAgainst(Math.round(mMatch.getStatsAgainst().getTackles()))
@@ -154,7 +161,7 @@ public class UpdateStatsCardViewModel extends FifaBaseViewModel {
     @Bindable
     public UpdateStatsItemViewModel getFoulsViewModel() {
         if (mMatch != null) {
-            mFoulsViewModel = UpdateStatsItemViewModel.builder()
+            mFoulsViewModel = getBuilder("fouls")
                     .binding(mBinding.foulsStatUpdate)
                     .statFor(Math.round(mMatch.getStatsFor().getFouls()))
                     .statAgainst(Math.round(mMatch.getStatsAgainst().getFouls()))
@@ -169,7 +176,7 @@ public class UpdateStatsCardViewModel extends FifaBaseViewModel {
     @Bindable
     public UpdateStatsItemViewModel getYellowCardsViewModel() {
         if (mMatch != null) {
-            mYellowCardsViewModel = UpdateStatsItemViewModel.builder()
+            mYellowCardsViewModel = getBuilder("yellowCards")
                     .binding(mBinding.yellowCardsStatUpdate)
                     .statFor(Math.round(mMatch.getStatsFor().getYellowCards()))
                     .statAgainst(Math.round(mMatch.getStatsAgainst().getYellowCards()))
@@ -184,7 +191,7 @@ public class UpdateStatsCardViewModel extends FifaBaseViewModel {
     @Bindable
     public UpdateStatsItemViewModel getRedCardsViewModel() {
         if (mMatch != null) {
-            mRedCardsViewModel = UpdateStatsItemViewModel.builder()
+            mRedCardsViewModel = getBuilder("redCards")
                     .binding(mBinding.redCardsStatUpdate)
                     .statFor(Math.round(mMatch.getStatsFor().getRedCards()))
                     .statAgainst(Math.round(mMatch.getStatsAgainst().getRedCards()))
@@ -199,7 +206,7 @@ public class UpdateStatsCardViewModel extends FifaBaseViewModel {
     @Bindable
     public UpdateStatsItemViewModel getOffsidesViewModel() {
         if (mMatch != null) {
-            mOffsidesViewModel = UpdateStatsItemViewModel.builder()
+            mOffsidesViewModel = getBuilder("offsides")
                     .binding(mBinding.offsidesStatUpdate)
                     .statFor(Math.round(mMatch.getStatsFor().getOffsides()))
                     .statAgainst(Math.round(mMatch.getStatsAgainst().getOffsides()))
@@ -214,7 +221,7 @@ public class UpdateStatsCardViewModel extends FifaBaseViewModel {
     @Bindable
     public UpdateStatsItemViewModel getInjuriesViewModel() {
         if (mMatch != null) {
-            mInjuriesViewModel = UpdateStatsItemViewModel.builder()
+            mInjuriesViewModel = getBuilder("injuries")
                     .binding(mBinding.injuriesStatUpdate)
                     .statFor(Math.round(mMatch.getStatsFor().getInjuries()))
                     .statAgainst(Math.round(mMatch.getStatsAgainst().getInjuries()))
@@ -229,7 +236,7 @@ public class UpdateStatsCardViewModel extends FifaBaseViewModel {
     @Bindable
     public UpdateStatsItemViewModel getCornersViewModel() {
         if (mMatch != null) {
-            mCornersViewModel = UpdateStatsItemViewModel.builder()
+            mCornersViewModel = getBuilder("corners")
                     .binding(mBinding.cornersStatUpdate)
                     .statFor(Math.round(mMatch.getStatsFor().getCorners()))
                     .statAgainst(Math.round(mMatch.getStatsAgainst().getCorners()))
@@ -244,7 +251,7 @@ public class UpdateStatsCardViewModel extends FifaBaseViewModel {
     @Bindable
     public UpdateStatsItemViewModel getShotAccuracyViewModel() {
         if (mMatch != null) {
-            mShotAccuracyViewModel = UpdateStatsItemViewModel.builder()
+            mShotAccuracyViewModel = getBuilder("shotAccuracy")
                     .binding(mBinding.shotAccuracyStatUpdate)
                     .statFor(Math.round(mMatch.getStatsFor().getShotAccuracy()))
                     .statAgainst(Math.round(mMatch.getStatsAgainst().getShotAccuracy()))
@@ -262,7 +269,7 @@ public class UpdateStatsCardViewModel extends FifaBaseViewModel {
     @Bindable
     public UpdateStatsItemViewModel getPassAccuracyViewModel() {
         if (mMatch != null) {
-            mPassAccuracyViewModel = UpdateStatsItemViewModel.builder()
+            mPassAccuracyViewModel = getBuilder("passAccuracy")
                     .binding(mBinding.passAccuracyStatUpdate)
                     .statFor(Math.round(mMatch.getStatsFor().getPassAccuracy()))
                     .statAgainst(Math.round(mMatch.getStatsAgainst().getPassAccuracy()))
@@ -272,6 +279,13 @@ public class UpdateStatsCardViewModel extends FifaBaseViewModel {
                     .build();
         }
         return mPassAccuracyViewModel;
+    }
+    
+    private UpdateStatsItemViewModel.UpdateStatsItemViewModelBuilder getBuilder(String key) {
+        return UpdateStatsItemViewModel.builder()
+                .type(mType)
+                .updateFor(mMatchUpdate != null ? mMatchUpdate.getStatFor(key) : null)
+                .updateAgainst(mMatchUpdate != null ? mMatchUpdate.getStatAgainst(key) : null);
     }
 
     private boolean isShotAccuracyCorrect(int check, float shots, float shotsOnTarget) {

@@ -31,7 +31,11 @@ public class NetworkUtils {
     /** Retrieve the id of the created object from the location header of the response. */
     public static String getIdFromResponse(Response<?> response) {
         String header = response.headers().get("Location");
-        int startIndex = header.lastIndexOf("/");
-        return header.substring(startIndex + 1);
+        return getIdFromUrl(header);
+    }
+
+    public static String getIdFromUrl(String url) {
+        int startIndex = url.lastIndexOf("/");
+        return url.substring(startIndex + 1);
     }
 }
