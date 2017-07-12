@@ -12,7 +12,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorPrimaryDark"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:animateFirstView="false"
+        android:inAnimation="@anim/slide_in_bottom"
+        android:outAnimation="@anim/slide_out_bottom">
 
         <View
             android:layout_width="match_parent"

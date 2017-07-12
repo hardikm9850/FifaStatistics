@@ -23,4 +23,8 @@ public abstract class FooterButtonsViewModel extends ProgressFragmentViewModel {
     }
 
     public void onLeftButtonClick(View button) {}
+
+    public int getFooterVisibility() {
+        return View.VISIBLE;
+    }
 }
