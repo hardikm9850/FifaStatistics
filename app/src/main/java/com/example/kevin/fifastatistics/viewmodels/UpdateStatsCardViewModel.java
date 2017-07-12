@@ -275,7 +275,7 @@ public class UpdateStatsCardViewModel extends FifaBaseViewModel {
     }
 
     private boolean isShotAccuracyCorrect(int check, float shots, float shotsOnTarget) {
-        double floor = Math.floor(shotsOnTarget / shots * 100);
+        double floor = shots == 0f ? 0f : Math.floor(shotsOnTarget / shots * 100);
         return check >= floor && check <= floor + 1;
     }
 

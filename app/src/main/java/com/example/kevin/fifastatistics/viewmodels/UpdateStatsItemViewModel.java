@@ -4,6 +4,8 @@ import android.databinding.Bindable;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import com.example.kevin.fifastatistics.BR;
 import com.example.kevin.fifastatistics.databinding.ItemStatUpdateBinding;
@@ -31,8 +33,7 @@ public class UpdateStatsItemViewModel extends FifaBaseViewModel implements StatU
 
     private boolean mIsForError;
     private boolean mIsAgainstError;
-    private boolean mIsCheckingLinkedFor;
-    private boolean mIsCheckingLinkedAgainst;
+    private boolean mIsCheckingLinked;
     private float mAlphaFor = 1f;
     private float mAlphaAgainst = 1f;
 
@@ -72,86 +73,65 @@ public class UpdateStatsItemViewModel extends FifaBaseViewModel implements StatU
     public void onStatForChanged(Editable s) {
         Integer newVal = TextUtils.isEmpty(s.toString()) ? null : Integer.valueOf(s.toString());
         mIsForError = forPredicate != null && !forPredicate.test(newVal);
-        if (newVal == null) {
-            forConsumer.accept(MatchUpdate.Builder.REMOVE_VAL);
-        } else if (statFor == newVal) {
-            binding.statForEdittext.setText("");
-        } else if (!mIsForError) {
-            forConsumer.accept(newVal);
-        }
-        if (arePredicatesLinked && !mIsCheckingLinkedAgainst) {
-            if (newVal != null) {
-                forConsumer.accept(newVal);
-            }
-            mIsCheckingLinkedFor = true;
-            onStatAgainstChanged(binding.statAgainstEdittext.getText());
-            mIsCheckingLinkedFor = false;
-        }
-        updateAlphaFor(newVal);
+        consumeValue(newVal, forConsumer, binding.statForEdittext, statFor, mIsForError);
+        checkLinkedPredicate(newVal, forConsumer, binding.statAgainstEdittext, this::onStatAgainstChanged);
+        updateAlpha(newVal, statFor, binding.statForTextview, binding.statForEdittext, this::setAlphaFor);
         updateError();
     }
 
-    private void updateAlphaFor(Integer newVal) {
-        float alpha = binding.statForTextview.getAlpha();
-        if (isError() && alpha == UPDATED_ALPHA) {
-            setAlphaFor(1f);
-        } else if (!isError() && isForEdited() && alpha == 1f) {
-            setAlphaFor(UPDATED_ALPHA);
-        } else if (!isForEdited() && alpha == UPDATED_ALPHA) {
-            setAlphaFor(1f);
-        } else if (newVal != null && newVal == statFor && alpha == UPDATED_ALPHA) {
-            setAlphaFor(1f);
+    public void onStatAgainstChanged(Editable s) {
+        Integer newVal = TextUtils.isEmpty(s.toString()) ? null : Integer.valueOf(s.toString());
+        mIsAgainstError = againstPredicate != null && !againstPredicate.test(newVal);
+        consumeValue(newVal, againstConsumer, binding.statAgainstEdittext, statAgainst, mIsAgainstError);
+        checkLinkedPredicate(newVal, againstConsumer, binding.statForEdittext, this::onStatForChanged);
+        updateAlpha(newVal, statAgainst, binding.statAgainstTextview, binding.statAgainstEdittext, this::setAlphaAgainst);
+        updateError();
+    }
+
+    private void consumeValue(Integer newVal, Consumer<Integer> consumer, EditText editText, int stat, boolean error) {
+        if (newVal == null) {
+            consumer.accept(MatchUpdate.Builder.REMOVE_VAL);
+        } else if (stat == newVal) {
+            editText.setText("");
+        } else if (!error) {
+            consumer.accept(newVal);
         }
     }
 
-    private boolean isForEdited() {
-        Editable e = binding.statForEdittext.getText();
+    private void checkLinkedPredicate(Integer newVal, Consumer<Integer> consumer, EditText editText,
+                                      Consumer<Editable> statConsumer) {
+        if (arePredicatesLinked && !mIsCheckingLinked) {
+            if (newVal != null) {
+                consumer.accept(newVal);
+            }
+            mIsCheckingLinked = true;
+            statConsumer.accept(editText.getText());
+            mIsCheckingLinked = false;
+        }
+    }
+
+    private void updateAlpha(Integer newVal, int stat, TextView textView, EditText editText,
+                             Consumer<Float> alphaConsumer) {
+        float alpha = textView.getAlpha();
+        if (isError() && alpha == UPDATED_ALPHA) {
+            alphaConsumer.accept(1f);
+        } else if (!isError() && isEdited(editText) && alpha == 1f) {
+            alphaConsumer.accept(UPDATED_ALPHA);
+        } else if (!isEdited(editText) && alpha == UPDATED_ALPHA) {
+            alphaConsumer.accept(1f);
+        } else if (newVal != null && newVal == stat && alpha == UPDATED_ALPHA) {
+            alphaConsumer.accept(1f);
+        }
+    }
+
+    private boolean isEdited(EditText text) {
+        Editable e = text.getText();
         return e != null && !TextUtils.isEmpty(e.toString());
     }
 
     private void setAlphaFor(float alpha) {
         mAlphaFor = alpha;
         notifyPropertyChanged(BR.alphaFor);
-    }
-
-    public void onStatAgainstChanged(Editable s) {
-        Integer newVal = TextUtils.isEmpty(s.toString()) ? null : Integer.valueOf(s.toString());
-        mIsAgainstError = againstPredicate != null && !againstPredicate.test(newVal);
-        if (newVal == null) {
-            againstConsumer.accept(MatchUpdate.Builder.REMOVE_VAL);
-        } else if (statAgainst == newVal) {
-            binding.statAgainstEdittext.setText("");
-        } else if (!mIsAgainstError) {
-            againstConsumer.accept(newVal);
-        }
-        if (arePredicatesLinked && !mIsCheckingLinkedFor) {
-            if (newVal != null) {
-                againstConsumer.accept(newVal);
-            }
-            mIsCheckingLinkedAgainst = true;
-            onStatForChanged(binding.statForEdittext.getText());
-            mIsCheckingLinkedAgainst = false;
-        }
-        updateAlphaAgainst(newVal);
-        updateError();
-    }
-
-    private void updateAlphaAgainst(Integer newVal) {
-        float alpha = binding.statAgainstTextview.getAlpha();
-        if (isError() && alpha == UPDATED_ALPHA) {
-            setAlphaAgainst(1f);
-        } else if (!isError() && isAgainstEdited() && alpha == 1f) {
-            setAlphaAgainst(UPDATED_ALPHA);
-        } else if (!isAgainstEdited() && alpha == UPDATED_ALPHA) {
-            setAlphaAgainst(1f);
-        } else if (newVal != null && newVal == statAgainst && alpha == UPDATED_ALPHA) {
-            setAlphaAgainst(1f);
-        }
-    }
-
-    private boolean isAgainstEdited() {
-        Editable e = binding.statAgainstEdittext.getText();
-        return e != null && !TextUtils.isEmpty(e.toString());
     }
 
     private void setAlphaAgainst(float alpha) {
