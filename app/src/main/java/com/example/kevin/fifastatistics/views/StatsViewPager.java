@@ -18,7 +18,7 @@ public class StatsViewPager extends ViewPager implements StatsPagerAdapter.OnIte
     private boolean isPagingEnabled = true;
 
     public StatsViewPager(Context context) {
-        super(context);
+        this(context, null);
     }
 
     public StatsViewPager(Context context, AttributeSet attrs) {

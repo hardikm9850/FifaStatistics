@@ -52,7 +52,7 @@ public class UpdateStatsCardViewModel extends FifaBaseViewModel {
 
     public UpdateStatsCardViewModel(Match match, MatchUpdate update, User user,
                                     CardUpdateStatsBinding binding, MatchUpdateActivity.MatchEditType type) {
-        mMatch = match;
+        mMatch = match == null ? Match.empty() : match;
         mUpdateBuilder = new MatchUpdate.Builder(update);
         mUser = user;
         mBinding = binding;
@@ -61,7 +61,7 @@ public class UpdateStatsCardViewModel extends FifaBaseViewModel {
     }
 
     public void init(Match match, MatchUpdate update) {
-        mMatch = match;
+        mMatch = match == null ? Match.empty() : match;
         mUpdateBuilder = new MatchUpdate.Builder(update);
         mMatchUpdate = update;
         notifyChange();
@@ -347,10 +347,12 @@ public class UpdateStatsCardViewModel extends FifaBaseViewModel {
         return updateVal == null ? Math.round(matchVal) : updateVal;
     }
 
+    @Bindable
     public String getLeftHeader() {
         return mMatch.didWin(mUser) ? "You" : mMatch.getWinnerFirstName();
     }
 
+    @Bindable
     public String getRightHeader() {
         return !mMatch.didWin(mUser) ? "You" : mMatch.getLoserFirstName();
     }

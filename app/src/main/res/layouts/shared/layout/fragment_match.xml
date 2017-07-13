@@ -28,7 +28,8 @@
 
                 <include
                     layout="@layout/card_event_result_header"
-                    bind:headerViewModel="@{viewModel.headerViewModel}"/>
+                    bind:headerViewModel="@{viewModel.headerViewModel}"
+                    android:visibility="@{viewModel.headerVisibility}"/>
 
                 <include
                     layout="@layout/card_stats"

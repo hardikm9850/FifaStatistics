@@ -1,6 +1,7 @@
 package com.example.kevin.fifastatistics.animation;
 
 import android.content.Context;
+import android.databinding.Bindable;
 import android.databinding.BindingAdapter;
 import android.support.annotation.NonNull;
 import android.view.View;
@@ -31,13 +32,22 @@ public class AnimationBindingAdapter {
         SLIDE_IN_ANIMATION.setFillAfter(true);
     }
 
+    @BindingAdapter(value = "alphaScaleVisibility")
+    public static void alphaScale(final View view, int visible) {
+        doAnimation(view, R.anim.grow_fade_in_bottom, R.anim.shrink_fade_out_bottom, visible, 0L);
+    }
+
     @BindingAdapter(value = {"slideVisibility", "slideDuration"}, requireAll = false)
     public static void slideInOut(final View view, int visible, long duration) {
+        doAnimation(view, R.anim.slide_in_bottom, R.anim.slide_out_bottom, visible, duration);
+    }
+
+    private static void doAnimation(final View view, int showAnimation, int hideAnimation, int visible, long duration) {
         Animation animation;
         if (view.getVisibility() == View.VISIBLE && visible != View.VISIBLE) {
-            animation = AnimationUtils.loadAnimation(view.getContext(), R.anim.slide_out_bottom);
+            animation = AnimationUtils.loadAnimation(view.getContext(), hideAnimation);
         } else {
-            animation = AnimationUtils.loadAnimation(view.getContext(), R.anim.slide_in_bottom);
+            animation = AnimationUtils.loadAnimation(view.getContext(), showAnimation);
         }
         if (duration > 0L) {
             animation.setDuration(duration);

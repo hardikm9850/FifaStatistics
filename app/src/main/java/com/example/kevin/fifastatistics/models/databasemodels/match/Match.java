@@ -24,11 +24,11 @@ import lombok.Setter;
 @Getter
 public class Match extends DatabaseModel implements TeamEvent, FifaEvent, PenaltyEvent {
 
-    private final User.StatsPair stats;
-    private final Penalties penalties;
-    private final Date date;
-    private final Friend winner;
-    private final Friend loser;
+    private User.StatsPair stats;
+    private Penalties penalties;
+    private Date date;
+    private Friend winner;
+    private Friend loser;
     private String id;
     private String updateId;
     private String seriesId;
@@ -55,6 +55,16 @@ public class Match extends DatabaseModel implements TeamEvent, FifaEvent, Penalt
                 .winner(match.winner)
                 .loser(match.loser)
                 .build();
+    }
+
+    public static Match empty() {
+        Match match = Match.builder().build();
+        match.stats = new User.StatsPair();
+        match.penalties = new Penalties();
+        match.date = new Date();
+        match.winner = Friend.builder().build();
+        match.loser = Friend.builder().build();
+        return match;
     }
 
     public boolean didWin(Player player) {
@@ -106,12 +116,12 @@ public class Match extends DatabaseModel implements TeamEvent, FifaEvent, Penalt
 
     @JsonIgnore
     public String getLoserFirstName() {
-        return loser.getName().split(" ")[0];
+        return loser.getName() != null ? loser.getName().split(" ")[0] : "";
     }
 
     @JsonIgnore
     public String getWinnerFirstName() {
-        return winner.getName().split(" ")[0];
+        return winner.getName() != null ? winner.getName().split(" ")[0] : "";
     }
 
     @JsonIgnore

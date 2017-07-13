@@ -25,6 +25,7 @@ import com.example.kevin.fifastatistics.utils.ToastUtils;
 
 import retrofit2.Response;
 import rx.Observable;
+import rx.Subscription;
 
 import static com.example.kevin.fifastatistics.activities.MatchUpdateActivity.MatchEditType;
 
@@ -83,7 +84,7 @@ public class MatchUpdateFragmentViewModel extends FooterButtonsViewModel {
 
     private <T> void load(Observable<T> observable, final Consumer<T> consumer) {
         showProgressBar();
-        observable.compose(ObservableUtils.applySchedulers()).subscribe(
+        Subscription s = observable.compose(ObservableUtils.applySchedulers()).subscribe(
                 new SimpleObserver<T>() {
                     @Override
                     public void onError(Throwable e) {
@@ -94,12 +95,14 @@ public class MatchUpdateFragmentViewModel extends FooterButtonsViewModel {
                     public void onNext(T t) {
                         hideProgressBar();
                         consumer.accept(t);
+                        mUpdateStatsCardViewModel.init(mMatch, mUpdate);
                         if (mInteraction != null) {
                             mInteraction.onUpdateLoaded(mMatch, mUpdate);
                         }
                     }
                 }
         );
+        addSubscription(s);
     }
 
     private void handleLoadFailure(Throwable t) {
@@ -113,11 +116,13 @@ public class MatchUpdateFragmentViewModel extends FooterButtonsViewModel {
     private void loadMatchAndUpdate() {
         showProgressBar();
         MatchApi matchApi = FifaApi.getMatchApi();
-        FifaApi.getUpdateApi().getUpdate(mUpdateId)
+        Subscription s = FifaApi.getUpdateApi().getUpdate(mUpdateId)
                 .compose(ObservableUtils.applySchedulers())
                 .doOnError(this::handleLoadFailure)
                 .map(update -> mUpdate = update)
-                .flatMap(update -> matchApi.getMatch(update.getMatchId()))
+                .flatMap(update ->
+                        matchApi.getMatch(update.getMatchId())
+                                .compose(ObservableUtils.applySchedulers()))
                 .subscribe(new SimpleObserver<Match>() {
                     @Override
                     public void onError(Throwable e) {
@@ -128,9 +133,11 @@ public class MatchUpdateFragmentViewModel extends FooterButtonsViewModel {
                     public void onNext(Match match) {
                         hideProgressBar();
                         mMatch = match;
+                        mUpdateStatsCardViewModel.init(mMatch, mUpdate);
                         mInteraction.onUpdateLoaded(mMatch, mUpdate);
                     }
                 });
+        addSubscription(s);
     }
 
     @Override
@@ -160,7 +167,7 @@ public class MatchUpdateFragmentViewModel extends FooterButtonsViewModel {
     }
 
     private void approveUpdate(String updateId) {
-        FifaApi.getUpdateApi().acceptUpdate(updateId, new MatchUpdateResponse())
+        Subscription s = FifaApi.getUpdateApi().acceptUpdate(updateId, new MatchUpdateResponse())
                 .compose(ObservableUtils.applySchedulers())
                 .subscribe(new SimpleObserver<Response<Void>>() {
                     @Override
@@ -173,11 +180,12 @@ public class MatchUpdateFragmentViewModel extends FooterButtonsViewModel {
                         mInteraction.onUpdateAcceptFailed(e);
                     }
                 });
+        addSubscription(s);
     }
 
     private void createUpdate() {
         ProgressDialog d = ProgressDialog.show(mContext, "loading", "ok", true);
-        FifaApi.getUpdateApi().createUpdate(mUpdateStatsCardViewModel.build())
+        Subscription s = FifaApi.getUpdateApi().createUpdate(mUpdateStatsCardViewModel.build())
                 .compose(ObservableUtils.applySchedulers())
                 .subscribe(new SimpleObserver<Response<Void>>() {
                     @Override
@@ -196,6 +204,7 @@ public class MatchUpdateFragmentViewModel extends FooterButtonsViewModel {
                         }
                     }
                 });
+        addSubscription(s);
     }
 
     @Override
@@ -211,7 +220,7 @@ public class MatchUpdateFragmentViewModel extends FooterButtonsViewModel {
     @Override
     public void onLeftButtonClick(View button) {
         MatchUpdate update = mUpdateStatsCardViewModel.build();
-        FifaApi.getUpdateApi().declineUpdate(update.getId(), new MatchUpdateResponse())
+        Subscription s =FifaApi.getUpdateApi().declineUpdate(update.getId(), new MatchUpdateResponse())
                 .compose(ObservableUtils.applySchedulers())
                 .subscribe(new SimpleObserver<Response<Void>>() {
                     @Override
@@ -224,6 +233,7 @@ public class MatchUpdateFragmentViewModel extends FooterButtonsViewModel {
                         mInteraction.onUpdateDeclineFailed(e);
                     }
                 });
+        addSubscription(s);
     }
 
     @Bindable

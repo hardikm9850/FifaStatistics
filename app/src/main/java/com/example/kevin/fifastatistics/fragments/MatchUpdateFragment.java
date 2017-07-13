@@ -11,14 +11,23 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.kevin.fifastatistics.R;
+import com.example.kevin.fifastatistics.animation.AnimationBindingAdapter;
 import com.example.kevin.fifastatistics.databinding.FragmentMatchUpdateBinding;
 import com.example.kevin.fifastatistics.interfaces.OnBackPressedHandler;
 import com.example.kevin.fifastatistics.managers.RetrofitErrorManager;
 import com.example.kevin.fifastatistics.models.databasemodels.match.Match;
 import com.example.kevin.fifastatistics.models.databasemodels.match.MatchUpdate;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
+import com.example.kevin.fifastatistics.network.FifaApi;
+import com.example.kevin.fifastatistics.utils.BuildUtils;
+import com.example.kevin.fifastatistics.utils.ObservableUtils;
 import com.example.kevin.fifastatistics.utils.ToastUtils;
 import com.example.kevin.fifastatistics.viewmodels.MatchUpdateFragmentViewModel;
+import com.example.kevin.fifastatistics.views.notifications.FifaNotification;
+import com.example.kevin.fifastatistics.views.notifications.FifaNotificationFactory;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import static com.example.kevin.fifastatistics.activities.MatchUpdateActivity.MatchEditType;
 
@@ -78,7 +87,7 @@ public class MatchUpdateFragment extends FifaBaseFragment implements OnBackPress
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_match_update, container, false);
-        mViewModel = new MatchUpdateFragmentViewModel(mMatch, mUpdate, mUser, getContext(), this, mBinding, mType);
+        mViewModel = new MatchUpdateFragmentViewModel(mMatch, mUpdate, mUser, getContext(), this, mBinding, mType, mUpdateId);
         addTransitionCallbackToBinding(mBinding);
         mBinding.setViewModel(mViewModel);
         return mBinding.getRoot();
@@ -131,7 +140,7 @@ public class MatchUpdateFragment extends FifaBaseFragment implements OnBackPress
     public void onUpdateLoaded(Match match, MatchUpdate update) {
         mMatch = match;
         mUpdate = update;
-        mBinding.updateLayout.setVisibility(View.VISIBLE);
+        AnimationBindingAdapter.alphaScale(mBinding.updateLayout, View.VISIBLE);
         mViewModel.setFooterVisibility(true);
 
     }
@@ -144,7 +153,7 @@ public class MatchUpdateFragment extends FifaBaseFragment implements OnBackPress
     @Override
     public void onUpdateCreated() {
         ToastUtils.showShortToast(getContext(), R.string.request_sent);
-        getActivity().finish();
+        showNotificationIfDebugging(FifaNotificationFactory.UPDATE_MATCH);
     }
 
     @Override
@@ -172,5 +181,22 @@ public class MatchUpdateFragment extends FifaBaseFragment implements OnBackPress
     @Override
     public void onUpdateDeclineFailed(Throwable e) {
         RetrofitErrorManager.showToastForError(e, getActivity());
+    }
+
+    private void showNotificationIfDebugging(String tag) {
+        if (BuildUtils.isDebug()) {
+            FifaApi.getMatchApi().getMatch(mMatch.getId())
+                    .compose(ObservableUtils.applySchedulers())
+                    .subscribe(match -> {
+                        Map<String, String> data = new HashMap<>();
+                        data.put("tag", tag);
+                        data.put("id", match.getUpdateId());
+                        data.put("title", "Kevin wants to update a match");
+                        FifaNotification n = FifaNotificationFactory.createNotification(getContext(), data);
+                        n.build();
+                    });
+        } else {
+            getActivity().finish();
+        }
     }
 }

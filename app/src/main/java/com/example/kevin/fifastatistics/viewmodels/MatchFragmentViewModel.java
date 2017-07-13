@@ -4,6 +4,7 @@ import android.databinding.Bindable;
 import android.view.View;
 
 import com.example.kevin.fifastatistics.BR;
+import com.example.kevin.fifastatistics.listeners.SimpleObserver;
 import com.example.kevin.fifastatistics.managers.RetrievalManager;
 import com.example.kevin.fifastatistics.models.databasemodels.match.Match;
 import com.example.kevin.fifastatistics.models.databasemodels.match.MatchProjection;
@@ -39,7 +40,8 @@ public class MatchFragmentViewModel extends ProgressFragmentViewModel {
             return;
         }
         showProgressBar();
-        Subscription s = RetrievalManager.getMatch(mProjection.getId()).subscribe(new ObservableUtils.EmptyOnCompleteObserver<Match>() {
+        String id = mProjection != null ? mProjection.getId() : mMatchId;
+        Subscription s = RetrievalManager.getMatch(id).subscribe(new SimpleObserver<Match>() {
             @Override
             public void onError(Throwable e) {
                 hideProgressBar();
@@ -82,6 +84,11 @@ public class MatchFragmentViewModel extends ProgressFragmentViewModel {
     public void destroy() {
         super.destroy();
         mListener = null;
+    }
+
+    @Bindable
+    public int getHeaderVisibility() {
+        return mProjection == null && mMatch == null ? View.GONE : View.VISIBLE;
     }
 
     @Bindable

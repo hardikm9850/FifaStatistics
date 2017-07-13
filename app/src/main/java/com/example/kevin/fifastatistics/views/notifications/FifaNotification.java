@@ -48,7 +48,8 @@ public abstract class FifaNotification
     protected void setDefaultNotificationSettings(NotificationData nb)
     {
         Log.e("FIFA NOTIFICATION", nb.toString());
-        Bitmap userIcon = BitmapUtils.getCircleBitmapFromUrl(nb.getImageUrl());
+        String imageUrl = nb.getImageUrl();
+        Bitmap userIcon = imageUrl != null ? BitmapUtils.getCircleBitmapFromUrl(nb.getImageUrl()) : null;
 
         mNotificationBuilder
                 .setSmallIcon(SMALL_ICON)
