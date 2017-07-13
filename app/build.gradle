@@ -22,7 +22,7 @@ android {
         minSdkVersion 23
         targetSdkVersion 25
         versionCode 1
-        versionName "1.02"
+        versionName "1.2"
         manifestPlaceholders = [HOCKEYAPP_APP_ID: "1274ffd5e9d648108bfff6c54033d2ba"]
     }
 
@@ -60,6 +60,10 @@ android {
 
     dataBinding {
         enabled = true
+    }
+
+    dexOptions {
+        jumboMode = true
     }
 }
 
