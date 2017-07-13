@@ -25,6 +25,12 @@ public class MatchUpdateActivity extends FifaBaseActivity {
     private ActivityMatchUpdateBinding mBinding;
     private MatchEditType mType;
 
+    public static Intent getNotificationIntent(Context context, String updateId) {
+        Intent intent = getLaunchIntent(context, MatchEditType.REVIEW, null, null);
+        intent.putExtra(UPDATE_ID, updateId);
+        return intent;
+    }
+
     public static Intent getLaunchIntent(Context context, MatchEditType type, @Nullable MatchUpdate update,
                                          @Nullable Match match) {
         Intent intent = new Intent(context, MatchUpdateActivity.class);
@@ -55,7 +61,8 @@ public class MatchUpdateActivity extends FifaBaseActivity {
         RetrievalManager.getCurrentUser().subscribe(user -> {
             Match match = (Match) getIntent().getSerializableExtra(MATCH);
             MatchUpdate update = (MatchUpdate) getIntent().getSerializableExtra(MATCH_UPDATE);
-            MatchUpdateFragment f = MatchUpdateFragment.newInstance(update, user, match, mType);
+            String updateId = getIntent().getStringExtra(UPDATE_ID);
+            MatchUpdateFragment f = MatchUpdateFragment.newInstance(update, user, match, mType, updateId);
             setOnBackPressHandler(f);
             getSupportFragmentManager().beginTransaction().replace(R.id.content, f).commit();
         });

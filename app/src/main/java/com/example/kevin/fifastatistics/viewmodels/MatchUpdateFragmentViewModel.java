@@ -18,6 +18,8 @@ import com.example.kevin.fifastatistics.models.databasemodels.match.MatchUpdateR
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
 import com.example.kevin.fifastatistics.models.databasemodels.user.records.Streak;
 import com.example.kevin.fifastatistics.network.FifaApi;
+import com.example.kevin.fifastatistics.network.MatchApi;
+import com.example.kevin.fifastatistics.network.MatchUpdateApi;
 import com.example.kevin.fifastatistics.utils.ObservableUtils;
 import com.example.kevin.fifastatistics.utils.ToastUtils;
 
@@ -45,30 +47,33 @@ public class MatchUpdateFragmentViewModel extends FooterButtonsViewModel {
     private MatchUpdateInteraction mInteraction;
     private UpdateStatsCardViewModel mUpdateStatsCardViewModel;
     private User mUser;
+    private String mUpdateId;
     private final MatchEditType mType;
     private boolean mIsFooterVisible = false;
 
     public MatchUpdateFragmentViewModel(Match match, MatchUpdate update, User user, Context context,
-                                        MatchUpdateInteraction interaction, FragmentMatchUpdateBinding binding, MatchEditType type) {
+                                        MatchUpdateInteraction interaction, FragmentMatchUpdateBinding binding,
+                                        MatchEditType type, String updateId) {
         mUpdate = update;
         mMatch = match;
         mContext = context;
         mType = type;
         mUser = user;
         mInteraction = interaction;
+        mUpdateId = updateId;
         mUpdateStatsCardViewModel = new UpdateStatsCardViewModel(mMatch, mUpdate, user, binding.cardUpdateStatsLayout, mType);
     }
 
     public void load() {
         if (isCreatingNewUpdate()) {
             hideProgressBar();
-            mInteraction.onUpdateLoaded();
+            mInteraction.onUpdateLoaded(mMatch, mUpdate);
         } else if (mUpdate == null && mMatch != null) {
             load(FifaApi.getUpdateApi().getUpdate(mMatch.getUpdateId()), this::setMatchUpdate);
         } else if (mMatch == null && mUpdate != null) {
             load(FifaApi.getMatchApi().getMatch(mUpdate.getMatchId()), this::setMatch);
         } else {
-
+            loadMatchAndUpdate();
         }
     }
 
@@ -82,11 +87,7 @@ public class MatchUpdateFragmentViewModel extends FooterButtonsViewModel {
                 new SimpleObserver<T>() {
                     @Override
                     public void onError(Throwable e) {
-                        hideProgressBar();
-                        showRetryButton();
-                        if (mInteraction != null) {
-                            mInteraction.onUpdateLoadFailed(e);
-                        }
+                        handleLoadFailure(e);
                     }
 
                     @Override
@@ -94,11 +95,42 @@ public class MatchUpdateFragmentViewModel extends FooterButtonsViewModel {
                         hideProgressBar();
                         consumer.accept(t);
                         if (mInteraction != null) {
-                            mInteraction.onUpdateLoaded();
+                            mInteraction.onUpdateLoaded(mMatch, mUpdate);
                         }
                     }
                 }
         );
+    }
+
+    private void handleLoadFailure(Throwable t) {
+        hideProgressBar();
+        showRetryButton();
+        if (mInteraction != null) {
+            mInteraction.onUpdateLoadFailed(t);
+        }
+    }
+
+    private void loadMatchAndUpdate() {
+        showProgressBar();
+        MatchApi matchApi = FifaApi.getMatchApi();
+        FifaApi.getUpdateApi().getUpdate(mUpdateId)
+                .compose(ObservableUtils.applySchedulers())
+                .doOnError(this::handleLoadFailure)
+                .map(update -> mUpdate = update)
+                .flatMap(update -> matchApi.getMatch(update.getMatchId()))
+                .subscribe(new SimpleObserver<Match>() {
+                    @Override
+                    public void onError(Throwable e) {
+                        handleLoadFailure(e);
+                    }
+
+                    @Override
+                    public void onNext(Match match) {
+                        hideProgressBar();
+                        mMatch = match;
+                        mInteraction.onUpdateLoaded(mMatch, mUpdate);
+                    }
+                });
     }
 
     @Override
@@ -234,7 +266,7 @@ public class MatchUpdateFragmentViewModel extends FooterButtonsViewModel {
     }
 
     public interface MatchUpdateInteraction {
-        void onUpdateLoaded();
+        void onUpdateLoaded(Match match, MatchUpdate matchUpdate);
         void onUpdateLoadFailed(Throwable e);
         void onUpdateCreated();
         void onUpdateCreateFailed(Throwable e);

@@ -30,6 +30,9 @@ public class FifaNotificationFactory {
                 return new SeriesNotification(context, data);
             case UPDATE_MATCH:
                 return new UpdateCreatedNotification(context, data);
+            case ACCEPT_UPDATE:
+            case DECLINE_UPDATE:
+                return new UpdateHandledNotification(context, data);
             default:
                 return new NullNotification(context);
         }

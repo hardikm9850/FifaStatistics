@@ -30,17 +30,20 @@ public class MatchUpdateFragment extends FifaBaseFragment implements OnBackPress
     private Match mMatch;
     private MatchUpdate mUpdate;
     private User mUser;
+    private String mUpdateId;
     private MatchUpdateFragmentViewModel mViewModel;
     private FragmentMatchUpdateBinding mBinding;
     private MatchEditType mType;
 
-    public static MatchUpdateFragment newInstance(@Nullable MatchUpdate update, User user, @Nullable Match match, MatchEditType type) {
+    public static MatchUpdateFragment newInstance(@Nullable MatchUpdate update, User user, @Nullable Match match,
+                                                  MatchEditType type, String updateId) {
         Bundle args = new Bundle();
         MatchUpdateFragment fragment = new MatchUpdateFragment();
         args.putSerializable(MATCH_UPDATE, update);
         args.putSerializable(MATCH, match);
         args.putSerializable(USER, user);
         args.putSerializable(ARG_TYPE, type);
+        args.putString(UPDATE_ID, updateId);
         fragment.setArguments(args);
         return fragment;
     }
@@ -57,7 +60,8 @@ public class MatchUpdateFragment extends FifaBaseFragment implements OnBackPress
         mUser = (User) b.getSerializable(USER);
         mMatch = (Match) b.getSerializable(MATCH);
         mUpdate = (MatchUpdate) b.getSerializable(MATCH_UPDATE);
-        mType =(MatchEditType) b.getSerializable(ARG_TYPE);
+        mType = (MatchEditType) b.getSerializable(ARG_TYPE);
+        mUpdateId = b.getString(UPDATE_ID);
     }
 
     @Override
@@ -67,6 +71,7 @@ public class MatchUpdateFragment extends FifaBaseFragment implements OnBackPress
         outState.putSerializable(MATCH, mMatch);
         outState.putSerializable(MATCH_UPDATE, mUpdate);
         outState.putSerializable(ARG_TYPE, mType);
+        outState.putString(UPDATE_ID, mUpdateId);
     }
 
     @Nullable
@@ -123,7 +128,9 @@ public class MatchUpdateFragment extends FifaBaseFragment implements OnBackPress
     }
 
     @Override
-    public void onUpdateLoaded() {
+    public void onUpdateLoaded(Match match, MatchUpdate update) {
+        mMatch = match;
+        mUpdate = update;
         mBinding.updateLayout.setVisibility(View.VISIBLE);
         mViewModel.setFooterVisibility(true);
 
