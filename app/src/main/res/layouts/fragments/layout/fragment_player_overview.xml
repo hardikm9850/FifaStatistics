@@ -9,6 +9,9 @@
         <variable
             name="progressViewModel"
             type="com.example.kevin.fifastatistics.viewmodels.ProgressFragmentViewModel"/>
+
+        <import type="android.view.View"/>
+
     </data>
 
     <FrameLayout
@@ -28,7 +31,8 @@
                 android:descendantFocusability="blocksDescendants">
 
                 <include layout="@layout/user_overview_data_layout"
-                    bind:viewModel="@{viewModel}"/>
+                    bind:viewModel="@{viewModel}"
+                    android:visibility="@{viewModel != null ? View.VISIBLE : View.GONE}"/>
 
             </LinearLayout>
 
