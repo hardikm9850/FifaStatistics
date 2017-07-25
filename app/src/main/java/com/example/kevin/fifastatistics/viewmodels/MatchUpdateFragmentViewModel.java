@@ -16,10 +16,8 @@ import com.example.kevin.fifastatistics.models.databasemodels.match.Match;
 import com.example.kevin.fifastatistics.models.databasemodels.match.MatchUpdate;
 import com.example.kevin.fifastatistics.models.databasemodels.match.MatchUpdateResponse;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
-import com.example.kevin.fifastatistics.models.databasemodels.user.records.Streak;
 import com.example.kevin.fifastatistics.network.FifaApi;
 import com.example.kevin.fifastatistics.network.MatchApi;
-import com.example.kevin.fifastatistics.network.MatchUpdateApi;
 import com.example.kevin.fifastatistics.utils.ObservableUtils;
 import com.example.kevin.fifastatistics.utils.ToastUtils;
 
@@ -79,7 +77,7 @@ public class MatchUpdateFragmentViewModel extends FooterButtonsViewModel {
     }
 
     private boolean isCreatingNewUpdate() {
-        return mType == MatchEditType.CREATE;
+        return mType == MatchEditType.UPDATE;
     }
 
     private <T> void load(Observable<T> observable, final Consumer<T> consumer) {

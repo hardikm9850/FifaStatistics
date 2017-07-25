@@ -109,7 +109,7 @@ public class MatchFragment extends FifaBaseFragment implements MatchFragmentView
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.update:
-                launchMatchUpdater(MatchUpdateActivity.MatchEditType.CREATE);
+                launchMatchUpdater(MatchUpdateActivity.MatchEditType.UPDATE);
                 return true;
             case R.id.view_pending_update:
                 launchMatchUpdater(MatchUpdateActivity.MatchEditType.REVIEW);

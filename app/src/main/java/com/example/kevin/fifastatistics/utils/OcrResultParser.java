@@ -129,7 +129,7 @@ public class OcrResultParser {
         } catch (ArrayIndexOutOfBoundsException e) {
             throw new IOException("Failed to parse OCR result");
         }
-        if (sp.getStatsFor().getTackles() > 30 || sp.getStatsAgainst().getTackles() > 30) {
+        if (sp.getStatsFor().getTackles() > 40 || sp.getStatsAgainst().getTackles() > 40) {
             sp = StatsUtils.shiftStatsUpForPair(sp);
         }
         return sp;
