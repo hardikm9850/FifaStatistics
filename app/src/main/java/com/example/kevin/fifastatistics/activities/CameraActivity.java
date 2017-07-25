@@ -52,8 +52,19 @@ public class CameraActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         ActivityCameraBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_camera);
         mPreprocessor = Preprocessor.PREPROCESSOR_17;
+        makeFullscreen();
         initShutter(binding);
         initCamera(binding);
+    }
+
+    private void makeFullscreen() {
+        getWindow().getDecorView().setSystemUiVisibility(
+                View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                | View.SYSTEM_UI_FLAG_FULLSCREEN
+                | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
     }
 
     private void initShutter(final ActivityCameraBinding binding) {
@@ -88,7 +99,7 @@ public class CameraActivity extends AppCompatActivity {
             }
 
             private int getWidthThatFitsAspectRatio() {
-                float maxWidth = UiUtils.getScreenWidth(CameraActivity.this) - shutterContainer.getWidth();
+                float maxWidth = UiUtils.getRealScreenWidth(CameraActivity.this) - shutterContainer.getWidth();
                 float desiredWidth = CAMERA_VIEW_RATIO * mCamera.getHeight();
                 Log.d("CAMERA", "maxW: " + maxWidth + ", desired: " + desiredWidth);
                 return Math.round(desiredWidth > maxWidth ? maxWidth : desiredWidth);
