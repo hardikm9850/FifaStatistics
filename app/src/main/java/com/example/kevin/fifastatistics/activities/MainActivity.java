@@ -22,6 +22,8 @@ import com.example.kevin.fifastatistics.models.databasemodels.league.Team;
 import com.example.kevin.fifastatistics.models.databasemodels.match.Match;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
 import com.example.kevin.fifastatistics.network.FifaApi;
+import com.example.kevin.fifastatistics.network.service.RegistrationIntentService;
+import com.example.kevin.fifastatistics.network.service.UpdateTokenService;
 import com.example.kevin.fifastatistics.utils.BuildUtils;
 import com.example.kevin.fifastatistics.utils.ColorUtils;
 import com.example.kevin.fifastatistics.utils.FabFactory;
@@ -67,8 +69,8 @@ public class MainActivity extends FifaBaseActivity implements OnMatchCreatedList
         initializeDrawer(savedInstanceState);
         initializeFab();
         initializeFragment();
+        syncRegistrationToken();
         checkForHockeyAppUpdates();
-        Log.d("token", SharedPreferencesManager.getRegistrationToken());
     }
 
     private void restoreInstance(Bundle savedInstanceState) {
@@ -187,6 +189,13 @@ public class MainActivity extends FifaBaseActivity implements OnMatchCreatedList
             manager.startNewFlow();
         });
         mActionMenu.addMenuButton(seriesButton);
+    }
+
+    private void syncRegistrationToken() {
+        if (!SharedPreferencesManager.didSendRegistrationToken()) {
+            Intent intent = new Intent(this, UpdateTokenService.class);
+            startService(intent);
+        }
     }
 
     private void setupFavoriteTeam(final User user) {

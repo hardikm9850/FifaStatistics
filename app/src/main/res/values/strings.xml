@@ -191,6 +191,9 @@
 
     <string name="activity_pick_team">Choose a Team</string>
     <string name="error_loading_teams">Failed to load teams</string>
+    <string name="theme">Theme</string>
+    <string name="general">General</string>
+    <string name="notifications">Notifications</string>
 
     <!-- preferences -->
     <string name="pref_dark_theme">Dark Theme</string>
@@ -198,5 +201,7 @@
     <string name="pref_direct_camera_desc">Immediately open the camera when creating a match</string>
     <string name="pref_favorite_team">Favourite Team</string>
     <string name="pref_team_color_as_accent">Favourite team for accent colour</string>
+    <string name="pref_resend_reg_token">Resend registration token</string>
+    <string name="updating_token">Updating token</string>
 
 </resources>

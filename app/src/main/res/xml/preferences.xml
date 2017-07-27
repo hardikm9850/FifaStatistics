@@ -1,28 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <SwitchPreference
-        android:key="@string/darkTheme"
-        android:title="@string/pref_dark_theme"
-        android:defaultValue="false"/>
+    <PreferenceCategory android:title="@string/general">
 
-    <SwitchPreference
-        android:key="@string/teamAsColor"
-        android:title="@string/pref_team_color_as_accent"
-        android:defaultValue="false"/>
+        <SwitchPreference
+            android:key="@string/openToCamera"
+            android:title="@string/pref_direct_camera"
+            android:summary="@string/pref_direct_camera_desc"
+            android:defaultValue="false"/>
 
-    <SwitchPreference
-        android:key="@string/openToCamera"
-        android:title="@string/pref_direct_camera"
-        android:summary="@string/pref_direct_camera_desc"
-        android:defaultValue="false"/>
+        <Preference
+            android:key="@string/favoriteTeam"
+            android:title="@string/pref_favorite_team"
+            android:summary="-">
+            <intent android:action="com.example.kevin.fifastatistics.activities.PickTeamActivity"/>
+        </Preference>
 
-    <Preference
-        android:key="@string/favoriteTeam"
-        android:title="@string/pref_favorite_team">
+    </PreferenceCategory>
 
-        <intent android:action="com.example.kevin.fifastatistics.activities.PickTeamActivity"/>
+    <PreferenceCategory android:title="@string/theme">
 
-    </Preference>
+        <SwitchPreference
+            android:key="@string/darkTheme"
+            android:title="@string/pref_dark_theme"
+            android:defaultValue="false"/>
+
+        <SwitchPreference
+            android:key="@string/teamAsColor"
+            android:title="@string/pref_team_color_as_accent"
+            android:defaultValue="false"/>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/notifications">
+
+        <Preference
+            android:key="@string/resendRegToken"
+            android:title="@string/pref_resend_reg_token">
+        </Preference>
+
+    </PreferenceCategory>
+
 
 </PreferenceScreen>

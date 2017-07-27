@@ -14,13 +14,11 @@ import com.example.kevin.fifastatistics.utils.UiUtils;
 public class CircularAnimationHelper {
 
     public static void revealOpenCenter(View view, Context context) {
-        int[] c = UiUtils.getCenterCoordinates(view);
-        revealOpen(view, c[0], c[1], 200, context, null);
+        revealOpen(view, view.getWidth() / 2, view.getHeight() / 2, 200, context, null);
     }
 
     public static void revealCloseCenter(View view, Context context) {
-        int[] c = UiUtils.getCenterCoordinates(view);
-        revealClose(view, c[0], c[1], 200, context, null);
+        revealClose(view, view.getWidth() / 2, view.getHeight() / 2, 200, context, null);
     }
 
     public static void revealOpenBottomRight(View view, Context context, final AnimationListener listener) {

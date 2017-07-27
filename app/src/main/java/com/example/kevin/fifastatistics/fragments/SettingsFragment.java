@@ -16,7 +16,9 @@ import com.example.kevin.fifastatistics.interfaces.OnTeamSelectedListener;
 import com.example.kevin.fifastatistics.managers.RetrievalManager;
 import com.example.kevin.fifastatistics.managers.SharedPreferencesManager;
 import com.example.kevin.fifastatistics.models.databasemodels.league.Team;
+import com.example.kevin.fifastatistics.network.service.UpdateTokenService;
 import com.example.kevin.fifastatistics.utils.ObservableUtils;
+import com.example.kevin.fifastatistics.utils.ToastUtils;
 import com.example.kevin.fifastatistics.utils.UserUtils;
 
 import rx.Observable;
@@ -46,6 +48,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements OnTeam
         addPreferencesFromResource(R.xml.preferences);
         initFavoriteTeamPreference();
         initTeamAsColorAccentPreferenceChangeListener();
+        initResendRegTokenPreference();
     }
 
     private void initFavoriteTeamPreference() {
@@ -79,6 +82,17 @@ public class SettingsFragment extends PreferenceFragmentCompat implements OnTeam
                     }
                 }
             }
+            return true;
+        });
+    }
+
+    private void initResendRegTokenPreference() {
+        Preference tokenPref = findPreference(getString(R.string.resendRegToken));
+        tokenPref.setOnPreferenceClickListener(preference -> {
+            ToastUtils.showShortToast(getContext(), R.string.updating_token);
+            SharedPreferencesManager.setDidSendRegistrationToken(false);
+            Intent intent = new Intent(getContext(), UpdateTokenService.class);
+            getActivity().startService(intent);
             return true;
         });
     }

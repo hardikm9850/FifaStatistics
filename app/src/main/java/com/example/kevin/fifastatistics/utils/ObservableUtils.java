@@ -2,10 +2,15 @@ package com.example.kevin.fifastatistics.utils;
 
 import android.util.Log;
 
+import java.util.concurrent.TimeUnit;
+
 import lombok.experimental.UtilityClass;
+import retrofit2.adapter.rxjava.HttpException;
 import rx.Observable;
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Func1;
+import rx.functions.Func2;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 
@@ -63,5 +68,17 @@ public class ObservableUtils {
 
         @Override
         public abstract void onNext(T t);
+    }
+
+    public static Func1<Observable<? extends Throwable>, Observable<?>> getExponentialBackoffRetryWhen() {
+        return error -> error.zipWith(Observable.range(1, 5),
+                (Func2<Throwable, Integer, Integer>) (throwable, retryAttempt) -> retryAttempt)
+                .flatMap((Func1<Integer, Observable<?>>) retryAttempt -> {
+                    if (retryAttempt >= 0) {
+                        return Observable.timer((long) Math.pow(2, retryAttempt), TimeUnit.SECONDS);
+                    } else {
+                        return Observable.error(null);
+                    }
+        });
     }
 }

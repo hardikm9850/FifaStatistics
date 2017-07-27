@@ -15,7 +15,7 @@ import com.example.kevin.fifastatistics.managers.SharedPreferencesManager;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
 import com.example.kevin.fifastatistics.network.FifaApi;
 import com.example.kevin.fifastatistics.network.UserApi;
-import com.example.kevin.fifastatistics.network.gcmnotifications.RegistrationIntentService;
+import com.example.kevin.fifastatistics.network.service.RegistrationIntentService;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;

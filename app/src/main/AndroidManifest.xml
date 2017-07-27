@@ -103,26 +103,23 @@
             android:configChanges="orientation|keyboardHidden">
         </activity>
 
-        <!-- [START gcm_listener] -->
         <service
-            android:name=".network.gcmnotifications.FirebaseListenerService"
+            android:name=".network.service.FirebaseListenerService"
             android:enabled="true"
             android:exported="true">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT"/>
             </intent-filter>
         </service>
-        <!-- [END gcm_listener] -->
 
-
-        <!-- [START instanceId_listener] -->
         <service
-            android:name=".network.gcmnotifications.RegistrationIntentService">
+            android:name=".network.service.RegistrationIntentService">
             <intent-filter>
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
             </intent-filter>
         </service>
-        <!-- [END instanceId_listener] -->
+
+        <service android:name=".network.service.UpdateTokenService"/>
 
     </application>
 

@@ -1,4 +1,4 @@
-package com.example.kevin.fifastatistics.network.gcmnotifications;
+package com.example.kevin.fifastatistics.network.service;
 
 import android.util.Log;
 

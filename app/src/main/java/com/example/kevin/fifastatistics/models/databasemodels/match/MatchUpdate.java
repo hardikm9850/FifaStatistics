@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -66,7 +67,7 @@ public class MatchUpdate extends DatabaseModel {
 
     @Getter
     @Setter
-    public static class Updates {
+    public static class Updates implements Serializable {
 
         /**
          * "possession" : 42
@@ -84,7 +85,7 @@ public class MatchUpdate extends DatabaseModel {
 
     @Getter
     @Setter
-    public static class PenaltiesUpdates {
+    public static class PenaltiesUpdates implements Serializable {
         private Integer winner;
         private Integer loser;
 
