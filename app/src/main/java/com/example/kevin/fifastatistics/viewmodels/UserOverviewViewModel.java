@@ -1,10 +1,13 @@
 package com.example.kevin.fifastatistics.viewmodels;
 
 import android.databinding.Bindable;
+import android.view.View;
 
 import com.example.kevin.fifastatistics.BR;
+import com.example.kevin.fifastatistics.models.databasemodels.match.MatchUpdate;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
 import com.example.kevin.fifastatistics.network.FifaApi;
+import com.example.kevin.fifastatistics.utils.CollectionUtils;
 import com.example.kevin.fifastatistics.utils.ObservableUtils;
 
 import java.util.ArrayList;
@@ -17,11 +20,14 @@ public class UserOverviewViewModel extends FifaBaseViewModel {
     private User mUser;
     private RecordsCardViewModel mRecords;
     private UserOverviewViewModelInteraction mInteraction;
+    private List<MatchUpdate> mMatchUpdates;
 
-    public UserOverviewViewModel(User user, UserOverviewViewModelInteraction interaction) {
+    public UserOverviewViewModel(User user, UserOverviewViewModelInteraction interaction,
+                                 List<MatchUpdate> updates) {
         mUser = user;
         mInteraction = interaction;
         mRecords = new RecordsCardViewModel(user);
+        mMatchUpdates = updates;
     }
 
     public void update() {
@@ -76,6 +82,22 @@ public class UserOverviewViewModel extends FifaBaseViewModel {
     @Bindable
     public String getImageUrl() {
         return mUser != null ? mUser.getImageUrl() : null;
+    }
+
+    @Bindable
+    public int getPendingUpdatesVisibility() {
+        return CollectionUtils.getSize(mMatchUpdates) > 0 ? View.VISIBLE : View.GONE;
+    }
+
+    public void setPendingUpdates(List<MatchUpdate> updates) {
+        mMatchUpdates = updates;
+        notifyPropertyChanged(BR.pendingUpdatesVisibility);
+    }
+
+    public void removePendingUpdate(MatchUpdate update) {
+        if (mMatchUpdates != null && mMatchUpdates.remove(update)) {
+            // UPDATE MATCH UPDATES VIEW MODEL
+        }
     }
 
     @Override

@@ -23,6 +23,7 @@ public class MatchUpdate extends DatabaseModel {
     private String id;
     private String matchId;
     private String creatorId;
+    private String receiverId;
     private String message;
     private Updates updates;
 
@@ -124,6 +125,11 @@ public class MatchUpdate extends DatabaseModel {
 
         public Builder creatorId(String creatorId) {
             update.creatorId = creatorId;
+            return this;
+        }
+
+        public Builder receiverId(String receiverId) {
+            update.receiverId = receiverId;
             return this;
         }
 

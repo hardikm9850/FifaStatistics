@@ -16,6 +16,9 @@ public interface MatchUpdateApi {
     @GET("updates")
     Observable<ApiListResponse<MatchUpdate>> getUpdates();
 
+    @GET("updates/search/findByReceiverId?id={id}")
+    Observable<ApiListResponse<MatchUpdate>> getUpdatesForUser(String userId);
+
     @GET("updates/{id}")
     Observable<MatchUpdate> getUpdate(@Path("id") String id);
 

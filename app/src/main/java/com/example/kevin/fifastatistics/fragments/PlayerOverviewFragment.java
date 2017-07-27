@@ -13,6 +13,7 @@ import com.example.kevin.fifastatistics.databinding.FragmentPlayerOverviewBindin
 import com.example.kevin.fifastatistics.interfaces.OnBackPressedHandler;
 import com.example.kevin.fifastatistics.managers.RetrofitErrorManager;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
+import com.example.kevin.fifastatistics.utils.TransitionUtils;
 import com.example.kevin.fifastatistics.viewmodels.PlayerOverviewFragmentViewModel;
 import com.example.kevin.fifastatistics.viewmodels.UserOverviewViewModel;
 
@@ -60,6 +61,7 @@ public class PlayerOverviewFragment extends FifaBaseFragment implements OnBackPr
         mFragmentViewModel = new PlayerOverviewFragmentViewModel(this, mUserId);
         mBinding.setProgressViewModel(mFragmentViewModel);
         mBinding.nestedScrollView.setOnScrollChangeListener(mScrollListener);
+        TransitionUtils.addTransitionCallbackToBinding(mBinding);
         return mBinding.getRoot();
     }
 
@@ -78,7 +80,7 @@ public class PlayerOverviewFragment extends FifaBaseFragment implements OnBackPr
 
     @Override
     public void onPlayerLoaded(User player) {
-        UserOverviewViewModel viewModel = new UserOverviewViewModel(player, null);
+        UserOverviewViewModel viewModel = new UserOverviewViewModel(player, null, null);
         mBinding.setViewModel(viewModel);
     }
 

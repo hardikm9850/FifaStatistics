@@ -2,16 +2,21 @@ package com.example.kevin.fifastatistics.utils;
 
 import android.app.Activity;
 import android.content.Context;
+import android.databinding.OnRebindCallback;
+import android.databinding.ViewDataBinding;
 import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
+import android.support.transition.TransitionManager;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.util.Pair;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 
+import com.example.kevin.fifastatistics.databinding.FragmentMatchUpdateBinding;
 import com.example.kevin.fifastatistics.interfaces.ImageCallback;
 import com.example.kevin.fifastatistics.interfaces.TransitionStarter;
 import com.nostra13.universalimageloader.core.assist.FailReason;
@@ -172,5 +177,15 @@ public class TransitionUtils {
             return;
         }
         participants.add(new Pair<>(view, view.getTransitionName()));
+    }
+
+    public static <T extends ViewDataBinding> void addTransitionCallbackToBinding(T binding) {
+        binding.addOnRebindCallback(new OnRebindCallback<T>() {
+            @Override
+            public boolean onPreBind(T binding) {
+                TransitionManager.beginDelayedTransition((ViewGroup)binding.getRoot());
+                return super.onPreBind(binding);
+            }
+        });
     }
 }

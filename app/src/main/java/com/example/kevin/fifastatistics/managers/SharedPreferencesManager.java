@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.support.annotation.ColorInt;
+import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 
@@ -12,12 +13,14 @@ import com.example.kevin.fifastatistics.FifaApplication;
 import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.models.databasemodels.league.Team;
 import com.example.kevin.fifastatistics.models.databasemodels.match.Match;
+import com.example.kevin.fifastatistics.models.databasemodels.match.MatchUpdate;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
 import com.example.kevin.fifastatistics.utils.SerializationUtils;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class SharedPreferencesManager {
@@ -32,6 +35,7 @@ public class SharedPreferencesManager {
     private static final String RECENT_TEAMS = "RECENT_TEAMS";
     private static final String COLOR_ACCENT = "COLOR_ACCENT";
     private static final String USERNAME = "USER_NAME";
+    private static final String MATCH_UPDATES = "MATCH_UPDATES";
     private static final String FAVORITE_TEAM;
     private static final String DIRECT_CAMERA;
     private static final String DARK_THEME;
@@ -188,6 +192,31 @@ public class SharedPreferencesManager {
 
     public static List<Match> getCurrentSeries(String opponentId) {
         return getObject(new TypeReference<List<Match>>() {}, CURRENT_SERIES + opponentId);
+    }
+
+    public static void addMatchUpdate(MatchUpdate update) {
+        List<MatchUpdate> updates = getMatchUpdates();
+        updates.add(update);
+        setMatchUpdates(updates);
+    }
+
+    public static void setMatchUpdates(List<MatchUpdate> updates) {
+        editor = preferences.edit();
+        editor.putString(MATCH_UPDATES, SerializationUtils.toJson(updates));
+        editor.apply();
+    }
+
+    public static List<MatchUpdate> removeMatchUpdate(MatchUpdate update) {
+        List<MatchUpdate> updates = getMatchUpdates();
+        updates.remove(update);
+        setMatchUpdates(updates);
+        return updates;
+    }
+
+    @NonNull
+    public static List<MatchUpdate> getMatchUpdates() {
+        List<MatchUpdate> updates = getObject(new TypeReference<List<MatchUpdate>>() {}, MATCH_UPDATES);
+        return updates == null ? new ArrayList<>() : updates;
     }
 
     public static Team getFavoriteTeam() {

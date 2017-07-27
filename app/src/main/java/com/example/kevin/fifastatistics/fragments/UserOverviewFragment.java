@@ -3,16 +3,27 @@ package com.example.kevin.fifastatistics.fragments;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.databinding.FragmentUserOverviewBinding;
+import com.example.kevin.fifastatistics.event.EventBus;
+import com.example.kevin.fifastatistics.event.UpdateRemovedEvent;
 import com.example.kevin.fifastatistics.interfaces.OnBackPressedHandler;
 import com.example.kevin.fifastatistics.managers.SharedPreferencesManager;
+import com.example.kevin.fifastatistics.models.databasemodels.match.MatchUpdate;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
+import com.example.kevin.fifastatistics.network.FifaApi;
+import com.example.kevin.fifastatistics.utils.ObservableUtils;
+import com.example.kevin.fifastatistics.utils.TransitionUtils;
 import com.example.kevin.fifastatistics.viewmodels.UserOverviewViewModel;
+
+import java.util.List;
+
+import rx.Observable;
 
 /**
  * The main overview fragment for the current user.
@@ -44,15 +55,28 @@ public class UserOverviewFragment extends FifaBaseFragment implements OnBackPres
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mUser = SharedPreferencesManager.getUser();
+        observeUpdateRemovedEvents();
+    }
+
+    private void observeUpdateRemovedEvents() {
+        EventBus.getInstance().observeEvents(UpdateRemovedEvent.class).subscribe(event -> {
+            Log.d("Overview", "Observing event removed");
+            MatchUpdate update = event.getUpdate();
+            if (mViewModel != null) {
+                mViewModel.removePendingUpdate(update);
+            }
+        });
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_user_overview, container, false);
-        mViewModel = new UserOverviewViewModel(mUser, this);
+        List<MatchUpdate> updates = SharedPreferencesManager.getMatchUpdates();
+        mViewModel = new UserOverviewViewModel(mUser, this, updates);
         mBinding.setViewModel(mViewModel);
         mBinding.swiperefresh.setOnRefreshListener(() -> mViewModel.update());
         mBinding.scrollview.setOnScrollChangeListener(mScrollListener);
+        TransitionUtils.addTransitionCallbackToBinding(mBinding);
         return mBinding.getRoot();
     }
 
@@ -76,11 +100,15 @@ public class UserOverviewFragment extends FifaBaseFragment implements OnBackPres
     @Override
     public void onStop() {
         super.onStop();
-        mBinding.swiperefresh.setRefreshing(false);
+        stopRefreshing();
         mBinding.swiperefresh.setEnabled(false);
         if (mViewModel != null) {
             mViewModel.unsubscribeAll();
         }
+    }
+
+    private void stopRefreshing() {
+        mBinding.swiperefresh.setRefreshing(false);
     }
 
     private void refresh() {
@@ -95,14 +123,44 @@ public class UserOverviewFragment extends FifaBaseFragment implements OnBackPres
 
     @Override
     public void onUserUpdateSuccess(User user) {
-        mBinding.swiperefresh.setRefreshing(false);
         sIsUpdated = true;
         SharedPreferencesManager.storeUser(user);
+        checkMatchUpdates(user);
+    }
+
+    private void checkMatchUpdates(User user) {
+        int pendingUpdateCount = user.getPendingUpdateCount();
+        if (pendingUpdateCount > 0) {
+            Observable.<List<MatchUpdate>>create(s -> s.onNext(SharedPreferencesManager.getMatchUpdates()))
+                    .compose(ObservableUtils.applySchedulers())
+                    .subscribe(updates -> {
+                        if (pendingUpdateCount != updates.size()) {
+                            syncMatchUpdates(user.getId());
+                        } else {
+                            stopRefreshing();
+                        }
+                    });
+        } else {
+            stopRefreshing();
+        }
+    }
+
+    private void syncMatchUpdates(String userId) {
+        FifaApi.getUpdateApi().getUpdatesForUser(userId)
+                .compose(ObservableUtils.applySchedulers())
+                .doOnError(t -> onUserUpdateFailure())
+                .subscribe(response -> {
+                    List<MatchUpdate> updates = response.getItems();
+                    SharedPreferencesManager.setMatchUpdates(updates);
+                    stopRefreshing();
+                    mViewModel.setPendingUpdates(updates);
+                });
     }
 
     @Override
     public void onUserUpdateFailure() {
-        mBinding.swiperefresh.setRefreshing(false);
+        stopRefreshing();
+        // TODO show sync failed message
         sIsUpdated = false;
     }
 }

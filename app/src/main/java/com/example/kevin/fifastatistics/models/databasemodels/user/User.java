@@ -38,6 +38,7 @@ public class User extends DatabaseModel implements Player {
     private StatsPair averageStats;
     private UserRecords matchRecords;
     private UserRecords seriesRecords;
+    private int pendingUpdateCount;
 
     public static User fromFriend(Friend friend) {
         User user = new User();

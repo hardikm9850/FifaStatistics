@@ -12,6 +12,7 @@ import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.databinding.FragmentMatchUpdateBinding;
 import com.example.kevin.fifastatistics.interfaces.Consumer;
 import com.example.kevin.fifastatistics.listeners.SimpleObserver;
+import com.example.kevin.fifastatistics.managers.SharedPreferencesManager;
 import com.example.kevin.fifastatistics.models.databasemodels.match.Match;
 import com.example.kevin.fifastatistics.models.databasemodels.match.MatchUpdate;
 import com.example.kevin.fifastatistics.models.databasemodels.match.MatchUpdateResponse;
@@ -154,7 +155,7 @@ public class MatchUpdateFragmentViewModel extends FooterButtonsViewModel {
     public void onRightButtonClick(View button) {
         MatchUpdate update = mUpdateStatsCardViewModel.build();
         if (mType == MatchEditType.REVIEW) {
-            approveUpdate(update.getId());
+            approveUpdate(update);
         } else {
             if (!update.hasUpdates()) {
                 ToastUtils.showShortToast(mContext, R.string.error_empty_update);
@@ -164,13 +165,14 @@ public class MatchUpdateFragmentViewModel extends FooterButtonsViewModel {
         }
     }
 
-    private void approveUpdate(String updateId) {
-        Subscription s = FifaApi.getUpdateApi().acceptUpdate(updateId, new MatchUpdateResponse())
+    private void approveUpdate(MatchUpdate update) {
+        Subscription s = FifaApi.getUpdateApi().acceptUpdate(update.getId(), new MatchUpdateResponse())
                 .compose(ObservableUtils.applySchedulers())
                 .subscribe(new SimpleObserver<Response<Void>>() {
                     @Override
                     public void onNext(Response<Void> v) {
-                        mInteraction.onUpdateAccepted();
+                        SharedPreferencesManager.removeMatchUpdate(update);
+                        mInteraction.onUpdateAccepted(update);
                     }
 
                     @Override
@@ -223,7 +225,8 @@ public class MatchUpdateFragmentViewModel extends FooterButtonsViewModel {
                 .subscribe(new SimpleObserver<Response<Void>>() {
                     @Override
                     public void onNext(Response<Void> response) {
-                        mInteraction.onUpdateDeclined();
+                        SharedPreferencesManager.removeMatchUpdate(update);
+                        mInteraction.onUpdateDeclined(update);
                     }
 
                     @Override
@@ -278,9 +281,9 @@ public class MatchUpdateFragmentViewModel extends FooterButtonsViewModel {
         void onUpdateLoadFailed(Throwable e);
         void onUpdateCreated();
         void onUpdateCreateFailed(Throwable e);
-        void onUpdateAccepted();
+        void onUpdateAccepted(MatchUpdate update);
         void onUpdateAcceptFailed(Throwable e);
-        void onUpdateDeclined();
+        void onUpdateDeclined(MatchUpdate update);
         void onUpdateDeclineFailed(Throwable e);
     }
 }

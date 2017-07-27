@@ -4,6 +4,7 @@ import android.databinding.DataBindingUtil;
 import android.databinding.OnRebindCallback;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.annotation.StringRes;
 import android.support.transition.TransitionManager;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
@@ -13,6 +14,8 @@ import android.view.ViewGroup;
 import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.animation.AnimationBindingAdapter;
 import com.example.kevin.fifastatistics.databinding.FragmentMatchUpdateBinding;
+import com.example.kevin.fifastatistics.event.EventBus;
+import com.example.kevin.fifastatistics.event.UpdateRemovedEvent;
 import com.example.kevin.fifastatistics.interfaces.OnBackPressedHandler;
 import com.example.kevin.fifastatistics.managers.RetrofitErrorManager;
 import com.example.kevin.fifastatistics.models.databasemodels.match.Match;
@@ -22,6 +25,7 @@ import com.example.kevin.fifastatistics.network.FifaApi;
 import com.example.kevin.fifastatistics.utils.BuildUtils;
 import com.example.kevin.fifastatistics.utils.ObservableUtils;
 import com.example.kevin.fifastatistics.utils.ToastUtils;
+import com.example.kevin.fifastatistics.utils.TransitionUtils;
 import com.example.kevin.fifastatistics.viewmodels.MatchUpdateFragmentViewModel;
 import com.example.kevin.fifastatistics.views.notifications.FifaNotification;
 import com.example.kevin.fifastatistics.views.notifications.FifaNotificationFactory;
@@ -88,19 +92,9 @@ public class MatchUpdateFragment extends FifaBaseFragment implements OnBackPress
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_match_update, container, false);
         mViewModel = new MatchUpdateFragmentViewModel(mMatch, mUpdate, mUser, getContext(), this, mBinding, mType, mUpdateId);
-        addTransitionCallbackToBinding(mBinding);
+        TransitionUtils.addTransitionCallbackToBinding(mBinding);
         mBinding.setViewModel(mViewModel);
         return mBinding.getRoot();
-    }
-
-    private void addTransitionCallbackToBinding(FragmentMatchUpdateBinding binding) {
-        binding.addOnRebindCallback(new OnRebindCallback<FragmentMatchUpdateBinding>() {
-            @Override
-            public boolean onPreBind(FragmentMatchUpdateBinding binding) {
-                TransitionManager.beginDelayedTransition((ViewGroup)binding.getRoot());
-                return super.onPreBind(binding);
-            }
-        });
     }
 
     @Override
@@ -162,8 +156,14 @@ public class MatchUpdateFragment extends FifaBaseFragment implements OnBackPress
     }
 
     @Override
-    public void onUpdateAccepted() {
-        ToastUtils.showShortToast(getContext(), R.string.request_approved);
+    public void onUpdateAccepted(MatchUpdate update) {
+        onUpdateRemoved(update, R.string.request_approved);
+    }
+
+    private void onUpdateRemoved(MatchUpdate update, @StringRes int message) {
+        ToastUtils.showShortToast(getContext(), message);
+        EventBus bus = EventBus.getInstance();
+        bus.post(new UpdateRemovedEvent(update));
         getActivity().finish();
     }
 
@@ -173,9 +173,8 @@ public class MatchUpdateFragment extends FifaBaseFragment implements OnBackPress
     }
 
     @Override
-    public void onUpdateDeclined() {
-        ToastUtils.showShortToast(getContext(), R.string.request_declined);
-        getActivity().finish();
+    public void onUpdateDeclined(MatchUpdate update) {
+        onUpdateRemoved(update, R.string.request_declined);
     }
 
     @Override

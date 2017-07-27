@@ -47,7 +47,9 @@ public class UpdateCreatedNotification extends FifaNotification {
     }
 
     @Override
-    protected void performPreSendActions() {}
+    protected void performPreSendActions() {
+
+    }
 
     @Override
     protected int getNotificationId() {
