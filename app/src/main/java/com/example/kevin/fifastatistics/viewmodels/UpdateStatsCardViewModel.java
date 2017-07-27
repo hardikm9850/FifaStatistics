@@ -379,6 +379,7 @@ public class UpdateStatsCardViewModel extends FifaBaseViewModel {
                 .creatorId(mUser.getId())
                 .receiverId(mMatchUpdate != null ? mMatchUpdate.getReceiverId() : null)
                 .matchId(mMatch.getId())
+                .id(mMatchUpdate != null ? mMatchUpdate.getId() : null)
                 .build();
     }
 

@@ -86,7 +86,7 @@ public class UserOverviewViewModel extends FifaBaseViewModel {
 
     @Bindable
     public int getPendingUpdatesVisibility() {
-        return CollectionUtils.getSize(mMatchUpdates) > 0 ? View.VISIBLE : View.GONE;
+        return !CollectionUtils.isEmpty(mMatchUpdates) ? View.VISIBLE : View.GONE;
     }
 
     public void setPendingUpdates(List<MatchUpdate> updates) {

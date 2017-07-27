@@ -133,6 +133,11 @@ public class MatchUpdate extends DatabaseModel {
             return this;
         }
 
+        public Builder id(String id) {
+            update.id = id;
+            return this;
+        }
+
         public UpdatesBuilder statsFor() {
             if (update.updates.statsForUpdates == null) {
                 update.updates.statsForUpdates = new HashMap<>();
