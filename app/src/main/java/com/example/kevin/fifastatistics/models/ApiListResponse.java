@@ -81,6 +81,7 @@ public class ApiListResponse<T> {
         private Link teams;
         private Link league;
         private Link matchUpdate;
+        private Link update;
     }
 
     @Getter

@@ -1,4 +1,4 @@
-package com.example.kevin.fifastatistics.managers;
+package com.example.kevin.fifastatistics.views.databinding;
 
 import android.databinding.BindingAdapter;
 import android.support.annotation.DrawableRes;

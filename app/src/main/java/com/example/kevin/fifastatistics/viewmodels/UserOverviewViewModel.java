@@ -1,13 +1,12 @@
 package com.example.kevin.fifastatistics.viewmodels;
 
 import android.databinding.Bindable;
-import android.view.View;
 
 import com.example.kevin.fifastatistics.BR;
+import com.example.kevin.fifastatistics.interfaces.ActivityLauncher;
 import com.example.kevin.fifastatistics.models.databasemodels.match.MatchUpdate;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
 import com.example.kevin.fifastatistics.network.FifaApi;
-import com.example.kevin.fifastatistics.utils.CollectionUtils;
 import com.example.kevin.fifastatistics.utils.ObservableUtils;
 
 import java.util.ArrayList;
@@ -20,13 +19,19 @@ public class UserOverviewViewModel extends FifaBaseViewModel {
     private User mUser;
     private RecordsCardViewModel mRecords;
     private UserOverviewViewModelInteraction mInteraction;
+    private UpdatesCardViewModel mUpdatesViewModel;
     private List<MatchUpdate> mMatchUpdates;
 
+    public UserOverviewViewModel(User user) {
+        this(user, null, null, null);
+    }
+
     public UserOverviewViewModel(User user, UserOverviewViewModelInteraction interaction,
-                                 List<MatchUpdate> updates) {
+                                 List<MatchUpdate> updates, ActivityLauncher launcher) {
         mUser = user;
         mInteraction = interaction;
         mRecords = new RecordsCardViewModel(user);
+        mUpdatesViewModel = new UpdatesCardViewModel(launcher, updates);
         mMatchUpdates = updates;
     }
 
@@ -63,6 +68,11 @@ public class UserOverviewViewModel extends FifaBaseViewModel {
     }
 
     @Bindable
+    public UpdatesCardViewModel getUpdates() {
+        return mUpdatesViewModel;
+    }
+
+    @Bindable
     public List<User.StatsPair> getStats() {
         if (mUser != null) {
             List<User.StatsPair> stats = new ArrayList<>();
@@ -84,20 +94,12 @@ public class UserOverviewViewModel extends FifaBaseViewModel {
         return mUser != null ? mUser.getImageUrl() : null;
     }
 
-    @Bindable
-    public int getPendingUpdatesVisibility() {
-        return !CollectionUtils.isEmpty(mMatchUpdates) ? View.VISIBLE : View.GONE;
-    }
-
     public void setPendingUpdates(List<MatchUpdate> updates) {
-        mMatchUpdates = updates;
-        notifyPropertyChanged(BR.pendingUpdatesVisibility);
+        mUpdatesViewModel.setPendingUpdates(updates);
     }
 
     public void removePendingUpdate(MatchUpdate update) {
-        if (mMatchUpdates != null && mMatchUpdates.remove(update)) {
-            // UPDATE MATCH UPDATES VIEW MODEL
-        }
+        mUpdatesViewModel.removePendingUpdate(update);
     }
 
     @Override

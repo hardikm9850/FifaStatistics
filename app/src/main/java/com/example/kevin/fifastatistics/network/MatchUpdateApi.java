@@ -9,6 +9,7 @@ import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 import rx.Observable;
 
 public interface MatchUpdateApi {
@@ -16,8 +17,8 @@ public interface MatchUpdateApi {
     @GET("updates")
     Observable<ApiListResponse<MatchUpdate>> getUpdates();
 
-    @GET("updates/search/findByReceiverId?id={id}")
-    Observable<ApiListResponse<MatchUpdate>> getUpdatesForUser(String userId);
+    @GET("updates/search/findByReceiverId")
+    Observable<ApiListResponse<MatchUpdate>> getUpdatesForUser(@Query("id") String userId);
 
     @GET("updates/{id}")
     Observable<MatchUpdate> getUpdate(@Path("id") String id);

@@ -177,6 +177,8 @@
     <string name="match">Match</string>
     <string name="title_activity_match_update">Request update</string>
     <string name="review_update">Review update</string>
+    <string name="pending_updates">Pending Updates</string>
+    <string name="review">Review</string>
     <string name="create_request">Create</string>
     <string name="reject">Reject</string>
     <string name="approve">Approve</string>

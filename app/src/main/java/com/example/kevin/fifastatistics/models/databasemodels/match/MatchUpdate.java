@@ -25,6 +25,7 @@ public class MatchUpdate extends DatabaseModel {
     private String creatorId;
     private String receiverId;
     private String message;
+    private String summary;
     private Updates updates;
 
     @JsonProperty("_links")

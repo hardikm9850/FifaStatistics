@@ -14,14 +14,9 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/activity_vertical_margin">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/activity_horizontal_margin"
-            android:layout_marginTop="@dimen/activity_vertical_margin"
-            android:layout_marginBottom="@dimen/activity_horizontal_margin"
-            android:textAppearance="@style/text_bold_grey_small"
-            android:text="@string/records"/>
+        <include
+            layout="@layout/card_pending_updates"
+            bind:viewModel="@{viewModel.updates}"/>
 
         <include
             layout="@layout/records_card_view"

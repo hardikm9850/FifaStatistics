@@ -1,11 +1,9 @@
 package com.example.kevin.fifastatistics.fragments;
 
 import android.databinding.DataBindingUtil;
-import android.databinding.OnRebindCallback;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
-import android.support.transition.TransitionManager;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,7 +15,9 @@ import com.example.kevin.fifastatistics.databinding.FragmentMatchUpdateBinding;
 import com.example.kevin.fifastatistics.event.EventBus;
 import com.example.kevin.fifastatistics.event.UpdateRemovedEvent;
 import com.example.kevin.fifastatistics.interfaces.OnBackPressedHandler;
+import com.example.kevin.fifastatistics.managers.RetrievalManager;
 import com.example.kevin.fifastatistics.managers.RetrofitErrorManager;
+import com.example.kevin.fifastatistics.managers.SharedPreferencesManager;
 import com.example.kevin.fifastatistics.models.databasemodels.match.Match;
 import com.example.kevin.fifastatistics.models.databasemodels.match.MatchUpdate;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
@@ -136,7 +136,15 @@ public class MatchUpdateFragment extends FifaBaseFragment implements OnBackPress
         mUpdate = update;
         AnimationBindingAdapter.alphaScale(mBinding.updateLayout, View.VISIBLE);
         mViewModel.setFooterVisibility(true);
+        addUpdateToStoredPendingUpdates(update);
+    }
 
+    private void addUpdateToStoredPendingUpdates(MatchUpdate update) {
+        RetrievalManager.getLocalPendingUpdates().subscribe(updates -> {
+            if (update != null && !updates.contains(update)) {
+                SharedPreferencesManager.addMatchUpdate(update);
+            }
+        });
     }
 
     @Override

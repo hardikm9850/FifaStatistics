@@ -4,6 +4,7 @@ import com.example.kevin.fifastatistics.models.ApiListResponse;
 import com.example.kevin.fifastatistics.models.databasemodels.league.League;
 import com.example.kevin.fifastatistics.models.databasemodels.league.Team;
 import com.example.kevin.fifastatistics.models.databasemodels.match.Match;
+import com.example.kevin.fifastatistics.models.databasemodels.match.MatchUpdate;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
 import com.example.kevin.fifastatistics.network.FifaApi;
 import com.example.kevin.fifastatistics.utils.ObservableUtils;
@@ -43,6 +44,11 @@ public class RetrievalManager {
                     .compose(ObservableUtils.applySchedulers())
                     .map(users -> cachedUsers = users);
         }
+    }
+
+    public static Observable<List<MatchUpdate>> getLocalPendingUpdates() {
+        return Observable.<List<MatchUpdate>>create(s -> s.onNext(SharedPreferencesManager.getMatchUpdates()))
+                .compose(ObservableUtils.applyBackground());
     }
 
     public static Observable<List<User>> getUsersWithoutCurrentUser() {

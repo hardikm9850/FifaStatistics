@@ -13,7 +13,9 @@ import com.example.kevin.fifastatistics.databinding.FragmentUserOverviewBinding;
 import com.example.kevin.fifastatistics.event.EventBus;
 import com.example.kevin.fifastatistics.event.UpdateRemovedEvent;
 import com.example.kevin.fifastatistics.interfaces.OnBackPressedHandler;
+import com.example.kevin.fifastatistics.listeners.SimpleObserver;
 import com.example.kevin.fifastatistics.managers.SharedPreferencesManager;
+import com.example.kevin.fifastatistics.models.ApiListResponse;
 import com.example.kevin.fifastatistics.models.databasemodels.match.MatchUpdate;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
 import com.example.kevin.fifastatistics.network.FifaApi;
@@ -72,7 +74,7 @@ public class UserOverviewFragment extends FifaBaseFragment implements OnBackPres
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_user_overview, container, false);
         List<MatchUpdate> updates = SharedPreferencesManager.getMatchUpdates();
-        mViewModel = new UserOverviewViewModel(mUser, this, updates);
+        mViewModel = new UserOverviewViewModel(mUser, this, updates, this);
         mBinding.setViewModel(mViewModel);
         mBinding.swiperefresh.setOnRefreshListener(() -> mViewModel.update());
         mBinding.scrollview.setOnScrollChangeListener(mScrollListener);
@@ -148,12 +150,19 @@ public class UserOverviewFragment extends FifaBaseFragment implements OnBackPres
     private void syncMatchUpdates(String userId) {
         FifaApi.getUpdateApi().getUpdatesForUser(userId)
                 .compose(ObservableUtils.applySchedulers())
-                .doOnError(t -> onUserUpdateFailure())
-                .subscribe(response -> {
-                    List<MatchUpdate> updates = response.getItems();
-                    SharedPreferencesManager.setMatchUpdates(updates);
-                    stopRefreshing();
-                    mViewModel.setPendingUpdates(updates);
+                .subscribe(new SimpleObserver<ApiListResponse<MatchUpdate>>() {
+                    @Override
+                    public void onError(Throwable e) {
+                        onUserUpdateFailure();
+                    }
+
+                    @Override
+                    public void onNext(ApiListResponse<MatchUpdate> response) {
+                        List<MatchUpdate> updates = response.getItems();
+                        SharedPreferencesManager.setMatchUpdates(updates);
+                        stopRefreshing();
+                        mViewModel.setPendingUpdates(updates);
+                    }
                 });
     }
 
