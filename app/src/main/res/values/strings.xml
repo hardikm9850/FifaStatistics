@@ -85,6 +85,7 @@
     <string name="notification_accept">ACCEPT</string>
     <string name="notification_decline">DECLINE</string>
     <string name="view">View</string>
+    <string name="view_match">View match</string>
 
     <string name="error_generic">Something went wrong</string>
 
