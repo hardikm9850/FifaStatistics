@@ -138,7 +138,7 @@ public class UserOverviewFragment extends FifaBaseFragment implements OnBackPres
                 .onSyncSuccessHandler(updates -> mViewModel.setPendingUpdates(updates))
                 .onSyncCompleteHandler(this::stopRefreshing)
                 .build();
-        s.sync();
+        addSubscription(s.sync());
     }
 
     @Override

@@ -18,6 +18,7 @@ import com.example.kevin.fifastatistics.fragments.initializers.OverviewFragmentI
 import com.example.kevin.fifastatistics.interfaces.OnBackPressedHandler;
 import com.example.kevin.fifastatistics.interfaces.OnMatchCreatedListener;
 import com.example.kevin.fifastatistics.listeners.FabScrollListener;
+import com.example.kevin.fifastatistics.managers.FavoriteTeamSynchronizer;
 import com.example.kevin.fifastatistics.managers.FifaEventManager;
 import com.example.kevin.fifastatistics.managers.RetrievalManager;
 import com.example.kevin.fifastatistics.managers.SharedPreferencesManager;
@@ -202,27 +203,7 @@ public class MainActivity extends FifaBaseActivity implements OnMatchCreatedList
     }
 
     private void setupFavoriteTeam(final User user) {
-        Subscription sub = Observable.<String>create(s -> {
-            Team favTeam = SharedPreferencesManager.getFavoriteTeam();
-            if (user.getFavoriteTeamId() != null && favTeam == null) {
-                s.onNext(user.getFavoriteTeamId());
-            } else {
-                s.onNext(null);
-            }
-        }).flatMap(id -> {
-            if (id != null) {
-                return FifaApi.getLeagueApi().getTeam(id);
-            } else {
-                return Observable.empty();
-            }
-        }).compose(ObservableUtils.applyBackground()).subscribe(new ObservableUtils.OnNextObserver<Team>() {
-            @Override
-            public void onNext(Team team) {
-                if (team != null) {
-                    SharedPreferencesManager.setFavoriteTeam(team);
-                }
-            }
-        });
+        Subscription sub = FavoriteTeamSynchronizer.with(user).sync();
         addSubscription(sub);
     }
 

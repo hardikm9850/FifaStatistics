@@ -12,6 +12,7 @@ import java.util.List;
 
 import lombok.Builder;
 import rx.Observable;
+import rx.Subscription;
 import rx.functions.Action0;
 
 public class MatchUpdateSynchronizer {
@@ -30,42 +31,42 @@ public class MatchUpdateSynchronizer {
         this.onSyncCompleteHandler = onSyncCompleteHandler;
     }
 
-    public void sync() {
+    public Subscription sync() {
         int pendingUpdateCount = user.getPendingUpdateCount();
         if (pendingUpdateCount > 0) {
-            Observable.<List<MatchUpdate>>create(s -> s.onNext(SharedPreferencesManager.getMatchUpdates()))
+            return Observable.<List<MatchUpdate>>create(s -> s.onNext(SharedPreferencesManager.getMatchUpdates()))
+                    .flatMap(this::syncMatchUpdates)
                     .compose(ObservableUtils.applySchedulers())
-                    .subscribe(updates -> {
-                        if (pendingUpdateCount != updates.size()) {
-                            syncMatchUpdates(user.getId());
-                        } else {
+                    .subscribe(new SimpleObserver<ApiListResponse<MatchUpdate>>() {
+                        @Override
+                        public void onError(Throwable e) {
+                            if (onSyncErrorHandler != null) {
+                                onSyncErrorHandler.accept(e);
+                            }
+                        }
+
+                        @Override
+                        public void onNext(ApiListResponse<MatchUpdate> response) {
                             complete();
+                            if (response != null) {
+                                List<MatchUpdate> updates = response.getItems();
+                                SharedPreferencesManager.setMatchUpdates(updates);
+                                succeed(updates);
+                            }
                         }
                     });
         } else {
             complete();
+            return null;
         }
     }
 
-    private void syncMatchUpdates(String userId) {
-        FifaApi.getUpdateApi().getUpdatesForUser(userId)
-                .compose(ObservableUtils.applySchedulers())
-                .subscribe(new SimpleObserver<ApiListResponse<MatchUpdate>>() {
-                    @Override
-                    public void onError(Throwable e) {
-                        if (onSyncErrorHandler != null) {
-                            onSyncErrorHandler.accept(e);
-                        }
-                    }
-
-                    @Override
-                    public void onNext(ApiListResponse<MatchUpdate> response) {
-                        List<MatchUpdate> updates = response.getItems();
-                        SharedPreferencesManager.setMatchUpdates(updates);
-                        succeed(updates);
-                        complete();
-                    }
-                });
+    private Observable<ApiListResponse<MatchUpdate>> syncMatchUpdates(List<MatchUpdate> matches) {
+        if (user.getPendingUpdateCount() != matches.size()) {
+            return FifaApi.getUpdateApi().getUpdatesForUser(user.getId());
+        } else {
+            return Observable.just(null);
+        }
     }
 
     private void succeed(List<MatchUpdate> updates) {
