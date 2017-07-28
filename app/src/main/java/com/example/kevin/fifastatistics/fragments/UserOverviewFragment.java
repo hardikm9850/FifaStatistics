@@ -14,6 +14,7 @@ import com.example.kevin.fifastatistics.event.EventBus;
 import com.example.kevin.fifastatistics.event.UpdateRemovedEvent;
 import com.example.kevin.fifastatistics.interfaces.OnBackPressedHandler;
 import com.example.kevin.fifastatistics.listeners.SimpleObserver;
+import com.example.kevin.fifastatistics.managers.MatchUpdateSynchronizer;
 import com.example.kevin.fifastatistics.managers.SharedPreferencesManager;
 import com.example.kevin.fifastatistics.models.ApiListResponse;
 import com.example.kevin.fifastatistics.models.databasemodels.match.MatchUpdate;
@@ -131,39 +132,13 @@ public class UserOverviewFragment extends FifaBaseFragment implements OnBackPres
     }
 
     private void checkMatchUpdates(User user) {
-        int pendingUpdateCount = user.getPendingUpdateCount();
-        if (pendingUpdateCount > 0) {
-            Observable.<List<MatchUpdate>>create(s -> s.onNext(SharedPreferencesManager.getMatchUpdates()))
-                    .compose(ObservableUtils.applySchedulers())
-                    .subscribe(updates -> {
-                        if (pendingUpdateCount != updates.size()) {
-                            syncMatchUpdates(user.getId());
-                        } else {
-                            stopRefreshing();
-                        }
-                    });
-        } else {
-            stopRefreshing();
-        }
-    }
-
-    private void syncMatchUpdates(String userId) {
-        FifaApi.getUpdateApi().getUpdatesForUser(userId)
-                .compose(ObservableUtils.applySchedulers())
-                .subscribe(new SimpleObserver<ApiListResponse<MatchUpdate>>() {
-                    @Override
-                    public void onError(Throwable e) {
-                        onUserUpdateFailure();
-                    }
-
-                    @Override
-                    public void onNext(ApiListResponse<MatchUpdate> response) {
-                        List<MatchUpdate> updates = response.getItems();
-                        SharedPreferencesManager.setMatchUpdates(updates);
-                        stopRefreshing();
-                        mViewModel.setPendingUpdates(updates);
-                    }
-                });
+        MatchUpdateSynchronizer s = MatchUpdateSynchronizer.builder()
+                .user(user)
+                .onSyncErrorHandler(e -> onUserUpdateFailure())
+                .onSyncSuccessHandler(updates -> mViewModel.setPendingUpdates(updates))
+                .onSyncCompleteHandler(this::stopRefreshing)
+                .build();
+        s.sync();
     }
 
     @Override
