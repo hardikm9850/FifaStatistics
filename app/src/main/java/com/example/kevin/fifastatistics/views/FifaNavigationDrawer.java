@@ -66,6 +66,10 @@ public class FifaNavigationDrawer {
         mDrawer.getDrawerLayout().setDrawerLockMode(mode);
     }
 
+    public boolean isOpen() {
+        return mDrawer.isDrawerOpen();
+    }
+
     public void setPosition(int position) {
         mDrawer.setSelectionAtPosition(position);
     }

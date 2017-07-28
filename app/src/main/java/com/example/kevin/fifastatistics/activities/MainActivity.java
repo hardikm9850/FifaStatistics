@@ -3,6 +3,7 @@ package com.example.kevin.fifastatistics.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -10,8 +11,10 @@ import android.view.View;
 
 import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.adapters.FragmentAdapter;
+import com.example.kevin.fifastatistics.fragments.UserOverviewFragment;
 import com.example.kevin.fifastatistics.fragments.initializers.FragmentInitializer;
 import com.example.kevin.fifastatistics.fragments.initializers.FragmentInitializerFactory;
+import com.example.kevin.fifastatistics.fragments.initializers.OverviewFragmentInitializer;
 import com.example.kevin.fifastatistics.interfaces.OnBackPressedHandler;
 import com.example.kevin.fifastatistics.interfaces.OnMatchCreatedListener;
 import com.example.kevin.fifastatistics.listeners.FabScrollListener;
@@ -265,9 +268,18 @@ public class MainActivity extends FifaBaseActivity implements OnMatchCreatedList
     public void onBackPressed() {
         if (mActionMenu.isOpened()) {
             mActionMenu.close(true);
+        } else if (mDrawer.isOpen()) {
+            mDrawer.closeDrawer();
+        } else if (!performHandlerBackPress() && !(getCurrentFragment() instanceof UserOverviewFragment)) {
+            FragmentInitializer initializer = new OverviewFragmentInitializer();
+            prepareActivityForFragments(initializer);
         } else {
             super.onBackPressed();
         }
+    }
+
+    private Fragment getCurrentFragment() {
+        return mAdapter.getItem(0);
     }
 
     @Override
