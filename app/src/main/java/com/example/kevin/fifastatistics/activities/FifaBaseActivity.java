@@ -55,6 +55,10 @@ public abstract class FifaBaseActivity extends AppCompatActivity implements Tran
         super.onBackPressed();
     }
 
+    protected void superOnBackPressed() {
+        super.onBackPressed();
+    }
+
     @Override
     protected void onPause() {
         super.onPause();

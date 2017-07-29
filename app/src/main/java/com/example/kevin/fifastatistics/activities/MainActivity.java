@@ -6,7 +6,6 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 
 import com.example.kevin.fifastatistics.R;
@@ -14,7 +13,6 @@ import com.example.kevin.fifastatistics.adapters.FragmentAdapter;
 import com.example.kevin.fifastatistics.fragments.UserOverviewFragment;
 import com.example.kevin.fifastatistics.fragments.initializers.FragmentInitializer;
 import com.example.kevin.fifastatistics.fragments.initializers.FragmentInitializerFactory;
-import com.example.kevin.fifastatistics.fragments.initializers.OverviewFragmentInitializer;
 import com.example.kevin.fifastatistics.interfaces.OnBackPressedHandler;
 import com.example.kevin.fifastatistics.interfaces.OnMatchCreatedListener;
 import com.example.kevin.fifastatistics.listeners.FabScrollListener;
@@ -22,11 +20,8 @@ import com.example.kevin.fifastatistics.managers.FavoriteTeamSynchronizer;
 import com.example.kevin.fifastatistics.managers.FifaEventManager;
 import com.example.kevin.fifastatistics.managers.RetrievalManager;
 import com.example.kevin.fifastatistics.managers.SharedPreferencesManager;
-import com.example.kevin.fifastatistics.models.databasemodels.league.Team;
 import com.example.kevin.fifastatistics.models.databasemodels.match.Match;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
-import com.example.kevin.fifastatistics.network.FifaApi;
-import com.example.kevin.fifastatistics.network.service.RegistrationIntentService;
 import com.example.kevin.fifastatistics.network.service.UpdateTokenService;
 import com.example.kevin.fifastatistics.utils.BuildUtils;
 import com.example.kevin.fifastatistics.utils.ColorUtils;
@@ -251,12 +246,12 @@ public class MainActivity extends FifaBaseActivity implements OnMatchCreatedList
             mActionMenu.close(true);
         } else if (mDrawer.isOpen()) {
             mDrawer.closeDrawer();
-        } else if (!performHandlerBackPress() && !(getCurrentFragment() instanceof UserOverviewFragment)) {
-//            FragmentInitializer initializer = new OverviewFragmentInitializer();
-//            prepareActivityForFragments(initializer);
+        } else if (performHandlerBackPress()) {
+            return;
+        } else if (!(getCurrentFragment() instanceof UserOverviewFragment)) {
             mDrawer.setPosition(1);
         } else {
-            super.onBackPressed();
+            superOnBackPressed();
         }
     }
 
