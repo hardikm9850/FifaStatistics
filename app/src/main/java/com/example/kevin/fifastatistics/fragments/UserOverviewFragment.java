@@ -79,7 +79,7 @@ public class UserOverviewFragment extends FifaBaseFragment implements OnBackPres
         mBinding.setViewModel(mViewModel);
         mBinding.swiperefresh.setOnRefreshListener(() -> mViewModel.update());
         mBinding.scrollview.setOnScrollChangeListener(mScrollListener);
-        TransitionUtils.addTransitionCallbackToBinding(mBinding);
+        TransitionUtils.addTransitionCallbackToBinding(mBinding.overviewLayout.statsCardLayout);
         return mBinding.getRoot();
     }
 

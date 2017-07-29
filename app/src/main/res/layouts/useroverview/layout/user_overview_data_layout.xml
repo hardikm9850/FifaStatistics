@@ -23,6 +23,7 @@
             bind:viewModel="@{viewModel.records}"/>
 
         <include
+            android:id="@+id/stats_card_layout"
             layout="@layout/card_stats"
             bind:stats="@{viewModel.stats}"
             bind:title="@{viewModel.name}"/>

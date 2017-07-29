@@ -92,7 +92,7 @@ public class MatchUpdateFragment extends FifaBaseFragment implements OnBackPress
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_match_update, container, false);
         mViewModel = new MatchUpdateFragmentViewModel(mMatch, mUpdate, mUser, getContext(), this, mBinding, mType, mUpdateId);
-        TransitionUtils.addTransitionCallbackToBinding(mBinding);
+        TransitionUtils.addTransitionCallbackToBinding(mBinding.cardUpdateStatsLayout);
         mBinding.setViewModel(mViewModel);
         return mBinding.getRoot();
     }

@@ -61,8 +61,9 @@ public class PendingUpdatesAdapter extends RecyclerView.Adapter<PendingUpdatesAd
 
     @Override
     public void onBindViewHolder(PendingUpdateViewHolder holder, int position) {
-        if (position < CollectionUtils.getSize(mUpdates)) {
-            holder.bindUpdate(mUpdates.get(position));
+        int size = CollectionUtils.getSize(mUpdates);
+        if (position < size) {
+            holder.bindUpdate(mUpdates.get(position), position == size - 1);
         }
     }
 
@@ -80,14 +81,15 @@ public class PendingUpdatesAdapter extends RecyclerView.Adapter<PendingUpdatesAd
             mBinding = binding;
         }
 
-        void bindUpdate(MatchUpdate update) {
+        void bindUpdate(MatchUpdate update, boolean isLastItem) {
             PendingUpdateItemViewModel viewModel = mBinding.getViewModel();
             if (viewModel != null) {
                 viewModel.setUpdate(update);
             } else {
-                viewModel = new PendingUpdateItemViewModel(update, mLauncher, mButtonColor);
+                viewModel = new PendingUpdateItemViewModel(update, mLauncher, mButtonColor, isLastItem);
                 mBinding.setViewModel(viewModel);
             }
+            mBinding.executePendingBindings();
         }
     }
 }

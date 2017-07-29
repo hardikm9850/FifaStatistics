@@ -49,6 +49,7 @@
                 <include layout="@layout/divisor"/>
 
                 <include
+                    android:id="@+id/overview_layout"
                     layout="@layout/user_overview_data_layout"
                     bind:viewModel="@{viewModel}"/>
 

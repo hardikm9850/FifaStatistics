@@ -11,9 +11,11 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/activity_horizontal_margin">
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
+        android:layout_marginEnd="@dimen/activity_horizontal_margin">
 
         <TextView
+            android:id="@+id/summary_textview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
@@ -23,14 +25,24 @@
             android:text="@{viewModel.summary}"/>
 
         <Button
+            android:id="@+id/review_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
-            android:background="@android:color/transparent"
+            android:background="?attr/selectableItemBackground"
             android:text="@string/review"
             android:onClick="@{() -> viewModel.onReviewButtonClick()}"
             android:textColor="@{viewModel.color}"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@id/review_button"
+            android:paddingStart="@dimen/activity_horizontal_margin"
+            android:paddingEnd="@dimen/activity_horizontal_margin"
+            android:background="?android:attr/listDivider"
+            android:visibility="@{viewModel.dividerVisibility}"/>
 
     </RelativeLayout>
 

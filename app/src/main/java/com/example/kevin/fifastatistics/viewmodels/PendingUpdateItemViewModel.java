@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.databinding.Bindable;
 import android.support.annotation.ColorRes;
+import android.view.View;
 
 import com.example.kevin.fifastatistics.activities.MatchUpdateActivity;
 import com.example.kevin.fifastatistics.interfaces.ActivityLauncher;
@@ -15,11 +16,14 @@ public class PendingUpdateItemViewModel extends FifaBaseViewModel {
     private MatchUpdate mUpdate;
     private ActivityLauncher mLauncher;
     private int mColor;
+    private boolean mIsLastItem;
 
-    public PendingUpdateItemViewModel(MatchUpdate update, ActivityLauncher launcher, @ColorRes int color) {
+    public PendingUpdateItemViewModel(MatchUpdate update, ActivityLauncher launcher,
+                                      @ColorRes int color, boolean isLastItem) {
         mUpdate = update;
         mLauncher = launcher;
         mColor = color;
+        mIsLastItem = isLastItem;
     }
 
     public void setUpdate(MatchUpdate update) {
@@ -35,6 +39,11 @@ public class PendingUpdateItemViewModel extends FifaBaseViewModel {
     @Bindable
     public int getColor() {
         return mColor;
+    }
+
+    @Bindable
+    public int getDividerVisibility() {
+        return mIsLastItem ? View.GONE : View.VISIBLE;
     }
 
     @Override

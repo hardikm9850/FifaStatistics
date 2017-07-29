@@ -131,7 +131,7 @@ public class MainActivity extends FifaBaseActivity implements OnMatchCreatedList
                 .map(p -> currentDrawerPosition = p)
                 .map(p -> FragmentInitializerFactory.createFragmentInitializer(p, mUser))
                 .compose(ObservableUtils.applySchedulers())
-                .delaySubscription(370, TimeUnit.MILLISECONDS)
+                .delaySubscription(mDrawer.isOpen() ? 370 : 0, TimeUnit.MILLISECONDS)
                 .subscribe(this::prepareActivityForFragments);
         addSubscription(drawerSubscription);
     }
@@ -252,8 +252,9 @@ public class MainActivity extends FifaBaseActivity implements OnMatchCreatedList
         } else if (mDrawer.isOpen()) {
             mDrawer.closeDrawer();
         } else if (!performHandlerBackPress() && !(getCurrentFragment() instanceof UserOverviewFragment)) {
-            FragmentInitializer initializer = new OverviewFragmentInitializer();
-            prepareActivityForFragments(initializer);
+//            FragmentInitializer initializer = new OverviewFragmentInitializer();
+//            prepareActivityForFragments(initializer);
+            mDrawer.setPosition(1);
         } else {
             super.onBackPressed();
         }

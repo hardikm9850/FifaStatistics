@@ -19,6 +19,7 @@ import com.example.kevin.fifastatistics.models.databasemodels.match.MatchUpdateR
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
 import com.example.kevin.fifastatistics.network.FifaApi;
 import com.example.kevin.fifastatistics.network.MatchApi;
+import com.example.kevin.fifastatistics.network.NotFoundException;
 import com.example.kevin.fifastatistics.utils.ObservableUtils;
 import com.example.kevin.fifastatistics.utils.ToastUtils;
 
@@ -170,7 +171,11 @@ public class MatchUpdateFragmentViewModel extends FooterButtonsViewModel {
                 .compose(ObservableUtils.applySchedulers())
                 .subscribe(new SimpleObserver<Response<Void>>() {
                     @Override
-                    public void onNext(Response<Void> v) {
+                    public void onNext(Response<Void> response) {
+                        if (!response.isSuccessful()) {
+                            onError(new NotFoundException());
+                            return;
+                        }
                         SharedPreferencesManager.removeMatchUpdate(update);
                         mInteraction.onUpdateAccepted(update);
                     }
@@ -225,6 +230,10 @@ public class MatchUpdateFragmentViewModel extends FooterButtonsViewModel {
                 .subscribe(new SimpleObserver<Response<Void>>() {
                     @Override
                     public void onNext(Response<Void> response) {
+                        if (!response.isSuccessful()) {
+                            onError(new NotFoundException());
+                            return;
+                        }
                         SharedPreferencesManager.removeMatchUpdate(update);
                         mInteraction.onUpdateDeclined(update);
                     }
