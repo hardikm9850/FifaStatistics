@@ -7,7 +7,9 @@ import android.view.View;
 import com.example.kevin.fifastatistics.BR;
 import com.example.kevin.fifastatistics.adapters.PendingUpdatesAdapter;
 import com.example.kevin.fifastatistics.interfaces.ActivityLauncher;
+import com.example.kevin.fifastatistics.managers.preferences.PrefsManager;
 import com.example.kevin.fifastatistics.models.databasemodels.match.MatchUpdate;
+import com.example.kevin.fifastatistics.models.databasemodels.user.User;
 import com.example.kevin.fifastatistics.utils.CollectionUtils;
 
 import java.util.List;
@@ -17,10 +19,12 @@ public class UpdatesCardViewModel extends FifaBaseViewModel {
     private List<MatchUpdate> mMatchUpdates;
     private ActivityLauncher mLauncher;
     private PendingUpdatesAdapter mAdapter;
+    private boolean mIsCurrentUser;
 
-    public UpdatesCardViewModel(ActivityLauncher launcher, List<MatchUpdate> updates) {
+    public UpdatesCardViewModel(ActivityLauncher launcher, List<MatchUpdate> updates, User user) {
         mLauncher = launcher;
         mMatchUpdates = updates;
+        mIsCurrentUser = user.getId().equals(PrefsManager.getUserId());
         mAdapter = new PendingUpdatesAdapter(mMatchUpdates, mLauncher);
     }
 
@@ -42,7 +46,7 @@ public class UpdatesCardViewModel extends FifaBaseViewModel {
 
     @Bindable
     public int getVisibility() {
-        return !CollectionUtils.isEmpty(mMatchUpdates) ? View.VISIBLE : View.GONE;
+        return mIsCurrentUser && !CollectionUtils.isEmpty(mMatchUpdates) ? View.VISIBLE : View.GONE;
     }
 
     @Override

@@ -35,6 +35,7 @@ public class PrefsManager {
     private static final String RECENT_TEAMS = "RECENT_TEAMS";
     private static final String COLOR_ACCENT = "COLOR_ACCENT";
     private static final String USERNAME = "USER_NAME";
+    private static final String ID = "ID";
     private static final String MATCH_UPDATES = "MATCH_UPDATES";
     private static final String FAVORITE_TEAM;
     private static final String DIRECT_CAMERA;
@@ -134,6 +135,7 @@ public class PrefsManager {
         editor = preferences.edit();
         editor.putString(CURRENT_USER, user.toString());
         editor.putString(USERNAME, user.getName());
+        editor.putString(ID, user.getId());
         editor.commit();
     }
 
@@ -146,6 +148,11 @@ public class PrefsManager {
 
     public static String getUserName() {
         return preferences.getString(USERNAME, null);
+    }
+
+    public static String getUserId() {
+        String id = preferences.getString(ID, null);
+        return id == null ? getUser().getId() : id;
     }
 
     public static void setFavoriteTeam(Team team) {

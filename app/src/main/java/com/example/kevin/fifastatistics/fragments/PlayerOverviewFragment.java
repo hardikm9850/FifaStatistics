@@ -61,7 +61,6 @@ public class PlayerOverviewFragment extends FifaBaseFragment implements OnBackPr
         mFragmentViewModel = new PlayerOverviewFragmentViewModel(this, mUserId);
         mBinding.setProgressViewModel(mFragmentViewModel);
         mBinding.nestedScrollView.setOnScrollChangeListener(mScrollListener);
-        TransitionUtils.addTransitionCallbackToBinding(mBinding);
         return mBinding.getRoot();
     }
 

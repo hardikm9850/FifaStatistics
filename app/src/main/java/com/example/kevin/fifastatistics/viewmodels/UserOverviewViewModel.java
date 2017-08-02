@@ -31,7 +31,7 @@ public class UserOverviewViewModel extends FifaBaseViewModel {
         mUser = user;
         mInteraction = interaction;
         mRecords = new RecordsCardViewModel(user);
-        mUpdatesViewModel = new UpdatesCardViewModel(launcher, updates);
+        mUpdatesViewModel = new UpdatesCardViewModel(launcher, updates, user);
         mMatchUpdates = updates;
     }
 
