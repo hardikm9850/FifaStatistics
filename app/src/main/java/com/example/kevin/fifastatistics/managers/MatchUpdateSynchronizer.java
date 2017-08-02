@@ -2,6 +2,7 @@ package com.example.kevin.fifastatistics.managers;
 
 import com.example.kevin.fifastatistics.interfaces.Consumer;
 import com.example.kevin.fifastatistics.listeners.SimpleObserver;
+import com.example.kevin.fifastatistics.managers.preferences.PrefsManager;
 import com.example.kevin.fifastatistics.models.ApiListResponse;
 import com.example.kevin.fifastatistics.models.databasemodels.match.MatchUpdate;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
@@ -34,7 +35,7 @@ public class MatchUpdateSynchronizer {
     public Subscription sync() {
         int pendingUpdateCount = user.getPendingUpdateCount();
         if (pendingUpdateCount > 0) {
-            return Observable.<List<MatchUpdate>>create(s -> s.onNext(SharedPreferencesManager.getMatchUpdates()))
+            return Observable.<List<MatchUpdate>>create(s -> s.onNext(PrefsManager.getMatchUpdates()))
                     .flatMap(this::syncMatchUpdates)
                     .compose(ObservableUtils.applySchedulers())
                     .subscribe(new SimpleObserver<ApiListResponse<MatchUpdate>>() {
@@ -50,12 +51,13 @@ public class MatchUpdateSynchronizer {
                             complete();
                             if (response != null) {
                                 List<MatchUpdate> updates = response.getItems();
-                                SharedPreferencesManager.setMatchUpdates(updates);
+                                PrefsManager.setMatchUpdates(updates);
                                 succeed(updates);
                             }
                         }
                     });
         } else {
+            PrefsManager.setMatchUpdates(null);
             complete();
             return null;
         }

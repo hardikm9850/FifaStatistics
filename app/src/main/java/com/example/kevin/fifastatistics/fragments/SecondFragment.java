@@ -22,7 +22,7 @@ public class SecondFragment extends Fragment {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_second, container, false);
 
-//        SharedPreferencesManager handler = SharedPreferencesManager.getBuilder(getContext());
+//        PrefsManager handler = PrefsManager.getBuilder(getContext());
 //        User user = handler.getUser();
 //        user.deleteIncomingRequests();
 //        handler.storeUserSync(user);

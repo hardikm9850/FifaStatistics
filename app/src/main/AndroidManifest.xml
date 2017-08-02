@@ -120,6 +120,7 @@
         </service>
 
         <service android:name=".network.service.UpdateTokenService"/>
+        <service android:name=".network.service.CurrentSeriesService"/>
 
     </application>
 

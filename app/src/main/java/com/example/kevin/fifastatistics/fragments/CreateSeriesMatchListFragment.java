@@ -105,6 +105,14 @@ public class CreateSeriesMatchListFragment extends FifaBaseFragment implements O
         outState.putInt(OPPONENT_WINS, mOpponentScore);
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if (mListViewModel != null) {
+            mListViewModel.destroy();
+        }
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

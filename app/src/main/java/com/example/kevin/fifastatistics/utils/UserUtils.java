@@ -1,6 +1,6 @@
 package com.example.kevin.fifastatistics.utils;
 
-import com.example.kevin.fifastatistics.managers.SharedPreferencesManager;
+import com.example.kevin.fifastatistics.managers.preferences.PrefsManager;
 import com.example.kevin.fifastatistics.models.databasemodels.league.Team;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
 import com.example.kevin.fifastatistics.models.patches.RegTokenPatch;
@@ -31,7 +31,7 @@ public class UserUtils {
     private static Observable<Response<Void>> performUserUpdate(User user,
                                                                 rx.Scheduler observeOn,
                                                                 rx.Scheduler subscribeOn) {
-        SharedPreferencesManager.storeUser(user);
+        PrefsManager.storeUser(user);
         return API.updateUser(user.getId(), user)
                 .observeOn(observeOn)
                 .subscribeOn(subscribeOn)

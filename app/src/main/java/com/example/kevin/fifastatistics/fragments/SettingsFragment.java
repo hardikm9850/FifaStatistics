@@ -14,7 +14,7 @@ import com.example.kevin.fifastatistics.event.ColorChangeEvent;
 import com.example.kevin.fifastatistics.event.EventBus;
 import com.example.kevin.fifastatistics.interfaces.OnTeamSelectedListener;
 import com.example.kevin.fifastatistics.managers.RetrievalManager;
-import com.example.kevin.fifastatistics.managers.SharedPreferencesManager;
+import com.example.kevin.fifastatistics.managers.preferences.PrefsManager;
 import com.example.kevin.fifastatistics.models.databasemodels.league.Team;
 import com.example.kevin.fifastatistics.network.service.UpdateTokenService;
 import com.example.kevin.fifastatistics.utils.ObservableUtils;
@@ -44,7 +44,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements OnTeam
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
-        getPreferenceManager().setSharedPreferencesName(SharedPreferencesManager.name());
+        getPreferenceManager().setSharedPreferencesName(PrefsManager.name());
         addPreferencesFromResource(R.xml.preferences);
         initFavoriteTeamPreference();
         initTeamAsColorAccentPreferenceChangeListener();
@@ -61,7 +61,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements OnTeam
     }
 
     private void setFavoriteTeamSummary() {
-        Observable.<Team>create(subscriber -> subscriber.onNext(SharedPreferencesManager.getFavoriteTeam()))
+        Observable.<Team>create(subscriber -> subscriber.onNext(PrefsManager.getFavoriteTeam()))
                 .compose(ObservableUtils.applySchedulers())
                 .subscribe(team -> mTeamPreference.setSummary(team != null ? team.getShortName() : null));
     }
@@ -71,7 +71,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements OnTeam
         colorPreference.setOnPreferenceChangeListener((preference, newValue) -> {
             if (newValue instanceof Boolean) {
                 boolean useTeamForColor = (Boolean) newValue;
-                Team favTeam = SharedPreferencesManager.getFavoriteTeam();
+                Team favTeam = PrefsManager.getFavoriteTeam();
                 if (favTeam != null) {
                     if (useTeamForColor) {
                         updateColors(favTeam);
@@ -90,7 +90,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements OnTeam
         Preference tokenPref = findPreference(getString(R.string.resendRegToken));
         tokenPref.setOnPreferenceClickListener(preference -> {
             ToastUtils.showShortToast(getContext(), R.string.updating_token);
-            SharedPreferencesManager.setDidSendRegistrationToken(false);
+            PrefsManager.setDidSendRegistrationToken(false);
             Intent intent = new Intent(getContext(), UpdateTokenService.class);
             getActivity().startService(intent);
             return true;
@@ -115,10 +115,10 @@ public class SettingsFragment extends PreferenceFragmentCompat implements OnTeam
 
     @Override
     public void onTeamSelected(Team team) {
-        SharedPreferencesManager.setFavoriteTeam(team);
+        PrefsManager.setFavoriteTeam(team);
         syncFavoriteTeamWithServer(team);
         setFavoriteTeamSummary();
-        if (SharedPreferencesManager.doUseTeamColorAsAccent()) {
+        if (PrefsManager.doUseTeamColorAsAccent()) {
             updateColors(team);
         }
     }

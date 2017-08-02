@@ -8,7 +8,7 @@ import android.util.Log;
 
 import com.example.kevin.fifastatistics.activities.FifaActivityLifecycleCallbacks;
 import com.example.kevin.fifastatistics.managers.ImageLoaderManager;
-import com.example.kevin.fifastatistics.managers.SharedPreferencesManager;
+import com.example.kevin.fifastatistics.managers.preferences.PrefsManager;
 import com.example.kevin.fifastatistics.utils.ObservableUtils;
 import com.ftinc.scoop.Scoop;
 
@@ -31,7 +31,7 @@ public class FifaApplication extends Application {
 
     public static int getAccentColor() {
         if (colorAccent == 0) {
-            colorAccent = SharedPreferencesManager.getColorAccent();
+            colorAccent = PrefsManager.getColorAccent();
         }
         return colorAccent;
     }
@@ -45,7 +45,7 @@ public class FifaApplication extends Application {
         super.onCreate();
         instance = getApplicationContext();
         ImageLoaderManager.initializeDefaultImageLoader(this);
-        SharedPreferencesManager.initialize(this);
+        PrefsManager.initialize(this);
         ensureTrainedDataExists();
         registerActivityLifecycleCallbacks(new FifaActivityLifecycleCallbacks());
         initScoop();

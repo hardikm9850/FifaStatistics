@@ -27,7 +27,7 @@ public interface MatchApi {
     @GET("matches/filter")
     Observable<ApiListResponse<MatchProjection>> filterMatches(@QueryMap Map<String, String> filters);
 
-    @GET("matches/{id}?projection=inlineTeams")
+    @GET("matches/{id}")
     Observable<Match> getMatch(@Path("id") String id);
 
     @POST("matches")

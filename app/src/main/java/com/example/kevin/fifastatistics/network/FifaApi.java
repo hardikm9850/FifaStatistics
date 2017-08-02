@@ -1,7 +1,7 @@
 package com.example.kevin.fifastatistics.network;
 
 import com.example.kevin.fifastatistics.BuildConfig;
-import com.example.kevin.fifastatistics.managers.SharedPreferencesManager;
+import com.example.kevin.fifastatistics.managers.preferences.PrefsManager;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
 
 import java.util.concurrent.TimeUnit;
@@ -27,6 +27,7 @@ public class FifaApi {
     private static SeriesApi seriesApi;
     private static LeagueApi leagueApi;
     private static MatchUpdateApi updateApi;
+    private static CurrentSeriesApi currentSeriesApi;
 
     public static UserApi getUserApi() {
         if (userApi == null) {
@@ -63,6 +64,13 @@ public class FifaApi {
         return updateApi;
     }
 
+    public static CurrentSeriesApi getCurrentSeriesApi() {
+        if (currentSeriesApi == null) {
+            currentSeriesApi = initializeApi(CurrentSeriesApi.class);
+        }
+        return currentSeriesApi;
+    }
+
     private static <T> T initializeApi(Class<T> api) {
         HttpLoggingInterceptor loggingInterceptor = initializeLoggingInterceptor();
         OkHttpClient httpClient = initializeHttpClient(loggingInterceptor);
@@ -95,7 +103,7 @@ public class FifaApi {
     }
 
     private static Interceptor getAuthorizationInterceptor() {
-        User user = SharedPreferencesManager.getUser();
+        User user = PrefsManager.getUser();
         return chain -> {
             Request request = chain.request();
             request = request.newBuilder()

@@ -32,6 +32,7 @@ public class Series extends DatabaseModel implements TeamEvent {
     private int matchesPlayed;
     private int bestOf;
 
+    @Setter private String currentSeriesId;
     @Setter private Team teamWinner;
     @Setter private Team teamLoser;
     @JsonIgnore private Friend playerOne;
@@ -69,6 +70,11 @@ public class Series extends DatabaseModel implements TeamEvent {
         for (Match m : matches) {
             addMatch(m);
         }
+    }
+
+    @JsonIgnore
+    public String getOpponentId(Player player) {
+        return player.getId().equals(playerOne.getId()) ? playerTwo.getId() : playerOne.getId();
     }
 
     public void addMatch(Match match) {

@@ -1,5 +1,6 @@
 package com.example.kevin.fifastatistics.managers;
 
+import com.example.kevin.fifastatistics.managers.preferences.PrefsManager;
 import com.example.kevin.fifastatistics.models.databasemodels.league.Team;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
 import com.example.kevin.fifastatistics.network.FifaApi;
@@ -22,7 +23,7 @@ public class FavoriteTeamSynchronizer {
 
     public Subscription sync() {
         return Observable.<String>create(s -> {
-            Team favTeam = SharedPreferencesManager.getFavoriteTeam();
+            Team favTeam = PrefsManager.getFavoriteTeam();
             if (mUser.getFavoriteTeamId() != null && favTeam == null) {
                 s.onNext(mUser.getFavoriteTeamId());
             } else {
@@ -38,7 +39,7 @@ public class FavoriteTeamSynchronizer {
             @Override
             public void onNext(Team team) {
                 if (team != null) {
-                    SharedPreferencesManager.setFavoriteTeam(team);
+                    PrefsManager.setFavoriteTeam(team);
                 }
             }
         });

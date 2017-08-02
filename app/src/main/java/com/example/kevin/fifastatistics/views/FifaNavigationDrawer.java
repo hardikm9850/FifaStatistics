@@ -10,7 +10,7 @@ import android.widget.ImageView;
 
 import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.activities.FifaBaseActivity;
-import com.example.kevin.fifastatistics.managers.SharedPreferencesManager;
+import com.example.kevin.fifastatistics.managers.preferences.PrefsManager;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
 import com.mikepenz.materialdrawer.AccountHeader;
 import com.mikepenz.materialdrawer.AccountHeaderBuilder;
@@ -80,7 +80,7 @@ public class FifaNavigationDrawer {
 
     private FifaNavigationDrawer(FifaBaseActivity activity, Toolbar toolbar, int color, Bundle savedInstanceState) {
         mSelectedColor = color;
-        User user = SharedPreferencesManager.getUser();
+        User user = PrefsManager.getUser();
 
         BadgeStyle badgeStyle = initializeBadgeStyle();
         PrimaryDrawerItem friendsItem = initializeFriendsItem(badgeStyle);

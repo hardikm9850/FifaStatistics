@@ -12,7 +12,7 @@ import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.databinding.FragmentMatchUpdateBinding;
 import com.example.kevin.fifastatistics.interfaces.Consumer;
 import com.example.kevin.fifastatistics.listeners.SimpleObserver;
-import com.example.kevin.fifastatistics.managers.SharedPreferencesManager;
+import com.example.kevin.fifastatistics.managers.preferences.PrefsManager;
 import com.example.kevin.fifastatistics.models.databasemodels.match.Match;
 import com.example.kevin.fifastatistics.models.databasemodels.match.MatchUpdate;
 import com.example.kevin.fifastatistics.models.databasemodels.match.MatchUpdateResponse;
@@ -176,7 +176,7 @@ public class MatchUpdateFragmentViewModel extends FooterButtonsViewModel {
                             onError(new NotFoundException());
                             return;
                         }
-                        SharedPreferencesManager.removeMatchUpdate(update);
+                        PrefsManager.removeMatchUpdate(update);
                         mInteraction.onUpdateAccepted(update);
                     }
 
@@ -234,7 +234,7 @@ public class MatchUpdateFragmentViewModel extends FooterButtonsViewModel {
                             onError(new NotFoundException());
                             return;
                         }
-                        SharedPreferencesManager.removeMatchUpdate(update);
+                        PrefsManager.removeMatchUpdate(update);
                         mInteraction.onUpdateDeclined(update);
                     }
 

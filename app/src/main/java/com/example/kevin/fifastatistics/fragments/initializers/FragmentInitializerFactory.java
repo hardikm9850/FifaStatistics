@@ -1,7 +1,7 @@
 package com.example.kevin.fifastatistics.fragments.initializers;
 
 import com.example.kevin.fifastatistics.activities.FifaBaseActivity;
-import com.example.kevin.fifastatistics.managers.SharedPreferencesManager;
+import com.example.kevin.fifastatistics.managers.preferences.PrefsManager;
 import com.example.kevin.fifastatistics.models.Constants;
 import com.example.kevin.fifastatistics.models.databasemodels.user.Player;
 import com.example.kevin.fifastatistics.network.FifaApi;
@@ -54,7 +54,7 @@ public class FragmentInitializerFactory {
             case 5:
                 return FragmentInitializerFactory.createFriendsFragmentInitializer();
             case 6:
-                FifaApi.getUserApi().updateUser(SharedPreferencesManager.getUser().getId(), SharedPreferencesManager.getUser())
+                FifaApi.getUserApi().updateUser(PrefsManager.getUser().getId(), PrefsManager.getUser())
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe();

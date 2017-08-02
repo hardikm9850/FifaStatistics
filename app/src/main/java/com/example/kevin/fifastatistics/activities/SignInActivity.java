@@ -11,7 +11,7 @@ import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.example.kevin.fifastatistics.R;
-import com.example.kevin.fifastatistics.managers.SharedPreferencesManager;
+import com.example.kevin.fifastatistics.managers.preferences.PrefsManager;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
 import com.example.kevin.fifastatistics.network.FifaApi;
 import com.example.kevin.fifastatistics.network.UserApi;
@@ -69,7 +69,7 @@ public class SignInActivity extends AppCompatActivity implements
 
     private void checkSignedIn()
     {
-        if (SharedPreferencesManager.isSignedIn()) {
+        if (PrefsManager.isSignedIn()) {
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
             finish();
@@ -146,8 +146,8 @@ public class SignInActivity extends AppCompatActivity implements
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(user -> {
-                    SharedPreferencesManager.storeUser(user);
-                    SharedPreferencesManager.setSignedIn(true);
+                    PrefsManager.storeUser(user);
+                    PrefsManager.setSignedIn(true);
                     checkSignedIn();
                 });
     }
@@ -187,7 +187,7 @@ public class SignInActivity extends AppCompatActivity implements
     private void signOut() {
         mAuth.signOut();
         Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(status -> {/*TODO*/});
-        SharedPreferencesManager.setSignedIn(false);
+        PrefsManager.setSignedIn(false);
     }
 
     private void revokeAccess() {
@@ -297,8 +297,8 @@ public class SignInActivity extends AppCompatActivity implements
     {
         while (mRegistrationToken == null)
         {
-            if (!SharedPreferencesManager.getRegistrationFailed()) {
-                mRegistrationToken = SharedPreferencesManager.getRegistrationToken();
+            if (!PrefsManager.getRegistrationFailed()) {
+                mRegistrationToken = PrefsManager.getRegistrationToken();
             } else {
                 Log.e(TAG, "failed to retrieve registration token");
                 throw new IOException();
@@ -308,8 +308,8 @@ public class SignInActivity extends AppCompatActivity implements
 
     private void startMainActivity(User user)
     {
-        SharedPreferencesManager.storeUserSync(user);
-        SharedPreferencesManager.setSignedIn(true);
+        PrefsManager.storeUserSync(user);
+        PrefsManager.setSignedIn(true);
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
         startActivity(intent);
         mProgressDialog.dismiss();

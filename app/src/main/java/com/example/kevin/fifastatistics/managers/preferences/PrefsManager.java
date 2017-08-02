@@ -1,4 +1,4 @@
-package com.example.kevin.fifastatistics.managers;
+package com.example.kevin.fifastatistics.managers.preferences;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -12,6 +12,7 @@ import android.util.Log;
 import com.example.kevin.fifastatistics.FifaApplication;
 import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.models.databasemodels.league.Team;
+import com.example.kevin.fifastatistics.models.databasemodels.match.CurrentSeries;
 import com.example.kevin.fifastatistics.models.databasemodels.match.Match;
 import com.example.kevin.fifastatistics.models.databasemodels.match.MatchUpdate;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
@@ -23,7 +24,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SharedPreferencesManager {
+public class PrefsManager {
 
     private static final String PREFERENCES = "PREFERENCES";
     private static final String SIGNED_IN = "SIGNED_IN";
@@ -31,7 +32,6 @@ public class SharedPreferencesManager {
     private static final String REGISTRATION_FAILED = "REGISTRATION_FAILED";
     private static final String REGISTRATION_TOKEN = "REGISTRATION_TOKEN";
     private static final String CURRENT_USER = "CURRENT_USER";
-    private static final String CURRENT_SERIES = "CURRENT_SERIES";
     private static final String RECENT_TEAMS = "RECENT_TEAMS";
     private static final String COLOR_ACCENT = "COLOR_ACCENT";
     private static final String USERNAME = "USER_NAME";
@@ -43,6 +43,7 @@ public class SharedPreferencesManager {
 
     private static SharedPreferences preferences;
     private static SharedPreferences.Editor editor;
+    private static CurrentSeriesPrefs sSeriesPrefs;
 
     static {
         Context context = FifaApplication.getContext();
@@ -61,11 +62,16 @@ public class SharedPreferencesManager {
     public static void initialize(Context context) {
         if (preferences == null) {
             preferences = context.getSharedPreferences(PREFERENCES, Context.MODE_PRIVATE);
+            sSeriesPrefs = new CurrentSeriesPrefs(context);
         }
     }
 
     public static String name() {
         return PREFERENCES;
+    }
+
+    public static CurrentSeriesPrefs getSeriesPrefs() {
+        return sSeriesPrefs;
     }
 
     /**
@@ -142,18 +148,6 @@ public class SharedPreferencesManager {
         return preferences.getString(USERNAME, null);
     }
 
-    public static void storeCurrentSeries(List<Match> matches, String opponentId) {
-        editor = preferences.edit();
-        editor.putString(CURRENT_SERIES + opponentId, SerializationUtils.toJson(matches));
-        editor.apply();
-    }
-
-    public static void removeCurrentSeries(String id) {
-        editor = preferences.edit();
-        editor.remove(CURRENT_SERIES + id);
-        editor.apply();
-    }
-
     public static void setFavoriteTeam(Team team) {
         editor = preferences.edit();
         editor.putString(FAVORITE_TEAM, SerializationUtils.toJson(team));
@@ -188,10 +182,6 @@ public class SharedPreferencesManager {
 
     public static User getUser() {
         return getObject(User.class, CURRENT_USER);
-    }
-
-    public static List<Match> getCurrentSeries(String opponentId) {
-        return getObject(new TypeReference<List<Match>>() {}, CURRENT_SERIES + opponentId);
     }
 
     public static void addMatchUpdate(MatchUpdate update) {

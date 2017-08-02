@@ -1,6 +1,5 @@
 package com.example.kevin.fifastatistics.viewmodels;
 
-import android.databinding.BaseObservable;
 import android.databinding.ObservableArrayList;
 import android.databinding.ObservableList;
 import android.view.View;
@@ -16,23 +15,22 @@ import com.example.kevin.fifastatistics.interfaces.OnSeriesCompletedListener;
 import com.example.kevin.fifastatistics.interfaces.OnSeriesScoreUpdateListener;
 import com.example.kevin.fifastatistics.interfaces.OnSeriesUpdatedListener;
 import com.example.kevin.fifastatistics.interfaces.OnTeamSelectedListener;
-import com.example.kevin.fifastatistics.managers.SharedPreferencesManager;
+import com.example.kevin.fifastatistics.managers.CurrentSeriesSynchronizer;
 import com.example.kevin.fifastatistics.models.databasemodels.league.Team;
 import com.example.kevin.fifastatistics.models.databasemodels.match.Match;
 import com.example.kevin.fifastatistics.models.databasemodels.match.Series;
 import com.example.kevin.fifastatistics.models.databasemodels.user.Friend;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
 import com.example.kevin.fifastatistics.utils.CollectionUtils;
-import com.example.kevin.fifastatistics.utils.ObservableUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import me.tatarka.bindingcollectionadapter.ItemView;
-import rx.Observable;
 
-public class CreateSeriesMatchListViewModel extends BaseObservable implements OnMatchUpdatedListener, OnTeamSelectedListener, OnMatchCreatedListener {
+public class CreateSeriesMatchListViewModel extends FifaBaseViewModel implements OnMatchUpdatedListener,
+        OnTeamSelectedListener, OnMatchCreatedListener {
 
     private final ObservableList<CreateSeriesListItemViewModel> mItems;
     private final ItemView mItemView;
@@ -43,6 +41,7 @@ public class CreateSeriesMatchListViewModel extends BaseObservable implements On
     private List<OnMatchUpdatedListener> mOnMatchUpdateListeners;
     private OnSeriesCompletedListener mOnSeriesCompletedListener;
     private OnSeriesUpdatedListener mOnSeriesUpdateListener;
+    private CurrentSeriesSynchronizer mSeriesSynchronizer;
 
     private int mUserWins;
     private int mOpponentWins;
@@ -58,6 +57,7 @@ public class CreateSeriesMatchListViewModel extends BaseObservable implements On
         mUser = user;
         mOpponent = opponent;
         mOnSeriesUpdateListener = listener;
+        mSeriesSynchronizer = CurrentSeriesSynchronizer.with(user, activity);
         mSeriesScoreViewModel = new CreateSeriesScoreViewModel(user, opponent, scoreUpdateListener, activity, launcher, series);
         mOnSeriesCompletedListener = seriesCompletedListener;
         mMaxSeriesLength = Series.DEFAULT_MAX_SERIES_LENGTH;
@@ -131,8 +131,7 @@ public class CreateSeriesMatchListViewModel extends BaseObservable implements On
     }
 
     private void storeSeries() {
-        Observable.create(s -> SharedPreferencesManager.storeCurrentSeries(getMatches(), mOpponent.getId()))
-                .compose(ObservableUtils.applyBackground()).subscribe();
+       mSeriesSynchronizer.save(new ArrayList<>(getMatches()), mOpponent);
     }
 
     private void notifySeriesUpdated() {
@@ -202,6 +201,15 @@ public class CreateSeriesMatchListViewModel extends BaseObservable implements On
     @Override
     public void setMatchIndex(int index) {
         mUpdatedMatchIndex = index;
+    }
+
+    @Override
+    public void destroy() {
+        super.destroy();
+        mOnSeriesUpdateListener = null;
+        mOnMatchUpdateListeners = null;
+        mOnSeriesCompletedListener = null;
+        mActivity = null;
     }
 
     public ObservableList<CreateSeriesListItemViewModel> getItems() {

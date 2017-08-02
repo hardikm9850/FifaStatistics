@@ -31,7 +31,7 @@ public class NetworkUtils {
     /** Retrieve the id of the created object from the location header of the response. */
     public static String getIdFromResponse(Response<?> response) {
         String header = response.headers().get("Location");
-        return getIdFromUrl(header);
+        return header != null ? getIdFromUrl(header) : null;
     }
 
     public static String getIdFromUrl(String url) {

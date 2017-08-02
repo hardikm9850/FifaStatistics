@@ -17,7 +17,7 @@ import com.example.kevin.fifastatistics.event.UpdateRemovedEvent;
 import com.example.kevin.fifastatistics.interfaces.OnBackPressedHandler;
 import com.example.kevin.fifastatistics.managers.RetrievalManager;
 import com.example.kevin.fifastatistics.managers.RetrofitErrorManager;
-import com.example.kevin.fifastatistics.managers.SharedPreferencesManager;
+import com.example.kevin.fifastatistics.managers.preferences.PrefsManager;
 import com.example.kevin.fifastatistics.models.databasemodels.match.Match;
 import com.example.kevin.fifastatistics.models.databasemodels.match.MatchUpdate;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
@@ -142,7 +142,7 @@ public class MatchUpdateFragment extends FifaBaseFragment implements OnBackPress
     private void addUpdateToStoredPendingUpdates(MatchUpdate update) {
         RetrievalManager.getLocalPendingUpdates().subscribe(updates -> {
             if (update != null && !updates.contains(update)) {
-                SharedPreferencesManager.addMatchUpdate(update);
+                PrefsManager.addMatchUpdate(update);
             }
         });
     }

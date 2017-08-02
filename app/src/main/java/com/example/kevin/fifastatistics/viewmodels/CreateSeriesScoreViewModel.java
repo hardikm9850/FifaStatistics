@@ -13,7 +13,7 @@ import com.example.kevin.fifastatistics.interfaces.OnSeriesScoreUpdateListener;
 import com.example.kevin.fifastatistics.interfaces.OnTeamSelectedListener;
 import com.example.kevin.fifastatistics.managers.CrestUrlResizer;
 import com.example.kevin.fifastatistics.managers.RetrievalManager;
-import com.example.kevin.fifastatistics.managers.SharedPreferencesManager;
+import com.example.kevin.fifastatistics.managers.preferences.PrefsManager;
 import com.example.kevin.fifastatistics.models.databasemodels.league.Team;
 import com.example.kevin.fifastatistics.models.databasemodels.match.Match;
 import com.example.kevin.fifastatistics.models.databasemodels.match.Series;
@@ -53,7 +53,7 @@ public class CreateSeriesScoreViewModel extends FifaBaseViewModel implements OnM
     }
 
     private void getFavoriteTeam() {
-        Observable.<Team>create(s -> s.onNext(SharedPreferencesManager.getFavoriteTeam()))
+        Observable.<Team>create(s -> s.onNext(PrefsManager.getFavoriteTeam()))
                 .compose(ObservableUtils.applySchedulers()).subscribe(team -> {
             if (team != null) {
                 mUserTeam = team;

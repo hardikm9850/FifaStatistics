@@ -1,5 +1,6 @@
 package com.example.kevin.fifastatistics.managers;
 
+import com.example.kevin.fifastatistics.managers.preferences.PrefsManager;
 import com.example.kevin.fifastatistics.models.ApiListResponse;
 import com.example.kevin.fifastatistics.models.databasemodels.league.League;
 import com.example.kevin.fifastatistics.models.databasemodels.league.Team;
@@ -29,11 +30,11 @@ public class RetrievalManager {
     }
 
     public static Observable<User> getCurrentUser() {
-        return Observable.<User>create(s -> s.onNext(SharedPreferencesManager.getUser())).compose(ObservableUtils.applySchedulers());
+        return Observable.<User>create(s -> s.onNext(PrefsManager.getUser())).compose(ObservableUtils.applySchedulers());
     }
 
     public static void syncCurrentUserWithServer() {
-        getCurrentUser().flatMap(user -> getUser(user.getId())).subscribe(SharedPreferencesManager::storeUser);
+        getCurrentUser().flatMap(user -> getUser(user.getId())).subscribe(PrefsManager::storeUser);
     }
 
     public static Observable<ApiListResponse<User>> getUsers() {
@@ -47,7 +48,7 @@ public class RetrievalManager {
     }
 
     public static Observable<List<MatchUpdate>> getLocalPendingUpdates() {
-        return Observable.<List<MatchUpdate>>create(s -> s.onNext(SharedPreferencesManager.getMatchUpdates()))
+        return Observable.<List<MatchUpdate>>create(s -> s.onNext(PrefsManager.getMatchUpdates()))
                 .compose(ObservableUtils.applyBackground());
     }
 

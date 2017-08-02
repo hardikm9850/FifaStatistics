@@ -19,7 +19,7 @@ import com.example.kevin.fifastatistics.listeners.FabScrollListener;
 import com.example.kevin.fifastatistics.managers.FavoriteTeamSynchronizer;
 import com.example.kevin.fifastatistics.managers.FifaEventManager;
 import com.example.kevin.fifastatistics.managers.RetrievalManager;
-import com.example.kevin.fifastatistics.managers.SharedPreferencesManager;
+import com.example.kevin.fifastatistics.managers.preferences.PrefsManager;
 import com.example.kevin.fifastatistics.models.databasemodels.match.Match;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
 import com.example.kevin.fifastatistics.network.service.UpdateTokenService;
@@ -191,7 +191,7 @@ public class MainActivity extends FifaBaseActivity implements OnMatchCreatedList
     }
 
     private void syncRegistrationToken() {
-        if (!SharedPreferencesManager.didSendRegistrationToken()) {
+        if (!PrefsManager.didSendRegistrationToken()) {
             Intent intent = new Intent(this, UpdateTokenService.class);
             startService(intent);
         }

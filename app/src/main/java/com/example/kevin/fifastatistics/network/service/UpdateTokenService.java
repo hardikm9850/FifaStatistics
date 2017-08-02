@@ -6,7 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
-import com.example.kevin.fifastatistics.managers.SharedPreferencesManager;
+import com.example.kevin.fifastatistics.managers.preferences.PrefsManager;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
 import com.example.kevin.fifastatistics.utils.ObservableUtils;
 import com.example.kevin.fifastatistics.utils.UserUtils;
@@ -27,8 +27,8 @@ public class UpdateTokenService extends IntentService {
             updateToken();
         } catch (Exception e) {
             Log.d(TAG, "Failed to complete token refresh", e);
-            SharedPreferencesManager.setRegistrationFailed(true);
-            SharedPreferencesManager.setDidSendRegistrationToken(false);
+            PrefsManager.setRegistrationFailed(true);
+            PrefsManager.setDidSendRegistrationToken(false);
         }
 
         Intent registrationComplete = new Intent(REGISTRATION_COMPLETE);
@@ -39,25 +39,25 @@ public class UpdateTokenService extends IntentService {
         String token = FirebaseInstanceId.getInstance().getToken();
         Log.i(TAG, "GCM Registration Token: " + token);
 
-        User user = SharedPreferencesManager.getUser();
+        User user = PrefsManager.getUser();
         if (user != null) {
             user.setRegistrationToken(token);
-            SharedPreferencesManager.storeUser(user);
+            PrefsManager.storeUser(user);
             updateTokenOnServer(user, token);
         } else {
-            SharedPreferencesManager.setDidSendRegistrationToken(false);
+            PrefsManager.setDidSendRegistrationToken(false);
         }
-        SharedPreferencesManager.setRegistrationToken(token);
+        PrefsManager.setRegistrationToken(token);
     }
 
     private void updateTokenOnServer(User user, String newToken) {
-        SharedPreferencesManager.setDidSendRegistrationToken(false);
+        PrefsManager.setDidSendRegistrationToken(false);
         UserUtils.patchRegToken(user.getId(), newToken)
                 .retryWhen(ObservableUtils.getExponentialBackoffRetryWhen())
                 .subscribe(new ObservableUtils.OnNextObserver<User>() {
                     @Override
                     public void onNext(User user) {
-                        SharedPreferencesManager.setDidSendRegistrationToken(true);
+                        PrefsManager.setDidSendRegistrationToken(true);
                     }
                 });
     }
