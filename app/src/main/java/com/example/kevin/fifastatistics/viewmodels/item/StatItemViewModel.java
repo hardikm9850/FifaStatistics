@@ -7,9 +7,24 @@ import android.databinding.BindingAdapter;
 import android.support.percent.PercentLayoutHelper;
 import android.view.View;
 
+import com.example.kevin.fifastatistics.models.databasemodels.user.Stats;
+
+import java.util.HashSet;
+import java.util.Set;
+
 public class StatItemViewModel extends BaseObservable {
 
     private static final float MIDDLE_PADDING = 0.0125f;
+    private static final Set<String> INVERTS;
+
+    static {
+        INVERTS = new HashSet<>(4);
+        INVERTS.add(Stats.FOULS);
+        INVERTS.add(Stats.YELLOW_CARDS);
+        INVERTS.add(Stats.RED_CARDS);
+        INVERTS.add(Stats.INJURIES);
+        INVERTS.add(Stats.OFFSIDES);
+    }
 
     private String mTitle;
     private String mFloatFormat;
@@ -59,12 +74,32 @@ public class StatItemViewModel extends BaseObservable {
 
     @Bindable
     public float getLeftPercentage() {
-        return ((mLeftValue + mRightValue == 0) ? 0.5f : mLeftValue/(mLeftValue + mRightValue)) - MIDDLE_PADDING;
+        float left = mLeftValue;
+        float right = mRightValue;
+        if (shouldInvertBar()) {
+            left = mRightValue;
+            right = mLeftValue;
+        }
+        if (left + right == 0) {
+            return 0.5f - MIDDLE_PADDING;
+        } else if (right == 0) {
+            return 1f;
+        } else if (left == 0) {
+            return 0f;
+        } else {
+            return left/(left + right) - MIDDLE_PADDING;
+        }
+    }
+
+    private boolean shouldInvertBar() {
+        return INVERTS.contains(mTitle);
     }
 
     @Bindable
     public float getRightPercentage() {
-        return 1 - getLeftPercentage() - 2*MIDDLE_PADDING;
+        float left = getLeftPercentage();
+        float padding = left == 0f || left == 1f ? 0f : 2*MIDDLE_PADDING;
+        return 1 - left - padding;
     }
 
     @BindingAdapter("app:layout_widthPercent")
