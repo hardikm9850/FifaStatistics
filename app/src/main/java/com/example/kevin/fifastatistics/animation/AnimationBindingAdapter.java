@@ -1,7 +1,6 @@
 package com.example.kevin.fifastatistics.animation;
 
 import android.content.Context;
-import android.databinding.Bindable;
 import android.databinding.BindingAdapter;
 import android.support.annotation.NonNull;
 import android.view.View;
@@ -34,7 +33,7 @@ public class AnimationBindingAdapter {
 
     @BindingAdapter(value = "alphaScaleVisibility")
     public static void alphaScale(final View view, int visible) {
-        doAnimation(view, R.anim.grow_fade_in_bottom, R.anim.shrink_fade_out_bottom, visible, 0L);
+        doAnimation(view, R.anim.match_update_animation, R.anim.shrink_fade_out_bottom, visible, 0L);
     }
 
     @BindingAdapter(value = {"slideVisibility", "slideDuration"}, requireAll = false)

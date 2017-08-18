@@ -15,7 +15,8 @@
         <android.support.v7.widget.RecyclerView
             android:id="@+id/matches_recyclerview"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:layoutAnimation="@anim/default_recycler_layout_animation"/>
 
         <include
             layout="@layout/progress"

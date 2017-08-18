@@ -3,10 +3,10 @@ package com.example.kevin.fifastatistics.fragments;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
 
 import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.databinding.FragmentUserOverviewBinding;
@@ -14,11 +14,13 @@ import com.example.kevin.fifastatistics.event.EventBus;
 import com.example.kevin.fifastatistics.event.SeriesRemovedEvent;
 import com.example.kevin.fifastatistics.event.UpdateRemovedEvent;
 import com.example.kevin.fifastatistics.interfaces.OnBackPressedHandler;
+import com.example.kevin.fifastatistics.listeners.SimpleAnimationListener;
 import com.example.kevin.fifastatistics.managers.CurrentSeriesSynchronizer;
 import com.example.kevin.fifastatistics.managers.MatchUpdateSynchronizer;
 import com.example.kevin.fifastatistics.managers.preferences.PrefsManager;
 import com.example.kevin.fifastatistics.models.databasemodels.match.MatchUpdate;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
+import com.example.kevin.fifastatistics.utils.ObservableUtils;
 import com.example.kevin.fifastatistics.viewmodels.UserOverviewViewModel;
 
 import java.util.List;
@@ -88,7 +90,21 @@ public class UserOverviewFragment extends FifaBaseFragment implements OnBackPres
         mBinding.setViewModel(mViewModel);
         mBinding.swiperefresh.setOnRefreshListener(() -> mViewModel.update());
         mBinding.scrollview.setOnScrollChangeListener(mScrollListener);
+        refreshUserAfterLayoutAnimationComplete();
         return mBinding.getRoot();
+    }
+
+    private void refreshUserAfterLayoutAnimationComplete() {
+        ((ViewGroup) mBinding.overviewLayout.getRoot()).setLayoutAnimationListener(
+                new SimpleAnimationListener() {
+                    @Override
+                    public void onAnimationEnd(Animation animation) {
+                        mBinding.swiperefresh.setEnabled(true);
+                        if (!sIsUpdated) {
+                            refresh();
+                        }
+                    }
+                });
     }
 
     @Override
@@ -96,15 +112,6 @@ public class UserOverviewFragment extends FifaBaseFragment implements OnBackPres
         super.onDestroyView();
         if (mViewModel != null) {
             mViewModel.destroy();
-        }
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        mBinding.swiperefresh.setEnabled(true);
-        if (!sIsUpdated) {
-            refresh();
         }
     }
 

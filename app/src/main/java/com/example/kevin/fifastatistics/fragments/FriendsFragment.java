@@ -26,8 +26,6 @@ import com.example.kevin.fifastatistics.views.FifaSearchView;
 
 import java.util.List;
 
-import it.gmariotti.recyclerview.adapter.SlideInBottomAnimatorAdapter;
-
 public class FriendsFragment extends FifaBaseFragment implements OnBackPressedHandler, PlayersFragmentViewModel.OnPlayersLoadedListener {
 
     private static final int PORTRAIT_COLUMN_COUNT = 2;
@@ -35,6 +33,7 @@ public class FriendsFragment extends FifaBaseFragment implements OnBackPressedHa
 
     private FifaSearchView mSearchView;
     private RecyclerView mRecyclerView;
+    private FriendsRecyclerViewAdapter mAdapter;
     private PlayersFragmentViewModel mViewModel;
     private int mColumnCount;
     private boolean mIsSearchViewReady = false;
@@ -60,8 +59,15 @@ public class FriendsFragment extends FifaBaseFragment implements OnBackPressedHa
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        getColumns();
+        initRecyclerView();
         mViewModel.loadPlayers();
+    }
+
+    private void initRecyclerView() {
+        getColumns();
+        mAdapter = new FriendsRecyclerViewAdapter(this);
+        mRecyclerView.setLayoutManager(new GridLayoutManager(mRecyclerView.getContext(), mColumnCount));
+        mRecyclerView.setAdapter(mAdapter);
     }
 
     private void getColumns() {
@@ -71,7 +77,8 @@ public class FriendsFragment extends FifaBaseFragment implements OnBackPressedHa
     @Override
     public void onPlayersLoaded(List<User> players) {
         initializeSearchView(players);
-        setAdapter(players);
+        mAdapter.setPlayers(players);
+        mRecyclerView.scheduleLayoutAnimation();
     }
 
     @Override
@@ -124,13 +131,5 @@ public class FriendsFragment extends FifaBaseFragment implements OnBackPressedHa
         } else {
             return false;
         }
-    }
-
-    private void setAdapter(List<? extends Player> players) {
-        FriendsRecyclerViewAdapter adapter = new FriendsRecyclerViewAdapter(players, this);
-        SlideInBottomAnimatorAdapter<FriendsRecyclerViewAdapter.PlayerItemViewHolder> animatorAdapter =
-                new SlideInBottomAnimatorAdapter<>(adapter, mRecyclerView);
-        mRecyclerView.setLayoutManager(new GridLayoutManager(mRecyclerView.getContext(), mColumnCount));
-        mRecyclerView.setAdapter(animatorAdapter);
     }
 }

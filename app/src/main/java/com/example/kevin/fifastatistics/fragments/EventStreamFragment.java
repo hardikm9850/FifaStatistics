@@ -144,6 +144,7 @@ public abstract class EventStreamFragment<EVENT extends FifaEvent, ADAPTER exten
     @Override
     public void onEventsLoadSuccess(List<EVENT> matches) {
         mAdapter.setEvents(matches);
+        mRecyclerView.scheduleLayoutAnimation();
     }
 
     @Override

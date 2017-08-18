@@ -18,8 +18,7 @@ public class FriendsRecyclerViewAdapter extends RecyclerView.Adapter<FriendsRecy
     private List<? extends Player> mUsers;
     private ActivityLauncher mLauncher;
 
-    public FriendsRecyclerViewAdapter(List<? extends Player> users, ActivityLauncher launcher) {
-        mUsers = users;
+    public FriendsRecyclerViewAdapter(ActivityLauncher launcher) {
         mLauncher = launcher;
     }
 
@@ -34,6 +33,11 @@ public class FriendsRecyclerViewAdapter extends RecyclerView.Adapter<FriendsRecy
         if (mUsers != null && position < mUsers.size()) {
             holder.bindPlayer(mUsers.get(position));
         }
+    }
+
+    public void setPlayers(List<? extends Player> players) {
+        mUsers = players;
+        notifyDataSetChanged();
     }
 
     @Override

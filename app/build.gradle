@@ -128,7 +128,6 @@ dependencies {
 
     // Layout
     compile 'com.github.clans:fab:1.6.4'
-    compile 'com.github.gabrielemariotti.recyclerview:recyclerview-animators:0.3.0-SNAPSHOT@aar'
     compile 'com.tonicartos:superslim:0.4.13'
     compile 'com.robinhood.ticker:ticker:1.1.1'
 

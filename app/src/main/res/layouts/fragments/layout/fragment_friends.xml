@@ -13,15 +13,16 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <android.support.v7.widget.RecyclerView
+        <com.example.kevin.fifastatistics.views.GridRecyclerView
             android:id="@+id/list"
             android:name="com.example.kevin.fifastatistics.FriendsFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
+            android:layoutAnimation="@anim/default_grid_layout_animation"
             tools:context=".fragments.FriendsFragment"
-            tools:listitem="@layout/fragment_friends_item" />
+            tools:listitem="@layout/fragment_friends_item"/>
 
         <include
             layout="@layout/progress"
