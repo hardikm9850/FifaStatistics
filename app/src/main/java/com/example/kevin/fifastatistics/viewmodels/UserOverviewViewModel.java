@@ -4,7 +4,6 @@ import android.databinding.Bindable;
 
 import com.example.kevin.fifastatistics.BR;
 import com.example.kevin.fifastatistics.interfaces.ActivityLauncher;
-import com.example.kevin.fifastatistics.managers.preferences.CurrentSeriesPrefs;
 import com.example.kevin.fifastatistics.managers.preferences.PrefsManager;
 import com.example.kevin.fifastatistics.models.databasemodels.match.CurrentSeries;
 import com.example.kevin.fifastatistics.models.databasemodels.match.MatchUpdate;
@@ -16,7 +15,6 @@ import com.example.kevin.fifastatistics.viewmodels.card.RecordsCardViewModel;
 import com.example.kevin.fifastatistics.viewmodels.card.UpdatesCardViewModel;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import rx.Subscription;
