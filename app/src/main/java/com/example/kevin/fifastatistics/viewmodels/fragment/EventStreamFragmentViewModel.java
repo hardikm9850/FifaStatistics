@@ -18,9 +18,9 @@ public class EventStreamFragmentViewModel<T extends FifaEvent> extends ProgressF
 
     private static final String TAG = "MatchesFragmentVM";
 
-    private final OnEventsLoadedListener<T> mOnEventsLoadedListener;
-    private final AdapterInteraction mAdapterInteraction;
-    private final OnLoadMoreHandler<T> mLoadMoreHandler;
+    private OnEventsLoadedListener<T> mOnEventsLoadedListener;
+    private AdapterInteraction mAdapterInteraction;
+    private OnLoadMoreHandler<T> mLoadMoreHandler;
     private Observable<ApiListResponse<T>> mLoadEventsObservable;
     private List<T> mEvents;
     private String mNextUri;
@@ -102,6 +102,14 @@ public class EventStreamFragmentViewModel<T extends FifaEvent> extends ProgressF
     @Override
     public void onRetryButtonClick() {
         loadEvents(mLoadEventsObservable);
+    }
+
+    @Override
+    public void destroy() {
+        super.destroy();
+        mOnEventsLoadedListener = null;
+        mLoadMoreHandler = null;
+        mAdapterInteraction = null;
     }
 
     public interface OnEventsLoadedListener<T extends FifaEvent> {

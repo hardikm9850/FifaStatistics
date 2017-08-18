@@ -107,14 +107,8 @@ public abstract class EventStreamFragment<EVENT extends FifaEvent, ADAPTER exten
     protected abstract Observable<ApiListResponse<EVENT>> getLoadEventsObservable();
 
     @Override
-    public void onStop() {
-        mViewModel.unsubscribeAll();
-        super.onStop();
-    }
-
-    @Override
     public void onDestroyView() {
-        mViewModel = null;
+        mViewModel.destroy();
         super.onDestroyView();
     }
 

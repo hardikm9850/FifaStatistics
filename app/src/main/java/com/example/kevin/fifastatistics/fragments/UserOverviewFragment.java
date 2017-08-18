@@ -120,9 +120,6 @@ public class UserOverviewFragment extends FifaBaseFragment implements OnBackPres
         super.onStop();
         stopRefreshing();
         mBinding.swiperefresh.setEnabled(false);
-        if (mViewModel != null) {
-            mViewModel.unsubscribeAll();
-        }
     }
 
     private void stopRefreshing() {
