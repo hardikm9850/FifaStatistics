@@ -8,7 +8,7 @@
             type="com.example.kevin.fifastatistics.viewmodels.UserOverviewViewModel"/>
         <variable
             name="progressViewModel"
-            type="com.example.kevin.fifastatistics.viewmodels.ProgressFragmentViewModel"/>
+            type="com.example.kevin.fifastatistics.viewmodels.fragment.ProgressFragmentViewModel"/>
 
         <import type="android.view.View"/>
 

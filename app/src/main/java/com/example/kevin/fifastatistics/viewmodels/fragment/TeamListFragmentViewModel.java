@@ -1,4 +1,4 @@
-package com.example.kevin.fifastatistics.viewmodels;
+package com.example.kevin.fifastatistics.viewmodels.fragment;
 
 import com.example.kevin.fifastatistics.managers.RetrievalManager;
 import com.example.kevin.fifastatistics.models.ApiListResponse;

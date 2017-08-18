@@ -1,4 +1,4 @@
-package com.example.kevin.fifastatistics.viewmodels;
+package com.example.kevin.fifastatistics.viewmodels.item;
 
 import android.databinding.Bindable;
 import android.text.Editable;
@@ -13,6 +13,7 @@ import com.example.kevin.fifastatistics.interfaces.Consumer;
 import com.example.kevin.fifastatistics.interfaces.Predicate;
 import com.example.kevin.fifastatistics.interfaces.StatUpdater;
 import com.example.kevin.fifastatistics.models.databasemodels.match.MatchUpdate;
+import com.example.kevin.fifastatistics.viewmodels.FifaBaseViewModel;
 
 import lombok.Builder;
 

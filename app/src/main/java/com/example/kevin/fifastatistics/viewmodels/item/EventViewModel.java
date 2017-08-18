@@ -1,4 +1,4 @@
-package com.example.kevin.fifastatistics.viewmodels;
+package com.example.kevin.fifastatistics.viewmodels.item;
 
 import android.databinding.Bindable;
 import android.view.View;
@@ -7,6 +7,7 @@ import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.managers.CrestUrlResizer;
 import com.example.kevin.fifastatistics.models.databasemodels.match.FifaEvent;
 import com.example.kevin.fifastatistics.models.databasemodels.user.Player;
+import com.example.kevin.fifastatistics.viewmodels.FifaBaseViewModel;
 
 public abstract class EventViewModel<T extends FifaEvent> extends FifaBaseViewModel {
 

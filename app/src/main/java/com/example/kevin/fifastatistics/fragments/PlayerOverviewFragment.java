@@ -13,8 +13,7 @@ import com.example.kevin.fifastatistics.databinding.FragmentPlayerOverviewBindin
 import com.example.kevin.fifastatistics.interfaces.OnBackPressedHandler;
 import com.example.kevin.fifastatistics.managers.RetrofitErrorManager;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
-import com.example.kevin.fifastatistics.utils.TransitionUtils;
-import com.example.kevin.fifastatistics.viewmodels.PlayerOverviewFragmentViewModel;
+import com.example.kevin.fifastatistics.viewmodels.fragment.PlayerOverviewFragmentViewModel;
 import com.example.kevin.fifastatistics.viewmodels.UserOverviewViewModel;
 
 public class PlayerOverviewFragment extends FifaBaseFragment implements OnBackPressedHandler,

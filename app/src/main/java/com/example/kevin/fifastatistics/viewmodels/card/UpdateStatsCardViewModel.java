@@ -1,4 +1,4 @@
-package com.example.kevin.fifastatistics.viewmodels;
+package com.example.kevin.fifastatistics.viewmodels.card;
 
 import android.content.res.Resources;
 import android.databinding.Bindable;
@@ -11,6 +11,8 @@ import com.example.kevin.fifastatistics.models.databasemodels.match.Match;
 import com.example.kevin.fifastatistics.models.databasemodels.match.MatchUpdate;
 import com.example.kevin.fifastatistics.models.databasemodels.user.Stats;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
+import com.example.kevin.fifastatistics.viewmodels.FifaBaseViewModel;
+import com.example.kevin.fifastatistics.viewmodels.item.UpdateStatsItemViewModel;
 
 public class UpdateStatsCardViewModel extends FifaBaseViewModel {
 

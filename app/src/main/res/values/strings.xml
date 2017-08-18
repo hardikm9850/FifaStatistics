@@ -180,9 +180,11 @@
     <string name="review_update">Review update</string>
     <string name="pending_updates">Pending Updates</string>
     <string name="review">Review</string>
+    <string name="continue_series">Continue</string>
     <string name="create_request">Create</string>
     <string name="reject">Reject</string>
     <string name="approve">Approve</string>
+    <string name="current_series">Current Series</string>
 
     <!-- PERMISSIONS -->
     <string name="request_camera_permission">FIFA Statistics needs camera permission.</string>

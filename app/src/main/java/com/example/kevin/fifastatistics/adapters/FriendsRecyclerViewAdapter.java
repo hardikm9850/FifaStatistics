@@ -9,7 +9,7 @@ import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.databinding.FragmentFriendsItemBinding;
 import com.example.kevin.fifastatistics.interfaces.ActivityLauncher;
 import com.example.kevin.fifastatistics.models.databasemodels.user.Player;
-import com.example.kevin.fifastatistics.viewmodels.FriendsItemViewModel;
+import com.example.kevin.fifastatistics.viewmodels.item.FriendsItemViewModel;
 
 import java.util.List;
 

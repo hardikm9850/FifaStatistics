@@ -14,8 +14,8 @@ import com.example.kevin.fifastatistics.adapters.TeamListAdapter;
 import com.example.kevin.fifastatistics.databinding.FragmentTeamsBinding;
 import com.example.kevin.fifastatistics.models.databasemodels.league.League;
 import com.example.kevin.fifastatistics.models.databasemodels.league.Team;
-import com.example.kevin.fifastatistics.viewmodels.TeamItemViewModel;
-import com.example.kevin.fifastatistics.viewmodels.TeamListFragmentViewModel;
+import com.example.kevin.fifastatistics.viewmodels.item.TeamItemViewModel;
+import com.example.kevin.fifastatistics.viewmodels.fragment.TeamListFragmentViewModel;
 
 import java.util.List;
 

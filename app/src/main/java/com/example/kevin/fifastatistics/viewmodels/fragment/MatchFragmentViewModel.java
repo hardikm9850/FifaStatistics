@@ -1,4 +1,4 @@
-package com.example.kevin.fifastatistics.viewmodels;
+package com.example.kevin.fifastatistics.viewmodels.fragment;
 
 import android.databinding.Bindable;
 import android.view.View;
@@ -10,7 +10,7 @@ import com.example.kevin.fifastatistics.models.databasemodels.match.Match;
 import com.example.kevin.fifastatistics.models.databasemodels.match.MatchProjection;
 import com.example.kevin.fifastatistics.models.databasemodels.user.Player;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
-import com.example.kevin.fifastatistics.utils.ObservableUtils;
+import com.example.kevin.fifastatistics.viewmodels.EventResultHeaderViewModel;
 
 import java.util.Collections;
 import java.util.List;

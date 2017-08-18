@@ -5,6 +5,8 @@ import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.example.kevin.fifastatistics.event.EventBus;
+import com.example.kevin.fifastatistics.event.SeriesRemovedEvent;
 import com.example.kevin.fifastatistics.models.databasemodels.match.CurrentSeries;
 import com.example.kevin.fifastatistics.models.databasemodels.match.Match;
 import com.example.kevin.fifastatistics.models.databasemodels.user.Friend;
@@ -51,13 +53,19 @@ public class CurrentSeriesPrefs extends AbstractPrefs {
 
     public void removeCurrentSeries(String opponentId) {
         mPrefs.edit().remove(opponentId).apply();
+        EventBus.getInstance().post(new SeriesRemovedEvent(opponentId));
     }
 
     @SuppressWarnings("unchecked")
     @NonNull
-    public Collection<CurrentSeries> getCurrentSeries() {
-        Map<String, CurrentSeries> series = (Map<String, CurrentSeries>) mPrefs.getAll();
-        return series == null ? new ArrayList<>() : series.values();
+    public List<CurrentSeries> getCurrentSeries() {
+        Map<String, String> series = (Map<String, String>) mPrefs.getAll();
+        if (series != null) {
+            Collection<String> seriesStrings = series.values();
+            return SerializationUtils.serializeStringCollection(seriesStrings, CurrentSeries.class);
+        } else {
+            return new ArrayList<>();
+        }
     }
 
     @Nullable

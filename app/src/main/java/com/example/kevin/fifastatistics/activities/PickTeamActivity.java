@@ -18,7 +18,7 @@ import com.example.kevin.fifastatistics.models.databasemodels.league.Team;
 import com.example.kevin.fifastatistics.utils.ColorUtils;
 import com.example.kevin.fifastatistics.utils.ObservableUtils;
 import com.example.kevin.fifastatistics.utils.ToastUtils;
-import com.example.kevin.fifastatistics.viewmodels.TeamItemViewModel;
+import com.example.kevin.fifastatistics.viewmodels.item.TeamItemViewModel;
 
 import rx.Subscription;
 

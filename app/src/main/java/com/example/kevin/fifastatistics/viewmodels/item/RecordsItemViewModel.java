@@ -1,8 +1,9 @@
-package com.example.kevin.fifastatistics.viewmodels;
+package com.example.kevin.fifastatistics.viewmodels.item;
 
 import android.databinding.Bindable;
 
 import com.example.kevin.fifastatistics.models.databasemodels.user.records.UserRecords;
+import com.example.kevin.fifastatistics.viewmodels.FifaBaseViewModel;
 
 public class RecordsItemViewModel extends FifaBaseViewModel {
 

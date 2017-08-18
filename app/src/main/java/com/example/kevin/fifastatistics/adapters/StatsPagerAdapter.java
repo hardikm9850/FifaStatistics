@@ -15,7 +15,7 @@ import com.example.kevin.fifastatistics.models.databasemodels.match.Match;
 import com.example.kevin.fifastatistics.models.databasemodels.match.TeamEvent;
 import com.example.kevin.fifastatistics.models.databasemodels.user.Stats;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
-import com.example.kevin.fifastatistics.viewmodels.StatsCardViewModel;
+import com.example.kevin.fifastatistics.viewmodels.card.StatsCardViewModel;
 
 import java.util.List;
 

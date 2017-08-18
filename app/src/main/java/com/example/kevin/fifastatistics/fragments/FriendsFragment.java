@@ -21,7 +21,7 @@ import com.example.kevin.fifastatistics.models.databasemodels.user.Player;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
 import com.example.kevin.fifastatistics.utils.ToastUtils;
 import com.example.kevin.fifastatistics.utils.UiUtils;
-import com.example.kevin.fifastatistics.viewmodels.PlayersFragmentViewModel;
+import com.example.kevin.fifastatistics.viewmodels.fragment.PlayersFragmentViewModel;
 import com.example.kevin.fifastatistics.views.FifaSearchView;
 
 import java.util.List;

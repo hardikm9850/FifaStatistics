@@ -5,7 +5,7 @@
     <data>
         <variable
             name="matchItemViewModel"
-            type="com.example.kevin.fifastatistics.viewmodels.MatchesItemViewModel"/>
+            type="com.example.kevin.fifastatistics.viewmodels.item.MatchesItemViewModel"/>
     </data>
 
     <LinearLayout

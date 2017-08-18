@@ -4,6 +4,7 @@ import android.databinding.Bindable;
 import android.view.View;
 
 import com.example.kevin.fifastatistics.FifaApplication;
+import com.example.kevin.fifastatistics.viewmodels.fragment.ProgressFragmentViewModel;
 
 public abstract class FooterButtonsViewModel extends ProgressFragmentViewModel {
 

@@ -22,6 +22,7 @@ import com.example.kevin.fifastatistics.models.databasemodels.match.Series;
 import com.example.kevin.fifastatistics.models.databasemodels.user.Friend;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
 import com.example.kevin.fifastatistics.utils.CollectionUtils;
+import com.example.kevin.fifastatistics.viewmodels.item.CreateSeriesListItemViewModel;
 
 import java.util.ArrayList;
 import java.util.Arrays;

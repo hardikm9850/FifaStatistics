@@ -1,4 +1,4 @@
-package com.example.kevin.fifastatistics.viewmodels;
+package com.example.kevin.fifastatistics.viewmodels.fragment;
 
 import android.content.Context;
 import android.content.Intent;
@@ -16,6 +16,7 @@ import com.example.kevin.fifastatistics.managers.preferences.PrefsManager;
 import com.example.kevin.fifastatistics.models.databasemodels.league.Team;
 import com.example.kevin.fifastatistics.models.databasemodels.user.Player;
 import com.example.kevin.fifastatistics.utils.ObservableUtils;
+import com.example.kevin.fifastatistics.viewmodels.FifaBaseViewModel;
 
 import rx.Observable;
 import rx.Subscription;

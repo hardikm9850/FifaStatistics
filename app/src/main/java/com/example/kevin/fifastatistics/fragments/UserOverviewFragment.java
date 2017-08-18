@@ -11,8 +11,10 @@ import android.view.ViewGroup;
 import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.databinding.FragmentUserOverviewBinding;
 import com.example.kevin.fifastatistics.event.EventBus;
+import com.example.kevin.fifastatistics.event.SeriesRemovedEvent;
 import com.example.kevin.fifastatistics.event.UpdateRemovedEvent;
 import com.example.kevin.fifastatistics.interfaces.OnBackPressedHandler;
+import com.example.kevin.fifastatistics.managers.CurrentSeriesSynchronizer;
 import com.example.kevin.fifastatistics.managers.MatchUpdateSynchronizer;
 import com.example.kevin.fifastatistics.managers.preferences.PrefsManager;
 import com.example.kevin.fifastatistics.models.databasemodels.match.MatchUpdate;
@@ -20,6 +22,8 @@ import com.example.kevin.fifastatistics.models.databasemodels.user.User;
 import com.example.kevin.fifastatistics.viewmodels.UserOverviewViewModel;
 
 import java.util.List;
+
+import rx.android.schedulers.AndroidSchedulers;
 
 /**
  * The main overview fragment for the current user.
@@ -52,16 +56,28 @@ public class UserOverviewFragment extends FifaBaseFragment implements OnBackPres
         super.onCreate(savedInstanceState);
         mUser = PrefsManager.getUser();
         observeUpdateRemovedEvents();
+        observerSeriesRemovedEvents();
     }
 
     private void observeUpdateRemovedEvents() {
-        EventBus.getInstance().observeEvents(UpdateRemovedEvent.class).subscribe(event -> {
-            Log.d("Overview", "Observing event removed");
-            MatchUpdate update = event.getUpdate();
-            if (mViewModel != null) {
-                mViewModel.removePendingUpdate(update);
-            }
-        });
+        EventBus.getInstance().observeEvents(UpdateRemovedEvent.class)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(event -> {
+                    MatchUpdate update = event.getUpdate();
+                    if (mViewModel != null) {
+                        mViewModel.removePendingUpdate(update);
+                    }
+                });
+    }
+
+    private void observerSeriesRemovedEvents() {
+        EventBus.getInstance().observeEvents(SeriesRemovedEvent.class)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(event -> {
+                    if (mViewModel != null) {
+                        mViewModel.removeSeriesWithOpponentId(event.getOpponentId());
+                    }
+                });
     }
 
     @Override
@@ -72,7 +88,6 @@ public class UserOverviewFragment extends FifaBaseFragment implements OnBackPres
         mBinding.setViewModel(mViewModel);
         mBinding.swiperefresh.setOnRefreshListener(() -> mViewModel.update());
         mBinding.scrollview.setOnScrollChangeListener(mScrollListener);
-//        TransitionUtils.addTransitionCallbackToBinding(mBinding.overviewLayout.statsCardLayout);
         return mBinding.getRoot();
     }
 
@@ -122,6 +137,7 @@ public class UserOverviewFragment extends FifaBaseFragment implements OnBackPres
         sIsUpdated = true;
         PrefsManager.storeUser(user);
         checkMatchUpdates(user);
+        checkCurrentSeries(user);
     }
 
     private void checkMatchUpdates(User user) {
@@ -132,6 +148,16 @@ public class UserOverviewFragment extends FifaBaseFragment implements OnBackPres
                 .onSyncCompleteHandler(this::stopRefreshing)
                 .build();
         addSubscription(s.sync());
+    }
+
+    private void checkCurrentSeries(User user) {
+        CurrentSeriesSynchronizer s = CurrentSeriesSynchronizer.builder()
+                .user(user)
+                .onSyncSuccessHandler(series -> mViewModel.setCurrentSeries(series))
+                .onSyncCompleteHandler(this::stopRefreshing)
+                .onSyncErrorHandler(e -> onUserUpdateFailure())
+                .build();
+        addSubscription(s.get());
     }
 
     @Override

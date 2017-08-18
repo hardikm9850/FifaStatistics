@@ -1,4 +1,4 @@
-package com.example.kevin.fifastatistics.viewmodels;
+package com.example.kevin.fifastatistics.viewmodels.fragment;
 
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -22,6 +22,8 @@ import com.example.kevin.fifastatistics.network.MatchApi;
 import com.example.kevin.fifastatistics.network.NotFoundException;
 import com.example.kevin.fifastatistics.utils.ObservableUtils;
 import com.example.kevin.fifastatistics.utils.ToastUtils;
+import com.example.kevin.fifastatistics.viewmodels.FooterButtonsViewModel;
+import com.example.kevin.fifastatistics.viewmodels.card.UpdateStatsCardViewModel;
 
 import retrofit2.Response;
 import rx.Observable;

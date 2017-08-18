@@ -26,8 +26,7 @@ import lombok.Builder;
 import retrofit2.Response;
 import rx.Observable;
 import rx.Subscription;
-
-import static com.example.kevin.fifastatistics.managers.RetrofitErrorManager.ErrorCode;
+import rx.functions.Action0;
 
 public class CurrentSeriesSynchronizer {
 
@@ -36,6 +35,7 @@ public class CurrentSeriesSynchronizer {
     private final Consumer<Throwable> onSyncErrorHandler;
     private final Consumer<List<CurrentSeries>> onSyncSuccessHandler;
     private final Consumer<CurrentSeries> onSaveSuccessHandler;
+    private final Action0 onSyncCompleteHandler;
 
     public static CurrentSeriesSynchronizer with(User user, Context context) {
         return CurrentSeriesSynchronizer.builder().user(user).context(context).build();
@@ -44,11 +44,13 @@ public class CurrentSeriesSynchronizer {
     @Builder
     private CurrentSeriesSynchronizer(User user, Consumer<Throwable> onSyncErrorHandler,
                                       Consumer<List<CurrentSeries>> onSyncSuccessHandler,
-                                      Consumer<CurrentSeries> onSaveSuccessHandler, Context context) {
+                                      Consumer<CurrentSeries> onSaveSuccessHandler,
+                                      Action0 onSyncCompleteHandler, Context context) {
         this.user = user;
         this.onSyncErrorHandler = onSyncErrorHandler;
         this.onSyncSuccessHandler = onSyncSuccessHandler;
         this.onSaveSuccessHandler = onSaveSuccessHandler;
+        this.onSyncCompleteHandler = onSyncCompleteHandler;
         this.context = context;
     }
 
@@ -67,12 +69,16 @@ public class CurrentSeriesSynchronizer {
 
                         @Override
                         public void onNext(ApiListResponse<CurrentSeries> response) {
-                            List<CurrentSeries> series = response.getItems();
-                            seriesPrefs.setCurrentSeries(series);
-                            succeed(series);
+                            if (response != null) {
+                                List<CurrentSeries> series = response.getItems();
+                                seriesPrefs.setCurrentSeries(series);
+                                succeed(series);
+                            }
+                            complete();
                         }
                     });
         } else {
+            complete();
             return null;
         }
     }
@@ -94,6 +100,12 @@ public class CurrentSeriesSynchronizer {
     private void succeed(List<CurrentSeries> series) {
         if (onSyncSuccessHandler != null) {
             onSyncSuccessHandler.accept(series);
+        }
+    }
+
+    private void complete() {
+        if (onSyncCompleteHandler != null) {
+            onSyncCompleteHandler.call();
         }
     }
 

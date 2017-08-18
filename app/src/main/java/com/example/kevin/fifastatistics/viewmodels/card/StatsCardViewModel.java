@@ -1,4 +1,4 @@
-package com.example.kevin.fifastatistics.viewmodels;
+package com.example.kevin.fifastatistics.viewmodels.card;
 
 import android.content.Context;
 import android.databinding.BaseObservable;

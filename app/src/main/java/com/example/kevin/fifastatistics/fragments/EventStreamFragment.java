@@ -24,7 +24,7 @@ import com.example.kevin.fifastatistics.models.ApiListResponse;
 import com.example.kevin.fifastatistics.models.databasemodels.match.FifaEvent;
 import com.example.kevin.fifastatistics.models.databasemodels.user.Player;
 import com.example.kevin.fifastatistics.utils.ToastUtils;
-import com.example.kevin.fifastatistics.viewmodels.EventStreamFragmentViewModel;
+import com.example.kevin.fifastatistics.viewmodels.fragment.EventStreamFragmentViewModel;
 import com.tonicartos.superslim.LayoutManager;
 
 import java.util.List;

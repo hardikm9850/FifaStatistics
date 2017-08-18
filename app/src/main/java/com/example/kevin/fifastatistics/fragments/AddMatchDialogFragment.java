@@ -40,7 +40,7 @@ import com.example.kevin.fifastatistics.utils.ObservableUtils;
 import com.example.kevin.fifastatistics.utils.ResourceUtils;
 import com.example.kevin.fifastatistics.utils.ToastUtils;
 import com.example.kevin.fifastatistics.utils.UiUtils;
-import com.example.kevin.fifastatistics.viewmodels.AddMatchFragmentViewModel;
+import com.example.kevin.fifastatistics.viewmodels.fragment.AddMatchFragmentViewModel;
 import com.example.kevin.fifastatistics.views.AddMatchListLayout;
 import com.nostra13.universalimageloader.core.ImageLoader;
 

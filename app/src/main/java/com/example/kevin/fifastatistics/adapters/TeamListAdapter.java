@@ -9,7 +9,7 @@ import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.databinding.ItemTeamBinding;
 import com.example.kevin.fifastatistics.models.databasemodels.league.Team;
 import com.example.kevin.fifastatistics.utils.CollectionUtils;
-import com.example.kevin.fifastatistics.viewmodels.TeamItemViewModel;
+import com.example.kevin.fifastatistics.viewmodels.item.TeamItemViewModel;
 
 import java.util.List;
 

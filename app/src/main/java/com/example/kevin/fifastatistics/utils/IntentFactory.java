@@ -17,11 +17,11 @@ public class IntentFactory {
         return getPlayerActivityIntentForClass(activity, player, PlayerActivty.class);
     }
 
-    public static Intent createNewSeriesActivityIntent(Activity activity, Player player) {
+    public static Intent createNewSeriesActivityIntent(Context activity, Player player) {
         return getPlayerActivityIntentForClass(activity, player, CreateSeriesActivity.class);
     }
 
-    private static Intent getPlayerActivityIntentForClass(Activity activity, Player player,
+    private static Intent getPlayerActivityIntentForClass(Context activity, Player player,
                                                           Class<? extends BasePlayerActivity> activityClass) {
         Intent intent = new Intent(activity, activityClass);
         intent.putExtra(FifaBaseActivity.EXTRA_HASH_CODE, activity.hashCode());

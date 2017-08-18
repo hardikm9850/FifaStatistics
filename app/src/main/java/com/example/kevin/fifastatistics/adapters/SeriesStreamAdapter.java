@@ -5,8 +5,8 @@ import com.example.kevin.fifastatistics.databinding.ItemSeriesBinding;
 import com.example.kevin.fifastatistics.interfaces.ActivityLauncher;
 import com.example.kevin.fifastatistics.models.databasemodels.match.SeriesProjection;
 import com.example.kevin.fifastatistics.models.databasemodels.user.Player;
-import com.example.kevin.fifastatistics.viewmodels.EventViewModel;
-import com.example.kevin.fifastatistics.viewmodels.SeriesItemViewModel;
+import com.example.kevin.fifastatistics.viewmodels.item.EventViewModel;
+import com.example.kevin.fifastatistics.viewmodels.item.SeriesItemViewModel;
 
 public class SeriesStreamAdapter extends EventStreamRecyclerViewAdapter<ItemSeriesBinding, SeriesProjection> {
 

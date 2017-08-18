@@ -4,12 +4,19 @@ import android.databinding.Bindable;
 
 import com.example.kevin.fifastatistics.BR;
 import com.example.kevin.fifastatistics.interfaces.ActivityLauncher;
+import com.example.kevin.fifastatistics.managers.preferences.CurrentSeriesPrefs;
+import com.example.kevin.fifastatistics.managers.preferences.PrefsManager;
+import com.example.kevin.fifastatistics.models.databasemodels.match.CurrentSeries;
 import com.example.kevin.fifastatistics.models.databasemodels.match.MatchUpdate;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
 import com.example.kevin.fifastatistics.network.FifaApi;
 import com.example.kevin.fifastatistics.utils.ObservableUtils;
+import com.example.kevin.fifastatistics.viewmodels.card.CurrentSeriesCardViewModel;
+import com.example.kevin.fifastatistics.viewmodels.card.RecordsCardViewModel;
+import com.example.kevin.fifastatistics.viewmodels.card.UpdatesCardViewModel;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import rx.Subscription;
@@ -20,6 +27,7 @@ public class UserOverviewViewModel extends FifaBaseViewModel {
     private RecordsCardViewModel mRecords;
     private UserOverviewViewModelInteraction mInteraction;
     private UpdatesCardViewModel mUpdatesViewModel;
+    private CurrentSeriesCardViewModel mCurrentSeriesViewModel;
     private List<MatchUpdate> mMatchUpdates;
 
     public UserOverviewViewModel(User user) {
@@ -33,6 +41,13 @@ public class UserOverviewViewModel extends FifaBaseViewModel {
         mRecords = new RecordsCardViewModel(user);
         mUpdatesViewModel = new UpdatesCardViewModel(launcher, updates, user);
         mMatchUpdates = updates;
+        initCurrentSeriesCard(launcher, user);
+    }
+
+    private void initCurrentSeriesCard(ActivityLauncher launcher, User currentUser) {
+        boolean isCurrentUser = launcher != null;
+        List<CurrentSeries> series = PrefsManager.getSeriesPrefs().getCurrentSeries();
+        mCurrentSeriesViewModel = new CurrentSeriesCardViewModel(launcher, series, isCurrentUser, currentUser);
     }
 
     public void update() {
@@ -73,6 +88,11 @@ public class UserOverviewViewModel extends FifaBaseViewModel {
     }
 
     @Bindable
+    public CurrentSeriesCardViewModel getSeries() {
+        return mCurrentSeriesViewModel;
+    }
+
+    @Bindable
     public List<User.StatsPair> getStats() {
         if (mUser != null) {
             List<User.StatsPair> stats = new ArrayList<>();
@@ -95,17 +115,26 @@ public class UserOverviewViewModel extends FifaBaseViewModel {
     }
 
     public void setPendingUpdates(List<MatchUpdate> updates) {
-        mUpdatesViewModel.setPendingUpdates(updates);
+        mUpdatesViewModel.setItems(updates);
     }
 
     public void removePendingUpdate(MatchUpdate update) {
-        mUpdatesViewModel.removePendingUpdate(update);
+        mUpdatesViewModel.removeItem(update);
+    }
+
+    public void setCurrentSeries(List<CurrentSeries> series) {
+        mCurrentSeriesViewModel.setItems(series);
+    }
+
+    public void removeSeriesWithOpponentId(String opponentId) {
+        mCurrentSeriesViewModel.removeSeriesWithOpponentId(opponentId);
     }
 
     @Override
     public void destroy() {
         super.destroy();
         mInteraction = null;
+        mUpdatesViewModel.destroy();
     }
 
     public interface UserOverviewViewModelInteraction {

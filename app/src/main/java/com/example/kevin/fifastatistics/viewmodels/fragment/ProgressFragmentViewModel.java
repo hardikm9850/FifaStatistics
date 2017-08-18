@@ -1,4 +1,4 @@
-package com.example.kevin.fifastatistics.viewmodels;
+package com.example.kevin.fifastatistics.viewmodels.fragment;
 
 import android.databinding.Bindable;
 import android.support.annotation.ColorRes;
@@ -6,6 +6,7 @@ import android.view.View;
 
 import com.example.kevin.fifastatistics.BR;
 import com.example.kevin.fifastatistics.FifaApplication;
+import com.example.kevin.fifastatistics.viewmodels.FifaBaseViewModel;
 
 public abstract class ProgressFragmentViewModel extends FifaBaseViewModel {
 

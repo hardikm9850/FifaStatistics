@@ -7,7 +7,7 @@ import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.databinding.ItemDateHeaderBinding;
 import com.example.kevin.fifastatistics.models.databasemodels.match.FifaEvent;
 import com.example.kevin.fifastatistics.models.databasemodels.user.Player;
-import com.example.kevin.fifastatistics.viewmodels.EventViewModel;
+import com.example.kevin.fifastatistics.viewmodels.item.EventViewModel;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;

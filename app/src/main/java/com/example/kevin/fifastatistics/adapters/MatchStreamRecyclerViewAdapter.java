@@ -5,8 +5,8 @@ import com.example.kevin.fifastatistics.databinding.ItemMatchBinding;
 import com.example.kevin.fifastatistics.interfaces.ActivityLauncher;
 import com.example.kevin.fifastatistics.models.databasemodels.match.MatchProjection;
 import com.example.kevin.fifastatistics.models.databasemodels.user.Player;
-import com.example.kevin.fifastatistics.viewmodels.EventViewModel;
-import com.example.kevin.fifastatistics.viewmodels.MatchesItemViewModel;
+import com.example.kevin.fifastatistics.viewmodels.item.EventViewModel;
+import com.example.kevin.fifastatistics.viewmodels.item.MatchesItemViewModel;
 
 public class MatchStreamRecyclerViewAdapter extends EventStreamRecyclerViewAdapter<ItemMatchBinding, MatchProjection> {
 

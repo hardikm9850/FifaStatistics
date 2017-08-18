@@ -18,7 +18,7 @@ import com.example.kevin.fifastatistics.managers.RetrofitErrorManager;
 import com.example.kevin.fifastatistics.models.databasemodels.match.Match;
 import com.example.kevin.fifastatistics.models.databasemodels.match.MatchProjection;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
-import com.example.kevin.fifastatistics.viewmodels.MatchFragmentViewModel;
+import com.example.kevin.fifastatistics.viewmodels.fragment.MatchFragmentViewModel;
 
 public class MatchFragment extends FifaBaseFragment implements MatchFragmentViewModel.OnMatchLoadedListener {
 

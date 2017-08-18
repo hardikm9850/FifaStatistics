@@ -26,7 +26,7 @@ import com.example.kevin.fifastatistics.utils.BuildUtils;
 import com.example.kevin.fifastatistics.utils.ObservableUtils;
 import com.example.kevin.fifastatistics.utils.ToastUtils;
 import com.example.kevin.fifastatistics.utils.TransitionUtils;
-import com.example.kevin.fifastatistics.viewmodels.MatchUpdateFragmentViewModel;
+import com.example.kevin.fifastatistics.viewmodels.fragment.MatchUpdateFragmentViewModel;
 import com.example.kevin.fifastatistics.views.notifications.FifaNotification;
 import com.example.kevin.fifastatistics.views.notifications.FifaNotificationFactory;
 

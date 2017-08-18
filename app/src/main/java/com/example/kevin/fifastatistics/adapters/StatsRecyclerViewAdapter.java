@@ -15,7 +15,7 @@ import com.example.kevin.fifastatistics.event.EventBus;
 import com.example.kevin.fifastatistics.models.databasemodels.match.TeamEvent;
 import com.example.kevin.fifastatistics.models.databasemodels.user.Stats;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
-import com.example.kevin.fifastatistics.viewmodels.StatItemViewModel;
+import com.example.kevin.fifastatistics.viewmodels.item.StatItemViewModel;
 
 public class StatsRecyclerViewAdapter extends RecyclerView.Adapter<StatsRecyclerViewAdapter.ViewHolder> {
 

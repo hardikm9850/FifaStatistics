@@ -1,9 +1,10 @@
-package com.example.kevin.fifastatistics.viewmodels;
+package com.example.kevin.fifastatistics.viewmodels.item;
 
 import android.databinding.Bindable;
 
 import com.example.kevin.fifastatistics.managers.CrestUrlResizer;
 import com.example.kevin.fifastatistics.models.databasemodels.league.Team;
+import com.example.kevin.fifastatistics.viewmodels.FifaBaseViewModel;
 
 public class TeamItemViewModel extends FifaBaseViewModel {
 

@@ -16,7 +16,13 @@
 
         <include
             layout="@layout/card_pending_updates"
-            bind:viewModel="@{viewModel.updates}"/>
+            bind:viewModel="@{viewModel.series}"
+            bind:title="@{@string/current_series}"/>
+
+        <include
+            layout="@layout/card_pending_updates"
+            bind:viewModel="@{viewModel.updates}"
+            bind:title="@{@string/pending_updates}"/>
 
         <include
             layout="@layout/records_card_view"

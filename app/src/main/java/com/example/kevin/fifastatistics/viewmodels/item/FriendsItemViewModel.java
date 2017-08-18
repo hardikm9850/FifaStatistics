@@ -1,4 +1,4 @@
-package com.example.kevin.fifastatistics.viewmodels;
+package com.example.kevin.fifastatistics.viewmodels.item;
 
 import android.app.Activity;
 import android.content.Context;
@@ -14,6 +14,7 @@ import com.example.kevin.fifastatistics.models.databasemodels.user.Player;
 import com.example.kevin.fifastatistics.utils.ContextUtils;
 import com.example.kevin.fifastatistics.utils.IntentFactory;
 import com.example.kevin.fifastatistics.utils.TransitionUtils;
+import com.example.kevin.fifastatistics.viewmodels.FifaBaseViewModel;
 
 public class FriendsItemViewModel extends FifaBaseViewModel {
 

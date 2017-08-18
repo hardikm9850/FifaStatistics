@@ -6,7 +6,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.example.kevin.fifastatistics.viewmodels.MatchFragmentViewModel"/>
+            type="com.example.kevin.fifastatistics.viewmodels.fragment.MatchFragmentViewModel"/>
     </data>
 
     <FrameLayout

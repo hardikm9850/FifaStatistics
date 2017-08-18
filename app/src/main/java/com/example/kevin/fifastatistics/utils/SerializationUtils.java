@@ -1,9 +1,14 @@
 package com.example.kevin.fifastatistics.utils;
 
+import android.support.annotation.NonNull;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 import lombok.experimental.UtilityClass;
 
@@ -56,5 +61,13 @@ public class SerializationUtils {
             e.printStackTrace();
             return null;
         }
+    }
+
+    public static <T> List<T> serializeStringCollection(@NonNull Collection<String> strings, Class<T> type) {
+        List<T> result = new ArrayList<T>(strings.size());
+        for (String s : strings) {
+            result.add(fromJson(s, type));
+        }
+        return result;
     }
 }

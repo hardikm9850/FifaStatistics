@@ -6,6 +6,8 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.example.kevin.fifastatistics.FifaApplication;
+import com.example.kevin.fifastatistics.event.EventBus;
+import com.example.kevin.fifastatistics.event.SeriesRemovedEvent;
 import com.example.kevin.fifastatistics.interfaces.FragmentArguments;
 import com.example.kevin.fifastatistics.listeners.SimpleObserver;
 import com.example.kevin.fifastatistics.managers.RetrofitErrorManager;
