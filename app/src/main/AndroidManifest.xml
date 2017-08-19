@@ -122,6 +122,8 @@
         <service android:name=".network.service.UpdateTokenService"/>
         <service android:name=".network.service.CurrentSeriesService"/>
 
+        <receiver android:name=".views.notifications.NotificationCancelingReceiver"/>
+
     </application>
 
 </manifest>

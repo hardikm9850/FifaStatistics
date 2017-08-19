@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
+import com.example.kevin.fifastatistics.FifaApplication;
 import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.models.notifications.NotificationData;
 import com.example.kevin.fifastatistics.utils.BitmapUtils;
@@ -19,8 +20,7 @@ public abstract class FifaNotification
     private static final int SMALL_ICON = R.mipmap.ic_launcher;
 
     protected NotificationCompat.Builder mNotificationBuilder;
-
-    private Context context;
+    protected Context context;
 
     public FifaNotification(Context context) {
         this.context = context;
@@ -50,13 +50,14 @@ public abstract class FifaNotification
         Log.e("FIFA NOTIFICATION", nb.toString());
         String imageUrl = nb.getImageUrl();
         Bitmap userIcon = imageUrl != null ? BitmapUtils.getCircleBitmapFromUrl(nb.getImageUrl()) : null;
-
+        int accentColor = FifaApplication.getAccentColor();
         mNotificationBuilder
                 .setSmallIcon(SMALL_ICON)
                 .setLargeIcon(userIcon)
                 .setContentTitle(nb.getTitle())
                 .setOnlyAlertOnce(true)
                 .setAutoCancel(true)
+                .setColor(accentColor)
                 .setSound(SOUND_URI)
                 .setPriority(Notification.PRIORITY_HIGH);
     }
@@ -100,5 +101,10 @@ public abstract class FifaNotification
         NotificationManager nm = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         Log.e("NOTIFICATION", String.valueOf(mNotificationBuilder.mActions.size()));
         nm.notify(notificationId, mNotificationBuilder.build());
+    }
+
+    protected void cancel() {
+        NotificationManager nm = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        nm.cancel(getNotificationId());
     }
 }

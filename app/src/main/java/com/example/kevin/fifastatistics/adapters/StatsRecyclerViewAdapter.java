@@ -1,6 +1,5 @@
 package com.example.kevin.fifastatistics.adapters;
 
-import android.content.res.Resources;
 import android.databinding.DataBindingUtil;
 import android.graphics.Color;
 import android.support.v4.content.ContextCompat;
@@ -17,10 +16,6 @@ import com.example.kevin.fifastatistics.models.databasemodels.match.TeamEvent;
 import com.example.kevin.fifastatistics.models.databasemodels.user.Stats;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
 import com.example.kevin.fifastatistics.viewmodels.item.StatItemViewModel;
-
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 public class StatsRecyclerViewAdapter extends RecyclerView.Adapter<StatsRecyclerViewAdapter.ViewHolder> {
 

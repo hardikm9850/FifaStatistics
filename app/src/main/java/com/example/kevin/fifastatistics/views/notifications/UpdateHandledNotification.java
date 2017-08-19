@@ -12,6 +12,7 @@ import com.example.kevin.fifastatistics.models.notifications.NotificationData;
 import com.example.kevin.fifastatistics.utils.ResourceUtils;
 
 import java.util.Map;
+import java.util.Random;
 
 public class UpdateHandledNotification extends FifaNotification {
 
@@ -27,8 +28,15 @@ public class UpdateHandledNotification extends FifaNotification {
     }
 
     private void initContentIntent(Context c) {
-        Intent intent = MatchActivity.getLaunchIntent(c, mData.getId());
+        Intent intent = getMatchIntent();
         mContentIntent = PendingIntent.getActivity(c, 0, intent, PendingIntent.FLAG_ONE_SHOT);
+    }
+
+    private Intent getMatchIntent() {
+        int id = Math.abs(getNotificationId());
+        Intent intent = MatchActivity.getLaunchIntent(context, mData.getId());
+        intent.setAction(String.valueOf(id + new Random().nextInt(id)));
+        return intent;
     }
 
     @Override
@@ -38,7 +46,8 @@ public class UpdateHandledNotification extends FifaNotification {
 
     @Override
     protected void addActions() {
-        mNotificationBuilder.addAction(new NotificationCompat.Action(0, VIEW_MATCH, mContentIntent));
+        PendingIntent cancelingIntent = NotificationCancelingReceiver.getIntent(context, mContentIntent, getNotificationId());
+        mNotificationBuilder.addAction(new NotificationCompat.Action(0, VIEW_MATCH, cancelingIntent));
     }
 
     @Override

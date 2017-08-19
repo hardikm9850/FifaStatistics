@@ -4,6 +4,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
+import android.text.TextUtils;
 
 import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.activities.MatchUpdateActivity;
@@ -12,6 +13,7 @@ import com.example.kevin.fifastatistics.models.notifications.NotificationData;
 import com.example.kevin.fifastatistics.utils.ResourceUtils;
 
 import java.util.Map;
+import java.util.Random;
 
 public class UpdateCreatedNotification extends FifaNotification {
 
@@ -27,8 +29,15 @@ public class UpdateCreatedNotification extends FifaNotification {
     }
 
     private void initContentIntent(Context context) {
-        Intent intent = MatchUpdateActivity.getNotificationIntent(context, mData.getId());
+        Intent intent = getMatchIntent();
         mContentIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_ONE_SHOT);
+    }
+
+    private Intent getMatchIntent() {
+        int id = Math.abs(getNotificationId());
+        Intent intent = MatchUpdateActivity.getNotificationIntent(context, mData.getId());
+        intent.setAction(String.valueOf(id + new Random().nextInt(id)));
+        return intent;
     }
 
     @Override
@@ -38,7 +47,8 @@ public class UpdateCreatedNotification extends FifaNotification {
 
     @Override
     protected void addActions() {
-        mNotificationBuilder.addAction(new NotificationCompat.Action(0, VIEW, mContentIntent));
+        PendingIntent cancelingIntent = NotificationCancelingReceiver.getIntent(context, mContentIntent, getNotificationId());
+        mNotificationBuilder.addAction(new NotificationCompat.Action(0, VIEW, cancelingIntent));
     }
 
     @Override

@@ -18,7 +18,7 @@ public class StatItemViewModel extends BaseObservable {
     private static final Set<String> INVERTS;
 
     static {
-        INVERTS = new HashSet<>(4);
+        INVERTS = new HashSet<>(5);
         INVERTS.add(Stats.FOULS);
         INVERTS.add(Stats.YELLOW_CARDS);
         INVERTS.add(Stats.RED_CARDS);
@@ -104,7 +104,7 @@ public class StatItemViewModel extends BaseObservable {
 
     @BindingAdapter("app:layout_widthPercent")
     public static void setWidthPercent(View view, float width) {
-        PercentLayoutHelper.PercentLayoutParams params =(PercentLayoutHelper.PercentLayoutParams) view.getLayoutParams();
+        PercentLayoutHelper.PercentLayoutParams params = (PercentLayoutHelper.PercentLayoutParams) view.getLayoutParams();
         PercentLayoutHelper.PercentLayoutInfo info = params.getPercentLayoutInfo();
         info.widthPercent = width;
     }
