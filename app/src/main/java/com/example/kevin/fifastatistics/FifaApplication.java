@@ -1,9 +1,9 @@
 package com.example.kevin.fifastatistics;
 
-import android.app.Application;
 import android.content.Context;
 import android.content.res.AssetManager;
 import android.preference.PreferenceManager;
+import android.support.multidex.MultiDexApplication;
 import android.util.Log;
 
 import com.example.kevin.fifastatistics.activities.FifaActivityLifecycleCallbacks;
@@ -20,7 +20,7 @@ import java.io.OutputStream;
 
 import rx.Observable;
 
-public class FifaApplication extends Application {
+public class FifaApplication extends MultiDexApplication {
 
     private static Context instance;
     private static int colorAccent;
