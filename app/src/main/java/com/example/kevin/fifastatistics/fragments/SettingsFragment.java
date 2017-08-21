@@ -1,13 +1,19 @@
 package com.example.kevin.fifastatistics.fragments;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v14.preference.SwitchPreference;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceFragmentCompat;
+import android.support.v7.preference.TwoStatePreference;
 
 import com.example.kevin.fifastatistics.FifaApplication;
+import com.example.kevin.fifastatistics.Manifest;
 import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.activities.PickTeamActivity;
 import com.example.kevin.fifastatistics.event.ColorChangeEvent;
@@ -29,6 +35,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements OnTeam
     private static final int SETTINGS_REQUEST_CODE = 5377;
 
     private Preference mTeamPreference;
+    private TwoStatePreference mSaveFactsPreference;
     private EventBus mEventBus;
     private Subscription mUpdateTeamSubscription;
 
@@ -49,6 +56,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements OnTeam
         initFavoriteTeamPreference();
         initTeamAsColorAccentPreferenceChangeListener();
         initResendRegTokenPreference();
+        initSaveToGalleryPreference();
     }
 
     private void initFavoriteTeamPreference() {
@@ -95,6 +103,33 @@ public class SettingsFragment extends PreferenceFragmentCompat implements OnTeam
             getActivity().startService(intent);
             return true;
         });
+    }
+
+    private void initSaveToGalleryPreference() {
+        mSaveFactsPreference = (TwoStatePreference) findPreference(getString(R.string.saveFactBitmaps));
+        mSaveFactsPreference.setOnPreferenceChangeListener(((preference, newValue) -> {
+            if (newValue instanceof Boolean) {
+                boolean doSaveFacts = (Boolean) newValue;
+                if (doSaveFacts) {
+                    requestWriteExternalStoragePermission();
+                }
+            }
+            return true;
+        }));
+    }
+
+    private void requestWriteExternalStoragePermission() {
+        final String permission = android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
+        if (ContextCompat.checkSelfPermission(getContext(), permission) != PackageManager.PERMISSION_GRANTED) {
+           requestPermissions(new String[]{permission}, 0);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (grantResults[0] == PackageManager.PERMISSION_DENIED) {
+            mSaveFactsPreference.setChecked(false);
+        }
     }
 
     @Override

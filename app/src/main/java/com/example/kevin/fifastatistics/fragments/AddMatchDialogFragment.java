@@ -346,7 +346,7 @@ public class AddMatchDialogFragment extends FifaBaseDialogFragment implements On
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == ADD_MATCH_REQUEST_CODE && resultCode == CameraActivity.PICTURE_TAKEN_RESULT_CODE) {
-            byte[] picture = ByteHolder.getImage();
+            byte[] picture = ByteHolder.getData();
             String preprocessor = data.getStringExtra(CameraActivity.EXTRA_PREPROCESSOR);
             onImageCapture(picture, CameraActivity.Preprocessor.valueOf(preprocessor).getPreprocessor());
         } else if (requestCode == ADD_MATCH_REQUEST_CODE && resultCode == PickTeamActivity.RESULT_TEAM_PICKED) {
@@ -372,20 +372,21 @@ public class AddMatchDialogFragment extends FifaBaseDialogFragment implements On
         return new ObservableUtils.EmptyOnCompleteObserver<User.StatsPair>() {
             @Override
             public void onError(Throwable e) {
-                ByteHolder.dispose();
-                dialog.cancel();
+                onOcrResultReceived(dialog);
                 onOcrError();
-                System.gc();
             }
 
             @Override
             public void onNext(User.StatsPair statsPair) {
-                ByteHolder.dispose();
+                onOcrResultReceived(dialog);
                 maybeSetListValues(statsPair);
-                dialog.cancel();
-                System.gc(); // cleanup bitmap memory
             }
         };
+    }
+
+    private void onOcrResultReceived(ProgressDialog dialog) {
+        dialog.cancel();
+        System.gc();
     }
 
     private ProgressDialog showProcessingDialog() {
@@ -400,7 +401,7 @@ public class AddMatchDialogFragment extends FifaBaseDialogFragment implements On
     private User.StatsPair getMatchFacts(Bitmap b) {
         OcrManager manager = OcrManager.getInstance(b);
         try {
-            return manager.retrieveFacts();
+            return manager.retrieveFacts(getContext());
         } catch (IOException e) {
             return null;
         }

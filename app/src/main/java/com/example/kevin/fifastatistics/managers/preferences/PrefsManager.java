@@ -32,7 +32,6 @@ public class PrefsManager {
     private static final String REGISTRATION_FAILED = "REGISTRATION_FAILED";
     private static final String REGISTRATION_TOKEN = "REGISTRATION_TOKEN";
     private static final String CURRENT_USER = "CURRENT_USER";
-    private static final String RECENT_TEAMS = "RECENT_TEAMS";
     private static final String COLOR_ACCENT = "COLOR_ACCENT";
     private static final String USERNAME = "USER_NAME";
     private static final String ID = "ID";
@@ -41,6 +40,7 @@ public class PrefsManager {
     private static final String DIRECT_CAMERA;
     private static final String DARK_THEME;
     private static final String TEAM_COLOR_AS_ACCENT;
+    private static final String SAVE_FACT_BITMAPS;
 
     private static SharedPreferences preferences;
     private static SharedPreferences.Editor editor;
@@ -52,6 +52,7 @@ public class PrefsManager {
         DIRECT_CAMERA = context.getString(R.string.openToCamera);
         DARK_THEME = context.getString(R.string.darkTheme);
         TEAM_COLOR_AS_ACCENT = context.getString(R.string.teamAsColor);
+        SAVE_FACT_BITMAPS = context.getString(R.string.saveFactBitmaps);
     }
 
     /**
@@ -162,12 +163,6 @@ public class PrefsManager {
         editor.apply();
     }
 
-    public static void setRecentTeams(List<Team> teams) {
-        editor = preferences.edit();
-        editor.putString(RECENT_TEAMS, SerializationUtils.toJson(teams));
-        editor.apply();
-    }
-
     @ColorInt
     public static int getColorAccent() {
         int accentColor = ContextCompat.getColor(FifaApplication.getContext(), R.color.colorAccent);
@@ -185,6 +180,10 @@ public class PrefsManager {
 
     public static boolean openCameraImmediately() {
         return preferences.getBoolean(DIRECT_CAMERA, false);
+    }
+
+    public static boolean doSaveMatchFactsBitmap() {
+        return preferences.getBoolean(SAVE_FACT_BITMAPS, false);
     }
 
     public static User getUser() {
@@ -218,10 +217,6 @@ public class PrefsManager {
 
     public static Team getFavoriteTeam() {
         return getObject(Team.class, FAVORITE_TEAM);
-    }
-
-    public static List<Team> getRecentTeams() {
-        return getObject(new TypeReference<List<Team>>() {}, RECENT_TEAMS);
     }
 
     private static <T> T getObject(TypeReference<T> typeReference, String key) {

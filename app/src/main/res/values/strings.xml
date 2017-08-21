@@ -199,6 +199,7 @@
     <string name="theme">Theme</string>
     <string name="general">General</string>
     <string name="notifications">Notifications</string>
+    <string name="advanced">Advanced</string>
 
     <!-- preferences -->
     <string name="pref_dark_theme">Dark Theme</string>
@@ -207,6 +208,7 @@
     <string name="pref_favorite_team">Favourite Team</string>
     <string name="pref_team_color_as_accent">Favourite team for accent colour</string>
     <string name="pref_resend_reg_token">Resend registration token</string>
+    <string name="pref_save_bitmaps">Save match facts to gallery</string>
     <string name="updating_token">Updating token</string>
 
 </resources>

@@ -1,10 +1,15 @@
 package com.example.kevin.fifastatistics.managers;
 
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.util.Log;
 
 import com.example.kevin.fifastatistics.FifaApplication;
+import com.example.kevin.fifastatistics.managers.preferences.PrefsManager;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User.StatsPair;
+import com.example.kevin.fifastatistics.network.service.SaveImageService;
+import com.example.kevin.fifastatistics.utils.ByteHolder;
 import com.example.kevin.fifastatistics.utils.OcrResultParser;
 import com.googlecode.tesseract.android.TessBaseAPI;
 
@@ -25,9 +30,9 @@ public class OcrManager {
         return INSTANCE;
     }
 
-    public StatsPair retrieveFacts() throws IOException {
+    public StatsPair retrieveFacts(Context context) throws IOException {
         String result = getText();
-        mBitmap.recycle();
+        saveBitmapToGallery(context);
         return OcrResultParser.newInstance(result).parse();
     }
 
@@ -44,6 +49,18 @@ public class OcrManager {
         if (api == null) {
             api = new TessBaseAPI();
             api.init(OCR_PATH, OCR_DATA_FILE);
+        }
+    }
+
+    private void saveBitmapToGallery(Context context) {
+        if (PrefsManager.doSaveMatchFactsBitmap()) {
+            Log.d("DIALOG", "gonna save");
+            ByteHolder.setImage(mBitmap);
+            Intent intent = new Intent(context, SaveImageService.class);
+            context.startService(intent);
+        } else {
+            Log.d("DIALOG", "not saving");
+            ByteHolder.dispose();
         }
     }
 }

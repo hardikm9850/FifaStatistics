@@ -80,7 +80,7 @@ public class CameraActivity extends AppCompatActivity {
             @Override
             public void onPictureTaken(byte[] picture) {
                 setResult();
-                ByteHolder.setImage(picture);
+                ByteHolder.setData(picture);
                 finish();
             }
         });

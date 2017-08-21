@@ -32,12 +32,17 @@
 
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="@string/notifications">
+    <PreferenceCategory android:title="@string/advanced">
 
         <Preference
             android:key="@string/resendRegToken"
             android:title="@string/pref_resend_reg_token">
         </Preference>
+
+        <SwitchPreference
+            android:key="@string/saveFactBitmaps"
+            android:title="@string/pref_save_bitmaps"
+            android:defaultValue="false"/>
 
     </PreferenceCategory>
 
