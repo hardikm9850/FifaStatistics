@@ -36,12 +36,15 @@ public class OcrManager {
         return OcrResultParser.newInstance(result).parse();
     }
 
+    public static void clear() {
+        api.clear();
+    }
+
     private String getText() {
         initApi();
         api.setImage(mBitmap);
         String text = api.getUTF8Text();
         Log.d("OCR", text);
-        api.clear();
         return text;
     }
 
@@ -54,12 +57,10 @@ public class OcrManager {
 
     private void saveBitmapToGallery(Context context) {
         if (PrefsManager.doSaveMatchFactsBitmap()) {
-            Log.d("DIALOG", "gonna save");
             ByteHolder.setImage(mBitmap);
             Intent intent = new Intent(context, SaveImageService.class);
             context.startService(intent);
         } else {
-            Log.d("DIALOG", "not saving");
             ByteHolder.dispose();
         }
     }

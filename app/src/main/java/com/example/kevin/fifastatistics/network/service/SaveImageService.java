@@ -3,10 +3,9 @@ package com.example.kevin.fifastatistics.network.service;
 import android.app.IntentService;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.support.annotation.Nullable;
-import android.util.Log;
 
+import com.example.kevin.fifastatistics.managers.OcrManager;
 import com.example.kevin.fifastatistics.utils.ByteHolder;
 import com.example.kevin.fifastatistics.utils.PhotoUtils;
 
@@ -22,10 +21,10 @@ public class SaveImageService extends IntentService {
 
     @Override
     protected void onHandleIntent(@Nullable Intent intent) {
-        Log.d(NAME, "saving image");
         Bitmap image = ByteHolder.getImage();
         saveImage(image);
         ByteHolder.dispose();
+        OcrManager.clear();
     }
 
     private void saveImage(Bitmap image) {
