@@ -6,6 +6,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 
 import com.example.kevin.fifastatistics.R;
@@ -204,6 +205,7 @@ public class MainActivity extends FifaBaseActivity implements OnMatchCreatedList
 
     private void checkForHockeyAppUpdates() {
         if (BuildUtils.isHockey()) {
+            Log.d("HOCKEY", "checking for updates");
             UpdateManager.register(this);
         }
     }

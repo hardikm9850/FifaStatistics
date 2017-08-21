@@ -260,8 +260,11 @@ public class MatchUpdateFragmentViewModel extends FooterButtonsViewModel {
     }
 
     private boolean shouldFooterStayHidden() {
-        boolean isCreatedByUser = mUpdate != null && mUser.getId().equals(mUpdate.getCreatorId());
-        return mType == MatchEditType.REVIEW && isCreatedByUser;
+        return mType == MatchEditType.REVIEW && isCreatedByUser();
+    }
+
+    public boolean isCreatedByUser() {
+        return mUpdate != null && mUser.getId().equals(mUpdate.getCreatorId());
     }
 
     @Override

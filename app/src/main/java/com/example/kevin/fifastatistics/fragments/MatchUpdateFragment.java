@@ -141,7 +141,7 @@ public class MatchUpdateFragment extends FifaBaseFragment implements OnBackPress
 
     private void addUpdateToStoredPendingUpdates(MatchUpdate update) {
         RetrievalManager.getLocalPendingUpdates().subscribe(updates -> {
-            if (update != null && !updates.contains(update)) {
+            if (update != null && !mViewModel.isCreatedByUser() && !updates.contains(update)) {
                 PrefsManager.addMatchUpdate(update);
             }
         });
