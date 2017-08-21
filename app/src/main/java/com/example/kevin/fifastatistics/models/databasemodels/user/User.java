@@ -73,6 +73,12 @@ public class User extends DatabaseModel implements Player {
         private Stats statsFor;
         private Stats statsAgainst;
 
+        public StatsPair(StatsPair pair) {
+            statsFor = new Stats(pair.statsFor);
+            statsAgainst = new Stats(pair.statsAgainst);
+        }
+
+        @JsonCreator
         public StatsPair() {
             statsFor = new Stats();
             statsAgainst = new Stats();

@@ -86,13 +86,21 @@ public class MatchFactsPreprocessor15 implements MatchFactsPreprocessor {
         int[] pixels = new int[width * height];
         bitmap.getPixels(pixels, 0, bitmap.getWidth(), 0, 0, bitmap.getWidth(), bitmap.getHeight());
         int end = endY * width;
-        for (int i = startY * width; i < end; i++){
+        int start = startY * width;
+        for (int i = start; i < end; i++){
             if (pixels[i] > whiteThreshold) {
                 pixels[i] = 0xff000000;
             } else {
                 pixels[i] = 0xffffffff;
             }
         }
+
+        // MAKE EVERYTHING ABOVE BOUNDS WHITE
+        end = start - 3*width;
+        for (int i = 0; i < end; i++) {
+            pixels[i] = 0xffffffff;
+        }
+
         bitmap.setPixels(pixels, 0, width, 0, 0, width, height);
         return bitmap;
     }

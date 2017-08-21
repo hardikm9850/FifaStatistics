@@ -98,7 +98,7 @@ public class MatchFragmentViewModel extends ProgressFragmentViewModel {
 
     @Bindable
     public List<User.StatsPair> getStats() {
-        return mMatch != null ? Collections.singletonList(mMatch.getStats()) : null;
+        return mMatch != null ? Collections.singletonList(new User.StatsPair(mMatch.getStats())) : null;
     }
 
     @Bindable

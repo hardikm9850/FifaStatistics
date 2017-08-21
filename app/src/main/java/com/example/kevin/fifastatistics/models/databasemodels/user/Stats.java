@@ -4,6 +4,7 @@ import android.content.res.Resources;
 
 import com.example.kevin.fifastatistics.FifaApplication;
 import com.example.kevin.fifastatistics.R;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.io.Serializable;
@@ -76,6 +77,25 @@ public class Stats implements Serializable {
     private float injuries;
     private float shotAccuracy;
     private float passAccuracy;
+
+    public Stats(Stats stats) {
+        goals = stats.goals;
+        shots = stats.shots;
+        shotsOnTarget = stats.shotsOnTarget;
+        possession = stats.possession;
+        tackles = stats.tackles;
+        fouls = stats.fouls;
+        yellowCards = stats.yellowCards;
+        redCards = stats.redCards;
+        offsides = stats.offsides;
+        corners = stats.corners;
+        injuries = stats.injuries;
+        shotAccuracy = stats.shotAccuracy;
+        passAccuracy = stats.passAccuracy;
+    }
+
+    @JsonCreator
+    public Stats() {}
 
     /**
      * Get the set of names representing the items.
