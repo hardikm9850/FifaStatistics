@@ -15,7 +15,7 @@ import com.example.kevin.fifastatistics.interfaces.OnSeriesCompletedListener;
 import com.example.kevin.fifastatistics.interfaces.OnSeriesScoreUpdateListener;
 import com.example.kevin.fifastatistics.interfaces.OnSeriesUpdatedListener;
 import com.example.kevin.fifastatistics.interfaces.OnTeamSelectedListener;
-import com.example.kevin.fifastatistics.managers.CurrentSeriesSynchronizer;
+import com.example.kevin.fifastatistics.managers.sync.CurrentSeriesSynchronizer;
 import com.example.kevin.fifastatistics.models.databasemodels.league.Team;
 import com.example.kevin.fifastatistics.models.databasemodels.match.Match;
 import com.example.kevin.fifastatistics.models.databasemodels.match.Series;

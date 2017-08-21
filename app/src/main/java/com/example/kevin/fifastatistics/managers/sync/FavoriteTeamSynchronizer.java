@@ -1,4 +1,4 @@
-package com.example.kevin.fifastatistics.managers;
+package com.example.kevin.fifastatistics.managers.sync;
 
 import com.example.kevin.fifastatistics.managers.preferences.PrefsManager;
 import com.example.kevin.fifastatistics.models.databasemodels.league.Team;

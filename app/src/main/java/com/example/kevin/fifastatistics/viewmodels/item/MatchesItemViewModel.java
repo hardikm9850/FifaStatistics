@@ -45,16 +45,6 @@ public class MatchesItemViewModel extends EventViewModel<MatchProjection> {
         mBottomPenalties = mLoserPenalties;
     }
 
-    @Override
-    protected int getScoreWinner() {
-        return mEvent.getGoalsWinner();
-    }
-
-    @Override
-    protected int getScoreLoser() {
-        return mEvent.getGoalsLoser();
-    }
-
     @Bindable
     public String getTopPenalties() {
         return String.valueOf(mTopPenalties);

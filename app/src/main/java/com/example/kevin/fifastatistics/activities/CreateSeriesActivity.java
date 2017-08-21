@@ -9,13 +9,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.example.kevin.fifastatistics.R;
-import com.example.kevin.fifastatistics.event.EventBus;
-import com.example.kevin.fifastatistics.event.SeriesRemovedEvent;
 import com.example.kevin.fifastatistics.fragments.CreateSeriesMatchListFragment;
 import com.example.kevin.fifastatistics.interfaces.OnMatchCreatedListener;
 import com.example.kevin.fifastatistics.interfaces.OnSeriesCompletedListener;
 import com.example.kevin.fifastatistics.interfaces.OnSeriesUpdatedListener;
-import com.example.kevin.fifastatistics.managers.CurrentSeriesSynchronizer;
+import com.example.kevin.fifastatistics.managers.sync.CurrentSeriesSynchronizer;
 import com.example.kevin.fifastatistics.managers.FifaEventManager;
 import com.example.kevin.fifastatistics.managers.RetrievalManager;
 import com.example.kevin.fifastatistics.managers.preferences.PrefsManager;

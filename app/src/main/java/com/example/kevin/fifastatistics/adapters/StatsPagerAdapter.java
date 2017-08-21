@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 
 import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.databinding.StatsListViewLayoutBinding;
+import com.example.kevin.fifastatistics.managers.StatsPresenter;
 import com.example.kevin.fifastatistics.managers.preferences.PrefsManager;
 import com.example.kevin.fifastatistics.models.databasemodels.match.Match;
 import com.example.kevin.fifastatistics.models.databasemodels.match.TeamEvent;
@@ -58,26 +59,31 @@ public class StatsPagerAdapter extends PagerAdapter {
     }
 
     private void initBinding(StatsListViewLayoutBinding binding, int position) {
-        StatsCardViewModel viewModel = getViewModelForPosition(position);
+        StatsPresenter presenter = new StatsPresenter(getStatsAt(position), mEvent, mUsername);
+        StatsCardViewModel viewModel = getViewModelForPosition(position, presenter);
         binding.setViewModel(viewModel);
         binding.statsRecyclerView.setLayoutManager(new LinearLayoutManager(mContext));
         binding.statsRecyclerView.setHasFixedSize(true);
-        binding.statsRecyclerView.setAdapter(new StatsRecyclerViewAdapter(mStats.get(position), isAverages(position), mEvent));
+        binding.statsRecyclerView.setAdapter(new StatsRecyclerViewAdapter(presenter, isAverages(position)));
     }
 
     private boolean isAverages(int position) {
         return position == 0 && !(mEvent instanceof Match);
     }
 
-    private StatsCardViewModel getViewModelForPosition(int position) {
+    private StatsCardViewModel getViewModelForPosition(int position, StatsPresenter presenter) {
         Stats.Type type = isAverages(position) ? Stats.Type.AVERAGES: Stats.Type.RECORDS;
         if (mIsMyStats) {
             return StatsCardViewModel.myStats(mContext, type);
         } else if (mEvent instanceof Match) {
-            return StatsCardViewModel.matchStats(mContext, (Match) mEvent, mUsername);
+            return StatsCardViewModel.matchStats(mContext, presenter);
         } else {
             return StatsCardViewModel.playerStats(mContext, type, mUsername);
         }
+    }
+
+    private User.StatsPair getStatsAt(int position) {
+        return mStats.get(position);
     }
 
     @Override

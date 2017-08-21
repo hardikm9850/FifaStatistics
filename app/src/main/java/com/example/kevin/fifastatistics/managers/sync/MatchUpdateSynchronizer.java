@@ -1,4 +1,4 @@
-package com.example.kevin.fifastatistics.managers;
+package com.example.kevin.fifastatistics.managers.sync;
 
 import com.example.kevin.fifastatistics.interfaces.Consumer;
 import com.example.kevin.fifastatistics.listeners.SimpleObserver;

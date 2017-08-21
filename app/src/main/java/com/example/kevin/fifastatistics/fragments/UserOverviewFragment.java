@@ -15,12 +15,11 @@ import com.example.kevin.fifastatistics.event.SeriesRemovedEvent;
 import com.example.kevin.fifastatistics.event.UpdateRemovedEvent;
 import com.example.kevin.fifastatistics.interfaces.OnBackPressedHandler;
 import com.example.kevin.fifastatistics.listeners.SimpleAnimationListener;
-import com.example.kevin.fifastatistics.managers.CurrentSeriesSynchronizer;
-import com.example.kevin.fifastatistics.managers.MatchUpdateSynchronizer;
+import com.example.kevin.fifastatistics.managers.sync.CurrentSeriesSynchronizer;
+import com.example.kevin.fifastatistics.managers.sync.MatchUpdateSynchronizer;
 import com.example.kevin.fifastatistics.managers.preferences.PrefsManager;
 import com.example.kevin.fifastatistics.models.databasemodels.match.MatchUpdate;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
-import com.example.kevin.fifastatistics.utils.ObservableUtils;
 import com.example.kevin.fifastatistics.viewmodels.UserOverviewViewModel;
 
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.example.kevin.fifastatistics.managers;
+package com.example.kevin.fifastatistics.managers.sync;
 
 import android.content.Context;
 import android.content.Intent;

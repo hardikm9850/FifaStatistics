@@ -3,17 +3,16 @@ package com.example.kevin.fifastatistics.viewmodels.card;
 import android.content.Context;
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
-import android.support.annotation.NonNull;
 import android.view.View;
 
 import com.example.kevin.fifastatistics.FifaApplication;
 import com.example.kevin.fifastatistics.R;
-import com.example.kevin.fifastatistics.models.databasemodels.match.Match;
+import com.example.kevin.fifastatistics.managers.StatsPresenter;
 import com.example.kevin.fifastatistics.models.databasemodels.user.Stats;
 
 public class StatsCardViewModel extends BaseObservable {
 
-    private static final String MY_STATS_LEFT_HEADER;
+    public static final String MY_STATS_LEFT_HEADER;
     private static final String PLAYER_STATS_RIGHT_HEADER;
 
     static {
@@ -42,21 +41,11 @@ public class StatsCardViewModel extends BaseObservable {
         return viewModel;
     }
 
-    public static StatsCardViewModel matchStats(Context context, @NonNull Match match, String username) {
+    public static StatsCardViewModel matchStats(Context context, StatsPresenter presenter) {
         StatsCardViewModel viewModel = new StatsCardViewModel(context, Stats.Type.RECORDS);
         viewModel.mIsEventDetail = true;
-        final String winnerName = match.getWinner().getName();
-        final String loserName = match.getLoser().getName();
-        if (winnerName.equals(username)) {
-            viewModel.mLeftHeader = MY_STATS_LEFT_HEADER;
-            viewModel.mRightHeader = match.getLoser().getFirstName();
-        } else if (loserName.equals(username)) {
-            viewModel.mLeftHeader = match.getWinner().getFirstName();
-            viewModel.mRightHeader = MY_STATS_LEFT_HEADER;
-        } else {
-            viewModel.mLeftHeader = match.getWinner().getFirstName();
-            viewModel.mRightHeader = match.getLoser().getFirstName();
-        }
+        viewModel.mLeftHeader = presenter.getLeftHeader();
+        viewModel.mRightHeader = presenter.getRightHeader();
         return viewModel;
     }
 

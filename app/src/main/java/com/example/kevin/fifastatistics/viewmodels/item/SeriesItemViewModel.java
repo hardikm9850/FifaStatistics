@@ -16,16 +16,6 @@ public class SeriesItemViewModel extends EventViewModel<SeriesProjection> {
     }
 
     @Override
-    protected int getScoreWinner() {
-        return mEvent.getMatchesWinner();
-    }
-
-    @Override
-    protected int getScoreLoser() {
-        return mEvent.getMatchesLoser();
-    }
-
-    @Override
     public void openEventDetail(View view) {
 
     }

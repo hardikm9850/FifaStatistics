@@ -27,6 +27,7 @@ public class NotificationCancelingReceiver extends BroadcastReceiver {
         return PendingIntent.getBroadcast(context, 0, receiverIntent, 0);
     }
 
+    /** https://stackoverflow.com/a/3128271/6164423 */
     private static String getRandomActionToEnsureExtrasAreNotLost(int notificationId) {
         int id = Math.abs(notificationId);
         return String.valueOf(id + new Random().nextInt(id));
@@ -36,12 +37,12 @@ public class NotificationCancelingReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         Bundle data = intent.getExtras();
         cancelNotification(data, context);
-        handleContentIntent(data, context);
+        handleContentIntent(data);
         closeNotificationDrawer(context);
     }
 
     @SuppressWarnings("ConstantConditions")
-    private void handleContentIntent(Bundle extras, Context context) {
+    private void handleContentIntent(Bundle extras) {
         PendingIntent intent = extras.getParcelable(INTENT_EXTRA);
         try {
             intent.send();

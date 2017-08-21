@@ -16,7 +16,7 @@ import com.example.kevin.fifastatistics.fragments.initializers.FragmentInitializ
 import com.example.kevin.fifastatistics.interfaces.OnBackPressedHandler;
 import com.example.kevin.fifastatistics.interfaces.OnMatchCreatedListener;
 import com.example.kevin.fifastatistics.listeners.FabScrollListener;
-import com.example.kevin.fifastatistics.managers.FavoriteTeamSynchronizer;
+import com.example.kevin.fifastatistics.managers.sync.FavoriteTeamSynchronizer;
 import com.example.kevin.fifastatistics.managers.FifaEventManager;
 import com.example.kevin.fifastatistics.managers.RetrievalManager;
 import com.example.kevin.fifastatistics.managers.preferences.PrefsManager;

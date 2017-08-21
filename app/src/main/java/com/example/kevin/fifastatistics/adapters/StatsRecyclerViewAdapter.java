@@ -12,6 +12,7 @@ import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.databinding.StatsListItemBinding;
 import com.example.kevin.fifastatistics.event.ColorChangeEvent;
 import com.example.kevin.fifastatistics.event.EventBus;
+import com.example.kevin.fifastatistics.managers.StatsPresenter;
 import com.example.kevin.fifastatistics.models.databasemodels.match.TeamEvent;
 import com.example.kevin.fifastatistics.models.databasemodels.user.Stats;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
@@ -33,19 +34,20 @@ public class StatsRecyclerViewAdapter extends RecyclerView.Adapter<StatsRecycler
     private int mLeftColor;
     private int mRightColor;
 
-    public StatsRecyclerViewAdapter(User.StatsPair statsPair, boolean doShowDecimal, TeamEvent event) {
+    public StatsRecyclerViewAdapter(StatsPresenter presenter, boolean doShowDecimal) {
+        User.StatsPair statsPair = presenter.getStats();
         this.valuesFor = statsPair.getStatsFor().buildValueSet();
         this.valuesAgainst = statsPair.getStatsAgainst().buildValueSet();
         this.doShowDecimal = doShowDecimal;
-        mEvent = event;
+        mEvent = presenter.getEvent();
         names = Stats.getNameSet();
-        initColor();
+        initColor(presenter);
     }
 
-    private void initColor() {
+    private void initColor(StatsPresenter presenter) {
         if (mEvent != null) {
-            mRightColor = Color.parseColor(mEvent.getTeamLoser().getColor());
-            mLeftColor = Color.parseColor(mEvent.getTeamWinner().getColor());
+            mRightColor = Color.parseColor(presenter.getRightColor());
+            mLeftColor = Color.parseColor(presenter.getLeftColor());
         } else {
             mRightColor = DEFAULT_RIGHT_COLOR;
             mLeftColor = FifaApplication.getAccentColor();

@@ -32,7 +32,7 @@ public class MatchFragmentViewModel extends ProgressFragmentViewModel {
         mProjection = projection;
         mPlayer = player;
         mMatchId = matchId;
-        mHeaderViewModel = new EventResultHeaderViewModel(projection);
+        mHeaderViewModel = new EventResultHeaderViewModel(projection, player);
     }
 
     public void loadMatch() {
