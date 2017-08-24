@@ -37,7 +37,7 @@ public abstract class AbstractCardAdapter
         subscribeToColorChangeEvents();
     }
 
-    private void subscribeToColorChangeEvents() {
+    protected void subscribeToColorChangeEvents() {
         EventBus.getInstance().observeEvents(ColorChangeEvent.class).subscribe(event -> {
             mButtonColor = event.color;
             notifyDataSetChanged();
@@ -66,6 +66,7 @@ public abstract class AbstractCardAdapter
         return new ItemViewHolder(binding);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public void onBindViewHolder(AbstractCardAdapter.ItemViewHolder holder, int position) {
         int size = CollectionUtils.getSize(mItems);

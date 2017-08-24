@@ -76,7 +76,7 @@ public class MatchFragment extends FifaBaseFragment implements MatchFragmentView
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         FragmentMatchBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_match, container, false);
-        mViewModel = new MatchFragmentViewModel(this, mMatchProjection, mUser, mMatchId);
+        mViewModel = new MatchFragmentViewModel(this, mMatchProjection, mUser, mMatchId, this);
         binding.setViewModel(mViewModel);
         return binding.getRoot();
     }

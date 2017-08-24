@@ -6,7 +6,7 @@ import java.util.List;
 public class CollectionUtils {
 
     public static boolean isEmpty(Collection<?> collection) {
-        return collection != null && collection.size() == 0;
+        return collection == null || collection.size() == 0;
     }
 
     public static int getSize(Collection<?> collection) {

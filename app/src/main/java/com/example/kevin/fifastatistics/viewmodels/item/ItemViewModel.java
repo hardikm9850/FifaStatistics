@@ -12,8 +12,8 @@ public abstract class ItemViewModel<T> extends FifaBaseViewModel {
 
     protected T mItem;
     protected ActivityLauncher mLauncher;
-    private int mColor;
-    private boolean mIsLastItem;
+    protected int mColor;
+    protected boolean mIsLastItem;
 
     public ItemViewModel(T item, ActivityLauncher launcher,
                          @ColorRes int color, boolean isLastItem) {
@@ -25,8 +25,11 @@ public abstract class ItemViewModel<T> extends FifaBaseViewModel {
 
     public void setItem(T t) {
         mItem = t;
+        onSetItem(t);
         notifyChange();
     }
+
+    protected void onSetItem(T t) {}
 
     @Bindable
     public int getColor() {

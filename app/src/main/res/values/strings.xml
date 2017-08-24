@@ -170,6 +170,7 @@
     <string name="streak">STREAK</string>
     <string name="you">You</string>
     <string name="opponent">Opponent</string>
+    <string name="cards">Cards</string>
 
     <!-- MATCHES -->
     <string name="win">Win</string>

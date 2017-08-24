@@ -32,6 +32,21 @@
                     android:visibility="@{viewModel.headerVisibility}"/>
 
                 <include
+                    layout="@layout/card_pending_updates"
+                    bind:viewModel="@{viewModel.goals}"
+                    bind:title="@{@string/goals}"/>
+
+                <include
+                    layout="@layout/card_pending_updates"
+                    bind:viewModel="@{viewModel.cards}"
+                    bind:title="@{@string/cards}"/>
+
+                <include
+                    layout="@layout/card_pending_updates"
+                    bind:viewModel="@{viewModel.injuries}"
+                    bind:title="@{@string/injuries}"/>
+
+                <include
                     layout="@layout/card_stats"
                     bind:stats="@{viewModel.stats}"
                     bind:title="@{viewModel.username}"

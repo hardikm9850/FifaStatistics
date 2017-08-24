@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="imageUrl"
+            type="String"/>
+        <variable
+            name="color"
+            type="Integer"/>
+    </data>
+
+    <com.example.kevin.fifastatistics.views.RoundedFrameLayout
+        android:layout_width="50dp"
+        android:layout_height="60dp"
+        app:radiusBottomRight="25dp"
+        app:radiusBottomLeft="25dp">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_gravity="bottom|center_horizontal"
+            android:src="@drawable/circle"
+            android:tint="@{color}"/>
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="bottom|center_horizontal"
+            android:scaleType="centerCrop"
+            app:imageUrl="@{imageUrl}"/>
+
+    </com.example.kevin.fifastatistics.views.RoundedFrameLayout>
+
+</layout>

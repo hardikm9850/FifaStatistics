@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:bind="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="com.example.kevin.fifastatistics.viewmodels.item.MatchEventItemViewModel"/>
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/team_imageview"
+            android:layout_width="@dimen/match_team_logo_size"
+            android:layout_height="@dimen/match_team_logo_size"
+            android:layout_marginEnd="@dimen/medium_margin"
+            android:layout_marginTop="@dimen/activity_horizontal_margin"
+            android:layout_marginBottom="@dimen/activity_horizontal_margin"
+            android:layout_marginStart="@dimen/tiny_margin"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:scaleType="fitCenter"
+            app:imageUrl="@{viewModel.teamImageUrl}"/>
+
+        <include
+            layout="@layout/headshot"
+            android:id="@+id/player_imageview"
+            android:layout_width="50dp"
+            android:layout_height="65dp"
+            android:layout_marginEnd="@dimen/medium_margin"
+            android:layout_marginTop="@dimen/tiny_margin"
+            android:layout_marginBottom="@dimen/medium_margin"
+            android:layout_toEndOf="@id/team_imageview"
+            bind:imageUrl="@{viewModel.playerImageUrl}"
+            bind:color="@{viewModel.teamColor}"/>
+
+        <TextView
+            android:id="@+id/team_code_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/player_imageview"
+            android:layout_alignParentTop="true"
+            android:layout_marginEnd="@dimen/activity_horizontal_margin"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:textAppearance="@style/text_bold_white_small"
+            android:text="@{viewModel.teamCode}"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/team_code_textview"
+            android:layout_below="@id/team_code_textview"
+            android:layout_alignTop="@id/team_code_textview"
+            android:layout_marginEnd="@dimen/activity_horizontal_margin"
+            android:textAppearance="@style/text_white_small"
+            android:text="@{viewModel.name}"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignTop="@id/team_code_textview"
+            android:layout_marginEnd="@dimen/activity_horizontal_margin"
+            android:textAppearance="@style/text_white_small"
+            android:textColor="@{viewModel.minuteTextColor}"
+            android:text="@{viewModel.minute}"/>
+
+        <ImageView
+            android:layout_width="@dimen/match_event_icon_size"
+            android:layout_height="@dimen/match_event_icon_size"
+            android:layout_alignStart="@id/team_code_textview"
+            android:layout_below="@id/team_code_textview"
+            android:layout_marginTop="@dimen/match_event_icon_margin_top"
+            android:scaleType="centerCrop"
+            android:src="@{viewModel.icon}"/>
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@id/player_imageview"
+            android:paddingStart="@dimen/activity_horizontal_margin"
+            android:paddingEnd="@dimen/activity_horizontal_margin"
+            android:background="?android:attr/listDivider"
+            android:visibility="@{viewModel.dividerVisibility}"/>
+
+    </RelativeLayout>
+
+</layout>

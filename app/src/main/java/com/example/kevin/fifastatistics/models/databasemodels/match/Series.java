@@ -1,6 +1,7 @@
 package com.example.kevin.fifastatistics.models.databasemodels.match;
 
 import com.example.kevin.fifastatistics.models.databasemodels.DatabaseModel;
+import com.example.kevin.fifastatistics.models.databasemodels.footballers.Leaders;
 import com.example.kevin.fifastatistics.models.databasemodels.league.Team;
 import com.example.kevin.fifastatistics.models.databasemodels.user.Friend;
 import com.example.kevin.fifastatistics.models.databasemodels.user.Player;
@@ -29,6 +30,7 @@ public class Series extends DatabaseModel implements TeamEvent {
     private User.StatsPair totalStats;
     private User.StatsPair averageStats;
     private List<Match> matches;
+    private Leaders leaders;
     private int matchesPlayed;
     private int bestOf;
 

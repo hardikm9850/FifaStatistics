@@ -1,6 +1,7 @@
 package com.example.kevin.fifastatistics.models.databasemodels.match;
 
 import com.example.kevin.fifastatistics.models.databasemodels.DatabaseModel;
+import com.example.kevin.fifastatistics.models.databasemodels.footballers.MatchEvents;
 import com.example.kevin.fifastatistics.models.databasemodels.league.Team;
 import com.example.kevin.fifastatistics.models.databasemodels.user.Friend;
 import com.example.kevin.fifastatistics.models.databasemodels.user.Player;
@@ -13,6 +14,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 
 import java.util.Date;
+import java.util.List;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -24,6 +26,8 @@ import lombok.Setter;
 @Getter
 public class Match extends DatabaseModel implements TeamEvent, FifaEvent, PenaltyEvent {
 
+    public static final int MAX_SECOND_HALF_MINUTE = 90;
+
     private User.StatsPair stats;
     private Penalties penalties;
     private Date date;
@@ -32,6 +36,8 @@ public class Match extends DatabaseModel implements TeamEvent, FifaEvent, Penalt
     private String id;
     private String updateId;
     private String seriesId;
+    private MatchScoreSummary summary;
+    private MatchEvents events;
     @Setter private Team teamWinner;
     @Setter private Team teamLoser;
 
@@ -163,6 +169,22 @@ public class Match extends DatabaseModel implements TeamEvent, FifaEvent, Penalt
     @JsonIgnore
     public boolean hasPenalties() {
         return penalties != null;
+    }
+
+
+    @JsonIgnore
+    public List<MatchEvents.GoalItem> getGoals() {
+        return events != null ? events.getGoals() : null;
+    }
+
+    @JsonIgnore
+    public List<MatchEvents.InjuryItem> getInjuries() {
+        return events != null ? events.getInjuries() : null;
+    }
+
+    @JsonIgnore
+    public List<MatchEvents.CardItem> getCards() {
+        return events != null ? events.getCards() : null;
     }
 
     @Override

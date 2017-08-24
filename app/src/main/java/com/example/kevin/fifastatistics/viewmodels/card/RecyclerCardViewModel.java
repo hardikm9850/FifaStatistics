@@ -3,6 +3,7 @@ package com.example.kevin.fifastatistics.viewmodels.card;
 import android.databinding.Bindable;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 
 import com.example.kevin.fifastatistics.BR;
@@ -53,6 +54,7 @@ public abstract class RecyclerCardViewModel<T, ADAPTER extends AbstractCardAdapt
 
     @Bindable
     public int getVisibility() {
+        Log.d("VIEWMODEL", "items empty? " + CollectionUtils.isEmpty(mItems));
         return mIsCurrentUser && !CollectionUtils.isEmpty(mItems) ? View.VISIBLE : View.GONE;
     }
 
