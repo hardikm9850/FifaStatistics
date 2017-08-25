@@ -46,4 +46,8 @@ public abstract class FifaBaseViewModel extends BaseObservable {
             return null;
         }
     }
+
+    protected String getFirstName(String name) {
+        return name != null ? name.split(" ")[0] : null;
+    }
 }

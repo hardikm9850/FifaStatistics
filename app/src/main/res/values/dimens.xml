@@ -36,7 +36,7 @@
     <dimen name="match_team_logo_size_large">60dp</dimen>
     <dimen name="match_event_item_player_image_size">52dp</dimen>
     <dimen name="match_event_icon_size">18dp</dimen>
-    <dimen name="match_event_icon_margin_top">4dp</dimen>
+    <dimen name="match_event_icon_margin_top">6dp</dimen>
     <dimen name="shutter_button_margin">12dp</dimen>
 
     <dimen name="friends_fragment_image_height">130dp</dimen>

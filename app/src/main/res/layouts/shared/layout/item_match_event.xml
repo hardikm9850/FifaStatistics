@@ -64,7 +64,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignTop="@id/team_code_textview"
-            android:layout_marginEnd="@dimen/activity_horizontal_margin"
+            android:layout_marginEnd="@dimen/activity_vertical_margin"
             android:textAppearance="@style/text_white_small"
             android:textColor="@{viewModel.minuteTextColor}"
             android:text="@{viewModel.minute}"/>
@@ -78,14 +78,13 @@
             android:scaleType="centerCrop"
             android:src="@{viewModel.icon}"/>
 
-
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_below="@id/player_imageview"
-            android:paddingStart="@dimen/activity_horizontal_margin"
-            android:paddingEnd="@dimen/activity_horizontal_margin"
-            android:background="?android:attr/listDivider"
+            android:background="@color/cardViewHeaderBackground"
+            android:layout_marginStart="@dimen/activity_horizontal_margin"
+            android:layout_marginEnd="@dimen/activity_horizontal_margin"
             android:visibility="@{viewModel.dividerVisibility}"/>
 
     </RelativeLayout>

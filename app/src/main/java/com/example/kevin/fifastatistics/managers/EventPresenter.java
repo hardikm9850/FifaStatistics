@@ -4,10 +4,13 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.example.kevin.fifastatistics.models.databasemodels.match.FifaEvent;
+import com.example.kevin.fifastatistics.models.databasemodels.match.Match;
+import com.example.kevin.fifastatistics.models.databasemodels.match.MatchScoreSummary;
 import com.example.kevin.fifastatistics.models.databasemodels.user.Player;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Setter;
 
 public class EventPresenter<T extends FifaEvent> {
 
@@ -39,6 +42,7 @@ public class EventPresenter<T extends FifaEvent> {
             } else {
                 initEventNotPlayedIn();
             }
+            initBoxscores();
         } else {
             initNullEvent();
         }
@@ -49,18 +53,7 @@ public class EventPresenter<T extends FifaEvent> {
         EventItem.EventItemBuilder bottomBuilder = EventItem.builder();
         topBuilder.name(mCurrentUser.getName());
         if (didWin) {
-            didTopWin = true;
-            mTopItem = topBuilder
-                    .imageUrl(mEvent.getTeamWinnerImageUrl())
-                    .score(mEvent.getScoreWinner())
-                    .id(mEvent.getWinnerId())
-                    .build();
-            mBottomItem = bottomBuilder
-                    .name(mEvent.getLoserName())
-                    .imageUrl(mEvent.getTeamLoserImageUrl())
-                    .score(mEvent.getScoreLoser())
-                    .id(mEvent.getLoserId())
-                    .build();
+            initEventNotPlayedIn();
         } else {
             didTopWin = false;
             mTopItem = topBuilder
@@ -76,7 +69,6 @@ public class EventPresenter<T extends FifaEvent> {
                     .build();
         }
     }
-
 
     private void initEventNotPlayedIn() {
         didTopWin = true;
@@ -94,9 +86,27 @@ public class EventPresenter<T extends FifaEvent> {
                 .build();
     }
 
+    private void initBoxscores() {
+        if (mEvent instanceof Match) {
+            MatchScoreSummary summary = ((Match) mEvent).getSummary();
+            if (summary != null) {
+                if (didParticipate && !didWin) {
+                    mTopItem.setScoreSummary(summary.buildSummaryAgainst());
+                    mBottomItem.setScoreSummary(summary.buildSummaryFor());
+                } else {
+                    mTopItem.setScoreSummary(summary.buildSummaryFor());
+                    mBottomItem.setScoreSummary(summary.buildSummaryAgainst());
+                }
+            } else {
+                mTopItem.setScoreSummary(new MatchScoreSummary.TeamSummary());
+                mBottomItem.setScoreSummary(new MatchScoreSummary.TeamSummary());
+            }
+        }
+    }
+
     private void initNullEvent() {
-        mTopItem = new EventItem(null, null, null, 0);
-        mBottomItem = new EventItem(null, null, null, 0);
+        mTopItem = new EventItem(null, null, null, 0, null);
+        mBottomItem = new EventItem(null, null, null, 0, null);
     }
 
     public boolean didTopWin() {
@@ -143,6 +153,16 @@ public class EventPresenter<T extends FifaEvent> {
         return mBottomItem.imageUrl;
     }
 
+    @NonNull
+    public MatchScoreSummary.TeamSummary getTopBoxScore() {
+        return mTopItem.scoreSummary;
+    }
+
+    @NonNull
+    public MatchScoreSummary.TeamSummary getBottomBoxScore() {
+        return mBottomItem.scoreSummary;
+    }
+
     @AllArgsConstructor
     @Builder
     private static final class EventItem {
@@ -150,5 +170,6 @@ public class EventPresenter<T extends FifaEvent> {
         final String id;
         final String imageUrl;
         final int score;
+        @Setter MatchScoreSummary.TeamSummary scoreSummary;
     }
 }

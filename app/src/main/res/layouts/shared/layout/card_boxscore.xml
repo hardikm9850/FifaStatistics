@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        xmlns:bind="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="com.example.kevin.fifastatistics.viewmodels.card.BoxScoreViewModel"/>
+    </data>
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
+        android:layout_marginEnd="@dimen/activity_horizontal_margin"
+        android:layout_marginBottom="@dimen/activity_horizontal_margin"
+        card_view:cardCornerRadius="@dimen/card_corner_radius"
+        app:cardBackgroundColor="@color/cardViewBackground">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <include
+                layout="@layout/item_boxscore"
+                bind:summary="@{viewModel.topTeamSummary}"
+                bind:viewModel="@{viewModel}"
+                bind:teamImageUrl="@{viewModel.topTeamImageUrl}"
+                bind:playerName="@{viewModel.topName}"/>
+
+            <include
+                layout="@layout/item_boxscore"
+                bind:summary="@{viewModel.bottomTeamSummary}"
+                bind:viewModel="@{viewModel}"
+                bind:teamImageUrl="@{viewModel.bottomTeamImageUrl}"
+                bind:playerName="@{viewModel.bottomName}"/>
+
+        </LinearLayout>
+
+    </android.support.v7.widget.CardView>
+
+</layout>

@@ -97,8 +97,4 @@ public class EventResultHeaderViewModel extends FifaBaseViewModel {
     public String getLoserScore() {
         return mPresenter.getBottomScore();
     }
-
-    private String getFirstName(String name) {
-        return name != null ? name.split(" ")[0] : null;
-    }
 }

@@ -12,6 +12,7 @@ import com.example.kevin.fifastatistics.models.databasemodels.match.MatchProject
 import com.example.kevin.fifastatistics.models.databasemodels.user.Player;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
 import com.example.kevin.fifastatistics.viewmodels.EventResultHeaderViewModel;
+import com.example.kevin.fifastatistics.viewmodels.card.BoxScoreViewModel;
 import com.example.kevin.fifastatistics.viewmodels.card.MatchEventsCardViewModel;
 
 import java.util.Collections;
@@ -28,6 +29,7 @@ public class MatchFragmentViewModel extends ProgressFragmentViewModel {
     private OnMatchLoadedListener mListener;
     private MatchProjection mProjection;
     private EventResultHeaderViewModel mHeaderViewModel;
+    private BoxScoreViewModel mBoxScoreViewModel;
     private MatchEventsCardViewModel<GoalItem> mGoalsViewModel;
     private MatchEventsCardViewModel<CardItem> mCardsViewModel;
     private MatchEventsCardViewModel<InjuryItem> mInjuriesViewModel;
@@ -42,6 +44,7 @@ public class MatchFragmentViewModel extends ProgressFragmentViewModel {
         mPlayer = player;
         mMatchId = matchId;
         mHeaderViewModel = new EventResultHeaderViewModel(projection, player);
+        mBoxScoreViewModel = new BoxScoreViewModel(null, player);
         mGoalsViewModel = new MatchEventsCardViewModel<>(launcher);
         mInjuriesViewModel = new MatchEventsCardViewModel<>(launcher);
         mCardsViewModel = new MatchEventsCardViewModel<>(launcher);
@@ -77,6 +80,7 @@ public class MatchFragmentViewModel extends ProgressFragmentViewModel {
     }
 
     private void notifyMatchLoaded() {
+        mBoxScoreViewModel.setMatch(mMatch);
         mGoalsViewModel.setMatch(mMatch, mMatch.getGoals());
         mCardsViewModel.setMatch(mMatch, mMatch.getCards());
         mInjuriesViewModel.setMatch(mMatch, mMatch.getInjuries());
@@ -115,6 +119,11 @@ public class MatchFragmentViewModel extends ProgressFragmentViewModel {
     @Bindable
     public List<User.StatsPair> getStats() {
         return mMatch != null ? Collections.singletonList(new User.StatsPair(mMatch.getStats())) : null;
+    }
+
+    @Bindable
+    public BoxScoreViewModel getBoxScore() {
+        return mBoxScoreViewModel;
     }
 
     @Bindable

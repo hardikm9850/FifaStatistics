@@ -32,6 +32,10 @@
                     android:visibility="@{viewModel.headerVisibility}"/>
 
                 <include
+                    layout="@layout/card_boxscore"
+                    bind:viewModel="@{viewModel.boxScore}"/>
+
+                <include
                     layout="@layout/card_pending_updates"
                     bind:viewModel="@{viewModel.goals}"
                     bind:title="@{@string/goals}"/>
