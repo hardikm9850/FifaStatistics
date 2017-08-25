@@ -17,10 +17,10 @@
     </data>
 
     <LinearLayout
-        android:layout_width="@dimen/boxscore_item_width"
+        android:minWidth="@dimen/boxscore_item_width"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:clipChildren="false">
+        android:orientation="vertical">
 
         <TextView
             android:layout_width="match_parent"
@@ -43,8 +43,9 @@
             android:text="@{summary.goalsFor}"/>
 
         <View
-            android:layout_width="10000dp"
+            android:layout_width="match_parent"
             android:layout_height="1dp"
+            android:layout_marginEnd="@{fulltime ? @dimen/activity_horizontal_margin : 0f}"
             android:background="@color/cardViewHeaderBackground"/>
 
         <TextView

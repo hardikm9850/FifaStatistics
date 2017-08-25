@@ -14,6 +14,8 @@ import static com.example.kevin.fifastatistics.models.databasemodels.match.Match
 
 public class BoxScoreViewModel extends FifaBaseViewModel {
 
+    private static final int TOTAL_LAYOUT_WEIGHT_SUM = 10;
+
     private MatchScoreSummary mSummary;
     private EventPresenter<Match> mPresenter;
 
@@ -73,16 +75,6 @@ public class BoxScoreViewModel extends FifaBaseViewModel {
     }
 
     @Bindable
-    public TeamSummary getTopTeamSummary() {
-        return mPresenter.getTopBoxScore();
-    }
-
-    @Bindable
-    public TeamSummary getBottomTeamSummary() {
-        return mPresenter.getBottomBoxScore();
-    }
-
-    @Bindable
     public TextPartSummary getFirstHalf() {
         return mPresenter.getBoxScore().getFirstHalf().stringify();
     }
@@ -110,5 +102,33 @@ public class BoxScoreViewModel extends FifaBaseViewModel {
     @Bindable
     public TextPartSummary getFullTime() {
         return mPresenter.getBoxScore().getFullTime().stringify();
+    }
+
+    @Bindable
+    public float getStartLayoutWeight() {
+        final float layoutWeightInLayout = 4f;
+        return layoutWeightInLayout + getNumberOfNotVisibleParts();
+    }
+
+    private int getNumberOfNotVisibleParts() {
+        int penalties = getPenaltiesVisibility() > 0 ? 1 : 0;
+        int secondExtraTime = getSecondExtraTimeVisibility() > 0 ? 1 : 0;
+        int firstExtraTime = getFirstExtraTimeVisibility() > 0 ? 1 : 0;
+        return penalties + secondExtraTime + firstExtraTime;
+    }
+
+    public int getTotalWeightSum() {
+        return TOTAL_LAYOUT_WEIGHT_SUM;
+    }
+
+    @Bindable
+    public float getEndLayoutWeight() {
+        return TOTAL_LAYOUT_WEIGHT_SUM - getStartLayoutWeight();
+    }
+
+    @Bindable
+    public int getEndWeightSum() {
+        final int numberOfPartLayouts = 6;
+        return numberOfPartLayouts - getNumberOfNotVisibleParts();
     }
 }

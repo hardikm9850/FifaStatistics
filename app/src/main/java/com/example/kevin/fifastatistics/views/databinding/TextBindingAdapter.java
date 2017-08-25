@@ -1,11 +1,12 @@
 package com.example.kevin.fifastatistics.views.databinding;
 
+import android.databinding.BindingAdapter;
 import android.graphics.Typeface;
 import android.widget.TextView;
 
 public class TextBindingAdapter {
 
-    @android.databinding.BindingAdapter("android:typeface")
+    @BindingAdapter("android:typeface")
     public static void setTypeface(TextView v, String style) {
         switch (style) {
             case "bold":

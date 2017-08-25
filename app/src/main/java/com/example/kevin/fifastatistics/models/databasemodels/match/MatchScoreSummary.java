@@ -2,15 +2,12 @@ package com.example.kevin.fifastatistics.models.databasemodels.match;
 
 import java.io.Serializable;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
 public class MatchScoreSummary implements Serializable {
-
-    private static final String ZERO = "ZERO";
 
     private PartSummary firstHalf;
     private PartSummary secondHalf;
@@ -44,24 +41,6 @@ public class MatchScoreSummary implements Serializable {
         s.fullTime = new PartSummary();
         return s;
     }
-    
-    public TeamSummary buildSummaryFor() {
-        return new TeamSummary(getFor(firstHalf), getFor(secondHalf), getFor(firstExtraTime),
-                getFor(secondExtraTime), getFor(penalties), getFor(fullTime));
-    }
-    
-    public TeamSummary buildSummaryAgainst() {
-        return new TeamSummary(getAgainst(firstHalf), getAgainst(secondHalf), getAgainst(firstExtraTime),
-                getAgainst(secondExtraTime), getAgainst(penalties), getAgainst(fullTime));
-    }
-    
-    private String getFor(PartSummary partSummary) {
-        return partSummary != null ? String.valueOf(partSummary.goalsFor) : ZERO;
-    }
-
-    private String getAgainst(PartSummary partSummary) {
-        return partSummary != null ? String.valueOf(partSummary.goalsAgainst) : ZERO;
-    }
 
     @Getter
     @Setter
@@ -87,6 +66,8 @@ public class MatchScoreSummary implements Serializable {
     }
 
     public static class TextPartSummary implements Serializable {
+        private static final String ZERO = "0";
+
         public final String goalsFor;
         public final String goalsAgainst;
 
@@ -98,21 +79,6 @@ public class MatchScoreSummary implements Serializable {
                 goalsFor = ZERO;
                 goalsAgainst = ZERO;
             }
-        }
-    }
-
-    @AllArgsConstructor
-    public static class TeamSummary implements Serializable {
-
-        public final String firstHalf;
-        public final String secondHalf;
-        public final String firstExtraTime;
-        public final String secondExtraTime;
-        public final String penalties;
-        public final String fullTime;
-
-        public TeamSummary() {
-            this(ZERO, ZERO, ZERO, ZERO, ZERO, ZERO);
         }
     }
 }

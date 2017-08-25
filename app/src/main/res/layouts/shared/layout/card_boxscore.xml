@@ -21,19 +21,20 @@
         app:cardBackgroundColor="@color/cardViewBackground"
         android:visibility="@{viewModel.visibility}">
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/medium_margin">
+            android:layout_marginEnd="@dimen/activity_horizontal_margin"
+            android:orientation="horizontal"
+            android:weightSum="@{viewModel.totalWeightSum}">
 
             <LinearLayout
                 android:id="@+id/boxscore_title"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_marginStart="@dimen/medium_margin"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:layout_weight="@{viewModel.startLayoutWeight}">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -71,7 +72,7 @@
                 </LinearLayout>
 
                 <View
-                    android:layout_width="150dp"
+                    android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:background="@color/cardViewHeaderBackground"/>
 
@@ -105,15 +106,18 @@
             </LinearLayout>
 
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_toEndOf="@id/boxscore_title"
+                android:layout_weight="@{viewModel.endLayoutWeight}"
                 android:orientation="horizontal"
                 android:layoutDirection="rtl"
-                android:clipChildren="false">
+                android:weightSum="@{viewModel.endWeightSum}">
 
                 <include
                     layout="@layout/item_boxscore"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     bind:summary="@{viewModel.fullTime}"
                     bind:fulltime="@{true}"
                     bind:textColor="@{@android:color/white}"
@@ -121,6 +125,9 @@
 
                 <include
                     layout="@layout/item_boxscore"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     bind:summary="@{viewModel.penalties}"
                     bind:fulltime="@{false}"
                     bind:textColor="@{@android:color/secondary_text_dark}"
@@ -129,6 +136,9 @@
 
                 <include
                     layout="@layout/item_boxscore"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     bind:summary="@{viewModel.secondExtraTime}"
                     bind:fulltime="@{false}"
                     bind:textColor="@{@android:color/secondary_text_dark}"
@@ -137,6 +147,9 @@
 
                 <include
                     layout="@layout/item_boxscore"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     bind:summary="@{viewModel.firstExtraTime}"
                     bind:fulltime="@{false}"
                     bind:textColor="@{@android:color/secondary_text_dark}"
@@ -145,6 +158,9 @@
 
                 <include
                     layout="@layout/item_boxscore"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     bind:summary="@{viewModel.secondHalf}"
                     bind:fulltime="@{false}"
                     bind:textColor="@{@android:color/secondary_text_dark}"
@@ -152,6 +168,9 @@
 
                 <include
                     layout="@layout/item_boxscore"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     bind:summary="@{viewModel.firstHalf}"
                     bind:fulltime="@{false}"
                     bind:textColor="@{@android:color/secondary_text_dark}"
@@ -159,7 +178,7 @@
 
             </LinearLayout>
 
-        </RelativeLayout>
+        </LinearLayout>
 
     </android.support.v7.widget.CardView>
 

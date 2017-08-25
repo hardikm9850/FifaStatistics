@@ -10,7 +10,6 @@ import com.example.kevin.fifastatistics.models.databasemodels.user.Player;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Setter;
 
 public class EventPresenter<T extends FifaEvent> {
 
@@ -92,25 +91,19 @@ public class EventPresenter<T extends FifaEvent> {
             MatchScoreSummary summary = ((Match) mEvent).getSummary();
             if (summary != null) {
                 if (didParticipate && !didWin) {
-                    mTopItem.setScoreSummary(summary.buildSummaryAgainst());
-                    mBottomItem.setScoreSummary(summary.buildSummaryFor());
                     mBoxScore = MatchScoreSummary.inverseOf(summary);
                 } else {
-                    mTopItem.setScoreSummary(summary.buildSummaryFor());
-                    mBottomItem.setScoreSummary(summary.buildSummaryAgainst());
                     mBoxScore = summary;
                 }
             } else {
-                mTopItem.setScoreSummary(new MatchScoreSummary.TeamSummary());
-                mBottomItem.setScoreSummary(new MatchScoreSummary.TeamSummary());
                 mBoxScore = MatchScoreSummary.zeroed();
             }
         }
     }
 
     private void initNullEvent() {
-        mTopItem = new EventItem(null, null, null, 0, null);
-        mBottomItem = new EventItem(null, null, null, 0, null);
+        mTopItem = new EventItem(null, null, null, 0);
+        mBottomItem = new EventItem(null, null, null, 0);
         mBoxScore = MatchScoreSummary.zeroed();
     }
 
@@ -159,16 +152,6 @@ public class EventPresenter<T extends FifaEvent> {
     }
 
     @NonNull
-    public MatchScoreSummary.TeamSummary getTopBoxScore() {
-        return mTopItem.scoreSummary;
-    }
-
-    @NonNull
-    public MatchScoreSummary.TeamSummary getBottomBoxScore() {
-        return mBottomItem.scoreSummary;
-    }
-
-    @NonNull
     public MatchScoreSummary getBoxScore() {
         return mBoxScore;
     }
@@ -180,6 +163,5 @@ public class EventPresenter<T extends FifaEvent> {
         final String id;
         final String imageUrl;
         final int score;
-        @Setter MatchScoreSummary.TeamSummary scoreSummary;
     }
 }
