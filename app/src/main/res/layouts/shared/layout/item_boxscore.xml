@@ -1,135 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
         <variable
             name="summary"
-            type="com.example.kevin.fifastatistics.models.databasemodels.match.MatchScoreSummary.TeamSummary"/>
+            type="com.example.kevin.fifastatistics.models.databasemodels.match.MatchScoreSummary.TextPartSummary"/>
         <variable
-            name="viewModel"
-            type="com.example.kevin.fifastatistics.viewmodels.card.BoxScoreViewModel"/>
+            name="textColor"
+            type="Integer"/>
         <variable
-            name="teamImageUrl"
-            type="String"/>
+            name="fulltime"
+            type="Boolean"/>
         <variable
-            name="playerName"
+            name="title"
             type="String"/>
     </data>
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="@dimen/boxscore_item_width"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/activity_vertical_margin"
-        android:orientation="horizontal">
-
-        <ImageView
-            android:id="@+id/team_imageview"
-            android:layout_width="@dimen/match_team_logo_size"
-            android:layout_height="@dimen/match_team_logo_size"
-            android:layout_marginEnd="@dimen/activity_horizontal_margin"
-            android:layout_marginTop="@dimen/activity_vertical_margin"
-            android:layout_marginBottom="@dimen/activity_vertical_margin"
-            android:layout_marginStart="@dimen/medium_margin"
-            android:layout_gravity="center_vertical"
-            android:scaleType="fitCenter"
-            app:imageUrl="@{teamImageUrl}"/>
+        android:orientation="vertical"
+        android:clipChildren="false">
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="0"
-            android:layout_marginEnd="@dimen/activity_horizontal_margin"
-            android:layout_marginTop="@dimen/activity_vertical_margin"
-            android:layout_marginBottom="@dimen/activity_vertical_margin"
-            android:layout_gravity="center_vertical"
-            android:gravity="center_vertical"
-            android:textAppearance="@style/text_white_small"
-            android:text="@{playerName}"/>
-
-        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="horizontal"
-            android:layoutDirection="rtl">
+            android:layout_marginTop="@dimen/medium_margin"
+            android:layout_marginBottom="@dimen/medium_margin"
+            android:gravity="center"
+            android:textAppearance="@style/text_bold_grey_small"
+            android:text="@{title}"/>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/activity_vertical_margin"
-                android:layout_marginEnd="@dimen/activity_vertical_margin"
-                android:layout_marginTop="@dimen/activity_horizontal_margin"
-                android:layout_marginBottom="@dimen/activity_horizontal_margin"
-                android:layout_gravity="center_vertical"
-                android:gravity="center_vertical"
-                android:textAppearance="@style/text_bold_white_small"
-                android:text="@{summary.fullTime}"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/medium_margin"
+            android:layout_marginBottom="@dimen/medium_margin"
+            android:gravity="center"
+            android:textAppearance="@style/text_grey_small"
+            android:textColor="@{textColor}"
+            android:typeface='@{fulltime ? "bold" : "normal"}'
+            android:text="@{summary.goalsFor}"/>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/activity_vertical_margin"
-                android:layout_marginEnd="@dimen/activity_vertical_margin"
-                android:layout_marginTop="@dimen/activity_horizontal_margin"
-                android:layout_marginBottom="@dimen/activity_horizontal_margin"
-                android:layout_gravity="center_vertical"
-                android:gravity="center_vertical"
-                android:textAppearance="@style/text_grey_small"
-                android:text="@{summary.penalties}"
-                android:visibility="@{viewModel.penaltiesVisibility}"/>
+        <View
+            android:layout_width="10000dp"
+            android:layout_height="1dp"
+            android:background="@color/cardViewHeaderBackground"/>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/activity_vertical_margin"
-                android:layout_marginEnd="@dimen/activity_vertical_margin"
-                android:layout_marginTop="@dimen/activity_horizontal_margin"
-                android:layout_marginBottom="@dimen/activity_horizontal_margin"
-                android:layout_gravity="center_vertical"
-                android:gravity="center_vertical"
-                android:textAppearance="@style/text_grey_small"
-                android:text="@{summary.secondExtraTime}"
-                android:visibility="@{viewModel.secondExtraTimeVisibility}"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/activity_vertical_margin"
-                android:layout_marginEnd="@dimen/activity_vertical_margin"
-                android:layout_marginTop="@dimen/activity_horizontal_margin"
-                android:layout_marginBottom="@dimen/activity_horizontal_margin"
-                android:layout_gravity="center_vertical"
-                android:gravity="center_vertical"
-                android:textAppearance="@style/text_grey_small"
-                android:text="@{summary.firstExtraTime}"
-                android:visibility="@{viewModel.firstExtraTimeVisibility}"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/activity_vertical_margin"
-                android:layout_marginEnd="@dimen/activity_vertical_margin"
-                android:layout_marginTop="@dimen/activity_horizontal_margin"
-                android:layout_marginBottom="@dimen/activity_horizontal_margin"
-                android:layout_gravity="center_vertical"
-                android:gravity="center_vertical"
-                android:textAppearance="@style/text_grey_small"
-                android:text="@{summary.secondHalf}"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/activity_vertical_margin"
-                android:layout_marginEnd="@dimen/activity_vertical_margin"
-                android:layout_marginTop="@dimen/activity_horizontal_margin"
-                android:layout_marginBottom="@dimen/activity_horizontal_margin"
-                android:layout_gravity="center_vertical"
-                android:gravity="center_vertical"
-                android:textAppearance="@style/text_grey_small"
-                android:text="@{summary.firstHalf}"/>
-
-        </LinearLayout>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/medium_margin"
+            android:layout_marginBottom="@dimen/medium_margin"
+            android:gravity="center"
+            android:textAppearance="@style/text_grey_small"
+            android:textColor="@{textColor}"
+            android:typeface='@{fulltime ? "bold" : "normal"}'
+            android:text="@{summary.goalsAgainst}"/>
 
     </LinearLayout>
 

@@ -186,6 +186,10 @@
     <string name="reject">Reject</string>
     <string name="approve">Approve</string>
     <string name="current_series">Current Series</string>
+    <string name="ft">FT</string>
+    <string name="pk">PK</string>
+    <string name="et1">ET1</string>
+    <string name="et2">ET2</string>
 
     <!-- PERMISSIONS -->
     <string name="request_camera_permission">FIFA Statistics needs camera permission.</string>

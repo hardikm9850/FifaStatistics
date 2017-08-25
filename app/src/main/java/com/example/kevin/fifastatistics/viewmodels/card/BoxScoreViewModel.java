@@ -81,4 +81,34 @@ public class BoxScoreViewModel extends FifaBaseViewModel {
     public TeamSummary getBottomTeamSummary() {
         return mPresenter.getBottomBoxScore();
     }
+
+    @Bindable
+    public TextPartSummary getFirstHalf() {
+        return mPresenter.getBoxScore().getFirstHalf().stringify();
+    }
+
+    @Bindable
+    public TextPartSummary getSecondHalf() {
+        return mPresenter.getBoxScore().getSecondHalf().stringify();
+    }
+
+    @Bindable
+    public TextPartSummary getFirstExtraTime() {
+        return mPresenter.getBoxScore().getFirstExtraTime().stringify();
+    }
+
+    @Bindable
+    public TextPartSummary getSecondExtraTime() {
+        return mPresenter.getBoxScore().getSecondExtraTime().stringify();
+    }
+
+    @Bindable
+    public TextPartSummary getPenalties() {
+        return mPresenter.getBoxScore().getPenalties().stringify();
+    }
+
+    @Bindable
+    public TextPartSummary getFullTime() {
+        return mPresenter.getBoxScore().getFullTime().stringify();
+    }
 }

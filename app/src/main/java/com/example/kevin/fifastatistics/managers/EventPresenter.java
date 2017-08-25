@@ -18,6 +18,7 @@ public class EventPresenter<T extends FifaEvent> {
     private T mEvent;
     private EventItem mTopItem;
     private EventItem mBottomItem;
+    private MatchScoreSummary mBoxScore;
     private boolean didTopWin;
     private boolean didWin;
     private boolean didParticipate;
@@ -93,13 +94,16 @@ public class EventPresenter<T extends FifaEvent> {
                 if (didParticipate && !didWin) {
                     mTopItem.setScoreSummary(summary.buildSummaryAgainst());
                     mBottomItem.setScoreSummary(summary.buildSummaryFor());
+                    mBoxScore = MatchScoreSummary.inverseOf(summary);
                 } else {
                     mTopItem.setScoreSummary(summary.buildSummaryFor());
                     mBottomItem.setScoreSummary(summary.buildSummaryAgainst());
+                    mBoxScore = summary;
                 }
             } else {
                 mTopItem.setScoreSummary(new MatchScoreSummary.TeamSummary());
                 mBottomItem.setScoreSummary(new MatchScoreSummary.TeamSummary());
+                mBoxScore = MatchScoreSummary.zeroed();
             }
         }
     }
@@ -107,6 +111,7 @@ public class EventPresenter<T extends FifaEvent> {
     private void initNullEvent() {
         mTopItem = new EventItem(null, null, null, 0, null);
         mBottomItem = new EventItem(null, null, null, 0, null);
+        mBoxScore = MatchScoreSummary.zeroed();
     }
 
     public boolean didTopWin() {
@@ -161,6 +166,11 @@ public class EventPresenter<T extends FifaEvent> {
     @NonNull
     public MatchScoreSummary.TeamSummary getBottomBoxScore() {
         return mBottomItem.scoreSummary;
+    }
+
+    @NonNull
+    public MatchScoreSummary getBoxScore() {
+        return mBoxScore;
     }
 
     @AllArgsConstructor
