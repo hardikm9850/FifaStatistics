@@ -13,7 +13,6 @@ import android.widget.LinearLayout;
  * <code>@BindingAdapter("android:layout_marginTop")</code>
  * <p>
  */
-
 public class LayoutParamsBindingAdapter {
 
     @BindingAdapter("layout_height")

@@ -125,6 +125,12 @@ public class UserOverviewFragment extends FifaBaseFragment implements OnBackPres
         mBinding.swiperefresh.setRefreshing(false);
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        mBinding.swiperefresh.setEnabled(true);
+    }
+
     private void refresh() {
         mBinding.swiperefresh.setRefreshing(true);
         mViewModel.update();
