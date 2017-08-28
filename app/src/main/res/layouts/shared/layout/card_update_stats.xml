@@ -7,7 +7,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.example.kevin.fifastatistics.viewmodels.card.UpdateStatsCardViewModel"/>
+            type="com.example.kevin.fifastatistics.viewmodels.card.MatchStatsViewModel"/>
     </data>
 
     <LinearLayout

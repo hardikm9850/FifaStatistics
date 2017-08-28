@@ -4,10 +4,7 @@ import android.databinding.Bindable;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.ColorInt;
-import android.support.annotation.DrawableRes;
-import android.support.v4.content.ContextCompat;
 
-import com.example.kevin.fifastatistics.FifaApplication;
 import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.interfaces.ActivityLauncher;
 import com.example.kevin.fifastatistics.models.databasemodels.league.Team;

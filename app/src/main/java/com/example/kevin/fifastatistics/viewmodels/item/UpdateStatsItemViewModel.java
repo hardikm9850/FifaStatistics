@@ -64,6 +64,7 @@ public class UpdateStatsItemViewModel extends FifaBaseViewModel implements StatU
         this.updateAgainst = updateAgainst;
         this.type = type;
         initAlpha();
+        initEditTextValue();
     }
 
     private void initAlpha() {
@@ -73,6 +74,17 @@ public class UpdateStatsItemViewModel extends FifaBaseViewModel implements StatU
         }
         mAlphaFor = alpha;
         mAlphaAgainst = alpha;
+    }
+
+    private void initEditTextValue() {
+        if (type == MatchEditType.CREATE) {
+            if (updateFor != null) {
+                binding.statForEdittext.setText(String.valueOf(updateFor));
+            }
+            if (updateAgainst != null) {
+                binding.statAgainstEdittext.setText(String.valueOf(updateAgainst));
+            }
+        }
     }
 
     public String getStatFor() {
@@ -221,8 +233,16 @@ public class UpdateStatsItemViewModel extends FifaBaseViewModel implements StatU
         return isReviewing() ? View.VISIBLE : View.GONE;
     }
 
+    public int getCurrentValueVisibility() {
+        return isCreating() ? View.GONE : View.VISIBLE;
+    }
+
     private boolean isReviewing() {
         return type == MatchEditType.REVIEW;
+    }
+
+    private boolean isCreating() {
+        return type == MatchEditType.CREATE;
     }
 
     public String getUpdateFor() {

@@ -26,6 +26,7 @@
             android:paddingBottom="3dp"
             android:textAppearance="@style/text_bold_white_small"
             android:text="@{viewModel.statFor}"
+            android:visibility="@{viewModel.currentValueVisibility}"
             android:alpha="@{viewModel.baseAlpha}"
             app:animatedAlpha="@{viewModel.alphaFor}"
             android:onClick="@{() -> viewModel.onStatForClicked()}"/>

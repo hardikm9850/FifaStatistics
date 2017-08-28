@@ -5,6 +5,7 @@ import com.example.kevin.fifastatistics.models.databasemodels.match.FifaEvent;
 import com.example.kevin.fifastatistics.models.databasemodels.user.records.UserRecords;
 import com.example.kevin.fifastatistics.utils.SerializationUtils;
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.io.Serializable;
@@ -86,6 +87,16 @@ public class User extends DatabaseModel implements Player {
 
         public boolean validate() {
             return (statsFor.validate() && statsAgainst.validate());
+        }
+
+        @JsonIgnore
+        public int getCardCount() {
+            return statsAgainst.getCardCount() + statsFor.getCardCount();
+        }
+
+        @JsonIgnore
+        public int getInjuryCount() {
+            return Math.round(statsAgainst.getInjuries()) + Math.round(statsFor.getInjuries());
         }
         
         public void swap() {

@@ -105,6 +105,11 @@ public class Stats implements Serializable {
         return names.clone();
     }
 
+    @JsonIgnore
+    public int getCardCount() {
+        return Math.round(yellowCards) + Math.round(redCards);
+    }
+
     /**
      * Build the set of values that correlates with the names returned by {@link #getNameSet()}.
      * @return an array of the values.
