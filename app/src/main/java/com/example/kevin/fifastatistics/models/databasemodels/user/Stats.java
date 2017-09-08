@@ -35,6 +35,7 @@ public class Stats implements Serializable {
     public static final String CORNERS;
     public static final String SHOT_ACCURACY;
     public static final String PASS_ACCURACY;
+    public static final String PENALTIES;
 
     static {
         Resources r = FifaApplication.getContext().getResources();
@@ -51,6 +52,7 @@ public class Stats implements Serializable {
         CORNERS = r.getString(R.string.corners);
         SHOT_ACCURACY = r.getString(R.string.shot_accuracy_percent);
         PASS_ACCURACY = r.getString(R.string.pass_accuracy_percent);
+        PENALTIES = r.getString(R.string.penalties);
     }
 
     @JsonIgnore

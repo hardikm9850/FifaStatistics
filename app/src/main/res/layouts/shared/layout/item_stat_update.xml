@@ -17,7 +17,7 @@
 
         <TextView
             android:id="@+id/stat_for_textview"
-            android:layout_width="30dp"
+            android:layout_width="@dimen/match_card_current_width"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/activity_horizontal_margin"
             android:layout_marginBottom="@dimen/activity_horizontal_margin"
@@ -29,11 +29,12 @@
             android:visibility="@{viewModel.currentValueVisibility}"
             android:alpha="@{viewModel.baseAlpha}"
             app:animatedAlpha="@{viewModel.alphaFor}"
+            app:layout_width="@{viewModel.currentValueWidth}"
             android:onClick="@{() -> viewModel.onStatForClicked()}"/>
 
         <EditText
             android:id="@+id/stat_for_edittext"
-            android:layout_width="40dp"
+            android:layout_width="@dimen/match_card_edittext_width"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/activity_horizontal_margin"
             android:layout_marginBottom="@dimen/activity_horizontal_margin"
@@ -72,7 +73,7 @@
 
         <TextView
             android:id="@+id/stat_against_textview"
-            android:layout_width="30dp"
+            android:layout_width="@dimen/match_card_current_width"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/activity_horizontal_margin"
             android:layout_marginBottom="@dimen/activity_horizontal_margin"
@@ -82,13 +83,15 @@
             android:paddingBottom="3dp"
             android:textAppearance="@style/text_bold_white_small"
             android:text="@{viewModel.statAgainst}"
+            android:visibility="@{viewModel.currentValueVisibility}"
             android:alpha="@{viewModel.baseAlpha}"
             app:animatedAlpha="@{viewModel.alphaAgainst}"
+            app:layout_width="@{viewModel.currentValueWidth}"
             android:onClick="@{() -> viewModel.onStatAgainstClicked()}"/>
 
         <EditText
             android:id="@+id/stat_against_edittext"
-            android:layout_width="40dp"
+            android:layout_width="@dimen/match_card_edittext_width"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/activity_horizontal_margin"
             android:layout_marginBottom="@dimen/activity_horizontal_margin"

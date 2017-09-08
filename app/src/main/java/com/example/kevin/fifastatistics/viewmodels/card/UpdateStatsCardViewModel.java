@@ -128,16 +128,6 @@ public class UpdateStatsCardViewModel extends MatchStatsViewModel {
         return updateVal == null ? Math.round(matchVal) : updateVal;
     }
 
-    @Bindable
-    public String getLeftHeader() {
-        return mMatch.didWin(mUser) ? "You" : mMatch.getWinnerFirstName();
-    }
-
-    @Bindable
-    public String getRightHeader() {
-        return !mMatch.didWin(mUser) ? "You" : mMatch.getLoserFirstName();
-    }
-
     public MatchUpdate build() {
         return mUpdateBuilder
                 .creatorId(mUser.getId())

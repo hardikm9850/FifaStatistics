@@ -5,6 +5,9 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -13,6 +16,7 @@ import com.example.kevin.fifastatistics.databinding.FragmentCreateMatchBinding;
 import com.example.kevin.fifastatistics.models.databasemodels.match.Match;
 import com.example.kevin.fifastatistics.models.databasemodels.user.Player;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
+import com.example.kevin.fifastatistics.utils.TransitionUtils;
 import com.example.kevin.fifastatistics.viewmodels.fragment.CreateMatchFragmentViewModel;
 
 public class CreateMatchFragment extends FifaBaseFragment implements CreateMatchFragmentViewModel.CreateMatchViewModelInteraction {
@@ -54,6 +58,7 @@ public class CreateMatchFragment extends FifaBaseFragment implements CreateMatch
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         restore(savedInstanceState);
+        setHasOptionsMenu(true);
     }
 
     private void restore(Bundle savedInstanceState) {
@@ -71,6 +76,7 @@ public class CreateMatchFragment extends FifaBaseFragment implements CreateMatch
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_create_match, container, false);
         mViewModel = new CreateMatchFragmentViewModel(mUser, mMatch, mBinding.cardUpdateStatsLayout, this);
+        TransitionUtils.addTransitionCallbackToBinding(mBinding.cardUpdateStatsLayout);
         mBinding.setViewModel(mViewModel);
         return mBinding.getRoot();
     }
@@ -90,6 +96,31 @@ public class CreateMatchFragment extends FifaBaseFragment implements CreateMatch
         outState.putSerializable(USER, mUser);
         outState.putSerializable(MATCH, mMatch);
         outState.putSerializable(OPPONENT, mOpponent);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_create_match, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_item_complete_match:
+                createMatchIfValid();
+                return true;
+            case android.R.id.home:
+                getActivity().onBackPressed();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void createMatchIfValid() {
+        if (mViewModel.isValid()) {
+            // TODO
+        }
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.example.kevin.fifastatistics.viewmodels.item;
 
+import android.content.Context;
 import android.databinding.Bindable;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -8,6 +9,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.kevin.fifastatistics.BR;
+import com.example.kevin.fifastatistics.FifaApplication;
+import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.databinding.ItemStatUpdateBinding;
 import com.example.kevin.fifastatistics.interfaces.Consumer;
 import com.example.kevin.fifastatistics.interfaces.Predicate;
@@ -22,6 +25,13 @@ import static com.example.kevin.fifastatistics.activities.MatchUpdateActivity.Ma
 public class UpdateStatsItemViewModel extends FifaBaseViewModel implements StatUpdater {
 
     private static final float UPDATED_ALPHA = 0.5f;
+    private static final int CURRENT_VALUE_WIDTH;
+
+    static {
+        Context c = FifaApplication.getContext();
+        float width = c.getResources().getDimension(R.dimen.match_card_current_width);
+        CURRENT_VALUE_WIDTH = Math.round(width);
+    }
 
     private ItemStatUpdateBinding binding;
     private final Consumer<Integer> forConsumer;
@@ -103,6 +113,7 @@ public class UpdateStatsItemViewModel extends FifaBaseViewModel implements StatU
         return errorMessage;
     }
 
+    @Override
     public void onStatForChanged(Editable s) {
         Integer newVal = TextUtils.isEmpty(s.toString()) ? null : Integer.valueOf(s.toString());
         mIsForError = forPredicate != null && !forPredicate.test(newVal);
@@ -112,6 +123,7 @@ public class UpdateStatsItemViewModel extends FifaBaseViewModel implements StatU
         updateError();
     }
 
+    @Override
     public void onStatAgainstChanged(Editable s) {
         Integer newVal = TextUtils.isEmpty(s.toString()) ? null : Integer.valueOf(s.toString());
         mIsAgainstError = againstPredicate != null && !againstPredicate.test(newVal);
@@ -124,11 +136,15 @@ public class UpdateStatsItemViewModel extends FifaBaseViewModel implements StatU
     private void consumeValue(Integer newVal, Consumer<Integer> consumer, EditText editText, int stat, boolean error) {
         if (newVal == null) {
             consumer.accept(MatchUpdate.Builder.REMOVE_VAL);
-        } else if (stat == newVal) {
+        } else if (isUpdatedStatSameAsCurrent(newVal, stat)) {
             editText.setText("");
         } else if (!error) {
             consumer.accept(newVal);
         }
+    }
+
+    private boolean isUpdatedStatSameAsCurrent(int newStat, int current) {
+        return newStat == current && !isCreating();
     }
 
     private void checkLinkedPredicate(Integer newVal, Consumer<Integer> consumer, EditText editText,
@@ -198,6 +214,17 @@ public class UpdateStatsItemViewModel extends FifaBaseViewModel implements StatU
         }
     }
 
+    public boolean areEditTextsFilled() {
+        boolean forFilled = !TextUtils.isEmpty(binding.statForEdittext.getText());
+        boolean againstFilled = !TextUtils.isEmpty(binding.statAgainstEdittext.getText());
+        if (!forFilled) {
+            binding.statForEdittext.requestFocus();
+        } else if (!againstFilled) {
+            binding.statAgainstEdittext.requestFocus();
+        }
+        return forFilled && againstFilled;
+    }
+
     public void onStatForClicked() {
         binding.statForEdittext.requestFocus();
     }
@@ -234,7 +261,11 @@ public class UpdateStatsItemViewModel extends FifaBaseViewModel implements StatU
     }
 
     public int getCurrentValueVisibility() {
-        return isCreating() ? View.GONE : View.VISIBLE;
+        return isCreating() ? View.INVISIBLE : View.VISIBLE;
+    }
+
+    public int getCurrentValueWidth() {
+        return isCreating() ? 0 : CURRENT_VALUE_WIDTH;
     }
 
     private boolean isReviewing() {

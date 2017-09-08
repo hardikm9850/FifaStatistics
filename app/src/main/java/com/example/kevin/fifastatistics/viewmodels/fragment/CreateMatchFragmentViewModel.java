@@ -2,11 +2,11 @@ package com.example.kevin.fifastatistics.viewmodels.fragment;
 
 import com.example.kevin.fifastatistics.databinding.CardUpdateStatsBinding;
 import com.example.kevin.fifastatistics.models.databasemodels.match.Match;
+import com.example.kevin.fifastatistics.models.databasemodels.user.Player;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
 import com.example.kevin.fifastatistics.viewmodels.FifaBaseViewModel;
 import com.example.kevin.fifastatistics.viewmodels.card.CreateStatsCardViewModel;
 import com.example.kevin.fifastatistics.viewmodels.card.MatchStatsViewModel;
-import com.example.kevin.fifastatistics.viewmodels.card.UpdateStatsCardViewModel;
 
 public class CreateMatchFragmentViewModel extends FifaBaseViewModel
         implements CreateStatsCardViewModel.CreateStatsInteraction {
@@ -47,6 +47,10 @@ public class CreateMatchFragmentViewModel extends FifaBaseViewModel
         if (mInteraction != null) {
             mInteraction.onMatchUpdated(match);
         }
+    }
+
+    public boolean isValid() {
+        return mStatsViewModel.areAllEditTextsFilled() && mStatsViewModel.validate();
     }
 
     public MatchStatsViewModel getStatsCardViewModel() {

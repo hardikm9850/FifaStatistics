@@ -2,6 +2,7 @@ package com.example.kevin.fifastatistics.viewmodels.card;
 
 import android.content.res.Resources;
 import android.databinding.Bindable;
+import android.view.View;
 
 import com.example.kevin.fifastatistics.FifaApplication;
 import com.example.kevin.fifastatistics.R;
@@ -25,6 +26,7 @@ public abstract class MatchStatsViewModel extends FifaBaseViewModel {
     private static final String ERROR_SHOTS_ON_TARGET;
     private static final String ERROR_POSSESSION;
     private static final String ERROR_SHOT_ACCURACY;
+    private static final String ERROR_PENALTIES;
 
     static {
         Resources r = FifaApplication.getContext().getResources();
@@ -33,6 +35,7 @@ public abstract class MatchStatsViewModel extends FifaBaseViewModel {
         ERROR_SHOTS_ON_TARGET = r.getString(R.string.error_shots_on_target);
         ERROR_POSSESSION = r.getString(R.string.error_possession);
         ERROR_SHOT_ACCURACY = r.getString(R.string.error_shot_accuracy);
+        ERROR_PENALTIES = r.getString(R.string.error_penalties_same);
     }
 
     protected Match mMatch;
@@ -54,6 +57,7 @@ public abstract class MatchStatsViewModel extends FifaBaseViewModel {
     private UpdateStatsItemViewModel mCornersViewModel;
     private UpdateStatsItemViewModel mShotAccuracyViewModel;
     private UpdateStatsItemViewModel mPassAccuracyViewModel;
+    private UpdateStatsItemViewModel mPenaltiesViewModel;
 
     public MatchStatsViewModel(Match match, MatchUpdate update, User user,
                                     CardUpdateStatsBinding binding, MatchUpdateActivity.MatchEditType type) {
@@ -278,6 +282,29 @@ public abstract class MatchStatsViewModel extends FifaBaseViewModel {
 
     protected abstract StatConsumers getPassAccuracyConsumers();
 
+    @Bindable
+    public UpdateStatsItemViewModel getPenaltiesViewModel() {
+        if (mMatch != null) {
+            mPenaltiesViewModel = UpdateStatsItemViewModel.builder()
+                    .type(mType)
+                    .forConsumer(p -> mMatch.setPenaltiesFor(p))
+                    .againstConsumer(p -> mMatch.setPenaltiesAgainst(p))
+                    .forPredicate(p -> !needPenalties() || (p != mMatch.getPenaltiesAgainst()))
+                    .againstPredicate(p -> !needPenalties() || (p != mMatch.getPenaltiesFor()))
+                    .binding(mBinding.penaltiesStatUpdate)
+                    .statFor(mMatch.getPenaltiesFor())
+                    .statAgainst(mMatch.getPenaltiesAgainst())
+                    .label(Stats.PENALTIES)
+                    .errorMessage(ERROR_PENALTIES)
+                    .build();
+        }
+        return mPenaltiesViewModel;
+    }
+
+    private boolean needPenalties() {
+        return getGoalsFor() == getGoalsAgainst();
+    }
+
     private UpdateStatsItemViewModel.UpdateStatsItemViewModelBuilder getBuilder(String key,
                                                                                 StatConsumers consumers) {
         return UpdateStatsItemViewModel.builder()
@@ -296,13 +323,18 @@ public abstract class MatchStatsViewModel extends FifaBaseViewModel {
     private boolean getGoalsForPredicate(Integer newGoalsFor) {
         int goalsAgainst = getGoalsAgainst();
         int goalsFor = newGoalsFor == null ? mMatch.getScoreWinner() : newGoalsFor;
-        return (goalsAgainst < goalsFor || (goalsAgainst == goalsFor && mMatch.hasPenalties()));
+        return isMatchOutcomeUnchanged(goalsFor, goalsAgainst);
     }
 
     private boolean getGoalsAgainstPredicate(Integer newGoalsAgainst) {
         int goalsFor = getGoalsFor();
         int goalsAgainst = newGoalsAgainst == null ? mMatch.getScoreLoser() : newGoalsAgainst;
-        return (goalsAgainst < goalsFor || (goalsAgainst == goalsFor && mMatch.hasPenalties()));
+        return isMatchOutcomeUnchanged(goalsFor, goalsAgainst);
+    }
+
+    private boolean isMatchOutcomeUnchanged(int goalsFor, int goalsAgainst) {
+        boolean unchanged = (goalsAgainst < goalsFor || (goalsAgainst == goalsFor && mMatch.hasPenalties()));
+        return unchanged || mType == MatchUpdateActivity.MatchEditType.CREATE;
     }
 
     private int getGoalsFor() {
@@ -351,21 +383,49 @@ public abstract class MatchStatsViewModel extends FifaBaseViewModel {
         return !mMatch.didWin(mUser) ? "You" : mMatch.getLoserFirstName();
     }
 
+    public int getHeaderVisibility() {
+        return View.VISIBLE;
+    }
+
+    @Bindable
+    public int getPenaltiesItemVisibility() {
+        return View.GONE;
+    }
+
     public boolean validate() {
         return
                 mGoalsViewModel.isValid() &&
-                        mShotsViewModel.isValid() &&
-                        mShotsOnTargetViewModel.isValid() &&
-                        mPossessionViewModel.isValid() &&
-                        mTacklesViewModel.isValid() &&
-                        mFoulsViewModel.isValid() &&
-                        mYellowCardsViewModel.isValid() &&
-                        mRedCardsViewModel.isValid() &&
-                        mOffsidesViewModel.isValid() &&
-                        mInjuriesViewModel.isValid() &&
-                        mCornersViewModel.isValid() &&
-                        mShotAccuracyViewModel.isValid() &&
-                        mPassAccuracyViewModel.isValid();
+                mShotsViewModel.isValid() &&
+                mShotsOnTargetViewModel.isValid() &&
+                mPossessionViewModel.isValid() &&
+                mTacklesViewModel.isValid() &&
+                mFoulsViewModel.isValid() &&
+                mYellowCardsViewModel.isValid() &&
+                mRedCardsViewModel.isValid() &&
+                mOffsidesViewModel.isValid() &&
+                mInjuriesViewModel.isValid() &&
+                mCornersViewModel.isValid() &&
+                mShotAccuracyViewModel.isValid() &&
+                mPassAccuracyViewModel.isValid() &&
+                mPenaltiesViewModel.isValid();
+    }
+
+    public boolean areAllEditTextsFilled() {
+        return 
+                mGoalsViewModel.areEditTextsFilled() &&
+                mShotsViewModel.areEditTextsFilled() &&
+                mShotsOnTargetViewModel.areEditTextsFilled() &&
+                mPossessionViewModel.areEditTextsFilled() &&
+                mTacklesViewModel.areEditTextsFilled() &&
+                mFoulsViewModel.areEditTextsFilled() &&
+                mYellowCardsViewModel.areEditTextsFilled() &&
+                mRedCardsViewModel.areEditTextsFilled() &&
+                mOffsidesViewModel.areEditTextsFilled() &&
+                mInjuriesViewModel.areEditTextsFilled() &&
+                mCornersViewModel.areEditTextsFilled() &&
+                mShotAccuracyViewModel.areEditTextsFilled() &&
+                mPassAccuracyViewModel.areEditTextsFilled() &&
+                mPenaltiesViewModel.areEditTextsFilled();
     }
 
     @AllArgsConstructor

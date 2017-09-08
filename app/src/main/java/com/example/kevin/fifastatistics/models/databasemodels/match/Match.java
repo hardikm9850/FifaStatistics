@@ -171,6 +171,31 @@ public class Match extends DatabaseModel implements TeamEvent, FifaEvent, Penalt
         return penalties != null;
     }
 
+    @JsonIgnore
+    public void setPenaltiesFor(int goals) {
+        initPenalties();
+        penalties.setWinner(goals);
+    }
+
+    @JsonIgnore
+    public void setPenaltiesAgainst(int goals) {
+        initPenalties();
+        penalties.setLoser(goals);
+    }
+
+    private void initPenalties() {
+        if (penalties == null) {
+            penalties = new Penalties();
+        }
+    }
+
+    public int getPenaltiesFor() {
+        return penalties != null ? penalties.getWinner() : 0;
+    }
+
+    public int getPenaltiesAgainst() {
+        return penalties != null ? penalties.getLoser() : 0;
+    }
 
     @JsonIgnore
     public List<MatchEvents.GoalItem> getGoals() {

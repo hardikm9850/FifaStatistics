@@ -1,5 +1,8 @@
 package com.example.kevin.fifastatistics.viewmodels.card;
 
+import android.view.View;
+
+import com.example.kevin.fifastatistics.BR;
 import com.example.kevin.fifastatistics.activities.MatchUpdateActivity;
 import com.example.kevin.fifastatistics.databinding.CardUpdateStatsBinding;
 import com.example.kevin.fifastatistics.interfaces.Consumer;
@@ -22,10 +25,12 @@ public class CreateStatsCardViewModel extends MatchStatsViewModel {
                 s -> {
                     mMatch.getStatsFor().setGoals(s);
                     mInteraction.onGoalCountChanged(getGoalCount());
+                    notifyPropertyChanged(BR.penaltiesItemVisibility);
                 },
                 s -> {
                     mMatch.getStatsAgainst().setGoals(s);
                     mInteraction.onGoalCountChanged(getGoalCount());
+                    notifyPropertyChanged(BR.penaltiesItemVisibility);
                 }
         );
     }
@@ -158,6 +163,21 @@ public class CreateStatsCardViewModel extends MatchStatsViewModel {
     public void destroy() {
         super.destroy();
         mInteraction = null;
+    }
+
+    @Override
+    public int getHeaderVisibility() {
+        return View.GONE;
+    }
+
+    @Override
+    public int getPenaltiesItemVisibility() {
+        return arePenaltiesRequired() ? View.VISIBLE : View.GONE;
+    }
+
+
+    private boolean arePenaltiesRequired() {
+        return mMatch.getScoreWinner() ==  mMatch.getScoreLoser();
     }
 
     private StatConsumers createConsumers(Consumer<Integer> forCon, Consumer<Integer> againstCon) {

@@ -40,6 +40,7 @@
                 <include
                     layout="@layout/card_view_header"
                     android:id="@+id/stats_header"
+                    android:visibility="@{viewModel.headerVisibility}"
                     bind:headerLeft="@{viewModel.leftHeader}"
                     bind:headerRight="@{viewModel.rightHeader}"/>
 
@@ -107,6 +108,12 @@
                     android:id="@+id/pass_accuracy_stat_update"
                     layout="@layout/item_stat_update"
                     bind:viewModel="@{viewModel.passAccuracyViewModel}"/>
+
+                <include
+                    android:id="@+id/penalties_stat_update"
+                    layout="@layout/item_stat_update"
+                    android:visibility="@{viewModel.penaltiesItemVisibility}"
+                    bind:viewModel="@{viewModel.penaltiesViewModel}"/>
 
             </LinearLayout>
 

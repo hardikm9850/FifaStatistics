@@ -98,8 +98,7 @@
     <string name="new_series">New Series</string>
     <string name="new_match">New Match</string>
     <string name="create_series_exit_confirmation">"Are you sure you want to discard this series?"</string>
-    <string name="create_match_exit_confirmation">"Are you sure you want to discard this
-        match?"</string>
+    <string name="create_match_exit_confirmation">"Are you sure you want to discard this match?"</string>
     <string name="dialog_keep_editing">KEEP EDITING</string>
     <string name="dialog_discard">DISCARD</string>
     <string name="dialog_save">SAVE</string>
@@ -125,12 +124,11 @@
     <string name="retry">Retry</string>
     <string name="error_goals">Cannot change the match result</string>
     <string name="error_shots">You cannot have more Goals or Shots on Target than Shots</string>
-    <string name="error_shots_on_target">You cannot have more Shots on Target than Shots, or fewer
-        than Goals</string>
+    <string name="error_shots_on_target">You cannot have more Shots on Target than Shots, or fewer than Goals</string>
     <string name="error_possession">Total Possession must equal 100%</string>
-    <string name="error_shot_accuracy">Shot Accuracy does not match with Shots and Shots on
-    Target</string>
+    <string name="error_shot_accuracy">Shot Accuracy does not match with Shots and Shots on Target</string>
     <string name="error_empty_update">No changes made</string>
+    <string name="error_penalties_same">Penalties cannot be the same for each side</string>
 
     <!-- TOASTS -->
     <string name="not_found">Not found!</string>

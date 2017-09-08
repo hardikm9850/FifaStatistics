@@ -18,8 +18,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingBottom="@dimen/update_padding_bottom"
-            android:orientation="vertical"
-            android:visibility="gone">
+            android:orientation="vertical">
 
             <include
                 android:id="@+id/card_update_stats_layout"

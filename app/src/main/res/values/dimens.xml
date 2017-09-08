@@ -37,6 +37,8 @@
     <dimen name="match_event_item_player_image_size">52dp</dimen>
     <dimen name="match_event_icon_size">18dp</dimen>
     <dimen name="match_event_icon_margin_top">6dp</dimen>
+    <dimen name="match_card_edittext_width">40dp</dimen>
+    <dimen name="match_card_current_width">30dp</dimen>
     <dimen name="boxscore_item_width">40dp</dimen>
     <dimen name="shutter_button_margin">12dp</dimen>
 
