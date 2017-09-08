@@ -16,6 +16,7 @@ import com.example.kevin.fifastatistics.databinding.FragmentCreateMatchBinding;
 import com.example.kevin.fifastatistics.models.databasemodels.match.Match;
 import com.example.kevin.fifastatistics.models.databasemodels.user.Player;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
+import com.example.kevin.fifastatistics.utils.BuildUtils;
 import com.example.kevin.fifastatistics.utils.TransitionUtils;
 import com.example.kevin.fifastatistics.viewmodels.fragment.CreateMatchFragmentViewModel;
 
@@ -100,7 +101,8 @@ public class CreateMatchFragment extends FifaBaseFragment implements CreateMatch
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.menu_create_match, menu);
+        int menuRes = BuildUtils.isDebug() ? R.menu.menu_create_match_debug : R.menu.menu_create_match;
+        inflater.inflate(menuRes, menu);
     }
 
     @Override
@@ -108,6 +110,9 @@ public class CreateMatchFragment extends FifaBaseFragment implements CreateMatch
         switch (item.getItemId()) {
             case R.id.menu_item_complete_match:
                 createMatchIfValid();
+                return true;
+            case R.id.autofill:
+                mViewModel.autofill();
                 return true;
             case android.R.id.home:
                 getActivity().onBackPressed();

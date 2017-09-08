@@ -2,7 +2,6 @@ package com.example.kevin.fifastatistics.viewmodels.fragment;
 
 import com.example.kevin.fifastatistics.databinding.CardUpdateStatsBinding;
 import com.example.kevin.fifastatistics.models.databasemodels.match.Match;
-import com.example.kevin.fifastatistics.models.databasemodels.user.Player;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
 import com.example.kevin.fifastatistics.viewmodels.FifaBaseViewModel;
 import com.example.kevin.fifastatistics.viewmodels.card.CreateStatsCardViewModel;
@@ -51,6 +50,10 @@ public class CreateMatchFragmentViewModel extends FifaBaseViewModel
 
     public boolean isValid() {
         return mStatsViewModel.areAllEditTextsFilled() && mStatsViewModel.validate();
+    }
+
+    public void autofill() {
+        mStatsViewModel.autofill();
     }
 
     public MatchStatsViewModel getStatsCardViewModel() {

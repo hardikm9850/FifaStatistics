@@ -289,8 +289,8 @@ public abstract class MatchStatsViewModel extends FifaBaseViewModel {
                     .type(mType)
                     .forConsumer(p -> mMatch.setPenaltiesFor(p))
                     .againstConsumer(p -> mMatch.setPenaltiesAgainst(p))
-                    .forPredicate(p -> !needPenalties() || (p != mMatch.getPenaltiesAgainst()))
-                    .againstPredicate(p -> !needPenalties() || (p != mMatch.getPenaltiesFor()))
+                    .forPredicate(p -> !needPenalties() || (p != null && p != mMatch.getPenaltiesAgainst()))
+                    .againstPredicate(p -> !needPenalties() || (p != null && p != mMatch.getPenaltiesFor()))
                     .binding(mBinding.penaltiesStatUpdate)
                     .statFor(mMatch.getPenaltiesFor())
                     .statAgainst(mMatch.getPenaltiesAgainst())
@@ -426,6 +426,25 @@ public abstract class MatchStatsViewModel extends FifaBaseViewModel {
                 mShotAccuracyViewModel.areEditTextsFilled() &&
                 mPassAccuracyViewModel.areEditTextsFilled() &&
                 mPenaltiesViewModel.areEditTextsFilled();
+    }
+    
+    public void autofill() {
+        User.StatsPair stats = mUser.getAverageStats();
+        Stats statsFor = stats.getStatsFor();
+        Stats statsAgainst = stats.getStatsAgainst();
+        mGoalsViewModel.setEditTextValues(statsFor.getGoals(), statsAgainst.getGoals());
+        mShotsViewModel.setEditTextValues(statsFor.getShots(), statsAgainst.getShots());
+        mShotsOnTargetViewModel.setEditTextValues(statsFor.getShotsOnTarget(), statsAgainst.getShotsOnTarget());
+        mPossessionViewModel.setEditTextValues(statsFor.getPossession(), statsAgainst.getPossession());
+        mTacklesViewModel.setEditTextValues(statsFor.getTackles(), statsAgainst.getTackles());
+        mFoulsViewModel.setEditTextValues(statsFor.getFouls(), statsAgainst.getFouls());
+        mYellowCardsViewModel.setEditTextValues(statsFor.getYellowCards(), statsAgainst.getYellowCards());
+        mRedCardsViewModel.setEditTextValues(statsFor.getRedCards(), statsAgainst.getRedCards());
+        mOffsidesViewModel.setEditTextValues(statsFor.getOffsides(), statsAgainst.getOffsides());
+        mInjuriesViewModel.setEditTextValues(statsFor.getGoals(), statsAgainst.getGoals());
+        mCornersViewModel.setEditTextValues(statsFor.getGoals(), statsAgainst.getGoals());
+        mShotAccuracyViewModel.setEditTextValues(statsFor.getShotAccuracy(), statsAgainst.getShotAccuracy());
+        mPassAccuracyViewModel.setEditTextValues(statsFor.getPassAccuracy(), statsAgainst.getPassAccuracy());
     }
 
     @AllArgsConstructor

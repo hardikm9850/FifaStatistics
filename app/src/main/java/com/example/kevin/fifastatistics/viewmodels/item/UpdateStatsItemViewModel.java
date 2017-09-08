@@ -113,6 +113,11 @@ public class UpdateStatsItemViewModel extends FifaBaseViewModel implements StatU
         return errorMessage;
     }
 
+    public void setEditTextValues(float valueFor, float valueAgainst) {
+        binding.statForEdittext.setText(String.valueOf(Math.round(valueFor)));
+        binding.statAgainstEdittext.setText(String.valueOf(Math.round(valueAgainst)));
+    }
+
     @Override
     public void onStatForChanged(Editable s) {
         Integer newVal = TextUtils.isEmpty(s.toString()) ? null : Integer.valueOf(s.toString());
