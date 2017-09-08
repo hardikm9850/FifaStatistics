@@ -1,6 +1,7 @@
 package com.example.kevin.fifastatistics.viewmodels;
 
 import android.databinding.BaseObservable;
+import android.databinding.Bindable;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.ColorInt;
 import android.support.annotation.DrawableRes;
@@ -28,6 +29,12 @@ public abstract class FifaBaseViewModel extends BaseObservable {
 
     public void destroy() {
         unsubscribeAll();
+    }
+
+    @Bindable
+    @ColorInt
+    public int getAccentColor() {
+        return FifaApplication.getAccentColor();
     }
 
     @ColorInt

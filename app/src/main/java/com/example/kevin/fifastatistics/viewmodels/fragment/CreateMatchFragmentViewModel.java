@@ -1,6 +1,7 @@
 package com.example.kevin.fifastatistics.viewmodels.fragment;
 
 import com.example.kevin.fifastatistics.databinding.CardUpdateStatsBinding;
+import com.example.kevin.fifastatistics.interfaces.ActivityLauncher;
 import com.example.kevin.fifastatistics.models.databasemodels.match.Match;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
 import com.example.kevin.fifastatistics.viewmodels.FifaBaseViewModel;
@@ -14,8 +15,8 @@ public class CreateMatchFragmentViewModel extends FifaBaseViewModel
     private CreateMatchViewModelInteraction mInteraction;
 
     public CreateMatchFragmentViewModel(User user, Match match, CardUpdateStatsBinding binding,
-                                        CreateMatchViewModelInteraction interaction) {
-        mStatsViewModel = new CreateStatsCardViewModel(match, user, binding, this);
+                                        CreateMatchViewModelInteraction interaction, ActivityLauncher launcher) {
+        mStatsViewModel = new CreateStatsCardViewModel(match, user, binding, this, launcher);
         mInteraction = interaction;
     }
 
@@ -54,6 +55,10 @@ public class CreateMatchFragmentViewModel extends FifaBaseViewModel
 
     public void autofill() {
         mStatsViewModel.autofill();
+    }
+
+    public void setStats(User.StatsPair stats) {
+        mStatsViewModel.setStats(stats);
     }
 
     public MatchStatsViewModel getStatsCardViewModel() {

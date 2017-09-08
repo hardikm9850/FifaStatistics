@@ -103,7 +103,7 @@
     <string name="dialog_discard">DISCARD</string>
     <string name="dialog_save">SAVE</string>
     <string name="uploading_series">Uploading series</string>
-    <string name="please_wait">Please wait...</string>
+    <string name="please_wait">Please wait…</string>
     <string name="create_series_failed">Failed to create series</string>
     <string name="create_series_success">Series created successfully</string>
     <string name="series_saved">Series saved</string>
@@ -118,6 +118,8 @@
     <string name="request_approved">Request approved</string>
     <string name="request_declined">Request denied</string>
     <string name="confirm_discard_update">Discard this match update?</string>
+    <string name="processing_image">Processing image</string>
+    <string name="failed_to_parse">Failed to parse image.</string>
     <string name="keep_editing">Keep Editing</string>
     <string name="discard">Discard</string>
     <string name="team_logo">%1$s logo</string>

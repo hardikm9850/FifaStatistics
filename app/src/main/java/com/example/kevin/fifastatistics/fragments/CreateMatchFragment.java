@@ -1,6 +1,7 @@
 package com.example.kevin.fifastatistics.fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -12,15 +13,24 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.kevin.fifastatistics.R;
+import com.example.kevin.fifastatistics.activities.CameraActivity;
+import com.example.kevin.fifastatistics.activities.PickTeamActivity;
 import com.example.kevin.fifastatistics.databinding.FragmentCreateMatchBinding;
+import com.example.kevin.fifastatistics.managers.StatsImageHandler;
+import com.example.kevin.fifastatistics.models.databasemodels.league.Team;
 import com.example.kevin.fifastatistics.models.databasemodels.match.Match;
 import com.example.kevin.fifastatistics.models.databasemodels.user.Player;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
 import com.example.kevin.fifastatistics.utils.BuildUtils;
+import com.example.kevin.fifastatistics.utils.ByteHolder;
+import com.example.kevin.fifastatistics.utils.ToastUtils;
 import com.example.kevin.fifastatistics.utils.TransitionUtils;
 import com.example.kevin.fifastatistics.viewmodels.fragment.CreateMatchFragmentViewModel;
 
-public class CreateMatchFragment extends FifaBaseFragment implements CreateMatchFragmentViewModel.CreateMatchViewModelInteraction {
+public class CreateMatchFragment extends FifaBaseFragment implements StatsImageHandler.StatsImageHandlerInteraction,
+        CreateMatchFragmentViewModel.CreateMatchViewModelInteraction {
+
+    public static final int CREATE_MATCH_REQUEST_CODE = 34733;
 
     private OnMatchUpdatedListener mMatchUpdateListener;
     private FragmentCreateMatchBinding mBinding;
@@ -76,7 +86,7 @@ public class CreateMatchFragment extends FifaBaseFragment implements CreateMatch
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_create_match, container, false);
-        mViewModel = new CreateMatchFragmentViewModel(mUser, mMatch, mBinding.cardUpdateStatsLayout, this);
+        mViewModel = new CreateMatchFragmentViewModel(mUser, mMatch, mBinding.cardUpdateStatsLayout, this, this);
         TransitionUtils.addTransitionCallbackToBinding(mBinding.cardUpdateStatsLayout);
         mBinding.setViewModel(mViewModel);
         return mBinding.getRoot();
@@ -97,6 +107,19 @@ public class CreateMatchFragment extends FifaBaseFragment implements CreateMatch
         outState.putSerializable(USER, mUser);
         outState.putSerializable(MATCH, mMatch);
         outState.putSerializable(OPPONENT, mOpponent);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == CREATE_MATCH_REQUEST_CODE && resultCode == CameraActivity.PICTURE_TAKEN_RESULT_CODE) {
+            byte[] picture = ByteHolder.getData();
+            String preprocessor = data.getStringExtra(CameraActivity.EXTRA_PREPROCESSOR);
+            StatsImageHandler handler = new StatsImageHandler(getContext(), this);
+            handler.onImageCapture(picture, preprocessor);
+        } else if (requestCode == CREATE_MATCH_REQUEST_CODE && resultCode == PickTeamActivity.RESULT_TEAM_PICKED) {
+            Team team = (Team) data.getExtras().getSerializable(PickTeamActivity.EXTRA_TEAM);
+            // TODO
+        }
     }
 
     @Override
@@ -126,6 +149,16 @@ public class CreateMatchFragment extends FifaBaseFragment implements CreateMatch
         if (mViewModel.isValid()) {
             // TODO
         }
+    }
+
+    @Override
+    public void onStatsRetrieved(User.StatsPair statsPair) {
+        mViewModel.setStats(statsPair);
+    }
+
+    @Override
+    public void onError() {
+        ToastUtils.showShortToast(getContext(), R.string.failed_to_parse);
     }
 
     @Override

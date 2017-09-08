@@ -1,13 +1,17 @@
 package com.example.kevin.fifastatistics.viewmodels.card;
 
+import android.content.Intent;
 import android.content.res.Resources;
 import android.databinding.Bindable;
 import android.view.View;
 
 import com.example.kevin.fifastatistics.FifaApplication;
 import com.example.kevin.fifastatistics.R;
+import com.example.kevin.fifastatistics.activities.CameraActivity;
 import com.example.kevin.fifastatistics.activities.MatchUpdateActivity;
 import com.example.kevin.fifastatistics.databinding.CardUpdateStatsBinding;
+import com.example.kevin.fifastatistics.fragments.CreateMatchFragment;
+import com.example.kevin.fifastatistics.interfaces.ActivityLauncher;
 import com.example.kevin.fifastatistics.interfaces.Consumer;
 import com.example.kevin.fifastatistics.models.databasemodels.match.Match;
 import com.example.kevin.fifastatistics.models.databasemodels.match.MatchUpdate;
@@ -43,6 +47,7 @@ public abstract class MatchStatsViewModel extends FifaBaseViewModel {
     protected MatchUpdate mMatchUpdate;
     private CardUpdateStatsBinding mBinding;
     private MatchUpdateActivity.MatchEditType mType;
+    private ActivityLauncher mLauncher;
 
     private UpdateStatsItemViewModel mGoalsViewModel;
     private UpdateStatsItemViewModel mShotsViewModel;
@@ -59,13 +64,14 @@ public abstract class MatchStatsViewModel extends FifaBaseViewModel {
     private UpdateStatsItemViewModel mPassAccuracyViewModel;
     private UpdateStatsItemViewModel mPenaltiesViewModel;
 
-    public MatchStatsViewModel(Match match, MatchUpdate update, User user,
-                                    CardUpdateStatsBinding binding, MatchUpdateActivity.MatchEditType type) {
+    public MatchStatsViewModel(Match match, MatchUpdate update, User user, CardUpdateStatsBinding binding,
+                               MatchUpdateActivity.MatchEditType type, ActivityLauncher launcher) {
         mMatch = match == null ? Match.empty() : match;
         mUser = user;
         mBinding = binding;
         mMatchUpdate = update;
         mType = type;
+        mLauncher = launcher;
     }
 
     @Bindable
@@ -392,6 +398,19 @@ public abstract class MatchStatsViewModel extends FifaBaseViewModel {
         return View.GONE;
     }
 
+    @Bindable
+    public int getCameraButtonVisibility() {
+        return mType == MatchUpdateActivity.MatchEditType.CREATE ? View.VISIBLE : View.GONE;
+    }
+
+    public void onCameraButtonClick() {
+        if (mLauncher != null) {
+            System.gc();
+            Intent intent = new Intent(mLauncher.getContext(), CameraActivity.class);
+            mLauncher.launchActivity(intent, CreateMatchFragment.CREATE_MATCH_REQUEST_CODE, null);
+        }
+    }
+
     public boolean validate() {
         return
                 mGoalsViewModel.isValid() &&
@@ -430,6 +449,10 @@ public abstract class MatchStatsViewModel extends FifaBaseViewModel {
     
     public void autofill() {
         User.StatsPair stats = mUser.getAverageStats();
+        setStats(stats);
+    }
+
+    public void setStats(User.StatsPair stats) {
         Stats statsFor = stats.getStatsFor();
         Stats statsAgainst = stats.getStatsAgainst();
         mGoalsViewModel.setEditTextValues(statsFor.getGoals(), statsAgainst.getGoals());
@@ -445,6 +468,12 @@ public abstract class MatchStatsViewModel extends FifaBaseViewModel {
         mCornersViewModel.setEditTextValues(statsFor.getGoals(), statsAgainst.getGoals());
         mShotAccuracyViewModel.setEditTextValues(statsFor.getShotAccuracy(), statsAgainst.getShotAccuracy());
         mPassAccuracyViewModel.setEditTextValues(statsFor.getPassAccuracy(), statsAgainst.getPassAccuracy());
+    }
+
+    @Override
+    public void destroy() {
+        super.destroy();
+        mLauncher = null;
     }
 
     @AllArgsConstructor

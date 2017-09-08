@@ -14,7 +14,7 @@ public class UpdateStatsCardViewModel extends MatchStatsViewModel {
 
     public UpdateStatsCardViewModel(Match match, MatchUpdate update, User user,
                                     CardUpdateStatsBinding binding, MatchUpdateActivity.MatchEditType type) {
-        super(match, update, user, binding, type);
+        super(match, update, user, binding, type, null);
         mUpdateBuilder = new MatchUpdate.Builder(update);
     }
 

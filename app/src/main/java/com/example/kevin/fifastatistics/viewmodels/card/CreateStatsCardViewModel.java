@@ -5,6 +5,7 @@ import android.view.View;
 import com.example.kevin.fifastatistics.BR;
 import com.example.kevin.fifastatistics.activities.MatchUpdateActivity;
 import com.example.kevin.fifastatistics.databinding.CardUpdateStatsBinding;
+import com.example.kevin.fifastatistics.interfaces.ActivityLauncher;
 import com.example.kevin.fifastatistics.interfaces.Consumer;
 import com.example.kevin.fifastatistics.models.databasemodels.match.Match;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
@@ -14,8 +15,8 @@ public class CreateStatsCardViewModel extends MatchStatsViewModel {
     private CreateStatsInteraction mInteraction;
 
     public CreateStatsCardViewModel(Match match, User user, CardUpdateStatsBinding binding,
-                                    CreateStatsInteraction interaction) {
-        super(match, null, user, binding, MatchUpdateActivity.MatchEditType.CREATE);
+                                    CreateStatsInteraction interaction, ActivityLauncher launcher) {
+        super(match, null, user, binding, MatchUpdateActivity.MatchEditType.CREATE, launcher);
         mInteraction = interaction;
     }
 
@@ -174,7 +175,6 @@ public class CreateStatsCardViewModel extends MatchStatsViewModel {
     public int getPenaltiesItemVisibility() {
         return arePenaltiesRequired() ? View.VISIBLE : View.GONE;
     }
-
 
     private boolean arePenaltiesRequired() {
         return mMatch.getScoreWinner() ==  mMatch.getScoreLoser();
