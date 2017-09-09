@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="com.example.kevin.fifastatistics.viewmodels.CreateEventHeaderViewModel"/>
+        <import type="com.example.kevin.fifastatistics.R.drawable"/>
+    </data>
+
+    <RelativeLayout
+        android:id="@+id/match_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/cardViewHeaderBackground"
+        android:elevation="@dimen/toolbar_elevation">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/left_image"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:layout_marginBottom="@dimen/activity_vertical_margin"
+            android:layout_marginStart="@dimen/create_series_user_image_margin"
+            android:src="@android:color/white"
+            app:civ_border_width="2dp"
+            app:civ_border_color="#FFFFFF"
+            app:imageUrl="@{viewModel.leftImageUrl}"/>
+
+        <ImageView
+            android:layout_width="@dimen/team_item_logo_size"
+            android:layout_height="@dimen/team_item_logo_size"
+            android:layout_toEndOf="@id/left_image"
+            android:layout_marginStart="@dimen/activity_horizontal_margin"
+            android:layout_alignBottom="@id/left_image"
+            android:layout_gravity="center_vertical"
+            android:scaleType="fitCenter"
+            android:onClick="@{v -> viewModel.onLeftTeamClicked()}"
+            android:visibility="@{viewModel.teamVisibility}"
+            app:imageUrl="@{viewModel.leftTeamImageUrl}"
+            app:defaultResId="@{drawable.ic_error_outline_white_24dp}"/>
+
+        <ImageButton
+            android:id="@+id/switch_sides_button"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="@dimen/activity_vertical_margin"
+            android:src="@drawable/ic_swap_horiz_white_24dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/switch_sides"
+            android:onClick="@{() -> viewModel.onSwapSidesButtonClicked()}"/>
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/right_image"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:layout_marginBottom="@dimen/activity_vertical_margin"
+            android:layout_marginEnd="@dimen/create_series_user_image_margin"
+            android:src="@android:color/white"
+            app:civ_border_width="2dp"
+            app:civ_border_color="#FFFFFF"
+            app:imageUrl="@{viewModel.rightImageUrl}"/>
+
+        <ImageView
+            android:layout_width="@dimen/team_item_logo_size"
+            android:layout_height="@dimen/team_item_logo_size"
+            android:layout_toStartOf="@id/right_image"
+            android:layout_marginEnd="@dimen/activity_horizontal_margin"
+            android:layout_gravity="center_vertical"
+            android:layout_alignBottom="@id/right_image"
+            android:scaleType="fitCenter"
+            android:onClick="@{v -> viewModel.onRightTeamClicked()}"
+            android:visibility="@{viewModel.teamVisibility}"
+            app:imageUrl="@{viewModel.rightTeamImageUrl}"
+            app:defaultResId="@{drawable.ic_error_outline_white_24dp}"/>
+
+    </RelativeLayout>
+
+</layout>

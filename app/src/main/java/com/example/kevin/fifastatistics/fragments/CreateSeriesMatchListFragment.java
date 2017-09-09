@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.kevin.fifastatistics.R;
+import com.example.kevin.fifastatistics.activities.CreateMatchActivity;
 import com.example.kevin.fifastatistics.activities.FifaBaseActivity;
 import com.example.kevin.fifastatistics.activities.PickTeamActivity;
 import com.example.kevin.fifastatistics.databinding.FragmentCreateSeriesMatchListBinding;
@@ -170,6 +171,9 @@ public class CreateSeriesMatchListFragment extends FifaBaseFragment implements O
         if (requestCode == CREATE_SERIES_REQUEST_CODE && resultCode == PickTeamActivity.RESULT_TEAM_PICKED) {
             Team team = (Team) data.getExtras().getSerializable(PickTeamActivity.EXTRA_TEAM);
             mListViewModel.onTeamSelected(team);
+        } else if (requestCode == CREATE_SERIES_REQUEST_CODE && resultCode == CreateMatchFragment.RESULT_MATCH_CREATED) {
+            Match match = (Match) data.getExtras().getSerializable(MATCH);
+            onMatchCreated(match);
         }
     }
 
@@ -178,8 +182,10 @@ public class CreateSeriesMatchListFragment extends FifaBaseFragment implements O
         mListViewModel.onMatchCreated(match);
     }
 
-    public void notifyCreatingNewMatch() {
+    public void createNewMatch() {
         mListViewModel.setMatchIndex(-1);
+        Intent intent = CreateMatchActivity.getPartOfSeriesIntent(getContext(), mOpponent, null);
+        startActivityForResult(intent, CreateSeriesMatchListFragment.CREATE_SERIES_REQUEST_CODE);
     }
 
     public boolean isSeriesStarted() {

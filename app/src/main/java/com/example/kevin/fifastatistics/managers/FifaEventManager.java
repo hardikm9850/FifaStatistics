@@ -7,7 +7,9 @@ import android.support.v4.app.FragmentTransaction;
 
 import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.activities.CreateMatchActivity;
+import com.example.kevin.fifastatistics.activities.CreateSeriesActivity;
 import com.example.kevin.fifastatistics.fragments.AddMatchDialogFragment;
+import com.example.kevin.fifastatistics.fragments.CreateSeriesMatchListFragment;
 import com.example.kevin.fifastatistics.fragments.SelectOpponentDialogFragment;
 import com.example.kevin.fifastatistics.interfaces.ErrorHandler;
 import com.example.kevin.fifastatistics.interfaces.OnBackPressedHandler;
@@ -132,8 +134,10 @@ public class FifaEventManager implements SelectOpponentDialogFragment.SelectOppo
         @Override
         public void startNewFlow(Player opponent) {
 //            mAddMatchFragment = showAddMatchFragment(mActivity, opponent);
-            Intent intent = CreateMatchActivity.getIndividualMatchIntent(mActivity, opponent, null);
-            mActivity.startActivity(intent);
+            Intent intent = mIsPartOfSeries ?
+                    CreateMatchActivity.getPartOfSeriesIntent(mActivity, opponent, null) :
+                    CreateMatchActivity.getIndividualMatchIntent(mActivity, opponent, null);
+            mActivity.startActivityForResult(intent, CreateSeriesMatchListFragment.CREATE_SERIES_REQUEST_CODE);
         }
 
         private AddMatchDialogFragment showAddMatchFragment(FragmentActivity parentActivity, Player opponent) {

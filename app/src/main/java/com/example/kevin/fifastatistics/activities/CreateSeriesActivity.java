@@ -1,6 +1,7 @@
 package com.example.kevin.fifastatistics.activities;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
@@ -121,8 +122,7 @@ public class CreateSeriesActivity extends BasePlayerActivity implements
         switch (item.getItemId()) {
             case R.id.menu_item_add_match :
                 setOnBackPressHandler(mEventManager);
-                mFragment.notifyCreatingNewMatch();
-                mEventManager.startNewFlow(getFriend());
+                mFragment.createNewMatch();
                 return true;
             case R.id.menu_item_complete_series :
                 if (!isSeriesTeamsSet()) {

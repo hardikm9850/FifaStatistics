@@ -28,8 +28,6 @@ public class Match extends DatabaseModel implements TeamEvent, FifaEvent, Penalt
 
     public static final int MAX_SECOND_HALF_MINUTE = 90;
 
-    private User.StatsPair stats;
-    private Penalties penalties;
     private Date date;
     private Friend winner;
     private Friend loser;
@@ -38,6 +36,8 @@ public class Match extends DatabaseModel implements TeamEvent, FifaEvent, Penalt
     private String seriesId;
     private MatchScoreSummary summary;
     private MatchEvents events;
+    @Setter private Penalties penalties;
+    @Setter private User.StatsPair stats;
     @Setter private Team teamWinner;
     @Setter private Team teamLoser;
 
@@ -164,6 +164,21 @@ public class Match extends DatabaseModel implements TeamEvent, FifaEvent, Penalt
     @Override
     public int getScoreLoser() {
         return Math.round(getStatsAgainst().getGoals());
+    }
+
+    @JsonIgnore
+    public void swapWinnerAndLoser() {
+        Team tempTeam = teamWinner;
+        teamWinner = teamLoser;
+        teamLoser = tempTeam;
+        Friend tempFriend = winner;
+        winner = loser;
+        loser = tempFriend;
+    }
+
+    @JsonIgnore
+    public void swapStats() {
+        stats = new User.StatsPair(stats.getStatsAgainst(), stats.getStatsFor());
     }
 
     @JsonIgnore

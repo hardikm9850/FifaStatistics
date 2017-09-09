@@ -117,6 +117,11 @@ public class UpdateStatsCardViewModel extends MatchStatsViewModel {
     }
 
     @Override
+    protected StatConsumers getPenaltiesConsumers() {
+        return null;
+    }
+
+    @Override
     protected int getFor(String key, float matchVal) {
         Integer updateVal = mUpdateBuilder.build().getStatFor(key);
         return updateVal == null ? Math.round(matchVal) : updateVal;

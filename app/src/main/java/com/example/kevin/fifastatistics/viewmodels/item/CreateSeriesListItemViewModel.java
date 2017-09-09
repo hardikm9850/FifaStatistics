@@ -63,7 +63,7 @@ public class CreateSeriesListItemViewModel extends BaseObservable {
 
     private void notifyUpdating() {
         for (OnMatchUpdatedListener listener : mOnMatchUpdatedListeners) {
-            listener.setMatchIndex(mMatchNumber -1);
+            listener.setMatchIndex(mMatchNumber - 1);
         }
     }
 

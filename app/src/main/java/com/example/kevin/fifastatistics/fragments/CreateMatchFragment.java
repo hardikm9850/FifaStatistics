@@ -30,6 +30,7 @@ import com.example.kevin.fifastatistics.viewmodels.fragment.CreateMatchFragmentV
 public class CreateMatchFragment extends FifaBaseFragment implements StatsImageHandler.StatsImageHandlerInteraction,
         CreateMatchFragmentViewModel.CreateMatchViewModelInteraction {
 
+    public static final int RESULT_MATCH_CREATED = 701;
     public static final int CREATE_MATCH_REQUEST_CODE = 34733;
 
     private OnMatchUpdatedListener mMatchUpdateListener;
@@ -86,7 +87,8 @@ public class CreateMatchFragment extends FifaBaseFragment implements StatsImageH
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_create_match, container, false);
-        mViewModel = new CreateMatchFragmentViewModel(mUser, mMatch, mBinding.cardUpdateStatsLayout, this, this);
+        mViewModel = new CreateMatchFragmentViewModel(mUser, mOpponent, mMatch, mBinding.cardUpdateStatsLayout,
+                this, this, savedInstanceState, mIsPartOfSeries);
         TransitionUtils.addTransitionCallbackToBinding(mBinding.cardUpdateStatsLayout);
         mBinding.setViewModel(mViewModel);
         return mBinding.getRoot();
@@ -102,6 +104,7 @@ public class CreateMatchFragment extends FifaBaseFragment implements StatsImageH
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
+        outState = mViewModel.saveInstanceState(outState);
         super.onSaveInstanceState(outState);
         outState.putBoolean(SERIES, mIsPartOfSeries);
         outState.putSerializable(USER, mUser);
@@ -115,10 +118,10 @@ public class CreateMatchFragment extends FifaBaseFragment implements StatsImageH
             byte[] picture = ByteHolder.getData();
             String preprocessor = data.getStringExtra(CameraActivity.EXTRA_PREPROCESSOR);
             StatsImageHandler handler = new StatsImageHandler(getContext(), this);
-            handler.onImageCapture(picture, preprocessor);
+            handler.processImage(picture, preprocessor);
         } else if (requestCode == CREATE_MATCH_REQUEST_CODE && resultCode == PickTeamActivity.RESULT_TEAM_PICKED) {
             Team team = (Team) data.getExtras().getSerializable(PickTeamActivity.EXTRA_TEAM);
-            // TODO
+            mViewModel.updateTeam(team);
         }
     }
 
@@ -147,8 +150,26 @@ public class CreateMatchFragment extends FifaBaseFragment implements StatsImageH
 
     private void createMatchIfValid() {
         if (mViewModel.isValid()) {
-            // TODO
+            mViewModel.finalizeMatch();
+            if (mIsPartOfSeries) {
+                addMatchToSeries();
+            } else {
+                uploadMatch();
+            }
         }
+    }
+
+    private void addMatchToSeries() {
+        Bundle b = new Bundle();
+        b.putSerializable(MATCH, mMatch);
+        Intent intent = new Intent();
+        intent.putExtras(b);
+        getActivity().setResult(RESULT_MATCH_CREATED, intent);
+        getActivity().finish();
+    }
+
+    private void uploadMatch() {
+        // TODO
     }
 
     @Override
@@ -157,12 +178,13 @@ public class CreateMatchFragment extends FifaBaseFragment implements StatsImageH
     }
 
     @Override
-    public void onError() {
+    public void onStatsRetrievalError() {
         ToastUtils.showShortToast(getContext(), R.string.failed_to_parse);
     }
 
     @Override
     public void onMatchUpdated(Match match) {
+        mMatch = match;
         if (mMatchUpdateListener != null) {
             mMatchUpdateListener.onMatchUpdate(match);
         }

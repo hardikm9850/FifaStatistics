@@ -27,7 +27,7 @@ public class StatsImageHandler {
         mInteraction = interaction;
     }
 
-    public void onImageCapture(final byte[] picture, String preprocessorKey) {
+    public void processImage(final byte[] picture, String preprocessorKey) {
         final MatchFactsPreprocessor preprocessor = CameraActivity.Preprocessor.valueOf(preprocessorKey).getPreprocessor();
         ProgressDialog dialog = showProcessingDialog();
         Observable.<Bitmap>create(s -> {
@@ -63,7 +63,7 @@ public class StatsImageHandler {
             @Override
             public void onError(Throwable e) {
                 onOcrResultReceived(dialog);
-                mInteraction.onError();
+                mInteraction.onStatsRetrievalError();
             }
 
             @Override
@@ -81,6 +81,6 @@ public class StatsImageHandler {
 
     public interface StatsImageHandlerInteraction {
         void onStatsRetrieved(User.StatsPair statsPair);
-        void onError();
+        void onStatsRetrievalError();
     }
 }

@@ -151,6 +151,14 @@ public class CreateStatsCardViewModel extends MatchStatsViewModel {
     }
 
     @Override
+    protected StatConsumers getPenaltiesConsumers() {
+        return createConsumers(
+                p -> mMatch.setPenaltiesFor(p),
+                p -> mMatch.setPenaltiesAgainst(p)
+        );
+    }
+
+    @Override
     protected int getFor(String key, float matchVal) {
         return Math.round(matchVal);
     }
