@@ -179,6 +179,9 @@ public class Match extends DatabaseModel implements TeamEvent, FifaEvent, Penalt
     @JsonIgnore
     public void swapStats() {
         stats = new User.StatsPair(stats.getStatsAgainst(), stats.getStatsFor());
+        if (penalties != null) {
+            penalties.swap();
+        }
     }
 
     @JsonIgnore

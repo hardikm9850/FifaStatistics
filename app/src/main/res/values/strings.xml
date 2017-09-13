@@ -113,6 +113,7 @@
     <!-- Matches Fragment -->
     <string name="matches_load_failed">Failed to load matches.</string>
     <string name="error_create_match">Failed to create match: %1$s</string>
+    <string name="match_upload_success">Match created successfully.</string>
     <string name="uploading_match">Uploading match</string>
     <string name="request_sent">Request sent</string>
     <string name="request_approved">Request approved</string>

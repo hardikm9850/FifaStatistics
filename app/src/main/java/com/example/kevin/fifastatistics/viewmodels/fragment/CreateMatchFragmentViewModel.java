@@ -22,6 +22,7 @@ public class CreateMatchFragmentViewModel extends FifaBaseViewModel
     private CreateStatsCardViewModel mStatsViewModel;
     private CreateMatchViewModelInteraction mInteraction;
     private Match mMatch;
+    private User mUser;
 
     public CreateMatchFragmentViewModel(User user, Player opponent, Match match, CardUpdateStatsBinding binding,
                                         CreateMatchViewModelInteraction interaction, ActivityLauncher launcher,
@@ -30,6 +31,7 @@ public class CreateMatchFragmentViewModel extends FifaBaseViewModel
         mHeaderViewModel = new CreateEventHeaderViewModel(launcher, user, opponent, isPartOfSeries, savedInstanceState, this);
         mStatsViewModel = new CreateStatsCardViewModel(match, user, binding, this, launcher);
         mInteraction = interaction;
+        mUser = user;
     }
 
     private void initMatch(Match match, Player user, Player opponent) {
@@ -115,30 +117,33 @@ public class CreateMatchFragmentViewModel extends FifaBaseViewModel
         if (mMatch.getScoreWinner() != mMatch.getScoreLoser()) {
             mMatch.setPenalties(null);
         }
-        boolean userDidWin = userDidWin(mMatch.getStats(), mMatch.getPenalties());
-        boolean userWonButIsLoser = userDidWin && mHeaderViewModel.isSwapped();
-        boolean userLostButIsWinner = !userDidWin && !mHeaderViewModel.isSwapped();
-        if (userWonButIsLoser || userLostButIsWinner) {
-            mMatch.swapWinnerAndLoser();
-        }
-        maybeSwapStats(userDidWin);
+        float goalsLeft = mMatch.getStatsFor().getGoals();
+        float goalsRight = mMatch.getStatsAgainst().getGoals();
+        swapStatsIfLeftLost(goalsLeft, goalsRight, mMatch.getPenalties());
+        swapWinnerIfChanged(goalsLeft, goalsRight, mMatch.getPenalties());
         onMatchUpdated(mMatch);
     }
 
-    private boolean userDidWin(User.StatsPair stats, Penalties penalties) {
-        if (penalties == null) {
-            float goalsLeft = stats.getStatsFor().getGoals();
-            float goalsRight = stats.getStatsAgainst().getGoals();
-            return mHeaderViewModel.isSwapped() != goalsLeft > goalsRight;
-        } else {
-            return mHeaderViewModel.isSwapped() != penalties.getWinner() > penalties.getLoser();
+    private void swapStatsIfLeftLost(float goalsLeft, float goalsRight, Penalties penalties) {
+        if (goalsLeft < goalsRight) {
+            mMatch.swapStats();
+        } else if (penalties != null) {
+            if (penalties.getWinner() < penalties.getLoser()) {
+                mMatch.swapStats();
+            }
         }
     }
 
-    private void maybeSwapStats(boolean userDidWin) {
-        boolean didSwapSides = mHeaderViewModel.isSwapped();
-        if ((userDidWin && didSwapSides) || (!userDidWin && !didSwapSides)) {
-            mMatch.swapStats();
+    private void swapWinnerIfChanged(float goalsLeft, float goalsRight, Penalties penalties) {
+        boolean userDidWin;
+        boolean swapped = mHeaderViewModel.isSwapped();
+        if (penalties == null) {
+            userDidWin = swapped != goalsLeft > goalsRight;
+        } else {
+            userDidWin = swapped != penalties.getWinner() > penalties.getLoser();
+        }
+        if ((mUser.didWin(mMatch) && !userDidWin) || (mUser.didLose(mMatch) && userDidWin)) {
+            mMatch.swapWinnerAndLoser();
         }
     }
 

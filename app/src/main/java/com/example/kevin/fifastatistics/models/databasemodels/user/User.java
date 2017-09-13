@@ -68,6 +68,14 @@ public class User extends DatabaseModel implements Player {
         return event != null && (id.equals(event.getWinnerId()) || id.equals(event.getLoserId()));
     }
 
+    public boolean didLose(FifaEvent event) {
+        return event != null && event.getLoserId() != null && event.getLoserId().equals(id);
+    }
+
+    public boolean didWin(FifaEvent event) {
+        return event != null && event.getWinnerId() != null && event.getWinnerId().equals(id);
+    }
+
     @AllArgsConstructor
     @Getter
     public static class StatsPair implements Serializable {

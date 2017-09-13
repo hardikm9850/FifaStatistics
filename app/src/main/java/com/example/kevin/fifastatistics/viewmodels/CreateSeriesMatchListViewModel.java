@@ -35,7 +35,7 @@ public class CreateSeriesMatchListViewModel extends FifaBaseViewModel implements
 
     private final ObservableList<CreateSeriesListItemViewModel> mItems;
     private final ItemView mItemView;
-    private FifaBaseActivity mActivity;
+    private ActivityLauncher mLauncher;
     private User mUser;
     private Friend mOpponent;
     private CreateSeriesScoreViewModel mSeriesScoreViewModel;
@@ -54,7 +54,7 @@ public class CreateSeriesMatchListViewModel extends FifaBaseViewModel implements
                                           OnSeriesCompletedListener seriesCompletedListener, ActivityLauncher launcher, OnSeriesUpdatedListener listener, Series series) {
         mItems = new ObservableArrayList<>();
         mItemView = ItemView.of(BR.listItemViewModel, R.layout.item_create_series_match_list);
-        mActivity = activity;
+        mLauncher = launcher;
         mUser = user;
         mOpponent = opponent;
         mOnSeriesUpdateListener = listener;
@@ -70,14 +70,14 @@ public class CreateSeriesMatchListViewModel extends FifaBaseViewModel implements
     private void restoreSeries(Series series) {
         if (series != null && series.getMatches() != null) {
             for (Match match : series.getMatches()) {
-                mItems.add(new CreateSeriesListItemViewModel(mActivity, match, mUser, mOpponent, mItems.size() + 1, mOnMatchUpdateListeners));
+                mItems.add(new CreateSeriesListItemViewModel(mLauncher, match, mUser, mOpponent, mItems.size() + 1, mOnMatchUpdateListeners));
                 maybeEndSeries(match);
             }
         }
     }
 
     public void add(Match match) {
-        mItems.add(new CreateSeriesListItemViewModel(mActivity, match, mUser, mOpponent, mItems.size() + 1, mOnMatchUpdateListeners));
+        mItems.add(new CreateSeriesListItemViewModel(mLauncher, match, mUser, mOpponent, mItems.size() + 1, mOnMatchUpdateListeners));
         updateSeriesScoreViewModel(match);
         notifySeriesUpdated();
         maybeEndSeries(match);
@@ -210,7 +210,6 @@ public class CreateSeriesMatchListViewModel extends FifaBaseViewModel implements
         mOnSeriesUpdateListener = null;
         mOnMatchUpdateListeners = null;
         mOnSeriesCompletedListener = null;
-        mActivity = null;
     }
 
     public ObservableList<CreateSeriesListItemViewModel> getItems() {

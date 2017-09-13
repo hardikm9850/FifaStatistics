@@ -23,6 +23,12 @@ public class Penalties implements Serializable {
         return winner != loser;
     }
 
+    public void swap() {
+        int temp = winner;
+        winner = loser;
+        loser = temp;
+    }
+
     @Override
     public String toString() {
         return winner + "-" + loser;

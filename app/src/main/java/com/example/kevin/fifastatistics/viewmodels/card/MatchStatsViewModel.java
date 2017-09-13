@@ -48,6 +48,7 @@ public abstract class MatchStatsViewModel extends FifaBaseViewModel {
     private CardUpdateStatsBinding mBinding;
     private MatchUpdateActivity.MatchEditType mType;
     private ActivityLauncher mLauncher;
+    private boolean mIsSwapped;
 
     private UpdateStatsItemViewModel mGoalsViewModel;
     private UpdateStatsItemViewModel mShotsViewModel;
@@ -66,19 +67,21 @@ public abstract class MatchStatsViewModel extends FifaBaseViewModel {
 
     public MatchStatsViewModel(Match match, MatchUpdate update, User user, CardUpdateStatsBinding binding,
                                MatchUpdateActivity.MatchEditType type, ActivityLauncher launcher) {
-        mMatch = match == null ? Match.empty() : match;
+        mMatch = match;
         mUser = user;
         mBinding = binding;
         mMatchUpdate = update;
         mType = type;
         mLauncher = launcher;
-        restore(match);
+        restore();
     }
 
-    private void restore(Match match) {
-        if (mType == MatchUpdateActivity.MatchEditType.CREATE && match != null && match.getStats() != null) {
+    private void restore() {
+        if (mType == MatchUpdateActivity.MatchEditType.CREATE && mMatch != null && mMatch.getStats() != null) {
             initViewModels();
-            setStats(match.getStats());
+            restoreStats(mUser);
+        } else if (mMatch == null) {
+            mMatch = Match.empty();
         }
     }
 
@@ -97,6 +100,14 @@ public abstract class MatchStatsViewModel extends FifaBaseViewModel {
         getShotAccuracyViewModel();
         getPassAccuracyViewModel();
         getPenaltiesViewModel();
+    }
+
+    private void restoreStats(User user) {
+        if (user.didLose(mMatch)) {
+            mMatch.swapStats();
+            mIsSwapped = true;
+        }
+        setStats(mMatch.getStats());
     }
 
     @Bindable
@@ -496,6 +507,10 @@ public abstract class MatchStatsViewModel extends FifaBaseViewModel {
         mCornersViewModel.setEditTextValues(statsFor.getGoals(), statsAgainst.getGoals());
         mShotAccuracyViewModel.setEditTextValues(statsFor.getShotAccuracy(), statsAgainst.getShotAccuracy());
         mPassAccuracyViewModel.setEditTextValues(statsFor.getPassAccuracy(), statsAgainst.getPassAccuracy());
+    }
+
+    public boolean isSwapped() {
+        return mIsSwapped;
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.example.kevin.fifastatistics.fragments;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
@@ -16,6 +17,8 @@ import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.activities.CameraActivity;
 import com.example.kevin.fifastatistics.activities.PickTeamActivity;
 import com.example.kevin.fifastatistics.databinding.FragmentCreateMatchBinding;
+import com.example.kevin.fifastatistics.interfaces.ErrorHandler;
+import com.example.kevin.fifastatistics.interfaces.OnMatchCreatedListener;
 import com.example.kevin.fifastatistics.managers.StatsImageHandler;
 import com.example.kevin.fifastatistics.models.databasemodels.league.Team;
 import com.example.kevin.fifastatistics.models.databasemodels.match.Match;
@@ -23,19 +26,20 @@ import com.example.kevin.fifastatistics.models.databasemodels.user.Player;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
 import com.example.kevin.fifastatistics.utils.BuildUtils;
 import com.example.kevin.fifastatistics.utils.ByteHolder;
+import com.example.kevin.fifastatistics.utils.MatchUtils;
 import com.example.kevin.fifastatistics.utils.ToastUtils;
 import com.example.kevin.fifastatistics.utils.TransitionUtils;
 import com.example.kevin.fifastatistics.viewmodels.fragment.CreateMatchFragmentViewModel;
 
 public class CreateMatchFragment extends FifaBaseFragment implements StatsImageHandler.StatsImageHandlerInteraction,
-        CreateMatchFragmentViewModel.CreateMatchViewModelInteraction {
+        CreateMatchFragmentViewModel.CreateMatchViewModelInteraction, OnMatchCreatedListener, ErrorHandler {
 
     public static final int RESULT_MATCH_CREATED = 701;
     public static final int CREATE_MATCH_REQUEST_CODE = 34733;
 
     private OnMatchUpdatedListener mMatchUpdateListener;
-    private FragmentCreateMatchBinding mBinding;
     private CreateMatchFragmentViewModel mViewModel;
+    private ProgressDialog mMatchUploadingDialog;
     private Match mMatch;
     private User mUser;
     private Player mOpponent;
@@ -86,12 +90,20 @@ public class CreateMatchFragment extends FifaBaseFragment implements StatsImageH
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_create_match, container, false);
-        mViewModel = new CreateMatchFragmentViewModel(mUser, mOpponent, mMatch, mBinding.cardUpdateStatsLayout,
+        initMatchUploadingDialog();
+        FragmentCreateMatchBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_create_match, container, false);
+        mViewModel = new CreateMatchFragmentViewModel(mUser, mOpponent, mMatch, binding.cardUpdateStatsLayout,
                 this, this, savedInstanceState, mIsPartOfSeries);
-        TransitionUtils.addTransitionCallbackToBinding(mBinding.cardUpdateStatsLayout);
-        mBinding.setViewModel(mViewModel);
-        return mBinding.getRoot();
+        TransitionUtils.addTransitionCallbackToBinding(binding.cardUpdateStatsLayout);
+        binding.setViewModel(mViewModel);
+        return binding.getRoot();
+    }
+
+    private void initMatchUploadingDialog() {
+        mMatchUploadingDialog = new ProgressDialog(getContext());
+        mMatchUploadingDialog.setTitle(getString(R.string.uploading_match));
+        mMatchUploadingDialog.setMessage(getString(R.string.please_wait));
+        mMatchUploadingDialog.setCancelable(false);
     }
 
     @Override
@@ -169,7 +181,21 @@ public class CreateMatchFragment extends FifaBaseFragment implements StatsImageH
     }
 
     private void uploadMatch() {
-        // TODO
+        mMatchUploadingDialog.show();
+        MatchUtils.createMatch(mMatch, this, this);
+    }
+
+    @Override
+    public void handleError(String message, Throwable throwable) {
+        mMatchUploadingDialog.cancel();
+        ToastUtils.showShortToast(getContext(), message);
+    }
+
+    @Override
+    public void onMatchCreated(Match match) {
+        mMatchUploadingDialog.cancel();
+        ToastUtils.showShortToast(getContext(), R.string.match_upload_success);
+        getActivity().finish();
     }
 
     @Override

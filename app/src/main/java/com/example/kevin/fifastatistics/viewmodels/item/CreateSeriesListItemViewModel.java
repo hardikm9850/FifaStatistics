@@ -1,13 +1,14 @@
 package com.example.kevin.fifastatistics.viewmodels.item;
 
+import android.content.Intent;
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
-import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 
 import com.example.kevin.fifastatistics.R;
-import com.example.kevin.fifastatistics.activities.FifaBaseActivity;
-import com.example.kevin.fifastatistics.fragments.AddMatchDialogFragment;
+import com.example.kevin.fifastatistics.activities.CreateMatchActivity;
+import com.example.kevin.fifastatistics.fragments.CreateSeriesMatchListFragment;
+import com.example.kevin.fifastatistics.interfaces.ActivityLauncher;
 import com.example.kevin.fifastatistics.interfaces.OnMatchUpdatedListener;
 import com.example.kevin.fifastatistics.models.databasemodels.match.Match;
 import com.example.kevin.fifastatistics.models.databasemodels.user.Friend;
@@ -21,14 +22,14 @@ public class CreateSeriesListItemViewModel extends BaseObservable {
     private Match mMatch;
     private User mUser;
     private Friend mOpponent;
-    private FifaBaseActivity mActivity;
-    private AddMatchDialogFragment mDialogFragment;
+    private ActivityLauncher mLauncher;
     private List<OnMatchUpdatedListener> mOnMatchUpdatedListeners;
     private int mMatchNumber;
 
-    public CreateSeriesListItemViewModel(FifaBaseActivity activity, Match match, User currentUser, Friend opponent, int matchNumber, List<OnMatchUpdatedListener> listeners) {
+    public CreateSeriesListItemViewModel(ActivityLauncher launcher, Match match, User currentUser, Friend opponent,
+                                         int matchNumber, List<OnMatchUpdatedListener> listeners) {
         mMatch = match;
-        mActivity = activity;
+        mLauncher = launcher;
         mUser = currentUser;
         mOpponent = opponent;
         mMatchNumber = matchNumber;
@@ -38,10 +39,6 @@ public class CreateSeriesListItemViewModel extends BaseObservable {
     public void onMatchUpdated(Match match) {
         Match oldMatch = mMatch;
         setMatch(match);
-        if (mDialogFragment != null) {
-            mDialogFragment.dismiss();
-            mActivity.setOnBackPressHandler(null);
-        }
         notifyMatchUpdatedListeners(oldMatch, match);
     }
 
@@ -53,12 +50,8 @@ public class CreateSeriesListItemViewModel extends BaseObservable {
 
     public void onItemClicked() {
         notifyUpdating();
-        FragmentTransaction t = mActivity.getSupportFragmentManager().beginTransaction();
-        t.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-        mDialogFragment = AddMatchDialogFragment.newInstance(mUser, mOpponent, true);
-        mDialogFragment.setMatch(mMatch);
-        mActivity.setOnBackPressHandler(mDialogFragment);
-        t.add(android.R.id.content, mDialogFragment).addToBackStack(null).commit();
+        Intent intent = CreateMatchActivity.getPartOfSeriesIntent(mLauncher.getContext(), mOpponent, mMatch);
+        mLauncher.launchActivity(intent, CreateSeriesMatchListFragment.CREATE_SERIES_REQUEST_CODE, null);
     }
 
     private void notifyUpdating() {
