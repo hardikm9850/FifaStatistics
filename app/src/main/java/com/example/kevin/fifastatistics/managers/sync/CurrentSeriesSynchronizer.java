@@ -8,6 +8,7 @@ import com.example.kevin.fifastatistics.listeners.SimpleObserver;
 import com.example.kevin.fifastatistics.managers.preferences.CurrentSeriesPrefs;
 import com.example.kevin.fifastatistics.managers.preferences.PrefsManager;
 import com.example.kevin.fifastatistics.models.ApiListResponse;
+import com.example.kevin.fifastatistics.models.databasemodels.league.Team;
 import com.example.kevin.fifastatistics.models.databasemodels.match.CurrentSeries;
 import com.example.kevin.fifastatistics.models.databasemodels.match.Match;
 import com.example.kevin.fifastatistics.models.databasemodels.match.Series;
@@ -109,8 +110,8 @@ public class CurrentSeriesSynchronizer {
         }
     }
 
-    public void save(ArrayList<Match> matches, Friend opponent) {
-        Intent intent = CurrentSeriesService.getSaveIntent(user, matches, opponent);
+    public void save(ArrayList<Match> matches, Friend opponent, Team userTeam, Team opponentTeam) {
+        Intent intent = CurrentSeriesService.getSaveIntent(user, matches, opponent, userTeam, opponentTeam);
         context.startService(intent);
     }
 

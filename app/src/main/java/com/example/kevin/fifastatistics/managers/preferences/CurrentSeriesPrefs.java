@@ -30,11 +30,6 @@ public class CurrentSeriesPrefs extends AbstractPrefs {
         return NAME;
     }
 
-    public void saveCurrentSeries(List<Match> matches, String userId, Friend opponent) {
-        CurrentSeries s = new CurrentSeries(userId, opponent, matches);
-        saveCurrentSeries(s);
-    }
-
     public void saveCurrentSeries(CurrentSeries series) {
         if (series != null) {
             storeAsString(series, series.getOpponentId());

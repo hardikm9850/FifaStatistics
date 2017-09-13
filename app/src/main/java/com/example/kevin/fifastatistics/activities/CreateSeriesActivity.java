@@ -43,6 +43,8 @@ public class CreateSeriesActivity extends BasePlayerActivity implements
     private CreateSeriesMatchListFragment mFragment;
     private Series mSeries;
     private User mUser;
+    private Team mUserTeam;
+    private Team mOpponentTeam;
     private boolean mIsSeriesCompleted;
 
     @Override
@@ -58,6 +60,8 @@ public class CreateSeriesActivity extends BasePlayerActivity implements
         if (savedInstanceState != null) {
             mSeries = (Series) savedInstanceState.getSerializable(SERIES_KEY);
             mIsSeriesCompleted = savedInstanceState.getBoolean(SERIES_ENDED);
+            mUserTeam = (Team) savedInstanceState.getSerializable(USER_TEAM);
+            mOpponentTeam = (Team) savedInstanceState.getSerializable(OPPONENT_TEAM);
         }
     }
 
@@ -82,8 +86,16 @@ public class CreateSeriesActivity extends BasePlayerActivity implements
         CurrentSeries savedMatches = PrefsManager.getSeriesPrefs().getCurrentSeriesForOpponent(opponent.getId());
         mSeries = savedMatches != null ? Series.with(savedMatches.getMatches(), Friend.fromPlayer(user), opponent) : null;
         Log.d("SERIES", mSeries != null ? mSeries.toString() : "null");
-        mFragment = CreateSeriesMatchListFragment.newInstance(user, getFriend(), mSeries);
+        initTeams(savedMatches);
+        mFragment = CreateSeriesMatchListFragment.newInstance(user, getFriend(), mSeries, mUserTeam, mOpponentTeam);
         getSupportFragmentManager().beginTransaction().replace(R.id.content, mFragment).commit();
+    }
+
+    private void initTeams(CurrentSeries series) {
+        if (series != null) {
+            mUserTeam = series.getCreatorTeam();
+            mOpponentTeam = series.getOpponentTeam();
+        }
     }
 
     private void initializeEventManager(User currentUser) {
@@ -96,6 +108,8 @@ public class CreateSeriesActivity extends BasePlayerActivity implements
         super.onSaveInstanceState(outState);
         outState.putSerializable(SERIES_KEY, mSeries);
         outState.putBoolean(SERIES_ENDED, mIsSeriesCompleted);
+        outState.putSerializable(USER_TEAM, mUserTeam);
+        outState.putSerializable(OPPONENT_TEAM, mOpponentTeam);
     }
 
     @Override
@@ -210,11 +224,13 @@ public class CreateSeriesActivity extends BasePlayerActivity implements
 
     @Override
     public void onUserTeamUpdated(Team team) {
+        mUserTeam = team;
         updateSeriesOnTeamUpdate(team, mUser);
     }
 
     @Override
     public void onOpponentTeamUpdated(Team team) {
+        mOpponentTeam = team;
         updateSeriesOnTeamUpdate(team, getFriend());
     }
 
@@ -227,7 +243,7 @@ public class CreateSeriesActivity extends BasePlayerActivity implements
 
     private void saveSeries() {
         CurrentSeriesSynchronizer s = CurrentSeriesSynchronizer.with(mUser, this);
-        s.save(new ArrayList<>(mSeries.getMatches()), getFriend());
+        s.save(new ArrayList<>(mSeries.getMatches()), getFriend(), mUserTeam, mOpponentTeam);
     }
 
     @Override

@@ -47,12 +47,15 @@ public class CreateSeriesMatchListFragment extends FifaBaseFragment implements O
     private int mUserScore;
     private int mOpponentScore;
 
-    public static CreateSeriesMatchListFragment newInstance(User user, Friend opponent, Series series) {
+    public static CreateSeriesMatchListFragment newInstance(User user, Friend opponent, Series series,
+                                                            Team userTeam, Team opponentTeam) {
         CreateSeriesMatchListFragment f = new CreateSeriesMatchListFragment();
         Bundle args = new Bundle();
         args.putSerializable(USER, user);
         args.putSerializable(OPPONENT, opponent);
         args.putSerializable(SERIES, series);
+        args.putSerializable(USER_TEAM, userTeam);
+        args.putSerializable(OPPONENT_TEAM, opponentTeam);
         f.setArguments(args);
         return f;
     }
@@ -92,6 +95,8 @@ public class CreateSeriesMatchListFragment extends FifaBaseFragment implements O
             Bundle args = getArguments();
             mUser = (User) args.getSerializable(USER);
             mOpponent = (Friend) args.getSerializable(OPPONENT);
+            mUserTeam = (Team) args.getSerializable(USER_TEAM);
+            mOpponentTeam = (Team) args.getSerializable(OPPONENT_TEAM);
         }
     }
 
@@ -121,7 +126,8 @@ public class CreateSeriesMatchListFragment extends FifaBaseFragment implements O
         initializeSeriesUpdateListener();
         Series series = (Series) getArguments().getSerializable(SERIES);
         mListViewModel = new CreateSeriesMatchListViewModel((FifaBaseActivity) getActivity(), mUser, mOpponent,
-                mSeriesScoreUpdateListener, mSeriesCompletedListener, this, mSeriesUpdatedListener, series);
+                mSeriesScoreUpdateListener, mSeriesCompletedListener, this,
+                mSeriesUpdatedListener, series, mUserTeam, mOpponentTeam);
         mBinding.setListViewModel(mListViewModel);
         return mBinding.getRoot();
     }

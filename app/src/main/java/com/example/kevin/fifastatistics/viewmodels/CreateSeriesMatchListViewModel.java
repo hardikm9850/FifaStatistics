@@ -51,7 +51,8 @@ public class CreateSeriesMatchListViewModel extends FifaBaseViewModel implements
     private boolean mIsSeriesDone;
 
     public CreateSeriesMatchListViewModel(FifaBaseActivity activity, User user, Friend opponent, OnSeriesScoreUpdateListener scoreUpdateListener,
-                                          OnSeriesCompletedListener seriesCompletedListener, ActivityLauncher launcher, OnSeriesUpdatedListener listener, Series series) {
+                                          OnSeriesCompletedListener seriesCompletedListener, ActivityLauncher launcher, OnSeriesUpdatedListener listener,
+                                          Series series, Team userTeam, Team opponentTeam) {
         mItems = new ObservableArrayList<>();
         mItemView = ItemView.of(BR.listItemViewModel, R.layout.item_create_series_match_list);
         mLauncher = launcher;
@@ -59,7 +60,8 @@ public class CreateSeriesMatchListViewModel extends FifaBaseViewModel implements
         mOpponent = opponent;
         mOnSeriesUpdateListener = listener;
         mSeriesSynchronizer = CurrentSeriesSynchronizer.with(user, activity);
-        mSeriesScoreViewModel = new CreateSeriesScoreViewModel(user, opponent, scoreUpdateListener, activity, launcher, series);
+        mSeriesScoreViewModel = new CreateSeriesScoreViewModel(user, opponent,
+                scoreUpdateListener, activity, launcher, series, userTeam, opponentTeam);
         mOnSeriesCompletedListener = seriesCompletedListener;
         mMaxSeriesLength = Series.DEFAULT_MAX_SERIES_LENGTH;
         mUpdatedMatchIndex = -1;
@@ -132,7 +134,9 @@ public class CreateSeriesMatchListViewModel extends FifaBaseViewModel implements
     }
 
     private void storeSeries() {
-       mSeriesSynchronizer.save(new ArrayList<>(getMatches()), mOpponent);
+        Team userTeam = mSeriesScoreViewModel.getUserTeam();
+        Team opponentTeam = mSeriesScoreViewModel.getOpponentTeam();
+        mSeriesSynchronizer.save(new ArrayList<>(getMatches()), mOpponent, userTeam, opponentTeam);
     }
 
     private void notifySeriesUpdated() {

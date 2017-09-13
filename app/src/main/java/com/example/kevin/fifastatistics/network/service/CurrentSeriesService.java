@@ -10,6 +10,7 @@ import com.example.kevin.fifastatistics.interfaces.FragmentArguments;
 import com.example.kevin.fifastatistics.listeners.SimpleObserver;
 import com.example.kevin.fifastatistics.managers.RetrofitErrorManager;
 import com.example.kevin.fifastatistics.managers.preferences.PrefsManager;
+import com.example.kevin.fifastatistics.models.databasemodels.league.Team;
 import com.example.kevin.fifastatistics.models.databasemodels.match.CurrentSeries;
 import com.example.kevin.fifastatistics.models.databasemodels.match.Match;
 import com.example.kevin.fifastatistics.models.databasemodels.match.Series;
@@ -33,11 +34,14 @@ public class CurrentSeriesService extends IntentService implements FragmentArgum
         SAVE, DELETE
     }
 
-    public static Intent getSaveIntent(User user, ArrayList<Match> matches, Friend opponent) {
+    public static Intent getSaveIntent(User user, ArrayList<Match> matches, Friend opponent,
+                                       Team userTeam, Team opponentTeam) {
         Intent intent = new Intent(FifaApplication.getContext(), CurrentSeriesService.class);
         intent.putExtra(USER, user);
         intent.putExtra(MATCH, matches);
         intent.putExtra(OPPONENT, opponent);
+        intent.putExtra(USER_TEAM, userTeam);
+        intent.putExtra(OPPONENT_TEAM, opponentTeam);
         intent.putExtra(EXTRA_TYPE, Type.SAVE);
         return intent;
     }
@@ -73,10 +77,18 @@ public class CurrentSeriesService extends IntentService implements FragmentArgum
         Friend opponent = (Friend) intent.getSerializableExtra(OPPONENT);
         CurrentSeries currentSeries = PrefsManager.getSeriesPrefs().getCurrentSeriesForOpponent(opponent.getId());
         ArrayList<Match> matches = (ArrayList<Match>) intent.getSerializableExtra(MATCH);
+        Team userTeam = (Team) intent.getSerializableExtra(USER_TEAM);
+        Team opponentTeam = (Team) intent.getSerializableExtra(OPPONENT_TEAM);
         if (currentSeries == null) {
-            return new CurrentSeries(user.getId(), opponent, matches);
+            return new CurrentSeries(user.getId(), opponent, matches, userTeam, opponentTeam);
         } else {
             currentSeries.setMatches(matches);
+            if (userTeam != null) {
+                currentSeries.setCreatorTeam(userTeam);
+            }
+            if (opponentTeam != null) {
+                currentSeries.setOpponentTeam(opponentTeam);
+            }
             return currentSeries;
         }
     }

@@ -38,12 +38,15 @@ public class CreateSeriesScoreViewModel extends FifaBaseViewModel implements OnM
     private boolean mIsSelectedTeamUser;
 
     public CreateSeriesScoreViewModel(Player user, Player opponent, OnSeriesScoreUpdateListener listener,
-                                      Context context, ActivityLauncher launcher, Series series) {
+                                      Context context, ActivityLauncher launcher, Series series,
+                                      Team userTeam, Team opponentTeam) {
         mUser = user;
         mOpponent = opponent;
         mListener = listener;
         mContext = context;
         mLauncher = launcher;
+        mUserTeam = userTeam;
+        mOpponentTeam = opponentTeam;
         if (series == null) {
             getFavoriteTeam();
             getOpponentFavoriteTeam();
@@ -53,26 +56,30 @@ public class CreateSeriesScoreViewModel extends FifaBaseViewModel implements OnM
     }
 
     private void getFavoriteTeam() {
-        Observable.<Team>create(s -> s.onNext(PrefsManager.getFavoriteTeam()))
-                .compose(ObservableUtils.applySchedulers()).subscribe(team -> {
-            if (team != null) {
-                mUserTeam = team;
-                notifyPropertyChanged(BR.userTeamImageUrl);
-            }
-        });
+        if (mUserTeam == null) {
+            Observable.<Team>create(s -> s.onNext(PrefsManager.getFavoriteTeam()))
+                    .compose(ObservableUtils.applySchedulers()).subscribe(team -> {
+                if (team != null) {
+                    mUserTeam = team;
+                    notifyPropertyChanged(BR.userTeamImageUrl);
+                }
+            });
+        }
     }
 
     private void getOpponentFavoriteTeam() {
-        Subscription s = RetrievalManager.getTeam(mOpponent.getFavoriteTeamId()).subscribe(new ObservableUtils.OnNextObserver<Team>() {
-            @Override
-            public void onNext(Team team) {
-                if (team != null) {
-                    mOpponentTeam = team;
-                    notifyPropertyChanged(BR.opponentTeamImageUrl);
+        if (mOpponentTeam == null) {
+            Subscription s = RetrievalManager.getTeam(mOpponent.getFavoriteTeamId()).subscribe(new ObservableUtils.OnNextObserver<Team>() {
+                @Override
+                public void onNext(Team team) {
+                    if (team != null) {
+                        mOpponentTeam = team;
+                        notifyPropertyChanged(BR.opponentTeamImageUrl);
+                    }
                 }
-            }
-        });
-        addSubscription(s);
+            });
+            addSubscription(s);
+        }
     }
 
     private void restoreTicker(Series savedSeries) {

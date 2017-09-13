@@ -2,6 +2,7 @@ package com.example.kevin.fifastatistics.models.databasemodels.match;
 
 import com.example.kevin.fifastatistics.models.ApiListResponse;
 import com.example.kevin.fifastatistics.models.databasemodels.DatabaseModel;
+import com.example.kevin.fifastatistics.models.databasemodels.league.Team;
 import com.example.kevin.fifastatistics.models.databasemodels.user.Friend;
 import com.example.kevin.fifastatistics.models.databasemodels.user.Player;
 import com.example.kevin.fifastatistics.utils.CollectionUtils;
@@ -23,13 +24,17 @@ public class CurrentSeries extends DatabaseModel {
     private String id;
     private String creatorId;
     private Friend opponent;
+    private Team creatorTeam;
+    private Team opponentTeam;
     private List<Match> matches;
 
-    public CurrentSeries(String creatorId, Friend opponent, List<Match> matches) {
+    public CurrentSeries(String creatorId, Friend opponent, List<Match> matches, Team creatorTeam, Team opponentTeam) {
         this();
         this.creatorId = creatorId;
         this.opponent = opponent;
         this.matches = matches;
+        this.creatorTeam = creatorTeam;
+        this.opponentTeam = opponentTeam;
     }
 
     @JsonCreator
