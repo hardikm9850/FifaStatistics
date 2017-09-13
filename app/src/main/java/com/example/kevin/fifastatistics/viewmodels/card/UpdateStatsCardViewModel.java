@@ -118,7 +118,7 @@ public class UpdateStatsCardViewModel extends MatchStatsViewModel {
 
     @Override
     protected StatConsumers getPenaltiesConsumers() {
-        return null;
+        return new StatConsumers(a -> {}, a -> {});
     }
 
     @Override
