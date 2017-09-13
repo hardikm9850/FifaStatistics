@@ -3,12 +3,9 @@ package com.example.kevin.fifastatistics.managers;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentTransaction;
 
 import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.activities.CreateMatchActivity;
-import com.example.kevin.fifastatistics.activities.CreateSeriesActivity;
-import com.example.kevin.fifastatistics.fragments.AddMatchDialogFragment;
 import com.example.kevin.fifastatistics.fragments.CreateSeriesMatchListFragment;
 import com.example.kevin.fifastatistics.fragments.SelectOpponentDialogFragment;
 import com.example.kevin.fifastatistics.interfaces.ErrorHandler;
@@ -112,7 +109,6 @@ public class FifaEventManager implements SelectOpponentDialogFragment.SelectOppo
 
     private class MatchFlow extends Flow implements ErrorHandler, OnMatchCreatedListener {
 
-        private AddMatchDialogFragment mAddMatchFragment;
         private OnMatchCreatedListener mListener;
         private ProgressDialog mMatchUploadingDialog;
         private boolean mIsPartOfSeries;
@@ -140,15 +136,6 @@ public class FifaEventManager implements SelectOpponentDialogFragment.SelectOppo
             mActivity.startActivityForResult(intent, CreateSeriesMatchListFragment.CREATE_SERIES_REQUEST_CODE);
         }
 
-        private AddMatchDialogFragment showAddMatchFragment(FragmentActivity parentActivity, Player opponent) {
-            FragmentTransaction t = parentActivity.getSupportFragmentManager().beginTransaction();
-            t.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-            AddMatchDialogFragment fragment = AddMatchDialogFragment.newInstance(mUser, opponent, mIsPartOfSeries);
-            t.add(android.R.id.content, fragment).addToBackStack(null).commit();
-
-            return fragment;
-        }
-
         private void onSaveMatch(Match match) {
             mMatchUploadingDialog.show();
             MatchUtils.createMatch(match, this, this);
@@ -162,7 +149,6 @@ public class FifaEventManager implements SelectOpponentDialogFragment.SelectOppo
             } else {
                 mMatchUploadingDialog.cancel();
                 ToastUtils.showShortToast(mActivity, "Match created successfully");
-                mAddMatchFragment.dismiss();
                 RetrievalManager.syncCurrentUserWithServer();
             }
         }
@@ -177,8 +163,7 @@ public class FifaEventManager implements SelectOpponentDialogFragment.SelectOppo
 
         @Override
         public boolean handleBackPress() {
-            return (mAddMatchFragment != null) && (mAddMatchFragment.isVisible()) &&
-                    mAddMatchFragment.handleBackPress();
+            return false;
         }
     }
 }
