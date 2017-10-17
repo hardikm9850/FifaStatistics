@@ -1,5 +1,6 @@
 package com.example.kevin.fifastatistics.managers.sync;
 
+import com.example.kevin.fifastatistics.listeners.SimpleObserver;
 import com.example.kevin.fifastatistics.managers.preferences.PrefsManager;
 import com.example.kevin.fifastatistics.models.databasemodels.league.Team;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
@@ -22,26 +23,42 @@ public class FavoriteTeamSynchronizer {
     }
 
     public Subscription sync() {
-        return Observable.<String>create(s -> {
+        Observable.OnSubscribe<String> favoriteTeamInPrefs = getFavoriteTeamIdInPreferences();
+        Observable<Team> teamObservable = retrieveFavoriteTeam(favoriteTeamInPrefs);
+        return saveFavoriteTeamToPrefs(teamObservable);
+    }
+
+    private Observable.OnSubscribe<String> getFavoriteTeamIdInPreferences() {
+        return s -> {
             Team favTeam = PrefsManager.getFavoriteTeam();
             if (mUser.getFavoriteTeamId() != null && favTeam == null) {
                 s.onNext(mUser.getFavoriteTeamId());
             } else {
                 s.onNext(null);
             }
-        }).flatMap(id -> {
+        };
+    }
+
+    private Observable<Team> retrieveFavoriteTeam(Observable.OnSubscribe<String> teamId) {
+        return Observable.create(teamId).flatMap(id -> {
             if (id != null) {
                 return FifaApi.getLeagueApi().getTeam(id);
             } else {
                 return Observable.empty();
             }
-        }).compose(ObservableUtils.applyBackground()).subscribe(new ObservableUtils.OnNextObserver<Team>() {
-            @Override
-            public void onNext(Team team) {
-                if (team != null) {
-                    PrefsManager.setFavoriteTeam(team);
-                }
-            }
+        });
+    }
+
+    private Subscription saveFavoriteTeamToPrefs(Observable<Team> teamObservable) {
+        return teamObservable
+                .compose(ObservableUtils.applyBackground())
+                .subscribe(new SimpleObserver<Team>() {
+                    @Override
+                    public void onNext(Team team) {
+                        if (team != null) {
+                            PrefsManager.setFavoriteTeam(team);
+                        }
+                    }
         });
     }
 }

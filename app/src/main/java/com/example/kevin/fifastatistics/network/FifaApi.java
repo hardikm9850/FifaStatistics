@@ -2,6 +2,7 @@ package com.example.kevin.fifastatistics.network;
 
 import com.example.kevin.fifastatistics.BuildConfig;
 import com.example.kevin.fifastatistics.managers.preferences.PrefsManager;
+import com.example.kevin.fifastatistics.models.databasemodels.footballers.Footballer;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
 
 import java.util.concurrent.TimeUnit;
@@ -28,6 +29,7 @@ public class FifaApi {
     private static LeagueApi leagueApi;
     private static MatchUpdateApi updateApi;
     private static CurrentSeriesApi currentSeriesApi;
+    private static FootballerApi footballerApi;
 
     public static UserApi getUserApi() {
         if (userApi == null) {
@@ -69,6 +71,13 @@ public class FifaApi {
             currentSeriesApi = initializeApi(CurrentSeriesApi.class);
         }
         return currentSeriesApi;
+    }
+
+    public static FootballerApi getFootballerApi() {
+        if (footballerApi == null) {
+            footballerApi = initializeApi(FootballerApi.class);
+        }
+        return footballerApi;
     }
 
     private static <T> T initializeApi(Class<T> api) {

@@ -21,6 +21,7 @@ import com.example.kevin.fifastatistics.managers.sync.FavoriteTeamSynchronizer;
 import com.example.kevin.fifastatistics.managers.FifaEventManager;
 import com.example.kevin.fifastatistics.managers.RetrievalManager;
 import com.example.kevin.fifastatistics.managers.preferences.PrefsManager;
+import com.example.kevin.fifastatistics.managers.sync.FootballersSynchronizer;
 import com.example.kevin.fifastatistics.models.databasemodels.match.Match;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
 import com.example.kevin.fifastatistics.network.service.UpdateTokenService;
@@ -70,6 +71,7 @@ public class MainActivity extends FifaBaseActivity implements OnMatchCreatedList
         initializeFab();
         initializeFragment();
         syncRegistrationToken();
+        syncFootballerCache();
         checkForHockeyAppUpdates();
     }
 
@@ -196,6 +198,12 @@ public class MainActivity extends FifaBaseActivity implements OnMatchCreatedList
             Intent intent = new Intent(this, UpdateTokenService.class);
             startService(intent);
         }
+    }
+
+    private void syncFootballerCache() {
+        FootballersSynchronizer synchronizer = new FootballersSynchronizer(this);
+        Subscription s = synchronizer.sync();
+        addSubscription(s);
     }
 
     private void setupFavoriteTeam(final User user) {

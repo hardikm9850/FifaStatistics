@@ -30,7 +30,7 @@ public class CurrentSeriesService extends IntentService implements FragmentArgum
     private static final String NAME = "CURRENT_SERIES_SERVICE";
     private static final String EXTRA_TYPE = "TYPE";
 
-    public enum Type {
+    private enum Type {
         SAVE, DELETE
     }
 
@@ -118,6 +118,7 @@ public class CurrentSeriesService extends IntentService implements FragmentArgum
         return series;
     }
 
+    @SuppressWarnings("EqualsBetweenInconvertibleTypes")
     private void remove(Series series, User user) {
         String oppId = series.getPlayerOne().equals(user) ?
                 series.getPlayerTwo().getId() : series.getPlayerOne().getId();

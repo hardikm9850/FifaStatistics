@@ -8,8 +8,6 @@ import android.support.annotation.Nullable;
 import com.example.kevin.fifastatistics.event.EventBus;
 import com.example.kevin.fifastatistics.event.SeriesRemovedEvent;
 import com.example.kevin.fifastatistics.models.databasemodels.match.CurrentSeries;
-import com.example.kevin.fifastatistics.models.databasemodels.match.Match;
-import com.example.kevin.fifastatistics.models.databasemodels.user.Friend;
 import com.example.kevin.fifastatistics.utils.SerializationUtils;
 
 import java.util.ArrayList;
