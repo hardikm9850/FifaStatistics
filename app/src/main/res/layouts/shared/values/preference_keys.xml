@@ -6,4 +6,5 @@
     <string name="teamAsColor">teamAsColor</string>
     <string name="resendRegToken">resendRegToken</string>
     <string name="saveFactBitmaps">saveFactBitmaps</string>
+    <string name="syncFootballerCache">syncFootballerCache</string>
 </resources>

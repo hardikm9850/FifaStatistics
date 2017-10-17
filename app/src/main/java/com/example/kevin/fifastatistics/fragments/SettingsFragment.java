@@ -22,6 +22,7 @@ import com.example.kevin.fifastatistics.interfaces.OnTeamSelectedListener;
 import com.example.kevin.fifastatistics.managers.RetrievalManager;
 import com.example.kevin.fifastatistics.managers.preferences.PrefsManager;
 import com.example.kevin.fifastatistics.models.databasemodels.league.Team;
+import com.example.kevin.fifastatistics.network.service.SyncPlayerCacheService;
 import com.example.kevin.fifastatistics.network.service.UpdateTokenService;
 import com.example.kevin.fifastatistics.utils.ObservableUtils;
 import com.example.kevin.fifastatistics.utils.ToastUtils;
@@ -56,6 +57,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements OnTeam
         initFavoriteTeamPreference();
         initTeamAsColorAccentPreferenceChangeListener();
         initResendRegTokenPreference();
+        initUpdatePlayerCachePreference();
         initSaveToGalleryPreference();
     }
 
@@ -100,6 +102,16 @@ public class SettingsFragment extends PreferenceFragmentCompat implements OnTeam
             ToastUtils.showShortToast(getContext(), R.string.updating_token);
             PrefsManager.setDidSendRegistrationToken(false);
             Intent intent = new Intent(getContext(), UpdateTokenService.class);
+            getActivity().startService(intent);
+            return true;
+        });
+    }
+
+    private void initUpdatePlayerCachePreference() {
+        Preference cachePref = findPreference(getString(R.string.syncFootballerCache));
+        cachePref.setOnPreferenceClickListener(preference -> {
+            ToastUtils.showShortToast(getContext(), R.string.updating_player_cache);
+            Intent intent = SyncPlayerCacheService.getPlayersIntent();
             getActivity().startService(intent);
             return true;
         });

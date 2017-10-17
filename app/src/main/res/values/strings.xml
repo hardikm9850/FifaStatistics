@@ -217,7 +217,9 @@
     <string name="pref_favorite_team">Favourite Team</string>
     <string name="pref_team_color_as_accent">Favourite team for accent colour</string>
     <string name="pref_resend_reg_token">Resend registration token</string>
+    <string name="pref_update_player_cache">Update player cache</string>
     <string name="pref_save_bitmaps">Save match facts to gallery</string>
     <string name="updating_token">Updating token</string>
+    <string name="updating_player_cache">Updating player cache</string>
 
 </resources>

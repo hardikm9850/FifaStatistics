@@ -39,6 +39,11 @@
             android:title="@string/pref_resend_reg_token">
         </Preference>
 
+        <Preference
+            android:key="@string/syncFootballerCache"
+            android:title="@string/pref_update_player_cache">
+        </Preference>
+
         <SwitchPreference
             android:key="@string/saveFactBitmaps"
             android:title="@string/pref_save_bitmaps"
