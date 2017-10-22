@@ -113,7 +113,7 @@ dependencies {
     annotationProcessor "org.projectlombok:lombok:1.16.8"
 
     // Images
-    compile 'de.hdodenhof:circleimageview:2.1.0'
+    compile 'de.hdodenhof:circleimageview:2.2.0'
     compile 'com.h6ah4i.android.materialshadowninepatch:materialshadowninepatch:0.6.5'
     compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
     compile 'com.rmtheis:tess-two:6.0.4'

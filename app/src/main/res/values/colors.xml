@@ -27,7 +27,8 @@
     <color name="material_drawer_dark_selected_text">#4CAF50</color>
     <color name="gold">#FFD700</color>
 
-    <color name="circle_background">#808080</color>
+    <color name="circle_background">#FF484644</color>
     <color name="text_main">@color/white</color>
+    <color name="circle_background_cross">#50FFFFFF</color>
 
 </resources>

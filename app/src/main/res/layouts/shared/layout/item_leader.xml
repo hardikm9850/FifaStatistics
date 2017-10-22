@@ -17,8 +17,10 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/activity_horizontal_margin"
-        android:layout_marginBottom="@dimen/activity_horizontal_margin">
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
+        android:layout_marginEnd="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:layout_marginBottom="@dimen/activity_vertical_margin">
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/leader_image_for"
@@ -27,7 +29,7 @@
             android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
             android:layout_marginEnd="@dimen/activity_horizontal_margin"
-            app:imageUrl="@{leaderFor.player.headshotImgUrl}"
+            app:headshotImageUrl="@{leaderFor.player.headshotImgUrl}"
             app:civ_circle_background_color="@color/circle_background"/>
 
         <TextView
@@ -36,7 +38,7 @@
             android:layout_height="wrap_content"
             android:layout_toEndOf="@id/leader_image_for"
             android:layout_alignParentTop="true"
-            android:textAppearance="@style/text_white_small"
+            android:textColor="@color/text_main"
             android:text="@{leaderFor.player.name}"/>
 
         <TextView
@@ -44,17 +46,17 @@
             android:layout_height="wrap_content"
             android:layout_toEndOf="@id/leader_image_for"
             android:layout_alignParentBottom="true"
-            android:textAppearance="@style/text_bold_white_small"
+            android:textColor="@color/text_main"
             android:text="@{leaderFor.valueString}"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentTop="true"
             android:layout_marginStart="@dimen/activity_horizontal_margin"
             android:layout_marginEnd="@dimen/activity_horizontal_margin"
             android:gravity="center"
-            android:textAppearance="@style/text_grey_small"
             android:text="@{title}"/>
 
         <de.hdodenhof.circleimageview.CircleImageView
@@ -64,7 +66,7 @@
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:layout_marginStart="@dimen/activity_horizontal_margin"
-            app:imageUrl="@{leaderAgainst.player.headshotImgUrl}"
+            app:headshotImageUrl="@{leaderAgainst.player.headshotImgUrl}"
             app:civ_circle_background_color="@color/circle_background"/>
 
         <TextView
@@ -73,7 +75,7 @@
             android:layout_height="wrap_content"
             android:layout_toStartOf="@id/leader_image_against"
             android:layout_alignParentTop="true"
-            android:textAppearance="@style/text_white_small"
+            android:textColor="@color/text_main"
             android:text="@{leaderAgainst.player.name}"/>
 
         <TextView
@@ -81,7 +83,7 @@
             android:layout_height="wrap_content"
             android:layout_toStartOf="@id/leader_image_against"
             android:layout_alignParentBottom="true"
-            android:textAppearance="@style/text_bold_white_small"
+            android:textColor="@color/text_main"
             android:text="@{leaderAgainst.valueString}"/>
 
     </RelativeLayout>
