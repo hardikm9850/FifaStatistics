@@ -11,6 +11,7 @@ import com.example.kevin.fifastatistics.models.databasemodels.user.User;
 import com.example.kevin.fifastatistics.network.FifaApi;
 import com.example.kevin.fifastatistics.utils.ObservableUtils;
 import com.example.kevin.fifastatistics.viewmodels.card.CurrentSeriesCardViewModel;
+import com.example.kevin.fifastatistics.viewmodels.card.LeadersCardViewModel;
 import com.example.kevin.fifastatistics.viewmodels.card.RecordsCardViewModel;
 import com.example.kevin.fifastatistics.viewmodels.card.UpdatesCardViewModel;
 
@@ -26,6 +27,7 @@ public class UserOverviewViewModel extends FifaBaseViewModel {
     private UserOverviewViewModelInteraction mInteraction;
     private UpdatesCardViewModel mUpdatesViewModel;
     private CurrentSeriesCardViewModel mCurrentSeriesViewModel;
+    private LeadersCardViewModel mLeadersViewModel;
     private List<MatchUpdate> mMatchUpdates;
 
     public UserOverviewViewModel(User user) {
@@ -38,6 +40,7 @@ public class UserOverviewViewModel extends FifaBaseViewModel {
         mInteraction = interaction;
         mRecords = new RecordsCardViewModel(user);
         mUpdatesViewModel = new UpdatesCardViewModel(launcher, updates, user);
+        mLeadersViewModel = new LeadersCardViewModel(user.getLeaders(), launcher);
         mMatchUpdates = updates;
         initCurrentSeriesCard(launcher, user);
     }
@@ -64,8 +67,10 @@ public class UserOverviewViewModel extends FifaBaseViewModel {
                 public void onNext(User user) {
                     mUser = user;
                     mRecords.setUser(user);
+                    mLeadersViewModel.setLeaders(user.getLeaders());
                     notifyPropertyChanged(BR.stats);
                     notifyPropertyChanged(BR.records);
+                    notifyPropertyChanged(BR.leaders);
                     if (mInteraction != null) {
                         mInteraction.onUserUpdateSuccess(user);
                     }
@@ -88,6 +93,11 @@ public class UserOverviewViewModel extends FifaBaseViewModel {
     @Bindable
     public CurrentSeriesCardViewModel getSeries() {
         return mCurrentSeriesViewModel;
+    }
+
+    @Bindable
+    public LeadersCardViewModel getLeaders() {
+        return mLeadersViewModel;
     }
 
     @Bindable

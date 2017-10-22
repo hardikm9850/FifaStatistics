@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        xmlns:bind="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="com.example.kevin.fifastatistics.viewmodels.card.LeadersCardViewModel" />
+    </data>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/activity_horizontal_margin"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:layout_marginBottom="@dimen/activity_horizontal_margin"
+            android:textAppearance="@style/text_bold_grey_small"
+            android:text="@string/leaders"/>
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/activity_horizontal_margin"
+            card_view:cardCornerRadius="@dimen/card_corner_radius"
+            app:cardBackgroundColor="@color/cardViewBackground">
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <include
+                    layout="@layout/card_view_header"
+                    android:id="@+id/header"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    bind:headerLeft="test"
+                    bind:headerRight="test">
+                </include>
+
+                <include
+                    layout="@layout/item_leader"
+                    bind:leaderFor="@{viewModel.goalsFor}"
+                    bind:leaderAgainst="@{viewModel.goalsAgainst}"
+                    bind:title="@{@string/goals}"/>
+
+                <include
+                    layout="@layout/item_leader"
+                    bind:leaderFor="@{viewModel.yellowCardsFor}"
+                    bind:leaderAgainst="@{viewModel.yellowCardsAgainst}"
+                    bind:title="@{@string/yellow_cards}"/>
+
+                <include
+                    layout="@layout/item_leader"
+                    bind:leaderFor="@{viewModel.redCardsFor}"
+                    bind:leaderAgainst="@{viewModel.redCardsAgainst}"
+                    bind:title="@{@string/red_cards}"/>
+
+                <include
+                    layout="@layout/item_leader"
+                    bind:leaderFor="@{viewModel.injuriesFor}"
+                    bind:leaderAgainst="@{viewModel.injuriesAgainst}"
+                    bind:title="@{@string/injuries}"/>
+
+            </LinearLayout>
+
+        </android.support.v7.widget.CardView>
+
+    </LinearLayout>
+
+</layout>

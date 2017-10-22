@@ -1,6 +1,7 @@
 package com.example.kevin.fifastatistics.models.databasemodels.user;
 
 import com.example.kevin.fifastatistics.models.databasemodels.DatabaseModel;
+import com.example.kevin.fifastatistics.models.databasemodels.footballers.Leaders;
 import com.example.kevin.fifastatistics.models.databasemodels.match.FifaEvent;
 import com.example.kevin.fifastatistics.models.databasemodels.user.records.UserRecords;
 import com.example.kevin.fifastatistics.utils.SerializationUtils;
@@ -39,6 +40,7 @@ public class User extends DatabaseModel implements Player {
     private StatsPair averageStats;
     private UserRecords matchRecords;
     private UserRecords seriesRecords;
+    private Leaders leaders;
     private int pendingUpdateCount;
     private int currentSeriesCount;
 

@@ -41,6 +41,7 @@
     <dimen name="match_card_current_width">30dp</dimen>
     <dimen name="boxscore_item_width">40dp</dimen>
     <dimen name="shutter_button_margin">12dp</dimen>
+    <dimen name="leader_image_size">40dp</dimen>
 
     <dimen name="friends_fragment_image_height">130dp</dimen>
 

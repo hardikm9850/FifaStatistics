@@ -130,12 +130,23 @@ public class MatchEvents implements Serializable {
         }
     }
 
-    @Getter
     @Setter
     public static class DummyPlayer implements Serializable {
         private String headshotImgUrl;
         private String name;
         private int baseId;
+
+        public String getHeadshotImgUrl() {
+            return headshotImgUrl;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public int getBaseId() {
+            return baseId;
+        }
 
         @Override
         public boolean equals(Object o) {

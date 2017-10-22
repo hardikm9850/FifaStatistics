@@ -35,6 +35,10 @@
             bind:stats="@{viewModel.stats}"
             bind:title="@{viewModel.name}"/>
 
+        <include
+            layout="@layout/card_leaders"
+            bind:viewModel="@{viewModel.leaders}"/>
+
     </LinearLayout>
 
 </layout>
