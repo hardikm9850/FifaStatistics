@@ -40,7 +40,7 @@ public class UserOverviewViewModel extends FifaBaseViewModel {
         mInteraction = interaction;
         mRecords = new RecordsCardViewModel(user);
         mUpdatesViewModel = new UpdatesCardViewModel(launcher, updates, user);
-        mLeadersViewModel = new LeadersCardViewModel(user.getLeaders(), launcher);
+        mLeadersViewModel = new LeadersCardViewModel(user.getLeaders(), user.getName(), launcher);
         mMatchUpdates = updates;
         initCurrentSeriesCard(launcher, user);
     }

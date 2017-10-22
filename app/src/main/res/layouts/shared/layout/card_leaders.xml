@@ -41,8 +41,8 @@
                     android:id="@+id/header"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    bind:headerLeft="test"
-                    bind:headerRight="test">
+                    bind:headerLeft="@{viewModel.leftHeader}"
+                    bind:headerRight="@{viewModel.rightHeader}">
                 </include>
 
                 <include
