@@ -19,12 +19,6 @@ public class Trie<T extends Searchable> {
     private String value;
     private T item = null;
 
-    public static <T extends Searchable> Trie<T> with(Collection<T> items) {
-        Trie<T> trie = new Trie<>();
-        trie.insertAll(items);
-        return trie;
-    }
-
     public Trie() {
         this(null);
     }

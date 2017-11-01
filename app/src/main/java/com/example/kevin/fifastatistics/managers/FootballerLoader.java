@@ -1,7 +1,5 @@
 package com.example.kevin.fifastatistics.managers;
 
-import android.util.Log;
-
 import com.example.kevin.fifastatistics.models.FutApiResponse;
 import com.example.kevin.fifastatistics.models.databasemodels.footballers.Footballer;
 import com.example.kevin.fifastatistics.models.databasemodels.league.Team;
@@ -41,7 +39,6 @@ public class FootballerLoader {
     }
 
     public Observable<List<Footballer>> loadTeamFootballers(Team team) {
-        Log.d("KEVIN!!!!!!", "LOADING TEAM: " + team.toString());
         if (teamFootballers.containsKey(team)) {
             return Observable.just(teamFootballers.get(team));
         } else {
@@ -55,6 +52,7 @@ public class FootballerLoader {
             Observable<List<Footballer>> readResult = StorageUtils.readListFromDisk(fileName);
             return readResult
                     .onErrorResumeNext(loadTeamFootballersFromNetwork(team, fileName))
+                    .doOnNext(list -> teamFootballers.put(team, list))
                     .compose(ObservableUtils.applySchedulers());
         } else {
             return Observable.empty();
@@ -67,10 +65,7 @@ public class FootballerLoader {
 
     private Observable<List<Footballer>> loadTeamFootballersFromNetwork(Team team, String fileName) {
         Observable<List<Footballer>> footballers = getConcatenatedFootballerLists(team.getFutId());
-        return footballers.doOnNext(list -> {
-            teamFootballers.put(team, list);
-            StorageUtils.writeToDisk(list, fileName).subscribe();
-        });
+        return footballers.doOnNext(list -> StorageUtils.writeToDisk(list, fileName).subscribe());
     }
 
     private Observable<List<Footballer>> getConcatenatedFootballerLists(int teamFutId) {
@@ -87,6 +82,5 @@ public class FootballerLoader {
                     return footballers;
                 })
                 .compose(ObservableUtils.applySchedulers());
-
     }
 }
