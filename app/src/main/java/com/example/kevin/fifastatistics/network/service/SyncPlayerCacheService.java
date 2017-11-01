@@ -50,6 +50,7 @@ public class SyncPlayerCacheService extends IntentService implements FragmentArg
     }
 
     private void syncTeam(Team team) {
+
         // get players from team from fut api
         // save to disk
     }

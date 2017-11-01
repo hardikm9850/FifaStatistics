@@ -12,6 +12,7 @@ import com.example.kevin.fifastatistics.models.databasemodels.user.Player;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
 import com.example.kevin.fifastatistics.viewmodels.CreateEventHeaderViewModel;
 import com.example.kevin.fifastatistics.viewmodels.FifaBaseViewModel;
+import com.example.kevin.fifastatistics.viewmodels.card.CreateMatchEventsViewModel;
 import com.example.kevin.fifastatistics.viewmodels.card.CreateStatsCardViewModel;
 import com.example.kevin.fifastatistics.viewmodels.card.MatchStatsViewModel;
 
@@ -20,6 +21,7 @@ public class CreateMatchFragmentViewModel extends FifaBaseViewModel
 
     private CreateEventHeaderViewModel mHeaderViewModel;
     private CreateStatsCardViewModel mStatsViewModel;
+    private CreateMatchEventsViewModel mEventsViewModel;
     private CreateMatchViewModelInteraction mInteraction;
     private Match mMatch;
     private User mUser;
@@ -30,6 +32,7 @@ public class CreateMatchFragmentViewModel extends FifaBaseViewModel
         initMatch(match, user, opponent);
         mHeaderViewModel = new CreateEventHeaderViewModel(launcher, user, opponent, isPartOfSeries, savedInstanceState, this);
         mStatsViewModel = new CreateStatsCardViewModel(match, user, binding, this, launcher);
+        mEventsViewModel = new CreateMatchEventsViewModel(null, null, savedInstanceState);
         mInteraction = interaction;
         mUser = user;
     }

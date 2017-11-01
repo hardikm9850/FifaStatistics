@@ -1,6 +1,8 @@
 package com.example.kevin.fifastatistics.models.databasemodels.footballers;
 
+import com.example.kevin.fifastatistics.interfaces.Searchable;
 import com.example.kevin.fifastatistics.models.databasemodels.DatabaseModel;
+import com.example.kevin.fifastatistics.utils.SerializationUtils;
 
 import java.io.Serializable;
 import java.util.Map;
@@ -10,7 +12,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class Footballer extends DatabaseModel {
+public class Footballer extends DatabaseModel implements Searchable {
 
     private String id;
     private String headshotImgUrl;
@@ -22,6 +24,16 @@ public class Footballer extends DatabaseModel {
     private Map<String, PlayerStats> userStatsFor;
     private Map<String, PlayerStats> userStatsAgainst;
     private int baseId;
+
+    @Override
+    public String getSearchString() {
+        return name;
+    }
+
+    @Override
+    public String toString() {
+        return SerializationUtils.toFormattedJson(this);
+    }
 
     @Getter
     @Setter

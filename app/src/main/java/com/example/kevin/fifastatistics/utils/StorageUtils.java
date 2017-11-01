@@ -73,6 +73,13 @@ public class StorageUtils {
         return false;
     }
 
+    @SuppressWarnings("unchecked")
+    public static <T> Observable<List<T>> readListFromDisk(final String fileName) {
+        return readFromDisk(fileName, List.class)
+                .map(list -> (List<T>) list)
+                .compose(ObservableUtils.applySchedulers());
+    }
+
     /**
      * Read from internal storage, subscribing on an IO thread
      */
