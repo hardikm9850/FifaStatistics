@@ -32,7 +32,7 @@ public class CreateMatchFragmentViewModel extends FifaBaseViewModel
         initMatch(match, user, opponent);
         mHeaderViewModel = new CreateEventHeaderViewModel(launcher, user, opponent, isPartOfSeries, savedInstanceState, this);
         mStatsViewModel = new CreateStatsCardViewModel(match, user, binding, this, launcher);
-        mEventsViewModel = new CreateMatchEventsViewModel(null, null, savedInstanceState);
+        mEventsViewModel = new CreateMatchEventsViewModel(savedInstanceState);
         mInteraction = interaction;
         mUser = user;
     }
@@ -96,12 +96,14 @@ public class CreateMatchFragmentViewModel extends FifaBaseViewModel
     public void onLeftTeamChanged(Team team) {
         mMatch.setTeamWinner(team);
         onMatchUpdated(mMatch);
+        mEventsViewModel.loadTeam(team);
     }
 
     @Override
     public void onRightTeamChanged(Team team) {
         mMatch.setTeamLoser(team);
         onMatchUpdated(mMatch);
+        mEventsViewModel.loadTeam(team);
     }
 
     public boolean isValid() {

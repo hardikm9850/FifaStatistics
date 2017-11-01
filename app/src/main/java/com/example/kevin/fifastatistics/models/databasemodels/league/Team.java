@@ -1,5 +1,6 @@
 package com.example.kevin.fifastatistics.models.databasemodels.league;
 
+import com.example.kevin.fifastatistics.utils.SerializationUtils;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.io.Serializable;
@@ -18,6 +19,7 @@ public class Team implements Serializable {
     private String crestUrl;
     private String color;
     private String id;
+    private int futId;
 
     @Override
     public boolean equals(Object o) {
@@ -31,5 +33,10 @@ public class Team implements Serializable {
     @Override
     public int hashCode() {
         return id.hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return SerializationUtils.toFormattedJson(this);
     }
 }

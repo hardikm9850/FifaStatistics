@@ -4,6 +4,7 @@ import com.example.kevin.fifastatistics.BuildConfig;
 import com.example.kevin.fifastatistics.managers.preferences.PrefsManager;
 import com.example.kevin.fifastatistics.models.databasemodels.footballers.Footballer;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
+import com.example.kevin.fifastatistics.utils.BuildUtils;
 
 import java.util.concurrent.TimeUnit;
 
@@ -21,7 +22,15 @@ import retrofit2.converter.jackson.JacksonConverterFactory;
 public class FifaApi {
 
     private static final String FIFA_API_ENDPOINT = BuildConfig.SERVER_URL;
+    private static final String FUT_API_ENDPOINT = "https://www.easports.com/fifa/ultimate-team/api/fut/";
     private static final int CONNECT_TIMEOUT_DURATION = 60;
+    private static final HttpLoggingInterceptor.Level LOGGING_LEVEL;
+
+    static {
+        LOGGING_LEVEL = BuildUtils.isDebug() ?
+                HttpLoggingInterceptor.Level.BODY :
+                HttpLoggingInterceptor.Level.NONE;
+    }
 
     private static UserApi userApi;
     private static MatchApi matchApi;
@@ -30,6 +39,8 @@ public class FifaApi {
     private static MatchUpdateApi updateApi;
     private static CurrentSeriesApi currentSeriesApi;
     private static FootballerApi footballerApi;
+
+    private static FutApi futApi = new FutApi();
 
     public static UserApi getUserApi() {
         if (userApi == null) {
@@ -80,16 +91,27 @@ public class FifaApi {
         return footballerApi;
     }
 
+    public static FutApi getFutApi() {
+        if (futApi.futApi == null) {
+            futApi.futApi = initializeApi(FutApi.FutApiInternal.class, FUT_API_ENDPOINT);
+        }
+        return futApi;
+    }
+
     private static <T> T initializeApi(Class<T> api) {
+        return initializeApi(api, FIFA_API_ENDPOINT);
+    }
+
+    private static <T> T initializeApi(Class<T> api, String endpoint) {
         HttpLoggingInterceptor loggingInterceptor = initializeLoggingInterceptor();
         OkHttpClient httpClient = initializeHttpClient(loggingInterceptor);
-        Retrofit retrofit = initializeRetrofitObject(httpClient, FIFA_API_ENDPOINT);
+        Retrofit retrofit = initializeRetrofitObject(httpClient, endpoint);
         return retrofit.create(api);
     }
 
     private static HttpLoggingInterceptor initializeLoggingInterceptor() {
         HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
-        loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+        loggingInterceptor.setLevel(LOGGING_LEVEL);
         return loggingInterceptor;
     }
 
