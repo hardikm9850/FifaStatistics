@@ -28,11 +28,11 @@ public class CreateMatchFragmentViewModel extends FifaBaseViewModel
 
     public CreateMatchFragmentViewModel(User user, Player opponent, Match match, CardUpdateStatsBinding binding,
                                         CreateMatchViewModelInteraction interaction, ActivityLauncher launcher,
-                                        Bundle savedInstanceState, boolean isPartOfSeries) {
+                                        Bundle savedInstanceState, boolean isPartOfSeries, Team team1, Team team2) {
         initMatch(match, user, opponent);
         mHeaderViewModel = new CreateEventHeaderViewModel(launcher, user, opponent, isPartOfSeries, savedInstanceState, this);
         mStatsViewModel = new CreateStatsCardViewModel(match, user, binding, this, launcher);
-        mEventsViewModel = new CreateMatchEventsViewModel(savedInstanceState);
+        mEventsViewModel = new CreateMatchEventsViewModel(savedInstanceState, team1, team2);
         mInteraction = interaction;
         mUser = user;
     }

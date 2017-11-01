@@ -131,7 +131,8 @@ public class FifaEventManager implements SelectOpponentDialogFragment.SelectOppo
         public void startNewFlow(Player opponent) {
 //            mAddMatchFragment = showAddMatchFragment(mActivity, opponent);
             Intent intent = mIsPartOfSeries ?
-                    CreateMatchActivity.getPartOfSeriesIntent(mActivity, opponent, null) :
+                    CreateMatchActivity.getPartOfSeriesIntent(mActivity, opponent, null, null,
+                            null) :
                     CreateMatchActivity.getIndividualMatchIntent(mActivity, opponent, null);
             mActivity.startActivityForResult(intent, CreateSeriesMatchListFragment.CREATE_SERIES_REQUEST_CODE);
         }

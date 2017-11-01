@@ -5,7 +5,6 @@ import android.util.Log;
 import java.util.concurrent.TimeUnit;
 
 import lombok.experimental.UtilityClass;
-import retrofit2.adapter.rxjava.HttpException;
 import rx.Observable;
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;

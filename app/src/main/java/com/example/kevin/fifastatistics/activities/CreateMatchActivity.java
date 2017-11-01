@@ -11,6 +11,7 @@ import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.databinding.ActivityCreateMatchBinding;
 import com.example.kevin.fifastatistics.fragments.CreateMatchFragment;
 import com.example.kevin.fifastatistics.managers.RetrievalManager;
+import com.example.kevin.fifastatistics.models.databasemodels.league.Team;
 import com.example.kevin.fifastatistics.models.databasemodels.match.Match;
 import com.example.kevin.fifastatistics.models.databasemodels.user.Player;
 
@@ -23,19 +24,26 @@ public class CreateMatchActivity extends FifaBaseActivity implements CreateMatch
     private boolean mIsPartOfSeries;
     private boolean mIsNewChangeMade;
 
-    public static Intent getPartOfSeriesIntent(Context context, Player opponent, @Nullable Match match) {
-        return getLaunchIntent(context, opponent, true, match);
+    // Only used when part of series
+    private Team mUserTeam;
+    private Team mOpponentTeam;
+
+    public static Intent getPartOfSeriesIntent(Context context, Player opponent, @Nullable Match match, Team team1, Team team2) {
+        return getLaunchIntent(context, opponent, true, match, team1, team2);
     }
 
     public static Intent getIndividualMatchIntent(Context context, Player opponent, @Nullable Match match) {
-        return getLaunchIntent(context, opponent, false, match);
+        return getLaunchIntent(context, opponent, false, match, null, null);
     }
 
-    private static Intent getLaunchIntent(Context context, Player opponent, boolean isPartOfSeries, Match match) {
+    private static Intent getLaunchIntent(Context context, Player opponent, boolean
+            isPartOfSeries, Match match, Team team1, Team team2) {
         Intent intent = new Intent(context, CreateMatchActivity.class);
         intent.putExtra(OPPONENT, opponent);
         intent.putExtra(SERIES, isPartOfSeries);
         intent.putExtra(MATCH, match);
+        intent.putExtra(USER_TEAM, team1);
+        intent.putExtra(OPPONENT_TEAM, team2);
         return intent;
     }
 
@@ -55,6 +63,8 @@ public class CreateMatchActivity extends FifaBaseActivity implements CreateMatch
         mIsPartOfSeries = savedInstanceState.getBoolean(SERIES);
         mOpponent = (Player) savedInstanceState.getSerializable(OPPONENT);
         mMatch = (Match) savedInstanceState.getSerializable(MATCH);
+        mUserTeam = (Team) savedInstanceState.getSerializable(USER_TEAM);
+        mOpponentTeam = (Team) savedInstanceState.getSerializable(OPPONENT_TEAM);
     }
 
     @SuppressWarnings("ConstantConditions")
@@ -65,7 +75,8 @@ public class CreateMatchActivity extends FifaBaseActivity implements CreateMatch
 
     private void initFragment() {
         RetrievalManager.getCurrentUser().subscribe(user -> {
-            CreateMatchFragment f = CreateMatchFragment.newInstance(user, mOpponent, mMatch, mIsPartOfSeries);
+            CreateMatchFragment f = CreateMatchFragment.newInstance(user, mOpponent, mMatch,
+                    mIsPartOfSeries, mUserTeam, mOpponentTeam);
             getSupportFragmentManager().beginTransaction().replace(R.id.content, f).commit();
         });
     }
@@ -77,6 +88,8 @@ public class CreateMatchActivity extends FifaBaseActivity implements CreateMatch
         outState.putBoolean(CHANGE_MADE, mIsNewChangeMade);
         outState.putSerializable(OPPONENT, mOpponent);
         outState.putSerializable(MATCH, mMatch);
+        outState.putSerializable(USER_TEAM, mUserTeam);
+        outState.putSerializable(OPPONENT_TEAM, mOpponentTeam);
     }
 
     @Override

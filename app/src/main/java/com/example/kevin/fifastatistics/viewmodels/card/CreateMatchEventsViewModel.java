@@ -1,7 +1,6 @@
 package com.example.kevin.fifastatistics.viewmodels.card;
 
 import android.os.Bundle;
-import android.util.Log;
 
 import com.example.kevin.fifastatistics.data.Trie;
 import com.example.kevin.fifastatistics.managers.FootballerLoader;
@@ -9,8 +8,6 @@ import com.example.kevin.fifastatistics.models.databasemodels.footballers.Footba
 import com.example.kevin.fifastatistics.models.databasemodels.league.Team;
 import com.example.kevin.fifastatistics.viewmodels.FifaBaseViewModel;
 
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -25,8 +22,10 @@ public class CreateMatchEventsViewModel extends FifaBaseViewModel {
     private final Set<Team> mLoadedTeams = new HashSet<>();
     private FootballerLoader mLoader = new FootballerLoader();
 
-    public CreateMatchEventsViewModel(Bundle savedInstanceState) {
+    public CreateMatchEventsViewModel(Bundle savedInstanceState, Team team1, Team team2) {
         loadFootballers();
+        loadTeam(team1);
+        loadTeam(team2);
         restore(savedInstanceState);
     }
 
@@ -50,7 +49,7 @@ public class CreateMatchEventsViewModel extends FifaBaseViewModel {
     }
 
     public void loadTeam(Team team) {
-        if (!mLoadedTeams.contains(team)) {
+        if (team != null && !mLoadedTeams.contains(team)) {
             mLoader.loadTeamFootballers(team).subscribe(this::mergeFootballers);
             mLoadedTeams.add(team);
         }

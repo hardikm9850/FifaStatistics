@@ -27,7 +27,8 @@ import com.example.kevin.fifastatistics.viewmodels.CreateSeriesMatchListViewMode
 import com.robinhood.ticker.TickerUtils;
 import com.robinhood.ticker.TickerView;
 
-public class CreateSeriesMatchListFragment extends FifaBaseFragment implements OnMatchCreatedListener {
+public class CreateSeriesMatchListFragment extends FifaBaseFragment implements
+        OnMatchCreatedListener {
 
     public static final int CREATE_SERIES_REQUEST_CODE = 5313;
     private static final String USER_WINS = "userWins";
@@ -155,6 +156,7 @@ public class CreateSeriesMatchListFragment extends FifaBaseFragment implements O
                 if (mSeriesUpdatedListener != null) {
                     mSeriesUpdatedListener.onUserTeamUpdated(team);
                 }
+                mUserTeam = team;
             }
 
             @Override
@@ -162,6 +164,7 @@ public class CreateSeriesMatchListFragment extends FifaBaseFragment implements O
                 if (mSeriesUpdatedListener != null) {
                     mSeriesUpdatedListener.onOpponentTeamUpdated(team);
                 }
+                mOpponentTeam = team;
             }
         };
     }
@@ -190,7 +193,7 @@ public class CreateSeriesMatchListFragment extends FifaBaseFragment implements O
 
     public void createNewMatch() {
         mListViewModel.setMatchIndex(-1);
-        Intent intent = CreateMatchActivity.getPartOfSeriesIntent(getContext(), mOpponent, null);
+        Intent intent = CreateMatchActivity.getPartOfSeriesIntent(getContext(), mOpponent, null, mUserTeam, mOpponentTeam);
         startActivityForResult(intent, CreateSeriesMatchListFragment.CREATE_SERIES_REQUEST_CODE);
     }
 

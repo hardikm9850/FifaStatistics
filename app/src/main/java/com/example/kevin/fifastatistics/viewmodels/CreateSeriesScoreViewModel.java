@@ -61,6 +61,7 @@ public class CreateSeriesScoreViewModel extends FifaBaseViewModel implements OnM
                     .compose(ObservableUtils.applySchedulers()).subscribe(team -> {
                 if (team != null) {
                     mUserTeam = team;
+                    mListener.onUserTeamUpdated(team);
                     notifyPropertyChanged(BR.userTeamImageUrl);
                 }
             });
@@ -74,6 +75,7 @@ public class CreateSeriesScoreViewModel extends FifaBaseViewModel implements OnM
                 public void onNext(Team team) {
                     if (team != null) {
                         mOpponentTeam = team;
+                        mListener.onOpponentTeamUpdated(team);
                         notifyPropertyChanged(BR.opponentTeamImageUrl);
                     }
                 }

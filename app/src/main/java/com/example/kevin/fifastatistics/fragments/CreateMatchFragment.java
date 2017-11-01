@@ -45,12 +45,19 @@ public class CreateMatchFragment extends FifaBaseFragment implements StatsImageH
     private Player mOpponent;
     private boolean mIsPartOfSeries;
 
-    public static CreateMatchFragment newInstance(User user, Player opponent, Match match, boolean isPartOfSeries) {
+    // Only used when part of series
+    private Team team1;
+    private Team team2;
+
+    public static CreateMatchFragment newInstance(User user, Player opponent, Match match,
+                                                  boolean isPartOfSeries, Team team1, Team team2) {
         CreateMatchFragment fragment = new CreateMatchFragment();
         Bundle args = new Bundle();
         args.putSerializable(USER, user);
         args.putSerializable(OPPONENT, opponent);
         args.putSerializable(MATCH, match);
+        args.putSerializable(USER_TEAM, team1);
+        args.putSerializable(OPPONENT_TEAM, team2);
         args.putBoolean(SERIES, isPartOfSeries);
         fragment.setArguments(args);
         return fragment;
@@ -84,6 +91,8 @@ public class CreateMatchFragment extends FifaBaseFragment implements StatsImageH
         mMatch = (Match) savedInstanceState.getSerializable(MATCH);
         mUser = (User) savedInstanceState.getSerializable(USER);
         mOpponent = (Player) savedInstanceState.getSerializable(OPPONENT);
+        team1 = (Team) savedInstanceState.getSerializable(USER_TEAM);
+        team2 = (Team) savedInstanceState.getSerializable(OPPONENT_TEAM);
         mIsPartOfSeries = savedInstanceState.getBoolean(SERIES);
     }
 
@@ -93,7 +102,7 @@ public class CreateMatchFragment extends FifaBaseFragment implements StatsImageH
         initMatchUploadingDialog();
         FragmentCreateMatchBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_create_match, container, false);
         mViewModel = new CreateMatchFragmentViewModel(mUser, mOpponent, mMatch, binding.cardUpdateStatsLayout,
-                this, this, savedInstanceState, mIsPartOfSeries);
+                this, this, savedInstanceState, mIsPartOfSeries, team1, team2);
         TransitionUtils.addTransitionCallbackToBinding(binding.cardUpdateStatsLayout);
         binding.setViewModel(mViewModel);
         return binding.getRoot();
@@ -122,6 +131,8 @@ public class CreateMatchFragment extends FifaBaseFragment implements StatsImageH
         outState.putSerializable(USER, mUser);
         outState.putSerializable(MATCH, mMatch);
         outState.putSerializable(OPPONENT, mOpponent);
+        outState.putSerializable(USER_TEAM, team1);
+        outState.putSerializable(OPPONENT_TEAM, team2);
     }
 
     @Override
