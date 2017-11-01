@@ -3,6 +3,7 @@ package com.example.kevin.fifastatistics.models.databasemodels.footballers;
 import com.example.kevin.fifastatistics.interfaces.Searchable;
 import com.example.kevin.fifastatistics.models.databasemodels.DatabaseModel;
 import com.example.kevin.fifastatistics.utils.SerializationUtils;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.io.Serializable;
 import java.util.Map;
@@ -25,6 +26,7 @@ public class Footballer extends DatabaseModel implements Searchable {
     private Map<String, PlayerStats> userStatsAgainst;
     private int baseId;
 
+    @JsonIgnore
     @Override
     public String getSearchString() {
         return name;
