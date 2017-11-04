@@ -1,7 +1,5 @@
 package com.example.kevin.fifastatistics.models.databasemodels.footballers;
 
-import android.support.annotation.DrawableRes;
-
 import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.models.databasemodels.match.Match;
 import com.example.kevin.fifastatistics.utils.SerializationUtils;
@@ -35,7 +33,6 @@ public class MatchEvents implements Serializable {
     public abstract static class MatchEventItem implements Serializable {
         private DummyPlayer player;
         private int minute;
-        private int injuryTime;
         private boolean forWinner;
 
         @JsonIgnore
@@ -64,7 +61,6 @@ public class MatchEvents implements Serializable {
             MatchEventItem that = (MatchEventItem) o;
 
             if (minute != that.minute) return false;
-            if (injuryTime != that.injuryTime) return false;
             if (forWinner != that.forWinner) return false;
             return player != null ? player.equals(that.player) : that.player == null;
         }
@@ -73,7 +69,6 @@ public class MatchEvents implements Serializable {
         public int hashCode() {
             int result = player != null ? player.hashCode() : 0;
             result = 31 * result + minute;
-            result = 31 * result + injuryTime;
             result = 31 * result + (forWinner ? 1 : 0);
             return result;
         }
@@ -87,6 +82,7 @@ public class MatchEvents implements Serializable {
     @Getter
     @Setter
     public static class GoalItem extends MatchEventItem {
+        private boolean ownGoal;
 
         @Override
         public int getIcon() {

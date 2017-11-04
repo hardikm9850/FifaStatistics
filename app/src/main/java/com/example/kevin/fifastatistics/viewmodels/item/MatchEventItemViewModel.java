@@ -1,12 +1,15 @@
 package com.example.kevin.fifastatistics.viewmodels.item;
 
+import android.content.res.Resources;
 import android.databinding.Bindable;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.ColorInt;
 
+import com.example.kevin.fifastatistics.FifaApplication;
 import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.interfaces.ActivityLauncher;
+import com.example.kevin.fifastatistics.models.databasemodels.footballers.MatchEvents;
 import com.example.kevin.fifastatistics.models.databasemodels.league.Team;
 import com.example.kevin.fifastatistics.utils.MinuteFormatter;
 
@@ -14,6 +17,13 @@ import static com.example.kevin.fifastatistics.models.databasemodels.footballers
 import static com.example.kevin.fifastatistics.models.databasemodels.footballers.MatchEvents.MatchEventItem;
 
 public class MatchEventItemViewModel<T extends MatchEventItem> extends ItemViewModel<T> {
+
+    private static final String OWN_GOAL;
+
+    static {
+        Resources r = FifaApplication.getContext().getResources();
+        OWN_GOAL = " " + r.getString(R.string.own_goal_code);
+    }
 
     private DummyPlayer mPlayer;
     private Team mTeam;
@@ -47,12 +57,21 @@ public class MatchEventItemViewModel<T extends MatchEventItem> extends ItemViewM
 
     @Bindable
     public String getName() {
-        return mPlayer != null ? mPlayer.getName() : null;
+        if (mPlayer != null) {
+            String name = mPlayer.getName();
+            return isOwnGoal() ? name + OWN_GOAL : name;
+        } else {
+            return null;
+        }
+    }
+
+    private boolean isOwnGoal() {
+        return mItem instanceof MatchEvents.GoalItem && ((MatchEvents.GoalItem) mItem).isOwnGoal();
     }
 
     @Bindable
     public String getMinute() {
-        return mItem != null ? MinuteFormatter.format(mItem.getMinute(), mItem.getInjuryTime()) : null;
+        return mItem != null ? MinuteFormatter.format(mItem.getMinute()) : null;
     }
 
     @Bindable

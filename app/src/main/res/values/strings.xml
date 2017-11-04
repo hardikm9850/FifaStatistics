@@ -176,6 +176,7 @@
     <string name="you">You</string>
     <string name="opponent">Opponent</string>
     <string name="cards">Cards</string>
+    <string translatable="false" name="own_goal_code">(OG)</string>
 
     <!-- MATCHES -->
     <string name="win">Win</string>
