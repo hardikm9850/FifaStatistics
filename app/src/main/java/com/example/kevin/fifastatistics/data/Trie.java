@@ -1,7 +1,10 @@
 package com.example.kevin.fifastatistics.data;
 
+import android.support.annotation.NonNull;
+
 import com.example.kevin.fifastatistics.interfaces.Searchable;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -12,8 +15,9 @@ import java.util.Map.Entry;
 
 /**
  * Autocomplete trie that returns searchable objects, rather than just the strings
+ * Case-insensitive
  */
-public class Trie<T extends Searchable> {
+public class Trie<T extends Searchable> implements Serializable {
 
     private final Map<Character, Trie<T>> children;
     private String value;
@@ -51,6 +55,7 @@ public class Trie<T extends Searchable> {
         Trie<T> node = this;
         String word = item.getSearchString();
         for (char c : word.toCharArray()) {
+            c = Character.toLowerCase(c);
             if (!node.children.containsKey(c)) {
                 node.add(c);
             }
@@ -77,6 +82,7 @@ public class Trie<T extends Searchable> {
     public T find(String word) {
         Trie<T> node = this;
         for (char c : word.toCharArray()) {
+            c = Character.toLowerCase(c);
             if (!node.children.containsKey(c)) {
                 return null;
             }
@@ -90,9 +96,10 @@ public class Trie<T extends Searchable> {
      * @param prefix the search prefix
      * @return the items matching the prefix
      */
-    public Collection<T> autoComplete(String prefix) {
+    public List<T> autoComplete(String prefix) {
         Trie<T> node = this;
         for (char c : prefix.toCharArray()) {
+            c = Character.toLowerCase(c);
             if (!node.children.containsKey(c)) {
                 return Collections.emptyList();
             }
@@ -104,7 +111,7 @@ public class Trie<T extends Searchable> {
     /**
      * @return a collection of every item in the trie.
      */
-    public Collection<T> allPrefixes() {
+    public List<T> allPrefixes() {
         List<T> results = new ArrayList<>();
         if (this.item != null) {
             results.add(this.item);

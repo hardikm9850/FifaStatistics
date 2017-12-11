@@ -26,6 +26,10 @@ public abstract class RecyclerCardViewModel<T, ADAPTER extends AbstractCardAdapt
     protected ADAPTER mAdapter;
     private boolean mIsCurrentUser;
 
+    public RecyclerCardViewModel(List<T> items) {
+        this(null, items, true);
+    }
+
     public RecyclerCardViewModel(ActivityLauncher launcher, List<T> items, boolean isCurrentUser) {
         mLauncher = launcher;
         mItems = items;

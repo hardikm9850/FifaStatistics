@@ -132,6 +132,15 @@ public class MatchEvents implements Serializable {
         private String name;
         private int baseId;
 
+        @JsonCreator
+        public DummyPlayer() {}
+
+        public DummyPlayer(Footballer player) {
+            headshotImgUrl = player.getHeadshotImgUrl();
+            name = player.getName();
+            baseId = player.getBaseId();
+        }
+
         public String getHeadshotImgUrl() {
             return headshotImgUrl;
         }

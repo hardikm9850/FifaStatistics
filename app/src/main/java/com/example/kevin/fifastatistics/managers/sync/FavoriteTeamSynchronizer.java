@@ -31,7 +31,9 @@ public class FavoriteTeamSynchronizer {
     private Observable.OnSubscribe<String> getFavoriteTeamIdInPreferences() {
         return s -> {
             Team favTeam = PrefsManager.getFavoriteTeam();
-            if (mUser.getFavoriteTeamId() != null && favTeam == null) {
+            boolean favTeamNotSynced = mUser.getFavoriteTeamId() != null && favTeam == null;
+            boolean favTeamHasNoFutId = favTeam != null && favTeam.getFutId() == 0;
+            if (favTeamNotSynced || favTeamHasNoFutId) {
                 s.onNext(mUser.getFavoriteTeamId());
             } else {
                 s.onNext(null);

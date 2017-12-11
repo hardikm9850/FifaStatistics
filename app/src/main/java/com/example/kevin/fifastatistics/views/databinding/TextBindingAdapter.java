@@ -2,6 +2,9 @@ package com.example.kevin.fifastatistics.views.databinding;
 
 import android.databinding.BindingAdapter;
 import android.graphics.Typeface;
+import android.widget.AutoCompleteTextView;
+import android.widget.Filterable;
+import android.widget.ListAdapter;
 import android.widget.TextView;
 
 public class TextBindingAdapter {
@@ -17,6 +20,13 @@ public class TextBindingAdapter {
                 break;
             default:
                 v.setTypeface(null, Typeface.NORMAL);
+        }
+    }
+
+    @BindingAdapter("textAdapter")
+    public static <T extends ListAdapter & Filterable> void setAdapter(AutoCompleteTextView v, T adapter) {
+        if (v != null) {
+            v.setAdapter(adapter);
         }
     }
 }

@@ -22,10 +22,32 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
                 <include
                     android:id="@+id/card_update_stats_layout"
                     layout="@layout/card_update_stats"
                     bind:viewModel="@{viewModel.statsCardViewModel}" />
+
+                <include
+                    layout="@layout/card_create_match_events"
+                    bind:title="@{@string/goals}"
+                    bind:viewModel="@{viewModel.eventsViewModel.goalsViewModel}" />
+
+                <include
+                    layout="@layout/card_create_match_events"
+                    bind:title="@{@string/cards}"
+                    bind:viewModel="@{viewModel.eventsViewModel.cardsViewModel}" />
+
+                <include
+                    layout="@layout/card_create_match_events"
+                    bind:title="@{@string/injuries}"
+                    bind:viewModel="@{viewModel.eventsViewModel.injuriesViewModel}" />
+
+            </LinearLayout>
 
         </android.support.v4.widget.NestedScrollView>
 

@@ -30,7 +30,7 @@ public class MatchEventItemViewModel<T extends MatchEventItem> extends ItemViewM
 
     public MatchEventItemViewModel(T item, ActivityLauncher launcher, boolean isLastItem,
                                    Team teamWinner, Team teamLoser) {
-        super(item, launcher, 0, isLastItem);
+        super(item, launcher, isLastItem);
         onSetItem(item);
         mTeam = item != null ? (item.isForWinner() ? teamWinner : teamLoser) : null;
     }

@@ -24,7 +24,7 @@ public abstract class AbstractCardAdapter
         <T, BINDING extends ViewDataBinding, VIEWMODEL extends ItemViewModel<T>>
         extends RecyclerView.Adapter<AbstractCardAdapter.ItemViewHolder> {
 
-    private List<T> mItems;
+    protected List<T> mItems;
     private ActivityLauncher mLauncher;
     private int mButtonColor;
     private int mLayout;

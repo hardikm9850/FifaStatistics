@@ -5,7 +5,6 @@ import android.support.annotation.ColorRes;
 import android.view.View;
 
 import com.example.kevin.fifastatistics.interfaces.ActivityLauncher;
-import com.example.kevin.fifastatistics.models.databasemodels.match.MatchUpdate;
 import com.example.kevin.fifastatistics.viewmodels.FifaBaseViewModel;
 
 public abstract class ItemViewModel<T> extends FifaBaseViewModel {
@@ -14,6 +13,10 @@ public abstract class ItemViewModel<T> extends FifaBaseViewModel {
     protected ActivityLauncher mLauncher;
     protected int mColor;
     protected boolean mIsLastItem;
+
+    public ItemViewModel(T item, ActivityLauncher launcher, boolean isLastItem) {
+        this(item, launcher, 0, isLastItem);
+    }
 
     public ItemViewModel(T item, ActivityLauncher launcher,
                          @ColorRes int color, boolean isLastItem) {

@@ -32,7 +32,7 @@ public class CreateMatchFragmentViewModel extends FifaBaseViewModel
         initMatch(match, user, opponent);
         mHeaderViewModel = new CreateEventHeaderViewModel(launcher, user, opponent, isPartOfSeries, savedInstanceState, this);
         mStatsViewModel = new CreateStatsCardViewModel(match, user, binding, this, launcher);
-        mEventsViewModel = new CreateMatchEventsViewModel(savedInstanceState, team1, team2);
+        mEventsViewModel = new CreateMatchEventsViewModel(launcher.getContext(), savedInstanceState, team1, team2);
         mInteraction = interaction;
         mUser = user;
     }
@@ -54,6 +54,7 @@ public class CreateMatchFragmentViewModel extends FifaBaseViewModel
         super.destroy();
         mStatsViewModel.destroy();
         mHeaderViewModel.destroy();
+        mEventsViewModel.destroy();
         mInteraction = null;
     }
 
@@ -64,17 +65,17 @@ public class CreateMatchFragmentViewModel extends FifaBaseViewModel
 
     @Override
     public void onGoalCountChanged(int count) {
-
+        mEventsViewModel.setGoalCount(count);
     }
 
     @Override
     public void onCardCountChanged(int count) {
-
+        mEventsViewModel.setCardCount(count);
     }
 
     @Override
     public void onInjuryCountChanged(int count) {
-
+        mEventsViewModel.setInjuryCount(count);
     }
 
     @Override
@@ -162,6 +163,10 @@ public class CreateMatchFragmentViewModel extends FifaBaseViewModel
 
     public MatchStatsViewModel getStatsCardViewModel() {
         return mStatsViewModel;
+    }
+
+    public CreateMatchEventsViewModel getEventsViewModel() {
+        return mEventsViewModel;
     }
 
     public interface CreateMatchViewModelInteraction {
