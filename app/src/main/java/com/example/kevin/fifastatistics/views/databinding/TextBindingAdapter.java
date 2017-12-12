@@ -22,11 +22,4 @@ public class TextBindingAdapter {
                 v.setTypeface(null, Typeface.NORMAL);
         }
     }
-
-    @BindingAdapter("textAdapter")
-    public static <T extends ListAdapter & Filterable> void setAdapter(AutoCompleteTextView v, T adapter) {
-        if (v != null) {
-            v.setAdapter(adapter);
-        }
-    }
 }

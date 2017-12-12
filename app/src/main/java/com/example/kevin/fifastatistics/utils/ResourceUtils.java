@@ -1,5 +1,6 @@
 package com.example.kevin.fifastatistics.utils;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 
 import com.example.kevin.fifastatistics.FifaApplication;
@@ -24,5 +25,10 @@ public class ResourceUtils {
     public static int spToPixels(int sp) {
         float scaledDensity = FifaApplication.getContext().getResources().getDisplayMetrics().scaledDensity;
         return Math.round(sp * scaledDensity);
+    }
+
+    public static float pixelsToSp(float px) {
+        float scaledDensity = FifaApplication.getContext().getResources().getDisplayMetrics().scaledDensity;
+        return px/scaledDensity;
     }
 }

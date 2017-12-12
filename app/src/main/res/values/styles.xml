@@ -37,7 +37,7 @@
 
     <!-- Text -->
     <style name="text_small" parent="TextAppearance.AppCompat">
-        <item name="android:textSize">15sp</item>
+        <item name="android:textSize">@dimen/text_small</item>
     </style>
 
     <style name="text_medium" parent="TextAppearance.AppCompat">

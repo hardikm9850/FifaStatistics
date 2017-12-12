@@ -7,6 +7,8 @@
         <variable
             name="viewModel"
             type="com.example.kevin.fifastatistics.viewmodels.item.CreateMatchEventItemViewModel"/>
+
+        <import type="android.view.View"/>
     </data>
 
     <RelativeLayout
@@ -38,7 +40,7 @@
             bind:imageUrl="@{viewModel.playerImageUrl}"
             bind:color="@{viewModel.teamColor}"/>
 
-        <AutoCompleteTextView
+        <android.support.v7.widget.SearchView
             android:id="@+id/player_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -46,11 +48,15 @@
             android:layout_alignParentTop="true"
             android:layout_marginEnd="@dimen/activity_horizontal_margin"
             android:layout_marginTop="@dimen/activity_vertical_margin"
-            android:textAppearance="@style/text_white_small"
-            android:completionHint="@string/search_players"
+            app:textSize="@{@dimen/text_small}"
+            app:searchIcon="@null"
+            app:queryHint="@string/search_players"
+            app:query="@{viewModel.playerName}"
             android:completionThreshold="2"
             android:dropDownWidth="@dimen/footballer_drop_down_width"
-            android:onItemSelected="@{viewModel::onItemSelected}"
+            android:dropDownAnchor="@{View.NO_ID}"
+            app:iconifiedByDefault="false"
+            android:onSuggestionClick="@{viewModel.onSuggestionClick}"
             app:textAdapter="@{viewModel.adapter}"/>
 
         <TextView

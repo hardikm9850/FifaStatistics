@@ -69,4 +69,6 @@
     <dimen name="create_series_user_image_margin">20dp</dimen>
     <dimen name="create_series_score_summary_size">82dp</dimen>
 
+    <dimen name="text_small">15sp</dimen>
+
 </resources>

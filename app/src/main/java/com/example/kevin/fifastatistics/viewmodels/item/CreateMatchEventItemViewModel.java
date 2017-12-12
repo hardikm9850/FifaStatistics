@@ -3,6 +3,7 @@ package com.example.kevin.fifastatistics.viewmodels.item;
 import android.content.Context;
 import android.databinding.Bindable;
 import android.databinding.adapters.AdapterViewBindingAdapter;
+import android.databinding.adapters.SearchViewBindingAdapter;
 import android.graphics.Color;
 import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
@@ -85,6 +86,11 @@ public class CreateMatchEventItemViewModel<T extends MatchEventItem> extends Ite
         return mItem.getPlayer() != null ? mItem.getPlayer().getHeadshotImgUrl() : null;
     }
 
+    @Bindable
+    public String getPlayerName() {
+        return mItem.getPlayer() != null ? mItem.getPlayer().getName() : null;
+    }
+
     public MatchEventFootballerAdapter getAdapter() {
         return mAdapter;
     }
@@ -92,6 +98,15 @@ public class CreateMatchEventItemViewModel<T extends MatchEventItem> extends Ite
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         Object o = parent.getSelectedItem();
         Log.d("KEVIN!!", "Class of selected: " + o.getClass().getName());
+    }
+
+    public SearchViewBindingAdapter.OnSuggestionClick getOnSuggestionClick() {
+        return position -> {
+            Footballer footballer = mAdapter.getItem(position);
+            mItem.setPlayer(new MatchEvents.DummyPlayer(footballer));
+            notifyPropertyChanged(BR.playerName);
+            return true;
+        };
     }
 }
 

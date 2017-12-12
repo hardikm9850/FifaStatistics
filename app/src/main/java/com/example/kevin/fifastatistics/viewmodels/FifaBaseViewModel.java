@@ -44,7 +44,7 @@ public abstract class FifaBaseViewModel extends BaseObservable implements Fragme
     }
 
     @ColorInt
-    protected int getColor(int colorRes) {
+    public int getColor(int colorRes) {
         if (colorRes > 0) {
             return ContextCompat.getColor(FifaApplication.getContext(), colorRes);
         } else {
