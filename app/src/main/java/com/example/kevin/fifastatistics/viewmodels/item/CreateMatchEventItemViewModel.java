@@ -7,6 +7,7 @@ import android.databinding.adapters.SearchViewBindingAdapter;
 import android.graphics.Color;
 import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -105,7 +106,16 @@ public class CreateMatchEventItemViewModel<T extends MatchEventItem> extends Ite
             Footballer footballer = mAdapter.getItem(position);
             mItem.setPlayer(new MatchEvents.DummyPlayer(footballer));
             notifyPropertyChanged(BR.playerName);
+            notifyPropertyChanged(BR.playerImageUrl);
             return true;
+        };
+    }
+
+    public View.OnClickListener getOnClearListener() {
+        return v -> {
+            mItem.setPlayer(null);
+            notifyPropertyChanged(BR.playerName);
+            notifyPropertyChanged(BR.playerImageUrl);
         };
     }
 }

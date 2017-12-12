@@ -3,12 +3,12 @@ package com.example.kevin.fifastatistics.views.databinding;
 import android.databinding.BindingAdapter;
 import android.databinding.adapters.SearchViewBindingAdapter.OnSuggestionClick;
 import android.databinding.adapters.SearchViewBindingAdapter.OnSuggestionSelect;
-import android.support.annotation.StyleRes;
 import android.support.v7.widget.SearchView;
+import android.view.View;
 import android.widget.Filterable;
 import android.widget.ListAdapter;
 
-import com.example.kevin.fifastatistics.FifaApplication;
+import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.utils.ResourceUtils;
 
 public class SearchViewBindingAdapter {
@@ -69,6 +69,14 @@ public class SearchViewBindingAdapter {
             SearchView.SearchAutoComplete searchSrcTextView = findAutoCompleteView(view);
             float sp = ResourceUtils.pixelsToSp(textSize);
             searchSrcTextView.setTextSize(sp);
+        }
+    }
+
+    @BindingAdapter("android:onClearListener")
+    public static void setOnClearListener(SearchView view, View.OnClickListener listener) {
+        if (view != null) {
+            View closeButton = view.findViewById(R.id.search_close_btn);
+            closeButton.setOnClickListener(listener);
         }
     }
 }

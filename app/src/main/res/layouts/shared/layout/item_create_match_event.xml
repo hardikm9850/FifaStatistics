@@ -57,6 +57,7 @@
             android:dropDownAnchor="@{View.NO_ID}"
             app:iconifiedByDefault="false"
             android:onSuggestionClick="@{viewModel.onSuggestionClick}"
+            android:onClearListener="@{viewModel.onClearListener}"
             app:textAdapter="@{viewModel.adapter}"/>
 
         <TextView
