@@ -12,6 +12,16 @@
         android:tint="@color/black_tint"
         android:scaleType="centerCrop"/>
 
+    <Button
+        android:id="@+id/debug_login_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="Kevin Login"
+        android:textAppearance="@style/text_bold_medium"
+        android:layout_margin="@dimen/activity_horizontal_margin"
+        android:visibility="gone"/>
+
     <com.google.android.gms.common.SignInButton
         android:id="@+id/sign_in_button"
         android:layout_width="wrap_content"

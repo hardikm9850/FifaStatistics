@@ -39,11 +39,13 @@ public class Footballer extends DatabaseModel implements Searchable {
         return SerializationUtils.toFormattedJson(this);
     }
 
+    @JsonIgnoreProperties(ignoreUnknown = true)
     @Getter
     @Setter
     public static class PlayerStats implements Serializable {
         int goals;
         int goldenGoals;
+        int ownGoals;
         int yellowCards;
         int redCards;
         int injuries;

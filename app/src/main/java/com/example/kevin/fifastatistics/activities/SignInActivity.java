@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.kevin.fifastatistics.R;
@@ -16,6 +17,7 @@ import com.example.kevin.fifastatistics.models.databasemodels.user.User;
 import com.example.kevin.fifastatistics.network.FifaApi;
 import com.example.kevin.fifastatistics.network.UserApi;
 import com.example.kevin.fifastatistics.network.service.RegistrationIntentService;
+import com.example.kevin.fifastatistics.utils.BuildUtils;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -65,6 +67,7 @@ public class SignInActivity extends AppCompatActivity implements
         initializeApiClient();
         initializeFirebaseAuth();
         initializeSignInButton();
+        initializeDebugLoginButton();
     }
 
     private void checkSignedIn()
@@ -120,6 +123,26 @@ public class SignInActivity extends AppCompatActivity implements
         signInButton.setSize(SignInButton.SIZE_WIDE);
     }
 
+    private void initializeDebugLoginButton() {
+        if (BuildUtils.isDebug()) {
+            Button loginButton = (Button) findViewById(R.id.debug_login_button);
+            loginButton.setVisibility(View.VISIBLE);
+            loginButton.setOnClickListener(v -> loginToDebugAccount());
+        }
+    }
+
+    private void loginToDebugAccount() {
+        String personal = "591557f8c843e73118060968";
+        FifaApi.getUserApi().getUser(personal)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(user -> {
+                    PrefsManager.storeUser(user);
+                    PrefsManager.setSignedIn(true);
+                    checkSignedIn();
+                });
+    }
+
     @Override
     public void onStart() {
         super.onStart();
@@ -138,18 +161,6 @@ public class SignInActivity extends AppCompatActivity implements
     public void onDestroy() {
         super.onDestroy();
         mProgressDialog = null;
-    }
-
-    private void _debugging_setUserToAccount() {
-        String personal = "5704926828878a8c6266cba2";
-        FifaApi.getUserApi().getUser(personal)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
-                .subscribe(user -> {
-                    PrefsManager.storeUser(user);
-                    PrefsManager.setSignedIn(true);
-                    checkSignedIn();
-                });
     }
 
     @Override
