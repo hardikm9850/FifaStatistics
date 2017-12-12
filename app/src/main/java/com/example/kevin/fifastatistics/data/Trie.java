@@ -1,10 +1,9 @@
 package com.example.kevin.fifastatistics.data;
 
-import android.support.annotation.NonNull;
-
 import com.example.kevin.fifastatistics.interfaces.Searchable;
 
 import java.io.Serializable;
+import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -15,7 +14,7 @@ import java.util.Map.Entry;
 
 /**
  * Autocomplete trie that returns searchable objects, rather than just the strings
- * Case-insensitive
+ * Case-insensitive, accent-insensitive
  */
 public class Trie<T extends Searchable> implements Serializable {
 
@@ -53,7 +52,7 @@ public class Trie<T extends Searchable> implements Serializable {
             return;
         }
         Trie<T> node = this;
-        String word = item.getSearchString();
+        String word = stripAccents(item.getSearchString());
         for (char c : word.toCharArray()) {
             c = Character.toLowerCase(c);
             if (!node.children.containsKey(c)) {
@@ -62,6 +61,12 @@ public class Trie<T extends Searchable> implements Serializable {
             node = node.children.get(c);
         }
         node.item = item;
+    }
+
+    private String stripAccents(String s) {
+        s = Normalizer.normalize(s, Normalizer.Form.NFD);
+        s = s.replaceAll("[\\p{InCombiningDiacriticalMarks}]", "");
+        return s;
     }
 
     private void add(char c) {
