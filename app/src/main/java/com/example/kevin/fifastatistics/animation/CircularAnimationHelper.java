@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewAnimationUtils;
 import android.view.WindowManager;
 import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.Animation;
 
 import com.example.kevin.fifastatistics.interfaces.AnimationListener;
 import com.example.kevin.fifastatistics.utils.UiUtils;
@@ -15,6 +16,10 @@ public class CircularAnimationHelper {
 
     public static void revealOpenCenter(View view, Context context) {
         revealOpen(view, view.getWidth() / 2, view.getHeight() / 2, 200, context, null);
+    }
+
+    public static void revealOpenCenter(View view, Context context, final AnimationListener listener) {
+        revealOpen(view, view.getWidth() / 2, view.getHeight() / 2, 400, context, listener);
     }
 
     public static void revealCloseCenter(View view, Context context) {

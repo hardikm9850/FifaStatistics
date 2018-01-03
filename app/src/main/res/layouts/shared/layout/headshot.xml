@@ -13,9 +13,9 @@
 
     <com.example.kevin.fifastatistics.views.RoundedFrameLayout
         android:layout_width="50dp"
-        android:layout_height="60dp"
-        app:radiusBottomRight="25dp"
-        app:radiusBottomLeft="25dp">
+        android:layout_height="65dp"
+        app:radiusBottomRight="@dimen/headshot_radius"
+        app:radiusBottomLeft="@dimen/headshot_radius">
 
         <ImageView
             android:layout_width="match_parent"
@@ -23,6 +23,15 @@
             android:layout_gravity="bottom|center_horizontal"
             android:src="@drawable/circle"
             android:tint="@{color}"/>
+
+        <ImageView
+            android:id="@+id/headshot_secondary_background"
+            android:layout_width="@dimen/headshot_width"
+            android:layout_height="@dimen/headshot_width"
+            android:layout_gravity="bottom|center_horizontal"
+            android:src="@drawable/circle"
+            android:tint="@color/pink_50"
+            android:visibility="invisible"/>
 
         <ImageView
             android:layout_width="match_parent"

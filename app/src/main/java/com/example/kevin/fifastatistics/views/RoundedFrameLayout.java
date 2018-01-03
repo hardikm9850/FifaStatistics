@@ -17,6 +17,10 @@ import com.example.kevin.fifastatistics.R;
 
 public class RoundedFrameLayout extends FrameLayout {
 
+    protected static final int TOP_LEFT_RADIUS_INDEX = 0;
+    protected static final int TOP_RIGHT_RADIUS_INDEX = 2;
+    protected static final int BOTTOM_RIGHT_RADIUS_INDEX = 4;
+    protected static final int BOTTOM_LEFT_RADIUS_INDEX = 6;
     private static final float DEFAULT_RADIUS = 0f;
 
     private Bitmap mMaskBitmap;
@@ -43,19 +47,23 @@ public class RoundedFrameLayout extends FrameLayout {
         setWillNotDraw(false);
     }
 
-    private void initRadii(Context context, AttributeSet attrs, int defStyle) {
+    protected void initRadii(Context context, AttributeSet attrs, int defStyle) {
         TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.RoundedFrameLayout, defStyle, 0);
         try {
-            setRadiiValues(ta.getDimension(R.styleable.RoundedFrameLayout_radiusTopLeft, DEFAULT_RADIUS), 0);
-            setRadiiValues(ta.getDimension(R.styleable.RoundedFrameLayout_radiusTopRight, DEFAULT_RADIUS), 2);
-            setRadiiValues(ta.getDimension(R.styleable.RoundedFrameLayout_radiusBottomRight, DEFAULT_RADIUS), 4);
-            setRadiiValues(ta.getDimension(R.styleable.RoundedFrameLayout_radiusBottomLeft, DEFAULT_RADIUS), 6);
+            setRadiiValues(ta.getDimension(R.styleable.RoundedFrameLayout_radiusTopLeft,
+                    DEFAULT_RADIUS), TOP_LEFT_RADIUS_INDEX);
+            setRadiiValues(ta.getDimension(R.styleable.RoundedFrameLayout_radiusTopRight,
+                    DEFAULT_RADIUS), TOP_RIGHT_RADIUS_INDEX);
+            setRadiiValues(ta.getDimension(R.styleable.RoundedFrameLayout_radiusBottomRight,
+                    DEFAULT_RADIUS), BOTTOM_RIGHT_RADIUS_INDEX);
+            setRadiiValues(ta.getDimension(R.styleable.RoundedFrameLayout_radiusBottomLeft,
+                    DEFAULT_RADIUS), BOTTOM_LEFT_RADIUS_INDEX);
         } finally {
             ta.recycle();
         }
     }
 
-    private void setRadiiValues(float value, int index) {
+    protected final void setRadiiValues(float value, int index) {
         mRadii[index] = value;
         mRadii[index + 1] = value;
     }

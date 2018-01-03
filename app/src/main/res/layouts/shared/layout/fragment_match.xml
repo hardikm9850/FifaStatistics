@@ -31,31 +31,39 @@
                     bind:headerViewModel="@{viewModel.headerViewModel}"
                     android:visibility="@{viewModel.headerVisibility}"/>
 
-                <include
-                    layout="@layout/card_boxscore"
-                    bind:viewModel="@{viewModel.boxScore}"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layoutAnimation="@anim/default_layout_animation">
 
-                <include
-                    layout="@layout/card_pending_updates"
-                    bind:viewModel="@{viewModel.goals}"
-                    bind:title="@{@string/goals}"/>
+                    <include
+                        layout="@layout/card_boxscore"
+                        bind:viewModel="@{viewModel.boxScore}"/>
 
-                <include
-                    layout="@layout/card_pending_updates"
-                    bind:viewModel="@{viewModel.cards}"
-                    bind:title="@{@string/cards}"/>
+                    <include
+                        layout="@layout/card_pending_updates"
+                        bind:viewModel="@{viewModel.goals}"
+                        bind:title="@{@string/goals}"/>
 
-                <include
-                    layout="@layout/card_pending_updates"
-                    bind:viewModel="@{viewModel.injuries}"
-                    bind:title="@{@string/injuries}"/>
+                    <include
+                        layout="@layout/card_pending_updates"
+                        bind:viewModel="@{viewModel.cards}"
+                        bind:title="@{@string/cards}"/>
 
-                <include
-                    layout="@layout/card_stats"
-                    bind:stats="@{viewModel.stats}"
-                    bind:title="@{viewModel.username}"
-                    bind:event="@{viewModel.match}"
-                    android:visibility="@{viewModel.statsVisibility}"/>
+                    <include
+                        layout="@layout/card_pending_updates"
+                        bind:viewModel="@{viewModel.injuries}"
+                        bind:title="@{@string/injuries}"/>
+
+                    <include
+                        layout="@layout/card_stats"
+                        bind:stats="@{viewModel.stats}"
+                        bind:title="@{viewModel.username}"
+                        bind:event="@{viewModel.match}"
+                        android:visibility="@{viewModel.statsVisibility}"/>
+
+                </LinearLayout>
 
             </LinearLayout>
 

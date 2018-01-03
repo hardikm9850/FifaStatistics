@@ -8,7 +8,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 
+import com.example.kevin.fifastatistics.FifaApplication;
 import com.example.kevin.fifastatistics.R;
+import com.example.kevin.fifastatistics.animation.CircularAnimationHelper;
 import com.example.kevin.fifastatistics.databinding.FragmentUserOverviewBinding;
 import com.example.kevin.fifastatistics.event.EventBus;
 import com.example.kevin.fifastatistics.event.SeriesRemovedEvent;

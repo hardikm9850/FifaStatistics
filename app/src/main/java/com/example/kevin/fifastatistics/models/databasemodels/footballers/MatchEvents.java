@@ -9,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.StringTokenizer;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -151,6 +152,20 @@ public class MatchEvents implements Serializable {
 
         public int getBaseId() {
             return baseId;
+        }
+
+
+        @JsonIgnore
+        public String getInitials() {
+            if (name != null) {
+                StringTokenizer st = new StringTokenizer(name);
+                if (st.countTokens() == 1) {
+                    return st.nextToken().substring(0, 1);
+                } else if (st.countTokens() == 2) {
+                    return st.nextToken().substring(0, 1) + st.nextToken().substring(0, 1);
+                }
+            }
+            return "-";
         }
 
         @Override

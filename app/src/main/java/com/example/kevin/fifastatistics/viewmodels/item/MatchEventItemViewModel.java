@@ -41,8 +41,8 @@ public class MatchEventItemViewModel<T extends MatchEventItem> extends ItemViewM
     }
 
     @Bindable
-    public String getPlayerImageUrl() {
-        return mPlayer != null ? mPlayer.getHeadshotImgUrl() : null;
+    public DummyPlayer getPlayer() {
+        return mPlayer;
     }
 
     @Bindable

@@ -27,6 +27,7 @@ import lombok.Setter;
 public class Match extends DatabaseModel implements TeamEvent, FifaEvent, PenaltyEvent {
 
     public static final int MAX_SECOND_HALF_MINUTE = 90;
+    public static final int MAX_MINUTE = 120;
 
     private Date date;
     private Friend winner;
