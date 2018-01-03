@@ -30,6 +30,14 @@ public class CreateMatchEventsCardViewModel<T extends MatchEvents.MatchEventItem
         notifyPropertyChanged(BR.visibility);
     }
 
+    public void setTeamWinner(Team team) {
+        mAdapter.setTeamWinner(team);
+    }
+
+    public void setTeamLoser(Team team) {
+        mAdapter.setTeamLoser(team);
+    }
+
     @NonNull
     @Override
     protected CreateMatchEventCardAdapter<T> createAdapter() {

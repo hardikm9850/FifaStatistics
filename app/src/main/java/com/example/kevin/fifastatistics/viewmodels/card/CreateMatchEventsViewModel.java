@@ -23,7 +23,6 @@ public class CreateMatchEventsViewModel extends FifaBaseViewModel {
 
     private final Trie<Footballer> mAutocompleteTrie = new Trie<>();
     private final Set<Team> mLoadedTeams = new HashSet<>();
-    private Context mContext;
     private FootballerLoader mLoader = new FootballerLoader();
 
     private CreateMatchEventsCardViewModel<GoalItem> mGoalsCard;
@@ -62,11 +61,25 @@ public class CreateMatchEventsViewModel extends FifaBaseViewModel {
 
     }
 
-    public void loadTeam(Team team) {
+    private void loadTeam(Team team) {
         if (team != null && !mLoadedTeams.contains(team)) {
             mLoader.loadTeamFootballers(team).subscribe(this::mergeFootballers);
             mLoadedTeams.add(team);
         }
+    }
+
+    public void setTeamWinner(Team team) {
+        loadTeam(team);
+        mGoalsCard.setTeamWinner(team);
+        mCardsCard.setTeamWinner(team);
+        mInjuriesCard.setTeamWinner(team);
+    }
+    
+    public void setTeamLoser(Team team) {
+        loadTeam(team);
+        mGoalsCard.setTeamLoser(team);
+        mCardsCard.setTeamLoser(team);
+        mInjuriesCard.setTeamLoser(team);
     }
 
     public void setGoalCount(int count) {

@@ -97,14 +97,14 @@ public class CreateMatchFragmentViewModel extends FifaBaseViewModel
     public void onLeftTeamChanged(Team team) {
         mMatch.setTeamWinner(team);
         onMatchUpdated(mMatch);
-        mEventsViewModel.loadTeam(team);
+        mEventsViewModel.setTeamWinner(team);
     }
 
     @Override
     public void onRightTeamChanged(Team team) {
         mMatch.setTeamLoser(team);
         onMatchUpdated(mMatch);
-        mEventsViewModel.loadTeam(team);
+        mEventsViewModel.setTeamLoser(team);
     }
 
     public boolean isValid() {

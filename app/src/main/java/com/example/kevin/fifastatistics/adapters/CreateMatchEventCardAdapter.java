@@ -36,6 +36,16 @@ public class CreateMatchEventCardAdapter<T extends MatchEventItem>
         mItemConstructor = itemConstructor;
     }
 
+    public void setTeamWinner(Team teamWinner) {
+        mTeamWinner = teamWinner;
+        notifyDataSetChanged();
+    }
+
+    public void setTeamLoser(Team teamLoser) {
+        mTeamLoser = teamLoser;
+        notifyDataSetChanged();
+    }
+
     public void setCount(int count) {
         if (count <= 0) {
             mItems = null;
@@ -77,7 +87,12 @@ public class CreateMatchEventCardAdapter<T extends MatchEventItem>
 
     @Override
     protected CreateMatchEventItemViewModel<T> createViewModel(T item, ActivityLauncher launcher, boolean isLastItem, int color) {
-        return new CreateMatchEventItemViewModel<T>(mContext, item, isLastItem, mTeamWinner,
+        return new CreateMatchEventItemViewModel<>(mContext, item, isLastItem, mTeamWinner,
                 mTeamLoser, mFootballers, mItemConstructor);
+    }
+
+    @Override
+    protected void onRebind(CreateMatchEventItemViewModel<T> viewModel) {
+        viewModel.setTeams(mTeamWinner, mTeamLoser);
     }
 }

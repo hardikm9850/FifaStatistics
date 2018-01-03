@@ -2,15 +2,10 @@ package com.example.kevin.fifastatistics.viewmodels.item;
 
 import android.content.Context;
 import android.databinding.Bindable;
-import android.databinding.adapters.AdapterViewBindingAdapter;
 import android.databinding.adapters.SearchViewBindingAdapter;
 import android.graphics.Color;
 import android.support.annotation.ColorInt;
-import android.support.annotation.NonNull;
-import android.support.v7.widget.SearchView;
-import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
 
 import com.android.databinding.library.baseAdapters.BR;
 import com.example.kevin.fifastatistics.R;
@@ -30,45 +25,39 @@ public class CreateMatchEventItemViewModel<T extends MatchEventItem> extends Ite
     private Team mTeamLoser;
     private Team mCurrentTeam;
 
-    public CreateMatchEventItemViewModel(Context context, @NonNull T item, boolean isLastItem,
-                                         Team teamWinner, Team teamLoser, Trie<Footballer> footballers, Supplier<T> itemConstructor) {
-        super(itemConstructor.get(), null, isLastItem);
-        mTeamWinner = mCurrentTeam = teamWinner;
-        mTeamLoser = teamLoser;
+    public CreateMatchEventItemViewModel(Context context, T item, boolean isLastItem, Team teamWinner,
+                                         Team teamLoser, Trie<Footballer> footballers, Supplier<T> itemConstructor) {
+        super(item != null ? item : itemConstructor.get(), null, isLastItem);
+        initTeams(teamWinner, teamLoser);
         mAdapter = new MatchEventFootballerAdapter(context, footballers);
     }
 
-    public void setTeamWinner(Team teamWinner) {
-        if (mCurrentTeam != null && mCurrentTeam.equals(mTeamWinner)) {
-            mCurrentTeam = mTeamWinner = teamWinner;
-        }
+    private void initTeams(Team teamWinner, Team teamLoser) {
         mTeamWinner = teamWinner;
-        notifyPropertyChanged(BR.teamImageUrl);
+        mTeamLoser = teamLoser;
+        mCurrentTeam = mItem.isForWinner() ? mTeamWinner : mTeamLoser;
     }
 
-    public void setTeamLoser(Team teamLoser) {
-        if (mCurrentTeam != null && mCurrentTeam.equals(mTeamLoser)) {
-            mCurrentTeam = mTeamLoser = teamLoser;
-        }
-        mTeamLoser = teamLoser;
+    public void setTeams(Team teamWinner, Team teamLoser) {
+        initTeams(teamWinner, teamLoser);
         notifyPropertyChanged(BR.teamImageUrl);
+        notifyPropertyChanged(BR.teamColor);
     }
 
     public void onMinuteUpdated(int minute) {
         mItem.setMinute(minute);
     }
 
-    public void onPlayerSelected(Footballer footballer) {
-        mItem.setPlayer(new MatchEvents.DummyPlayer(footballer));
-        notifyPropertyChanged(BR.playerImageUrl);
-    }
-
     public void onChangeTeam() {
         if (mCurrentTeam != null && mCurrentTeam.equals(mTeamWinner)) {
             mCurrentTeam = mTeamLoser;
+            mItem.setForWinner(false);
         } else {
             mCurrentTeam = mTeamWinner;
+            mItem.setForWinner(true);
         }
+        notifyPropertyChanged(BR.teamImageUrl);
+        notifyPropertyChanged(BR.teamColor);
     }
 
     @Bindable
@@ -94,11 +83,6 @@ public class CreateMatchEventItemViewModel<T extends MatchEventItem> extends Ite
 
     public MatchEventFootballerAdapter getAdapter() {
         return mAdapter;
-    }
-
-    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        Object o = parent.getSelectedItem();
-        Log.d("KEVIN!!", "Class of selected: " + o.getClass().getName());
     }
 
     public SearchViewBindingAdapter.OnSuggestionClick getOnSuggestionClick() {

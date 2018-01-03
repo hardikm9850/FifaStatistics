@@ -93,6 +93,7 @@ public abstract class AbstractCardAdapter
             VIEWMODEL viewModel = getBindingViewModel(mBinding);
             if (viewModel != null) {
                 viewModel.setItem(t);
+                onRebind(viewModel);
             } else {
                 viewModel = createViewModel(t, mLauncher, isLastItem, mButtonColor);
                 mBinding.setVariable(BR.viewModel, viewModel);
@@ -102,6 +103,8 @@ public abstract class AbstractCardAdapter
     }
 
     protected abstract VIEWMODEL getBindingViewModel(BINDING binding);
+
+    protected void onRebind(VIEWMODEL viewModel) {}
 
     protected abstract VIEWMODEL createViewModel(T item, ActivityLauncher launcher, boolean isLastItem, int color);
 }
