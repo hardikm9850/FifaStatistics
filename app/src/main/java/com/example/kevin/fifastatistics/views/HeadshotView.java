@@ -16,7 +16,6 @@ import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.animation.CircularAnimationHelper;
 import com.example.kevin.fifastatistics.interfaces.AnimationListener;
 import com.example.kevin.fifastatistics.listeners.SimpleImageCallback;
-import com.example.kevin.fifastatistics.models.databasemodels.footballers.Footballer;
 import com.example.kevin.fifastatistics.models.databasemodels.footballers.MatchEvents;
 import com.example.kevin.fifastatistics.views.databinding.ImageBindingAdapter;
 import com.nostra13.universalimageloader.core.assist.FailReason;
@@ -63,6 +62,10 @@ public class HeadshotView extends RoundedFrameLayout {
 
     @Override
     protected void initRadii(Context context, AttributeSet attrs, int defStyle) {
+        makeRadiiCircularOnTheBottom();
+    }
+
+    private void makeRadiiCircularOnTheBottom() {
         setRadiiValues(CIRCLE_RADIUS, BOTTOM_RIGHT_RADIUS_INDEX);
         setRadiiValues(CIRCLE_RADIUS, BOTTOM_LEFT_RADIUS_INDEX);
     }
