@@ -4,6 +4,7 @@ import android.databinding.BindingAdapter;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 /**
  * To use this adapter for width and height, you must specify both android:layout_width and app:layout_width
@@ -54,5 +55,11 @@ public class LayoutParamsBindingAdapter {
         if (topMargin != layoutParams.topMargin) {
             layoutParams.setMargins(layoutParams.leftMargin, Math.round(topMargin), layoutParams.rightMargin, layoutParams.bottomMargin);
         }
+    }
+
+    @BindingAdapter("android:layout_below")
+    public static void setLayoutBelow(View view, int id) {
+        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) view.getLayoutParams();
+        params.addRule(RelativeLayout.BELOW, id);
     }
 }

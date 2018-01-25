@@ -9,7 +9,6 @@ import android.support.design.widget.TabLayout;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 
 import com.android.databinding.library.baseAdapters.BR;
@@ -24,15 +23,33 @@ import com.example.kevin.fifastatistics.models.databasemodels.league.Team;
 import com.example.kevin.fifastatistics.models.databasemodels.match.Match;
 import com.example.kevin.fifastatistics.views.HeadshotView;
 
-import static com.example.kevin.fifastatistics.models.databasemodels.footballers.MatchEvents.*;
+import java.util.HashMap;
+import java.util.Map;
+
+import static com.example.kevin.fifastatistics.models.databasemodels.footballers.MatchEvents.CardItem;
+import static com.example.kevin.fifastatistics.models.databasemodels.footballers.MatchEvents.CardType;
+import static com.example.kevin.fifastatistics.models.databasemodels.footballers.MatchEvents.GoalItem;
+import static com.example.kevin.fifastatistics.models.databasemodels.footballers.MatchEvents.InjuryItem;
+import static com.example.kevin.fifastatistics.models.databasemodels.footballers.MatchEvents.InjuryType;
+import static com.example.kevin.fifastatistics.models.databasemodels.footballers.MatchEvents.MatchEventItem;
 
 public class CreateMatchEventItemViewModel<T extends MatchEventItem> extends ItemViewModel<T> {
 
     private static final InputFilter MINUTE_INPUT_FILTER = new MinMaxInputFilter(1, Match.MAX_MINUTE);
     private static final int[] CARD_ICONS;
     private static final int[] INJURY_ICONS;
+    private static final Map<Integer, InjuryType> INJURY_TYPE_MAPPING;
+    private static final Map<Integer, CardType> CARD_TYPE_MAPPING;
 
     static {
+        INJURY_TYPE_MAPPING = new HashMap<>(3);
+        INJURY_TYPE_MAPPING.put(0, InjuryType.MINOR);
+        INJURY_TYPE_MAPPING.put(1, InjuryType.MAJOR);
+        INJURY_TYPE_MAPPING.put(2, InjuryType.SEVERE);
+        CARD_TYPE_MAPPING = new HashMap<>(3);
+        CARD_TYPE_MAPPING.put(0, CardType.YELLOW);
+        CARD_TYPE_MAPPING.put(1, CardType.DIRECT_RED);
+        CARD_TYPE_MAPPING.put(2, CardType.YELLOW_RED);
         CARD_ICONS = new int[] {R.drawable.ic_soccer_yellow_card, R.drawable.ic_soccer_red_card, R.drawable.ic_soccer_yellow_red_card};
         INJURY_ICONS = new int[] {R.drawable.icons8_bandage, R.drawable.icons8_hospital, R.drawable.icons8_ambulance};
     }
@@ -85,6 +102,10 @@ public class CreateMatchEventItemViewModel<T extends MatchEventItem> extends Ite
 
     public int getTabSelectorVisibility() {
         return visibleIf(!(mItem instanceof GoalItem));
+    }
+
+    public int getOwnGoalSelectorVisibility() {
+        return visibleIf(mItem instanceof GoalItem);
     }
 
     public int[] getSelectorIcons() {
@@ -152,7 +173,14 @@ public class CreateMatchEventItemViewModel<T extends MatchEventItem> extends Ite
         return new SimpleOnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                Log.d("KEVIN", "selected position: " + tab.getPosition());
+                int position = tab.getPosition();
+                if (mItem instanceof CardItem) {
+                    CardType type = CARD_TYPE_MAPPING.get(position);
+                    ((CardItem) mItem).setType(type);
+                } else {
+                    InjuryType type = INJURY_TYPE_MAPPING.get(position);
+                    ((InjuryItem) mItem).setType(type);
+                }
             }
         };
     }
