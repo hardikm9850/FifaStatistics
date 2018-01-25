@@ -12,8 +12,8 @@ import com.example.kevin.fifastatistics.models.databasemodels.league.Team;
 import com.example.kevin.fifastatistics.utils.CollectionUtils;
 import com.example.kevin.fifastatistics.viewmodels.item.CreateMatchEventItemViewModel;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.ListIterator;
 
 import static com.example.kevin.fifastatistics.models.databasemodels.footballers.MatchEvents.MatchEventItem;
 
@@ -34,6 +34,18 @@ public class CreateMatchEventCardAdapter<T extends MatchEventItem>
         mTeamLoser = teamLoser;
         mFootballers = footballers;
         mItemConstructor = itemConstructor;
+        initItems();
+    }
+
+    private void initItems() {
+        if (mItems != null) {
+            ListIterator<T> iterator = mItems.listIterator();
+            while (iterator.hasNext()) {
+                if (iterator.next() == null) {
+                    iterator.set(mItemConstructor.get());
+                }
+            }
+        }
     }
 
     public void setTeamWinner(Team teamWinner) {
@@ -69,7 +81,7 @@ public class CreateMatchEventCardAdapter<T extends MatchEventItem>
         int difference = newCount;
         int oldCount = CollectionUtils.getSize(mItems);
         if (mItems == null) {
-            mItems = new ArrayList<>(newCount);
+            mItems = CollectionUtils.createList(newCount, mItemConstructor);
         } else {
             difference = newCount - oldCount;
         }
@@ -87,8 +99,7 @@ public class CreateMatchEventCardAdapter<T extends MatchEventItem>
 
     @Override
     protected CreateMatchEventItemViewModel<T> createViewModel(T item, ActivityLauncher launcher, boolean isLastItem, int color) {
-        return new CreateMatchEventItemViewModel<>(mContext, item, isLastItem, mTeamWinner,
-                mTeamLoser, mFootballers, mItemConstructor);
+        return new CreateMatchEventItemViewModel<>(mContext, item, isLastItem, mTeamWinner, mTeamLoser, mFootballers);
     }
 
     @Override

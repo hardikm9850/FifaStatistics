@@ -1,5 +1,8 @@
 package com.example.kevin.fifastatistics.utils;
 
+import com.example.kevin.fifastatistics.interfaces.Supplier;
+
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -26,5 +29,13 @@ public class CollectionUtils {
             }
         }
         return -1;
+    }
+
+    public static <T> List<T> createList(int size, Supplier<T> supplier) {
+        List<T> list = new ArrayList<>(size);
+        for (int i = 0; i < size; i++) {
+            list.add(supplier.get());
+        }
+        return list;
     }
 }

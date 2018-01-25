@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.ColorInt;
 import android.support.annotation.DrawableRes;
 import android.support.v4.content.ContextCompat;
+import android.view.View;
 
 import com.example.kevin.fifastatistics.FifaApplication;
 import com.example.kevin.fifastatistics.interfaces.FragmentArguments;
@@ -62,5 +63,9 @@ public abstract class FifaBaseViewModel extends BaseObservable implements Fragme
 
     protected String getFirstName(String name) {
         return name != null ? name.split(" ")[0] : null;
+    }
+
+    protected int visibleIf(boolean condition) {
+        return condition ? View.VISIBLE : View.GONE;
     }
 }

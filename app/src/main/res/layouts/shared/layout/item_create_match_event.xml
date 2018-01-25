@@ -90,14 +90,28 @@
             android:onClearListener="@{viewModel.onClearListener}"
             app:textAdapter="@{viewModel.adapter}"/>
 
+        <com.example.kevin.fifastatistics.views.SelectorTabs
+            android:id="@+id/selector_tabs"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@id/player_name"
+            android:layout_below="@id/player_name"
+            android:layout_marginBottom="@dimen/medium_margin"
+            android:visibility="@{viewModel.tabSelectorVisibility}"
+            app:addOnTabSelectedListener="@{viewModel.onTabSelectedListener}"
+            app:selectorTabIcons="@{viewModel.selectorIcons}">
+
+        </com.example.kevin.fifastatistics.views.SelectorTabs>
+
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_below="@id/player_imageview"
-            android:background="@color/cardViewHeaderBackground"
+            android:layout_below="@id/selector_tabs"
             android:layout_marginStart="@dimen/activity_horizontal_margin"
             android:layout_marginEnd="@dimen/activity_horizontal_margin"
-            android:visibility="@{viewModel.dividerVisibility}"/>
+            android:layout_marginTop="@{viewModel.tabSelectorVisibility == View.GONE ? @dimen/medium_margin : 0f}"
+            android:visibility="@{viewModel.dividerVisibility}"
+            android:background="@color/cardViewHeaderBackground"/>
 
     </RelativeLayout>
 

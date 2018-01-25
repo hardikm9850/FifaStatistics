@@ -5,9 +5,11 @@ import android.databinding.Bindable;
 import android.databinding.adapters.SearchViewBindingAdapter;
 import android.graphics.Color;
 import android.support.annotation.ColorInt;
+import android.support.design.widget.TabLayout;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 
 import com.android.databinding.library.baseAdapters.BR;
@@ -15,30 +17,37 @@ import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.adapters.MatchEventFootballerAdapter;
 import com.example.kevin.fifastatistics.data.MinMaxInputFilter;
 import com.example.kevin.fifastatistics.data.Trie;
-import com.example.kevin.fifastatistics.interfaces.Supplier;
+import com.example.kevin.fifastatistics.listeners.SimpleOnTabSelectedListener;
 import com.example.kevin.fifastatistics.models.databasemodels.footballers.Footballer;
 import com.example.kevin.fifastatistics.models.databasemodels.footballers.MatchEvents;
 import com.example.kevin.fifastatistics.models.databasemodels.league.Team;
 import com.example.kevin.fifastatistics.models.databasemodels.match.Match;
 import com.example.kevin.fifastatistics.views.HeadshotView;
 
-import static com.example.kevin.fifastatistics.models.databasemodels.footballers.MatchEvents.MatchEventItem;
+import static com.example.kevin.fifastatistics.models.databasemodels.footballers.MatchEvents.*;
 
 public class CreateMatchEventItemViewModel<T extends MatchEventItem> extends ItemViewModel<T> {
 
     private static final InputFilter MINUTE_INPUT_FILTER = new MinMaxInputFilter(1, Match.MAX_MINUTE);
+    private static final int[] CARD_ICONS;
+    private static final int[] INJURY_ICONS;
 
-    private MatchEventFootballerAdapter mAdapter;
+    static {
+        CARD_ICONS = new int[] {R.drawable.ic_soccer_yellow_card, R.drawable.ic_soccer_red_card, R.drawable.ic_soccer_yellow_red_card};
+        INJURY_ICONS = new int[] {R.drawable.icons8_bandage, R.drawable.icons8_hospital, R.drawable.icons8_ambulance};
+    }
+
+    private MatchEventFootballerAdapter mFootballerAdapter;
     private Team mTeamWinner;
     private Team mTeamLoser;
     private Team mCurrentTeam;
     private View mChangeTeamButton;
 
     public CreateMatchEventItemViewModel(Context context, T item, boolean isLastItem, Team teamWinner,
-                                         Team teamLoser, Trie<Footballer> footballers, Supplier<T> itemConstructor) {
-        super(item != null ? item : itemConstructor.get(), null, isLastItem);
+                                         Team teamLoser, Trie<Footballer> footballers) {
+        super(item, null, isLastItem);
         initTeams(teamWinner, teamLoser);
-        mAdapter = new MatchEventFootballerAdapter(context, footballers);
+        mFootballerAdapter = new MatchEventFootballerAdapter(context, footballers);
     }
 
     private void initTeams(Team teamWinner, Team teamLoser) {
@@ -74,6 +83,20 @@ public class CreateMatchEventItemViewModel<T extends MatchEventItem> extends Ite
         notifyPropertyChanged(BR.teamColor);
     }
 
+    public int getTabSelectorVisibility() {
+        return visibleIf(!(mItem instanceof GoalItem));
+    }
+
+    public int[] getSelectorIcons() {
+        if (mItem instanceof CardItem) {
+            return CARD_ICONS;
+        } else if (mItem instanceof InjuryItem) {
+            return INJURY_ICONS;
+        } else {
+            return null;
+        }
+    }
+
     @Bindable
     public String getTeamImageUrl() {
         return mCurrentTeam != null ? mCurrentTeam.getCrestUrl() : null;
@@ -96,12 +119,12 @@ public class CreateMatchEventItemViewModel<T extends MatchEventItem> extends Ite
     }
 
     public MatchEventFootballerAdapter getAdapter() {
-        return mAdapter;
+        return mFootballerAdapter;
     }
 
     public SearchViewBindingAdapter.OnSuggestionClick getOnSuggestionClick() {
         return position -> {
-            Footballer footballer = mAdapter.getItem(position);
+            Footballer footballer = mFootballerAdapter.getItem(position);
             mItem.setPlayer(new MatchEvents.DummyPlayer(footballer));
             notifyPropertyChanged(BR.playerName);
             notifyPropertyChanged(BR.player);
@@ -121,6 +144,15 @@ public class CreateMatchEventItemViewModel<T extends MatchEventItem> extends Ite
         return () -> {
             if (mChangeTeamButton != null) {
                 mChangeTeamButton.setClickable(true);
+            }
+        };
+    }
+
+    public TabLayout.OnTabSelectedListener getOnTabSelectedListener() {
+        return new SimpleOnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                Log.d("KEVIN", "selected position: " + tab.getPosition());
             }
         };
     }
