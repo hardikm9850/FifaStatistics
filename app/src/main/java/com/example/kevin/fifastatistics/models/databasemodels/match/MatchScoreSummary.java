@@ -1,5 +1,7 @@
 package com.example.kevin.fifastatistics.models.databasemodels.match;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+
 import java.io.Serializable;
 
 import lombok.Getter;
@@ -42,6 +44,18 @@ public class MatchScoreSummary implements Serializable {
         return s;
     }
 
+    public MatchScoreSummary(MatchScoreSummary s) {
+        firstHalf = new PartSummary(s.firstHalf);
+        secondHalf = new PartSummary(s.secondHalf);
+        firstExtraTime = new PartSummary(s.firstExtraTime);
+        secondExtraTime = new PartSummary(s.secondExtraTime);
+        penalties = new PartSummary(s.penalties);
+        fullTime = new PartSummary(s.fullTime);
+    }
+
+    @JsonCreator
+    public MatchScoreSummary() {}
+
     @Getter
     @Setter
     public static class PartSummary implements Serializable {
@@ -57,12 +71,22 @@ public class MatchScoreSummary implements Serializable {
             }
         }
 
+        private int goalsFor;
+        private int goalsAgainst;
+
+        public PartSummary(PartSummary p) {
+            if (p != null) {
+                goalsFor = p.goalsFor;
+                goalsAgainst = p.goalsAgainst;
+            }
+        }
+
+        @JsonCreator
+        public PartSummary() {}
+
         public TextPartSummary stringify() {
             return new TextPartSummary(this);
         }
-
-        private int goalsFor;
-        private int goalsAgainst;
     }
 
     public static class TextPartSummary implements Serializable {

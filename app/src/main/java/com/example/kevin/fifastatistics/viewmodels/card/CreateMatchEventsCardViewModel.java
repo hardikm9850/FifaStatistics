@@ -25,6 +25,10 @@ public class CreateMatchEventsCardViewModel<T extends MatchEvents.MatchEventItem
                 teamLoser, itemCreator);
     }
 
+    public List<T> getItems() {
+        return mAdapter.getItems();
+    }
+
     public void setCount(int count) {
         mAdapter.setCount(count);
         notifyPropertyChanged(BR.visibility);

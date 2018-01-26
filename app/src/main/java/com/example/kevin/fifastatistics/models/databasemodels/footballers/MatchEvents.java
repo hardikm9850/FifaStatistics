@@ -29,6 +29,22 @@ public class MatchEvents implements Serializable {
         cards = new ArrayList<>();
     }
 
+    public void swapForWinner() {
+        swapForWinnerFor(goals);
+        swapForWinnerFor(cards);
+        swapForWinnerFor(injuries);
+    }
+
+    private void swapForWinnerFor(List<? extends MatchEventItem> items) {
+        if (items != null) {
+            for (MatchEventItem item : items) {
+                if (item != null) {
+                    item.setForWinner(!item.isForWinner());
+                }
+            }
+        }
+    }
+
     @Getter
     @Setter
     public abstract static class MatchEventItem implements Serializable {

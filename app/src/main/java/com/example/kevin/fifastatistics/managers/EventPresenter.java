@@ -93,7 +93,7 @@ public class EventPresenter<T extends FifaEvent> {
                 if (didParticipate && !didWin) {
                     mBoxScore = MatchScoreSummary.inverseOf(summary);
                 } else {
-                    mBoxScore = summary;
+                    mBoxScore = new MatchScoreSummary(summary);
                 }
             } else {
                 mBoxScore = MatchScoreSummary.zeroed();

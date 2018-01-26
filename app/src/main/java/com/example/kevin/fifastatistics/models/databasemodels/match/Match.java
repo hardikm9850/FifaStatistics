@@ -36,7 +36,7 @@ public class Match extends DatabaseModel implements TeamEvent, FifaEvent, Penalt
     private String updateId;
     private String seriesId;
     private MatchScoreSummary summary;
-    private MatchEvents events;
+    @Setter private MatchEvents events;
     @Setter private Penalties penalties;
     @Setter private User.StatsPair stats;
     @Setter private Team teamWinner;

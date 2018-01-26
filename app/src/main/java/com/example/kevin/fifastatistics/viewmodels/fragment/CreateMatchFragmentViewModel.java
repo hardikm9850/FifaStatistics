@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import com.example.kevin.fifastatistics.databinding.CardUpdateStatsBinding;
 import com.example.kevin.fifastatistics.interfaces.ActivityLauncher;
+import com.example.kevin.fifastatistics.models.databasemodels.footballers.MatchEvents;
 import com.example.kevin.fifastatistics.models.databasemodels.league.Team;
 import com.example.kevin.fifastatistics.models.databasemodels.match.Match;
 import com.example.kevin.fifastatistics.models.databasemodels.match.Penalties;
@@ -127,7 +128,21 @@ public class CreateMatchFragmentViewModel extends FifaBaseViewModel
         float goalsRight = mMatch.getStatsAgainst().getGoals();
         swapStatsIfLeftLost(goalsLeft, goalsRight, mMatch.getPenalties());
         swapWinnerIfChanged(goalsLeft, goalsRight, mMatch.getPenalties());
+        insertMatchEvents();
         onMatchUpdated(mMatch);
+    }
+
+    private void insertMatchEvents() {
+        if (mMatch.getEvents() == null) {
+            mMatch.setEvents(new MatchEvents());
+        }
+        mMatch.getEvents().setGoals(mEventsViewModel.getGoals());
+        mMatch.getEvents().setCards(mEventsViewModel.getCards());
+        mMatch.getEvents().setInjuries(mEventsViewModel.getInjuries());
+        boolean forWinnerIsBackwards = mEventsViewModel.getTeamWinner().equals(mMatch.getTeamLoser());
+        if (forWinnerIsBackwards) {
+            mMatch.getEvents().swapForWinner();
+        }
     }
 
     private void swapStatsIfLeftLost(float goalsLeft, float goalsRight, Penalties penalties) {

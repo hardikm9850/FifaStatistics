@@ -12,6 +12,7 @@ import com.example.kevin.fifastatistics.models.databasemodels.league.Team;
 import com.example.kevin.fifastatistics.utils.CollectionUtils;
 import com.example.kevin.fifastatistics.viewmodels.item.CreateMatchEventItemViewModel;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
 
@@ -58,6 +59,10 @@ public class CreateMatchEventCardAdapter<T extends MatchEventItem>
         notifyDataSetChanged();
     }
 
+    public List<T> getItems() {
+        return mItems;
+    }
+
     public void setCount(int count) {
         if (count <= 0) {
             mItems = null;
@@ -81,7 +86,7 @@ public class CreateMatchEventCardAdapter<T extends MatchEventItem>
         int difference = newCount;
         int oldCount = CollectionUtils.getSize(mItems);
         if (mItems == null) {
-            mItems = CollectionUtils.createList(newCount, mItemConstructor);
+            mItems = new ArrayList<T>(newCount);
         } else {
             difference = newCount - oldCount;
         }

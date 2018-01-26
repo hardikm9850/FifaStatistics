@@ -2,7 +2,10 @@ package com.example.kevin.fifastatistics.views;
 
 import android.content.Context;
 import android.databinding.BindingAdapter;
+import android.graphics.drawable.Drawable;
 import android.support.design.widget.TabLayout;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.graphics.drawable.DrawableCompat;
 import android.util.AttributeSet;
 
 import com.example.kevin.fifastatistics.listeners.SimpleOnTabSelectedListener;
@@ -29,15 +32,17 @@ public class SelectorTabs extends TabLayout {
         addOnTabSelectedListener(new SimpleOnTabSelectedListener() {
             @Override
             public void onTabSelected(Tab tab) {
-                if (tab.getIcon() != null) {
-                    tab.getIcon().setAlpha(SELECTED_TAB_ALPHA);
-                }
+                setDrawableAlpha(tab, SELECTED_TAB_ALPHA);
             }
 
             @Override
             public void onTabUnselected(Tab tab) {
+                setDrawableAlpha(tab, UNSELECTED_TAB_ALPHA);
+            }
+
+            private void setDrawableAlpha(Tab tab, int alpha) {
                 if (tab.getIcon() != null) {
-                    tab.getIcon().setAlpha(UNSELECTED_TAB_ALPHA);
+                    tab.getIcon().setAlpha(alpha);
                 }
             }
         });
@@ -47,7 +52,8 @@ public class SelectorTabs extends TabLayout {
         if (resIds != null) {
             removeAllTabs();
             for (int icon : resIds) {
-                Tab tab = newTab().setIcon(icon);
+                Drawable drawable = ContextCompat.getDrawable(getContext(), icon);
+                Tab tab = newTab().setIcon(drawable.mutate());
                 addTab(tab);
                 if (!tab.isSelected() && tab.getIcon() != null) {
                     tab.getIcon().setAlpha(UNSELECTED_TAB_ALPHA);

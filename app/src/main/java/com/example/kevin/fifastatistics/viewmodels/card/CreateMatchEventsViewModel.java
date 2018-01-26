@@ -7,8 +7,10 @@ import com.example.kevin.fifastatistics.data.Trie;
 import com.example.kevin.fifastatistics.managers.FootballerLoader;
 import com.example.kevin.fifastatistics.models.databasemodels.footballers.Footballer;
 import com.example.kevin.fifastatistics.models.databasemodels.league.Team;
+import com.example.kevin.fifastatistics.utils.CollectionUtils;
 import com.example.kevin.fifastatistics.viewmodels.FifaBaseViewModel;
 
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -24,6 +26,7 @@ public class CreateMatchEventsViewModel extends FifaBaseViewModel {
     private final Trie<Footballer> mAutocompleteTrie = new Trie<>();
     private final Set<Team> mLoadedTeams = new HashSet<>();
     private FootballerLoader mLoader = new FootballerLoader();
+    private Team mTeamWinner;
 
     private CreateMatchEventsCardViewModel<GoalItem> mGoalsCard;
     private CreateMatchEventsCardViewModel<CardItem> mCardsCard;
@@ -70,6 +73,7 @@ public class CreateMatchEventsViewModel extends FifaBaseViewModel {
 
     public void setTeamWinner(Team team) {
         loadTeam(team);
+        mTeamWinner = team;
         mGoalsCard.setTeamWinner(team);
         mCardsCard.setTeamWinner(team);
         mInjuriesCard.setTeamWinner(team);
@@ -104,6 +108,22 @@ public class CreateMatchEventsViewModel extends FifaBaseViewModel {
 
     public CreateMatchEventsCardViewModel<InjuryItem> getInjuriesViewModel() {
         return mInjuriesCard;
+    }
+
+    public List<GoalItem> getGoals() {
+        return mGoalsCard.getItems() != null ? mGoalsCard.getItems() : Collections.emptyList();
+    }
+
+    public List<CardItem> getCards() {
+        return mGoalsCard.getItems() != null ? mCardsCard.getItems() : Collections.emptyList();
+    }
+
+    public List<InjuryItem> getInjuries() {
+        return mGoalsCard.getItems() != null ? mInjuriesCard.getItems() : Collections.emptyList();
+    }
+
+    public Team getTeamWinner() {
+        return mTeamWinner;
     }
 
     @Override
