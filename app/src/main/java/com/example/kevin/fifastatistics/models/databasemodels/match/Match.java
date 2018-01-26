@@ -78,6 +78,10 @@ public class Match extends DatabaseModel implements TeamEvent, FifaEvent, Penalt
         return player.getId().equals(winner.getId());
     }
 
+    public boolean didLose(Player player) {
+        return player.getId().equals(loser.getId());
+    }
+
     /**
      * Return the score of the match in the format '3 - 2', with the score of player specified first.
      */
@@ -165,6 +169,18 @@ public class Match extends DatabaseModel implements TeamEvent, FifaEvent, Penalt
     @Override
     public int getScoreLoser() {
         return Math.round(getStatsAgainst().getGoals());
+    }
+
+    @JsonIgnore
+    public Team getTeamFor(Player player) {
+        if (player != null) {
+            if (didWin(player)) {
+                return teamWinner;
+            } else if (didLose(player)) {
+                return teamLoser;
+            }
+        }
+        return null;
     }
 
     @JsonIgnore

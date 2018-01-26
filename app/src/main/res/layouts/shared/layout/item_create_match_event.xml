@@ -65,6 +65,7 @@
             android:inputType="number"
             android:textAppearance="@style/text_small"
             android:paddingBottom="@dimen/big_margin"
+            android:text="@{viewModel.minute}"
             android:afterTextChanged="@{(s) -> viewModel.onMinuteUpdated(s)}"
             app:inputFilter="@{viewModel.minuteInputFilter}"/>
 
@@ -112,6 +113,7 @@
             android:layout_below="@id/player_name"
             android:layout_marginBottom="@dimen/medium_margin"
             android:visibility="@{viewModel.tabSelectorVisibility}"
+            app:initialPosition="@{viewModel.tabSelectorStartingPosition}"
             app:addOnTabSelectedListener="@{viewModel.onTabSelectedListener}"
             app:selectorTabIcons="@{viewModel.selectorIcons}">
         </com.example.kevin.fifastatistics.views.SelectorTabs>

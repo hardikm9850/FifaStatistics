@@ -51,7 +51,7 @@ public class CreateSeriesListItemViewModel extends BaseObservable {
     public void onItemClicked() {
         notifyUpdating();
         Intent intent = CreateMatchActivity.getPartOfSeriesIntent(mLauncher.getContext(),
-                mOpponent, mMatch, mMatch.getTeamLoser(), mMatch.getTeamWinner());
+                mOpponent, mMatch, mMatch.getTeamFor(mUser), mMatch.getTeamFor(mOpponent));
         mLauncher.launchActivity(intent, CreateSeriesMatchListFragment.CREATE_SERIES_REQUEST_CODE, null);
     }
 

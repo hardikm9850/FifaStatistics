@@ -5,7 +5,6 @@ import android.databinding.BindingAdapter;
 import android.graphics.drawable.Drawable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.graphics.drawable.DrawableCompat;
 import android.util.AttributeSet;
 
 import com.example.kevin.fifastatistics.listeners.SimpleOnTabSelectedListener;
@@ -14,6 +13,8 @@ public class SelectorTabs extends TabLayout {
 
     private static final int SELECTED_TAB_ALPHA = 255;
     private static final int UNSELECTED_TAB_ALPHA = 128;
+
+    private int mInitialTabIndex;
 
     public SelectorTabs(Context context) {
         this(context, null);
@@ -55,9 +56,22 @@ public class SelectorTabs extends TabLayout {
                 Drawable drawable = ContextCompat.getDrawable(getContext(), icon);
                 Tab tab = newTab().setIcon(drawable.mutate());
                 addTab(tab);
+                if (tab.getPosition() == mInitialTabIndex) {
+                    tab.select();
+                }
                 if (!tab.isSelected() && tab.getIcon() != null) {
                     tab.getIcon().setAlpha(UNSELECTED_TAB_ALPHA);
                 }
+            }
+        }
+    }
+
+    private void setInitialTabIndex(int index) {
+        mInitialTabIndex = index;
+        if (getTabCount() - 1 >= index) {
+            Tab tab = getTabAt(index);
+            if (tab != null) {
+                tab.select();
             }
         }
     }
@@ -70,5 +84,10 @@ public class SelectorTabs extends TabLayout {
     @BindingAdapter("addOnTabSelectedListener")
     public static void addTabSelectedListener(TabLayout layout, OnTabSelectedListener listener) {
         layout.addOnTabSelectedListener(listener);
+    }
+
+    @BindingAdapter("initialPosition")
+    public static void setTabPosition(SelectorTabs tabs, int index) {
+        tabs.setInitialTabIndex(index);
     }
 }

@@ -120,6 +120,40 @@ public class CreateMatchEventItemViewModel<T extends MatchEventItem> extends Ite
         }
     }
 
+    public String getMinute() {
+        return mItem != null && mItem.getMinute() > 0 ? String.valueOf(mItem.getMinute()) : null;
+    }
+
+    public int getTabSelectorStartingPosition() {
+        if (mItem instanceof CardItem) {
+            return getStartingTabPositionForCards();
+        } else if (mItem instanceof InjuryItem) {
+            return getStartingTabPositionForInjuries();
+        } else {
+            return 0;
+        }
+    }
+
+    private int getStartingTabPositionForCards() {
+        CardType type = ((CardItem) mItem).getType();
+        return getIndexForType(type, CARD_TYPE_MAPPING);
+    }
+
+    private int getStartingTabPositionForInjuries() {
+        InjuryType type = ((InjuryItem) mItem).getType();
+        return getIndexForType(type, INJURY_TYPE_MAPPING);
+    }
+
+    private <S> int getIndexForType(S type, Map<Integer, S> indexToType) {
+        if (type == null || type == indexToType.get(0)) {
+            return 0;
+        } else if (type == indexToType.get(1)) {
+            return 1;
+        } else {
+            return 2;
+        }
+    }
+
     @Bindable
     public String getTeamImageUrl() {
         return mCurrentTeam != null ? mCurrentTeam.getCrestUrl() : null;

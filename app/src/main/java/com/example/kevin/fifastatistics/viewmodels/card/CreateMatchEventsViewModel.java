@@ -40,6 +40,7 @@ public class CreateMatchEventsViewModel extends FifaBaseViewModel {
         loadFootballers();
         loadTeam(team1);
         loadTeam(team2);
+        mTeamWinner = team1;
         MatchEvents events = match != null && match.getEvents() != null ? match.getEvents() : new MatchEvents();
         mGoalsCard = new CreateMatchEventsCardViewModel<>(context, events.getGoals(), mAutocompleteTrie,
                 team1, team2, GoalItem::new);

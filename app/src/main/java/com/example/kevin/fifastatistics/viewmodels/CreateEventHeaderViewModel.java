@@ -40,12 +40,15 @@ public class CreateEventHeaderViewModel extends FifaBaseViewModel {
 
     public CreateEventHeaderViewModel(ActivityLauncher launcher, Player user, Player opponent,
                                       boolean isPartOfSeries, Bundle savedInstanceState,
-                                      CreateEventHeaderInteraction interaction) {
+                                      CreateEventHeaderInteraction interaction, Team userTeam,
+                                      Team opponentTeam) {
         mLauncher = launcher;
         mUser = user;
         mOpponent = opponent;
         mIsPartOfSeries = isPartOfSeries;
         mInteraction = interaction;
+        mUserTeam = userTeam;
+        mOpponentTeam = opponentTeam;
         restore(savedInstanceState);
         initSides();
         initTeams();
