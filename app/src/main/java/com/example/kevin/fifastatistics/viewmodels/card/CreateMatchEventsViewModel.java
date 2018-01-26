@@ -6,7 +6,9 @@ import android.os.Bundle;
 import com.example.kevin.fifastatistics.data.Trie;
 import com.example.kevin.fifastatistics.managers.FootballerLoader;
 import com.example.kevin.fifastatistics.models.databasemodels.footballers.Footballer;
+import com.example.kevin.fifastatistics.models.databasemodels.footballers.MatchEvents;
 import com.example.kevin.fifastatistics.models.databasemodels.league.Team;
+import com.example.kevin.fifastatistics.models.databasemodels.match.Match;
 import com.example.kevin.fifastatistics.utils.CollectionUtils;
 import com.example.kevin.fifastatistics.viewmodels.FifaBaseViewModel;
 
@@ -32,16 +34,18 @@ public class CreateMatchEventsViewModel extends FifaBaseViewModel {
     private CreateMatchEventsCardViewModel<CardItem> mCardsCard;
     private CreateMatchEventsCardViewModel<InjuryItem> mInjuriesCard;
 
-    public CreateMatchEventsViewModel(Context context, Bundle savedInstanceState, Team team1, Team team2) {
+    public CreateMatchEventsViewModel(Context context, Bundle savedInstanceState, Match match,
+                                      Team team1, Team team2) {
         restore(savedInstanceState);
         loadFootballers();
         loadTeam(team1);
         loadTeam(team2);
-        mGoalsCard = new CreateMatchEventsCardViewModel<>(context, null, mAutocompleteTrie,
+        MatchEvents events = match != null && match.getEvents() != null ? match.getEvents() : new MatchEvents();
+        mGoalsCard = new CreateMatchEventsCardViewModel<>(context, events.getGoals(), mAutocompleteTrie,
                 team1, team2, GoalItem::new);
-        mCardsCard = new CreateMatchEventsCardViewModel<>(context, null, mAutocompleteTrie,
+        mCardsCard = new CreateMatchEventsCardViewModel<>(context, events.getCards(), mAutocompleteTrie,
                 team1, team2, CardItem::new);
-        mInjuriesCard = new CreateMatchEventsCardViewModel<>(context, null, mAutocompleteTrie,
+        mInjuriesCard = new CreateMatchEventsCardViewModel<>(context, events.getInjuries(), mAutocompleteTrie,
                 team1, team2, InjuryItem::new);
     }
 
