@@ -10,6 +10,7 @@ import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.CompoundButton;
 
 import com.android.databinding.library.baseAdapters.BR;
 import com.example.kevin.fifastatistics.R;
@@ -25,6 +26,7 @@ import com.example.kevin.fifastatistics.views.HeadshotView;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 import static com.example.kevin.fifastatistics.models.databasemodels.footballers.MatchEvents.CardItem;
 import static com.example.kevin.fifastatistics.models.databasemodels.footballers.MatchEvents.CardType;
@@ -183,6 +185,10 @@ public class CreateMatchEventItemViewModel<T extends MatchEventItem> extends Ite
                 }
             }
         };
+    }
+
+    public CompoundButton.OnCheckedChangeListener getOnOwnGoalChangedListener() {
+        return (buttonView, isChecked) -> ((GoalItem) mItem).setOwnGoal(isChecked);
     }
 
     public InputFilter getMinuteInputFilter() {

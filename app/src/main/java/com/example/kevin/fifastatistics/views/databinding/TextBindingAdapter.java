@@ -3,10 +3,7 @@ package com.example.kevin.fifastatistics.views.databinding;
 import android.databinding.BindingAdapter;
 import android.graphics.Typeface;
 import android.text.InputFilter;
-import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
-import android.widget.Filterable;
-import android.widget.ListAdapter;
 import android.widget.TextView;
 
 public class TextBindingAdapter {

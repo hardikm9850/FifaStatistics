@@ -18,6 +18,10 @@
     <color name="cardViewHeaderBackground">#302F2D</color>
     <color name="statOpponentColor">#FF484644</color>
 
+    <color name="lighter_black">#212330</color>
+    <color name="steel_gray">#1a1a26</color>
+    <color name="storm_gray">#717482</color>
+
     <!-- FAB -->
     <color name="white_pressed">#f1f1f1</color>
     <color name="half_black">#808080</color>

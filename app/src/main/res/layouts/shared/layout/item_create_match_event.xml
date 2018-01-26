@@ -89,17 +89,20 @@
             android:onSuggestionClick="@{viewModel.onSuggestionClick}"
             android:onClearListener="@{viewModel.onClearListener}"
             app:textAdapter="@{viewModel.adapter}"/>
-
-        <Button
+        
+        <ToggleButton
             android:id="@+id/own_goal_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignStart="@id/player_name"
             android:layout_below="@id/player_name"
             android:layout_marginBottom="@dimen/medium_margin"
+            android:layout_marginTop="@dimen/activity_horizontal_margin"
             android:visibility="@{viewModel.ownGoalSelectorVisibility}"
-            android:text="@string/OG"
-            android:textAppearance="@style/text_bold_small"/>
+            android:textOn="@string/own_goal"
+            android:textOff="@string/own_goal"
+            android:onCheckedChanged="@{viewModel.onOwnGoalChangedListener}"
+            style="@style/GamePagePill"/>
 
         <com.example.kevin.fifastatistics.views.SelectorTabs
             android:id="@+id/selector_tabs"
@@ -111,7 +114,6 @@
             android:visibility="@{viewModel.tabSelectorVisibility}"
             app:addOnTabSelectedListener="@{viewModel.onTabSelectedListener}"
             app:selectorTabIcons="@{viewModel.selectorIcons}">
-
         </com.example.kevin.fifastatistics.views.SelectorTabs>
 
         <View
