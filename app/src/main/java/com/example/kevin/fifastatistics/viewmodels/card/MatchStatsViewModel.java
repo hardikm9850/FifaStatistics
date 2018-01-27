@@ -485,7 +485,8 @@ public abstract class MatchStatsViewModel extends FifaBaseViewModel {
                 mPassAccuracyViewModel.areEditTextsFilled() &&
                 (!needPenalties() || mPenaltiesViewModel.areEditTextsFilled());
     }
-    
+
+    // For debugging only
     public void autofill() {
         User.StatsPair stats = mUser.getAverageStats();
         stats.getStatsFor().setGoals(1);
@@ -494,6 +495,7 @@ public abstract class MatchStatsViewModel extends FifaBaseViewModel {
         stats.getStatsAgainst().setYellowCards(1);
         stats.getStatsFor().setInjuries(0);
         stats.getStatsAgainst().setInjuries(0);
+        stats.getStatsAgainst().setShotAccuracy(stats.getStatsFor().getShotAccuracy());
         setStats(stats);
     }
 

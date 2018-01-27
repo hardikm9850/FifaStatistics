@@ -31,9 +31,10 @@ public class CreateMatchFragmentViewModel extends FifaBaseViewModel
                                         CreateMatchViewModelInteraction interaction, ActivityLauncher launcher,
                                         Bundle savedInstanceState, boolean isPartOfSeries, Team team1, Team team2) {
         initMatch(match, user, opponent, team1, team2);
-        mHeaderViewModel = new CreateEventHeaderViewModel(launcher, user, opponent, isPartOfSeries, savedInstanceState, this, team1, team2);
+        mHeaderViewModel = new CreateEventHeaderViewModel(launcher, user, opponent,
+                isPartOfSeries, savedInstanceState, this, mMatch.getTeamWinner(), mMatch.getTeamLoser());
         mStatsViewModel = new CreateStatsCardViewModel(match, user, binding, this, launcher);
-        mEventsViewModel = new CreateMatchEventsViewModel(launcher.getContext(), savedInstanceState, match, team1, team2);
+        mEventsViewModel = new CreateMatchEventsViewModel(launcher.getContext(), savedInstanceState, mMatch);
         mInteraction = interaction;
         mUser = user;
     }
@@ -149,6 +150,10 @@ public class CreateMatchFragmentViewModel extends FifaBaseViewModel
         mMatch.getEvents().setGoals(mEventsViewModel.getGoals());
         mMatch.getEvents().setCards(mEventsViewModel.getCards());
         mMatch.getEvents().setInjuries(mEventsViewModel.getInjuries());
+        swapForWinnerInEventsIfBackwards();
+    }
+
+    private void swapForWinnerInEventsIfBackwards() {
         boolean forWinnerIsBackwards = mEventsViewModel.getTeamWinner().equals(mMatch.getTeamLoser());
         if (forWinnerIsBackwards) {
             mMatch.getEvents().swapForWinner();

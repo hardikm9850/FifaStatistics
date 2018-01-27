@@ -29,25 +29,26 @@ public class CreateMatchEventsViewModel extends FifaBaseViewModel {
     private final Set<Team> mLoadedTeams = new HashSet<>();
     private FootballerLoader mLoader = new FootballerLoader();
     private Team mTeamWinner;
+    private Team mTeamLoser;
 
     private CreateMatchEventsCardViewModel<GoalItem> mGoalsCard;
     private CreateMatchEventsCardViewModel<CardItem> mCardsCard;
     private CreateMatchEventsCardViewModel<InjuryItem> mInjuriesCard;
 
-    public CreateMatchEventsViewModel(Context context, Bundle savedInstanceState, Match match,
-                                      Team team1, Team team2) {
+    public CreateMatchEventsViewModel(Context context, Bundle savedInstanceState, Match match) {
         restore(savedInstanceState);
         loadFootballers();
-        loadTeam(team1);
-        loadTeam(team2);
-        mTeamWinner = team1;
-        MatchEvents events = match != null && match.getEvents() != null ? match.getEvents() : new MatchEvents();
+        mTeamWinner = match.getTeamWinner();
+        mTeamLoser = match.getTeamLoser();
+        loadTeam(mTeamWinner);
+        loadTeam(mTeamLoser);
+        MatchEvents events = match.getEvents() != null ? match.getEvents() : new MatchEvents();
         mGoalsCard = new CreateMatchEventsCardViewModel<>(context, events.getGoals(), mAutocompleteTrie,
-                team1, team2, GoalItem::new);
+                mTeamWinner, mTeamLoser, GoalItem::new);
         mCardsCard = new CreateMatchEventsCardViewModel<>(context, events.getCards(), mAutocompleteTrie,
-                team1, team2, CardItem::new);
+                mTeamWinner, mTeamLoser, CardItem::new);
         mInjuriesCard = new CreateMatchEventsCardViewModel<>(context, events.getInjuries(), mAutocompleteTrie,
-                team1, team2, InjuryItem::new);
+                mTeamWinner, mTeamLoser, InjuryItem::new);
     }
 
     private void loadFootballers() {
@@ -86,6 +87,7 @@ public class CreateMatchEventsViewModel extends FifaBaseViewModel {
     
     public void setTeamLoser(Team team) {
         loadTeam(team);
+        mTeamLoser = team;
         mGoalsCard.setTeamLoser(team);
         mCardsCard.setTeamLoser(team);
         mInjuriesCard.setTeamLoser(team);
@@ -129,6 +131,10 @@ public class CreateMatchEventsViewModel extends FifaBaseViewModel {
 
     public Team getTeamWinner() {
         return mTeamWinner;
+    }
+
+    public Team getTeamLoser() {
+        return mTeamLoser;
     }
 
     @Override
