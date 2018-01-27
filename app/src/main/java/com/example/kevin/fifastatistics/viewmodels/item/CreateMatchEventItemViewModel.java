@@ -26,7 +26,6 @@ import com.example.kevin.fifastatistics.views.HeadshotView;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Random;
 
 import static com.example.kevin.fifastatistics.models.databasemodels.footballers.MatchEvents.CardItem;
 import static com.example.kevin.fifastatistics.models.databasemodels.footballers.MatchEvents.CardType;
