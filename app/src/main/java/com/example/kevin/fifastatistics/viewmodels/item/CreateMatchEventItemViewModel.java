@@ -154,6 +154,10 @@ public class CreateMatchEventItemViewModel<T extends MatchEventItem> extends Ite
         }
     }
 
+    public boolean getOwnGoalButtonStartingState() {
+        return mItem instanceof GoalItem && ((GoalItem) mItem).isOwnGoal();
+    }
+
     @Bindable
     public String getTeamImageUrl() {
         return mCurrentTeam != null ? mCurrentTeam.getCrestUrl() : null;

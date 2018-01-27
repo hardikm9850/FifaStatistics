@@ -102,6 +102,7 @@
             android:visibility="@{viewModel.ownGoalSelectorVisibility}"
             android:textOn="@string/own_goal"
             android:textOff="@string/own_goal"
+            android:checked="@{viewModel.ownGoalButtonStartingState}"
             android:onCheckedChanged="@{viewModel.onOwnGoalChangedListener}"
             style="@style/GamePagePill"/>
 
