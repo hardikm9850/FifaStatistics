@@ -80,6 +80,7 @@ public class CreateMatchEventsCardViewModel<T extends MatchEvents.MatchEventItem
             notifyPropertyChanged(BR.errorMessageVisibility);
             notifyPropertyChanged(BR.errorMessage);
         }
+        mIsFieldCountsIncorrect = isFieldCountIncorrect;
         return !isFieldCountIncorrect;
     }
 
