@@ -191,7 +191,9 @@ public class MatchUpdateFragmentViewModel extends FooterButtonsViewModel {
     }
 
     private void createUpdate() {
-        ProgressDialog d = ProgressDialog.show(mContext, "loading", "ok", true);
+        String title = mContext.getString(R.string.creating_update);
+        String message = mContext.getString(R.string.please_wait);
+        ProgressDialog d = ProgressDialog.show(mContext, title, message, true);
         Subscription s = FifaApi.getUpdateApi().createUpdate(mUpdateStatsCardViewModel.build())
                 .compose(ObservableUtils.applySchedulers())
                 .subscribe(new SimpleObserver<Response<Void>>() {

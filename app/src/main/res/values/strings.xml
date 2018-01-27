@@ -214,6 +214,7 @@
     <string name="pk">PK</string>
     <string name="et1">ET1</string>
     <string name="et2">ET2</string>
+    <string name="creating_update">Uploading request</string>
 
     <!-- PERMISSIONS -->
     <string name="request_camera_permission">FIFA Statistics needs camera permission.</string>

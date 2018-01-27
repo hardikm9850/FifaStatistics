@@ -156,6 +156,7 @@ public class MatchUpdateFragment extends FifaBaseFragment implements OnBackPress
     public void onUpdateCreated() {
         ToastUtils.showShortToast(getContext(), R.string.request_sent);
         showNotificationIfDebugging(FifaNotificationFactory.UPDATE_MATCH);
+        getActivity().finish();
     }
 
     @Override
