@@ -134,6 +134,22 @@
     <string name="error_penalties_same">Penalties cannot be the same for each side</string>
     <string name="error_missing_fields">Some required fields are empty</string>
 
+    <plurals name="error_wrong_goals_count">
+        <item quantity="one">%1$d goal is needed for %2$s and %3$d for %4$s</item>
+        <item quantity="other">%1$d goals are needed for %2$s and %3$d for %4$s</item>
+    </plurals>
+
+    <plurals name="error_wrong_cards_count">
+        <item quantity="one">%1$d card is needed for %2$s and %3$d for %4$s</item>
+        <item quantity="other">%1$d cards are needed for %2$s and %3$d for %4$s</item>
+    </plurals>
+
+
+    <plurals name="error_wrong_injuries_count">
+        <item quantity="one">%1$d injury is needed for %2$s and %3$d for %4$s</item>
+        <item quantity="other">%1$d injuries are needed for %2$s and %3$d for %4$s</item>
+    </plurals>
+
     <!-- TOASTS -->
     <string name="not_found">Not found!</string>
     <string name="no_network">No network connection</string>

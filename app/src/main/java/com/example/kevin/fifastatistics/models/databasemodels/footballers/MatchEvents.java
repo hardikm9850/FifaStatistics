@@ -1,5 +1,7 @@
 package com.example.kevin.fifastatistics.models.databasemodels.footballers;
 
+import android.support.v4.util.Pair;
+
 import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.models.databasemodels.match.Match;
 import com.example.kevin.fifastatistics.utils.SerializationUtils;
@@ -27,6 +29,23 @@ public class MatchEvents implements Serializable {
         goals = new ArrayList<>();
         injuries = new ArrayList<>();
         cards = new ArrayList<>();
+    }
+
+    public static Pair<Integer, Integer> calculateTotalsFor(List<? extends MatchEventItem> items) {
+        int forCount = 0;
+        int againstCount = 0;
+        if (items != null) {
+            for (MatchEventItem item : items) {
+                if (item != null) {
+                    if (item.isForWinner()) {
+                        forCount++;
+                    } else {
+                        againstCount++;
+                    }
+                }
+            }
+        }
+        return Pair.create(forCount, againstCount);
     }
 
     public void swapForWinner() {

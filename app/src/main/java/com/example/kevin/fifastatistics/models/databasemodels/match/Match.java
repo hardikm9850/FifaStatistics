@@ -1,5 +1,7 @@
 package com.example.kevin.fifastatistics.models.databasemodels.match;
 
+import android.support.v4.util.Pair;
+
 import com.example.kevin.fifastatistics.models.databasemodels.DatabaseModel;
 import com.example.kevin.fifastatistics.models.databasemodels.footballers.MatchEvents;
 import com.example.kevin.fifastatistics.models.databasemodels.league.Team;
@@ -19,6 +21,7 @@ import java.util.List;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import rx.functions.Func1;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonDeserialize(builder = Match.MatchBuilder.class)
@@ -181,6 +184,32 @@ public class Match extends DatabaseModel implements TeamEvent, FifaEvent, Penalt
             }
         }
         return null;
+    }
+
+    @JsonIgnore
+    public Pair<Integer, Integer> getGoalsPair() {
+        return getPairFor(Stats::getGoals);
+    }
+
+    @JsonIgnore
+    public Pair<Integer, Integer> getCardsPair() {
+        return getPairFor(s -> s.getYellowCards() + s.getRedCards());
+    }
+
+    @JsonIgnore
+    public Pair<Integer, Integer> getInjuriesPair() {
+        return getPairFor(Stats::getInjuries);
+    }
+
+    @JsonIgnore
+    private Pair<Integer, Integer> getPairFor(Func1<Stats, Float> func1) {
+        if (stats != null && stats.getStatsFor() != null && stats.getStatsAgainst() != null) {
+            Stats statsFor = stats.getStatsFor();
+            Stats statsAgainst = stats.getStatsAgainst();
+            return Pair.create(Math.round(func1.call(statsFor)), Math.round(func1.call(statsAgainst)));
+        } else {
+            return Pair.create(0, 0);
+        }
     }
 
     @JsonIgnore

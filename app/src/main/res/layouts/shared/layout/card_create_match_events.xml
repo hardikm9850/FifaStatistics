@@ -39,7 +39,7 @@
             android:layout_marginBottom="@dimen/activity_horizontal_margin"
             android:maxLines="2"
             android:visibility="@{viewModel.errorMessageVisibility}"
-            android:text="@string/error_missing_fields"
+            android:text="@{viewModel.errorMessage}"
             android:textAppearance="@style/text_error"
             app:onVisibilityChanged="@{(view, vis) -> viewModel.onErrorVisibilityChanged(view, vis, scrollView)}"/>
 

@@ -9,7 +9,6 @@ import com.example.kevin.fifastatistics.models.databasemodels.footballers.Footba
 import com.example.kevin.fifastatistics.models.databasemodels.footballers.MatchEvents;
 import com.example.kevin.fifastatistics.models.databasemodels.league.Team;
 import com.example.kevin.fifastatistics.models.databasemodels.match.Match;
-import com.example.kevin.fifastatistics.utils.CollectionUtils;
 import com.example.kevin.fifastatistics.viewmodels.FifaBaseViewModel;
 
 import java.util.Collections;
@@ -21,7 +20,9 @@ import rx.Completable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-import static com.example.kevin.fifastatistics.models.databasemodels.footballers.MatchEvents.*;
+import static com.example.kevin.fifastatistics.models.databasemodels.footballers.MatchEvents.CardItem;
+import static com.example.kevin.fifastatistics.models.databasemodels.footballers.MatchEvents.GoalItem;
+import static com.example.kevin.fifastatistics.models.databasemodels.footballers.MatchEvents.InjuryItem;
 
 public class CreateMatchEventsViewModel extends FifaBaseViewModel {
 
@@ -136,6 +137,14 @@ public class CreateMatchEventsViewModel extends FifaBaseViewModel {
     public boolean validateFieldsFilled() {
         return mGoalsCard.validateFieldsAreFilled() && mInjuriesCard.validateFieldsAreFilled() &&
                 mCardsCard.validateFieldsAreFilled();
+    }
+
+    public boolean validateCorrectTeamCounts(Match match) {
+        Team winner = match.getTeamWinner();
+        Team loser = match.getTeamLoser();
+        return mGoalsCard.validateCorrectTeamCounts(match.getGoalsPair(), winner, loser) &&
+                mCardsCard.validateCorrectTeamCounts(match.getCardsPair(), winner, loser) &&
+                mInjuriesCard.validateCorrectTeamCounts(match.getInjuriesPair(), winner, loser);
     }
 
     @Override

@@ -120,19 +120,12 @@ public class CreateMatchFragmentViewModel extends FifaBaseViewModel
     }
 
     public boolean isValid() {
-        return mStatsViewModel.areAllEditTextsFilled() && mStatsViewModel.validate() &&
+        boolean fieldsAreValid = mStatsViewModel.areAllEditTextsFilled() && mStatsViewModel.validate() &&
                 mEventsViewModel.validateFieldsFilled();
+        return fieldsAreValid && finalizeMatch();
     }
 
-    public void autofill() {
-        mStatsViewModel.autofill();
-    }
-
-    public void setStats(User.StatsPair stats) {
-        mStatsViewModel.setStats(stats);
-    }
-
-    public void finalizeMatch() {
+    private boolean finalizeMatch() {
         if (mMatch.getScoreWinner() != mMatch.getScoreLoser()) {
             mMatch.setPenalties(null);
         }
@@ -142,6 +135,7 @@ public class CreateMatchFragmentViewModel extends FifaBaseViewModel
         swapWinnerIfChanged(goalsLeft, goalsRight, mMatch.getPenalties());
         insertMatchEvents();
         onMatchUpdated(mMatch);
+        return mEventsViewModel.validateCorrectTeamCounts(mMatch);
     }
 
     private void insertMatchEvents() {
@@ -159,6 +153,14 @@ public class CreateMatchFragmentViewModel extends FifaBaseViewModel
         if (forWinnerIsBackwards) {
             mMatch.getEvents().swapForWinner();
         }
+    }
+
+    public void autofill() {
+        mStatsViewModel.autofill();
+    }
+
+    public void setStats(User.StatsPair stats) {
+        mStatsViewModel.setStats(stats);
     }
 
     private void swapStatsIfLeftLost(float goalsLeft, float goalsRight, Penalties penalties) {
