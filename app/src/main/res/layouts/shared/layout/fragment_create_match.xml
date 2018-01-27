@@ -23,6 +23,7 @@
             android:layout_height="match_parent">
 
             <LinearLayout
+                android:id="@+id/match_content"
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
@@ -30,22 +31,28 @@
                 <include
                     android:id="@+id/card_update_stats_layout"
                     layout="@layout/card_update_stats"
-                    bind:viewModel="@{viewModel.statsCardViewModel}" />
+                    bind:viewModel="@{viewModel.statsCardViewModel}"/>
 
                 <include
+                    android:id="@+id/card_goals_layout"
                     layout="@layout/card_create_match_events"
                     bind:title="@{@string/goals}"
-                    bind:viewModel="@{viewModel.eventsViewModel.goalsViewModel}" />
+                    bind:viewModel="@{viewModel.eventsViewModel.goalsViewModel}"
+                    bind:scrollView="@{nestedScrollView}"/>
 
                 <include
+                    android:id="@+id/card_cards_layout"
                     layout="@layout/card_create_match_events"
                     bind:title="@{@string/cards}"
-                    bind:viewModel="@{viewModel.eventsViewModel.cardsViewModel}" />
+                    bind:viewModel="@{viewModel.eventsViewModel.cardsViewModel}"
+                    bind:scrollView="@{nestedScrollView}"/>
 
                 <include
+                    android:id="@+id/card_injuries_layout"
                     layout="@layout/card_create_match_events"
                     bind:title="@{@string/injuries}"
-                    bind:viewModel="@{viewModel.eventsViewModel.injuriesViewModel}" />
+                    bind:viewModel="@{viewModel.eventsViewModel.injuriesViewModel}"
+                    bind:scrollView="@{nestedScrollView}"/>
 
             </LinearLayout>
 

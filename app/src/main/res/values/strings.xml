@@ -132,6 +132,7 @@
     <string name="error_shot_accuracy">Shot Accuracy does not match with Shots and Shots on Target</string>
     <string name="error_empty_update">No changes made</string>
     <string name="error_penalties_same">Penalties cannot be the same for each side</string>
+    <string name="error_missing_fields">Some required fields are empty</string>
 
     <!-- TOASTS -->
     <string name="not_found">Not found!</string>

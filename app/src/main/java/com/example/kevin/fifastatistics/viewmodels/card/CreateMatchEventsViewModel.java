@@ -133,8 +133,9 @@ public class CreateMatchEventsViewModel extends FifaBaseViewModel {
         return mTeamWinner;
     }
 
-    public Team getTeamLoser() {
-        return mTeamLoser;
+    public boolean validateFieldsFilled() {
+        return mGoalsCard.validateFieldsAreFilled() && mInjuriesCard.validateFieldsAreFilled() &&
+                mCardsCard.validateFieldsAreFilled();
     }
 
     @Override

@@ -103,9 +103,16 @@ public class CreateMatchFragment extends FifaBaseFragment implements StatsImageH
         FragmentCreateMatchBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_create_match, container, false);
         mViewModel = new CreateMatchFragmentViewModel(mUser, mOpponent, mMatch, binding.cardUpdateStatsLayout,
                 this, this, savedInstanceState, mIsPartOfSeries, team1, team2);
-        TransitionUtils.addTransitionCallbackToBinding(binding.cardUpdateStatsLayout);
+        addTransitionBindings(binding);
         binding.setViewModel(mViewModel);
         return binding.getRoot();
+    }
+
+    private void addTransitionBindings(FragmentCreateMatchBinding binding) {
+        TransitionUtils.addTransitionCallbackToBinding(binding.cardUpdateStatsLayout);
+        TransitionUtils.addTransitionCallbackToBinding(binding.cardGoalsLayout);
+        TransitionUtils.addTransitionCallbackToBinding(binding.cardCardsLayout);
+        TransitionUtils.addTransitionCallbackToBinding(binding.cardInjuriesLayout);
     }
 
     private void initMatchUploadingDialog() {

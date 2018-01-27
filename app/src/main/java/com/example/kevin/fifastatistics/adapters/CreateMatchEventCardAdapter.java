@@ -96,6 +96,17 @@ public class CreateMatchEventCardAdapter<T extends MatchEventItem>
         notifyItemRangeInserted(oldCount, difference);
     }
 
+    public boolean validateAllFieldsFilled() {
+        if (!CollectionUtils.isEmpty(mItems)) {
+            for (T item : mItems) {
+                if (item == null || item.getMinute() < 1 || item.getPlayer() == null) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
     @SuppressWarnings("unchecked")
     @Override
     protected CreateMatchEventItemViewModel<T> getBindingViewModel(ItemCreateMatchEventBinding binding) {

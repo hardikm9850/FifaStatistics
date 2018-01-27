@@ -120,7 +120,8 @@ public class CreateMatchFragmentViewModel extends FifaBaseViewModel
     }
 
     public boolean isValid() {
-        return mStatsViewModel.areAllEditTextsFilled() && mStatsViewModel.validate();
+        return mStatsViewModel.areAllEditTextsFilled() && mStatsViewModel.validate() &&
+                mEventsViewModel.validateFieldsFilled();
     }
 
     public void autofill() {
