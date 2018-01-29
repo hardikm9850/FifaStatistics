@@ -4,12 +4,14 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.util.Log;
 
 import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.activities.CameraActivity;
 import com.example.kevin.fifastatistics.interfaces.MatchFactsPreprocessor;
 import com.example.kevin.fifastatistics.listeners.SimpleObserver;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
+import com.example.kevin.fifastatistics.utils.ByteHolder;
 import com.example.kevin.fifastatistics.utils.ObservableUtils;
 
 import java.io.IOException;
@@ -62,6 +64,7 @@ public class StatsImageHandler {
         return new SimpleObserver<User.StatsPair>() {
             @Override
             public void onError(Throwable e) {
+                Log.e("KEVIN!!!", e.getMessage(), e);
                 onOcrResultReceived(dialog);
                 mInteraction.onStatsRetrievalError();
             }

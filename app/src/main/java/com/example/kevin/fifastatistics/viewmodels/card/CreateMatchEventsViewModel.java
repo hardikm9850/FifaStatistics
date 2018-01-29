@@ -139,6 +139,7 @@ public class CreateMatchEventsViewModel extends FifaBaseViewModel {
                 mCardsCard.validateFieldsAreFilled();
     }
 
+    // was having issues with this, removing for now
     public boolean validateCorrectTeamCounts(Match match) {
         Team winner = match.getTeamWinner();
         Team loser = match.getTeamLoser();

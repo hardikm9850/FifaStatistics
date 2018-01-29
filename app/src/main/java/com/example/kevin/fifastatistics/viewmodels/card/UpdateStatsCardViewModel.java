@@ -1,7 +1,5 @@
 package com.example.kevin.fifastatistics.viewmodels.card;
 
-import android.databinding.Bindable;
-
 import com.example.kevin.fifastatistics.activities.MatchUpdateActivity;
 import com.example.kevin.fifastatistics.databinding.CardUpdateStatsBinding;
 import com.example.kevin.fifastatistics.models.databasemodels.match.Match;

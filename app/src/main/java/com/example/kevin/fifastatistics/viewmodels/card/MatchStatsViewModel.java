@@ -465,7 +465,7 @@ public abstract class MatchStatsViewModel extends FifaBaseViewModel {
                 mCornersViewModel.isValid() &&
                 mShotAccuracyViewModel.isValid() &&
                 mPassAccuracyViewModel.isValid() &&
-                mPenaltiesViewModel.isValid();
+                (!needPenalties() || mPenaltiesViewModel.isValid());
     }
 
     public boolean areAllEditTextsFilled() {

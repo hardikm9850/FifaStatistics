@@ -27,7 +27,9 @@ public class ByteHolder {
 
     public static void dispose() {
         image = null;
-        bitmap.recycle();
-        bitmap = null;
+        if (bitmap != null) {
+            bitmap.recycle();
+            bitmap = null;
+        }
     }
 }

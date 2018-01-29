@@ -16,6 +16,7 @@ import com.example.kevin.fifastatistics.interfaces.Consumer;
 import com.example.kevin.fifastatistics.interfaces.Predicate;
 import com.example.kevin.fifastatistics.interfaces.StatUpdater;
 import com.example.kevin.fifastatistics.models.databasemodels.match.MatchUpdate;
+import com.example.kevin.fifastatistics.utils.OcrResultParser;
 import com.example.kevin.fifastatistics.viewmodels.FifaBaseViewModel;
 
 import lombok.Builder;
@@ -114,13 +115,19 @@ public class UpdateStatsItemViewModel extends FifaBaseViewModel implements StatU
     }
 
     public void setEditTextValues(float valueFor, float valueAgainst) {
-        binding.statForEdittext.setText(String.valueOf(Math.round(valueFor)));
-        binding.statAgainstEdittext.setText(String.valueOf(Math.round(valueAgainst)));
+        int intFor = Math.round(valueFor);
+        int intAgainst = Math.round(valueAgainst);
+        if (intFor != OcrResultParser.ERROR_VALUE) {
+            binding.statForEdittext.setText(String.valueOf(intFor));
+        }
+        if (intAgainst != OcrResultParser.ERROR_VALUE) {
+            binding.statAgainstEdittext.setText(String.valueOf(intAgainst));
+        }
     }
 
     @Override
     public void onStatForChanged(Editable s) {
-        Integer newVal = TextUtils.isEmpty(s.toString()) ? null : Integer.valueOf(s.toString());
+        Integer newVal = parseNewValFromEditable(s);
         mIsForError = forPredicate != null && !forPredicate.test(newVal);
         consumeValue(newVal, forConsumer, binding.statForEdittext, statFor, mIsForError);
         checkLinkedPredicate(newVal, forConsumer, binding.statAgainstEdittext, this::onStatAgainstChanged);
@@ -130,12 +137,18 @@ public class UpdateStatsItemViewModel extends FifaBaseViewModel implements StatU
 
     @Override
     public void onStatAgainstChanged(Editable s) {
-        Integer newVal = TextUtils.isEmpty(s.toString()) ? null : Integer.valueOf(s.toString());
+        Integer newVal = parseNewValFromEditable(s);
         mIsAgainstError = againstPredicate != null && !againstPredicate.test(newVal);
         consumeValue(newVal, againstConsumer, binding.statAgainstEdittext, statAgainst, mIsAgainstError);
         checkLinkedPredicate(newVal, againstConsumer, binding.statForEdittext, this::onStatForChanged);
         updateAlpha(newVal, statAgainst, binding.statAgainstTextview, binding.statAgainstEdittext, this::setAlphaAgainst);
         updateError();
+    }
+
+    private Integer parseNewValFromEditable(Editable e) {
+        String s = e.toString();
+        boolean isInvalidString = TextUtils.isEmpty(s) || s.contains("-");
+        return isInvalidString ? null : Integer.valueOf(s);
     }
 
     private void consumeValue(Integer newVal, Consumer<Integer> consumer, EditText editText, int stat, boolean error) {

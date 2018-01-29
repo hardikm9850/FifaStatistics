@@ -180,6 +180,7 @@ public class CreateMatchFragment extends FifaBaseFragment implements StatsImageH
 
     private void createMatchIfValid() {
         if (mViewModel.isValid()) {
+            mViewModel.finalizeMatch();
             if (mIsPartOfSeries) {
                 addMatchToSeries();
             } else {
