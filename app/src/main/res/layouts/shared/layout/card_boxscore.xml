@@ -48,8 +48,6 @@
                     android:id="@+id/top_player_layout"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/medium_margin"
-                    android:layout_marginTop="@dimen/medium_margin"
                     android:orientation="horizontal">
 
                     <ImageView
@@ -57,6 +55,7 @@
                         android:layout_width="@dimen/match_team_logo_size"
                         android:layout_height="@dimen/match_team_logo_size"
                         android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                        android:layout_marginTop="@dimen/medium_margin"
                         android:scaleType="fitCenter"
                         app:imageUrl="@{viewModel.topTeamImageUrl}"/>
 
@@ -65,6 +64,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                        android:layout_marginBottom="@dimen/medium_margin"
+                        android:layout_marginTop="@dimen/medium_margin"
                         android:gravity="center_vertical"
                         android:text="@{viewModel.topName}"
                         android:textAppearance="@style/text_white_small"/>
@@ -80,8 +81,6 @@
                     android:id="@+id/bottom_player_layout"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/medium_margin"
-                    android:layout_marginTop="@dimen/medium_margin"
                     android:orientation="horizontal">
 
                     <ImageView
@@ -89,6 +88,7 @@
                         android:layout_width="@dimen/match_team_logo_size"
                         android:layout_height="@dimen/match_team_logo_size"
                         android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                        android:layout_marginTop="@dimen/medium_margin"
                         android:scaleType="fitCenter"
                         app:imageUrl="@{viewModel.bottomTeamImageUrl}"/>
 
@@ -97,6 +97,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                        android:layout_marginBottom="@dimen/medium_margin"
+                        android:layout_marginTop="@dimen/medium_margin"
                         android:gravity="center_vertical"
                         android:text="@{viewModel.bottomName}"
                         android:textAppearance="@style/text_white_small"/>
