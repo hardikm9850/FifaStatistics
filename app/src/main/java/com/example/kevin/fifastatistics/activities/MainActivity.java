@@ -72,7 +72,8 @@ public class MainActivity extends FifaBaseActivity implements OnMatchCreatedList
     @SuppressWarnings("ConstantConditions")
     private void initToolbar() {
         mBinding.searchView.setVersion(SearchView.VERSION_MENU_ITEM);
-        setSupportActionBar(mBinding.toolbar);
+        setSupportActionBar(mBinding.toolbarLayout.toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
     }
 
     private void initializeFab() {
@@ -157,7 +158,7 @@ public class MainActivity extends FifaBaseActivity implements OnMatchCreatedList
 
     private void showFragment(Fragment fragment, @StringRes int titleRes, int actionMenuVisibilty) {
         mActionMenu.setVisibility(actionMenuVisibilty);
-        setTitle(getString(titleRes));
+        mBinding.toolbarLayout.toolbarTitle.setText(getString(titleRes));
         getSupportFragmentManager().beginTransaction().replace(R.id.content, fragment).commit();
         setOnBackPressHandler((OnBackPressedHandler) fragment);
     }
@@ -222,9 +223,7 @@ public class MainActivity extends FifaBaseActivity implements OnMatchCreatedList
     public void onBackPressed() {
         if (mActionMenu.isOpened()) {
             mActionMenu.close(true);
-        } else if (performHandlerBackPress()) {
-            return;
-        } else {
+        } else if (!performHandlerBackPress()) {
             superOnBackPressed();
         }
     }

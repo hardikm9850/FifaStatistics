@@ -22,8 +22,10 @@ public class SettingsActivity extends AppCompatActivity {
 
     @SuppressWarnings("ConstantConditions")
     private void initToolbar(ActivitySettingsBinding binding) {
-        setSupportActionBar(binding.toolbar);
+        setSupportActionBar(binding.toolbarLayout.toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        binding.toolbarLayout.toolbarTitle.setText(getString(R.string.settings));
     }
 
     private void initFragment() {
