@@ -26,7 +26,7 @@
     <dimen name="civ_border_width">4dp</dimen>
     <dimen name="progress_loader_item_margin">5dp</dimen>
     <dimen name="retry_icon_size">48dp</dimen>
-    <dimen name="stats_list_item_height">60dp</dimen>
+    <dimen name="stats_list_item_height">52dp</dimen>
     <dimen name="match_player_margin_internal">10dp</dimen>
     <dimen name="match_player_margin_external">12dp</dimen>
     <dimen name="match_score_margin_end">50dp</dimen>
@@ -55,7 +55,7 @@
     <dimen name="card_corner_radius">4dp</dimen>
     <dimen name="card_header_height">40dp</dimen>
     <dimen name="card_header_text_size">15sp</dimen>
-    <dimen name="record_item_vertical_padding">12dp</dimen>
+    <dimen name="record_item_vertical_padding">4dp</dimen>
     <dimen name="record_header_vertical_padding">5dp</dimen>
 
     <!-- PLAYER ACTIVITY -->
@@ -75,5 +75,6 @@
     <dimen name="create_series_score_summary_size">82dp</dimen>
 
     <dimen name="text_small">15sp</dimen>
+    <dimen name="text_tiny">14sp</dimen>
 
 </resources>

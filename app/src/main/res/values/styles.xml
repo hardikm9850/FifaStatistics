@@ -31,6 +31,16 @@
     </style>
 
     <!-- Text -->
+    <style name="text_tiny_grey" parent="TextAppearance.AppCompat">
+        <item name="android:textSize">@dimen/text_tiny</item>
+        <item name="android:textColor">@android:color/secondary_text_dark</item>
+    </style>
+
+    <style name="text_tiny_bold_main" parent="text_tiny_grey">
+        <item name="android:textColor">@color/text_main</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+    </style>
+
     <style name="text_small" parent="TextAppearance.AppCompat">
         <item name="android:textSize">@dimen/text_small</item>
     </style>
@@ -90,6 +100,26 @@
         <item name="android:paddingEnd">12dp</item>
         <item name="android:paddingTop">2dp</item>
         <item name="android:paddingBottom">2dp</item>
+    </style>
+
+    <style name="CardViewStyle" parent="CardView">
+        <item name="android:layout_marginStart">@dimen/activity_horizontal_margin</item>
+        <item name="android:layout_marginEnd">@dimen/activity_horizontal_margin</item>
+        <item name="android:layout_marginBottom">@dimen/activity_horizontal_margin</item>
+        <item name="cardCornerRadius">2dp</item>
+        <item name="cardBackgroundColor">@color/cardViewBackground</item>
+    </style>
+
+    <style name="CardViewHeaderText">
+        <item name="android:layout_marginTop">5dp</item>
+        <item name="android:layout_marginBottom">5dp</item>
+        <item name="android:textAppearance">@style/text_bold_grey_small</item>
+    </style>
+
+    <style name="Divider">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:background">@color/cardViewHeaderBackground</item>
     </style>
 
 </resources>

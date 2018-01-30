@@ -14,7 +14,7 @@ import java.util.Set;
 
 public class StatItemViewModel extends BaseObservable {
 
-    private static final float MIDDLE_PADDING = 0.0125f;
+    private static final float MIDDLE_PADDING = 0.006125f;
     private static final Set<String> INVERTS;
 
     static {

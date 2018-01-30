@@ -77,12 +77,10 @@
             android:src="@{viewModel.icon}"/>
 
         <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
             android:layout_below="@id/player_imageview"
-            android:background="@color/cardViewHeaderBackground"
             android:layout_marginEnd="@dimen/activity_horizontal_margin"
-            android:visibility="@{viewModel.dividerVisibility}"/>
+            android:visibility="@{viewModel.dividerVisibility}"
+            style="@style/Divider"/>
 
     </RelativeLayout>
 

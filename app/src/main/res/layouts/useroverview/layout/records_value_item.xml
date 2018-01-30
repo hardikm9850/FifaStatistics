@@ -22,7 +22,6 @@
             android:layout_gravity="center"
             android:gravity="center"
             android:paddingTop="@dimen/record_item_vertical_padding"
-            android:paddingBottom="@dimen/record_header_vertical_padding"
             android:textColor="@color/white"
             android:textSize="18sp"
             android:text="@{value}"/>
@@ -31,8 +30,9 @@
             android:id="@+id/title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingBottom="@dimen/record_item_vertical_padding"
+            android:paddingBottom="@dimen/medium_margin"
             android:gravity="center"
+            android:textAppearance="@style/text_bold_grey_small"
             android:text="@{title}"/>
 
     </LinearLayout>

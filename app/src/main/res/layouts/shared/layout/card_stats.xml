@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:card_view="http://schemas.android.com/apk/res-auto"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:bind="http://schemas.android.com/tools">
 
@@ -34,9 +33,8 @@
             android:id="@+id/stats_card_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/activity_horizontal_margin"
-            card_view:cardCornerRadius="@dimen/card_corner_radius"
-            app:cardBackgroundColor="@color/cardViewBackground">
+            android:layout_marginTop="@dimen/activity_horizontal_margin"
+            style="@style/CardViewStyle">
 
             <com.example.kevin.fifastatistics.views.StatsViewPager
                 android:id="@+id/card_view_pager"

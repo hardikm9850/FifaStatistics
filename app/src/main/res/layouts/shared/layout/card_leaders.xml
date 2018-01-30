@@ -27,9 +27,8 @@
         <android.support.v7.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/activity_horizontal_margin"
-            card_view:cardCornerRadius="@dimen/card_corner_radius"
-            app:cardBackgroundColor="@color/cardViewBackground">
+            android:layout_marginTop="@dimen/activity_horizontal_margin"
+            style="@style/CardViewStyle">
 
             <LinearLayout
                 android:orientation="vertical"
@@ -42,7 +41,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     bind:headerLeft="@{viewModel.leftHeader}"
-                    bind:headerRight="@{viewModel.rightHeader}">
+                    bind:headerRight="@{viewModel.rightHeader}"
+                    bind:headToHead="@{true}">
                 </include>
 
                 <include
