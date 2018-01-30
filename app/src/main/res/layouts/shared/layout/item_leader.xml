@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto">
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:bind="http://schemas.android.com/tools">
 
     <data>
         <variable
@@ -19,25 +20,37 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/activity_horizontal_margin"
         android:layout_marginEnd="@dimen/activity_horizontal_margin"
-        android:layout_marginTop="@dimen/activity_vertical_margin"
-        android:layout_marginBottom="@dimen/activity_vertical_margin">
+        android:layout_marginTop="@dimen/activity_horizontal_margin">
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/leader_image_for"
-            android:layout_width="@dimen/leader_image_size"
-            android:layout_height="@dimen/leader_image_size"
+        <TextView
+            android:id="@+id/header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
             android:layout_alignParentStart="true"
-            android:layout_centerVertical="true"
+            android:paddingTop="@dimen/record_header_vertical_padding"
+            android:paddingBottom="@dimen/record_header_vertical_padding"
+            android:gravity="center_vertical"
+            android:text="@{title}"
+            style="@style/CardViewHeaderText"/>
+
+        <com.example.kevin.fifastatistics.views.HeadshotView
+            android:id="@+id/leader_image_for"
+            android:layout_width="@dimen/headshot_width"
+            android:layout_height="@dimen/headshot_height"
+            android:layout_alignParentStart="true"
+            android:layout_below="@id/header"
             android:layout_marginEnd="@dimen/activity_horizontal_margin"
-            app:headshotImageUrl="@{leaderFor.player.headshotImgUrl}"
-            app:civ_circle_background_color="@color/circle_background"/>
+            app:footballer="@{leaderFor.player}"
+            app:color="@{@color/colorAccent}"/>
 
         <TextView
             android:id="@+id/leader_name_for"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toEndOf="@id/leader_image_for"
-            android:layout_alignParentTop="true"
+            android:layout_alignTop="@id/leader_image_for"
+            android:layout_marginTop="16dp"
             android:textColor="@color/text_main"
             android:text="@{leaderFor.player.name}"/>
 
@@ -45,36 +58,27 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toEndOf="@id/leader_image_for"
-            android:layout_alignParentBottom="true"
-            android:textColor="@color/text_main"
+            android:layout_below="@id/leader_name_for"
+            android:textAppearance="@style/text_bold_white_small"
             android:text="@{leaderFor.valueString}"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginStart="@dimen/activity_horizontal_margin"
-            android:layout_marginEnd="@dimen/activity_horizontal_margin"
-            android:gravity="center"
-            android:text="@{title}"/>
-
-        <de.hdodenhof.circleimageview.CircleImageView
+        <com.example.kevin.fifastatistics.views.HeadshotView
             android:id="@+id/leader_image_against"
-            android:layout_width="@dimen/leader_image_size"
-            android:layout_height="@dimen/leader_image_size"
+            android:layout_width="@dimen/headshot_width"
+            android:layout_height="@dimen/headshot_height"
             android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
+            android:layout_below="@id/header"
             android:layout_marginStart="@dimen/activity_horizontal_margin"
-            app:headshotImageUrl="@{leaderAgainst.player.headshotImgUrl}"
-            app:civ_circle_background_color="@color/circle_background"/>
+            app:footballer="@{leaderAgainst.player}"
+            app:color="@{@color/statOpponentColor}"/>
 
         <TextView
             android:id="@+id/leader_name_against"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
             android:layout_toStartOf="@id/leader_image_against"
-            android:layout_alignParentTop="true"
+            android:layout_alignTop="@id/leader_image_against"
             android:textColor="@color/text_main"
             android:text="@{leaderAgainst.player.name}"/>
 
@@ -82,8 +86,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toStartOf="@id/leader_image_against"
-            android:layout_alignParentBottom="true"
-            android:textColor="@color/text_main"
+            android:layout_below="@id/leader_name_against"
+            android:textAppearance="@style/text_bold_white_small"
             android:text="@{leaderAgainst.valueString}"/>
 
     </RelativeLayout>

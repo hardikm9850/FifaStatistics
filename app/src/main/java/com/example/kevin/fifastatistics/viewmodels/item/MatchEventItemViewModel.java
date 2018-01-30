@@ -92,7 +92,7 @@ public class MatchEventItemViewModel<T extends MatchEventItem> extends ItemViewM
     @ColorInt
     @Bindable
     public int getTeamColor() {
-        return mTeam != null ? Color.parseColor(mTeam.getColor()) : getColor(R.color.transparent);
+        return mTeam != null ? Color.parseColor(mTeam.getColor()) : getColor(R.color.statOpponentColor);
     }
 
     public void onImageClick() {

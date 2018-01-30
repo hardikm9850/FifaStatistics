@@ -52,11 +52,11 @@ public class HeadshotView extends RoundedFrameLayout {
 
     private void init(Context context) {
         View root = inflate(context, R.layout.headshot_view, this);
-        mPrimaryBackground = (ImageView) root.findViewById(R.id.headshot_primary_background);
-        mSecondaryBackground = (ImageView) root.findViewById(R.id.headshot_secondary_background);
+        mPrimaryBackground = root.findViewById(R.id.headshot_primary_background);
+        mSecondaryBackground = root.findViewById(R.id.headshot_secondary_background);
         mSecondaryBackground.setColorFilter(FifaApplication.getAccentColor());
-        mPhoto = (ImageView) root.findViewById(R.id.headshot_photo);
-        mText = (TextView) root.findViewById(R.id.headshot_textview);
+        mPhoto = root.findViewById(R.id.headshot_photo);
+        mText = root.findViewById(R.id.headshot_textview);
         mContext = context;
     }
 
