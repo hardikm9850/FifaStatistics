@@ -43,6 +43,14 @@ public abstract class EventStreamFragment<EVENT extends FifaEvent, ADAPTER exten
     private RecyclerView mRecyclerView;
     private int mLoadingFailedMessage;
 
+    public static MatchStreamFragment newMatchStreamInstance(Player user) {
+        return newInstance(MatchStreamFragment.class, user, R.string.matches_load_failed);
+    }
+
+    public static SeriesStreamFragment newSeriesStreamInstance(Player user) {
+        return newInstance(SeriesStreamFragment.class, user, R.string.error_load_series);
+    }
+
     public static <T extends EventStreamFragment> T newInstance(Class<T> fragmentClass, Player user, @StringRes int loadingFailedMessage) {
         T fragment = instantiateFragment(fragmentClass);
         Bundle args = new Bundle();

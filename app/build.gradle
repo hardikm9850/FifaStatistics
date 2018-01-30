@@ -2,8 +2,8 @@ apply plugin: 'com.android.application'
 apply plugin: 'me.tatarka.retrolambda'
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion "25.0.1"
+    compileSdkVersion 27
+    buildToolsVersion "27.0.3"
 
     // For Lambda expressions with Retrolambda
     compileOptions {
@@ -20,7 +20,7 @@ android {
     defaultConfig {
         applicationId "com.example.kevin.fifastatistics"
         minSdkVersion 23
-        targetSdkVersion 25
+        targetSdkVersion 27
         versionCode 2
         versionName "1.5.1"
         manifestPlaceholders = [HOCKEYAPP_APP_ID: "1274ffd5e9d648108bfff6c54033d2ba"]
@@ -69,7 +69,7 @@ android {
 }
 
 ext {
-    android_support_version = "25.1.0"
+    android_support_version = "25.3.0"
     google_play_services_version = "10.0.1"
 }
 
@@ -135,23 +135,8 @@ dependencies {
 
 
     // Unused...
-    compile 'com.google.android:flexbox:0.2.5'
-    compile 'com.github.fiskurgit:ChipCloud:3.0.3'
     compile 'com.52inc:scoops:1.0.0'
     compile 'com.diogobernardino:williamchart:2.2'
-
-    // Navigation Drawer
-    compile 'com.mikepenz:google-material-typeface:2.2.0.1.original@aar'
-    compile 'com.mikepenz:iconics-core:2.8.1@aar'
-    compile('com.mikepenz:materialdrawer:5.8.1@aar') {
-        transitive = true
-    }
-    compile('com.mikepenz:materialize:1.0.0@aar') {
-        transitive = true
-    }
-    compile('com.mikepenz:fastadapter:1.8.2@aar') {
-        transitive = true
-    }
 }
 
 apply plugin: 'com.google.gms.google-services'

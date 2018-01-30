@@ -1,75 +1,62 @@
 package com.example.kevin.fifastatistics.activities;
 
 import android.content.Intent;
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.design.widget.TabLayout;
+import android.support.annotation.StringRes;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 
 import com.example.kevin.fifastatistics.R;
-import com.example.kevin.fifastatistics.adapters.FragmentAdapter;
+import com.example.kevin.fifastatistics.databinding.ActivityMainBinding;
+import com.example.kevin.fifastatistics.fragments.EventStreamFragment;
+import com.example.kevin.fifastatistics.fragments.FriendsFragment;
 import com.example.kevin.fifastatistics.fragments.UserOverviewFragment;
-import com.example.kevin.fifastatistics.fragments.initializers.FragmentInitializer;
-import com.example.kevin.fifastatistics.fragments.initializers.FragmentInitializerFactory;
 import com.example.kevin.fifastatistics.interfaces.OnBackPressedHandler;
 import com.example.kevin.fifastatistics.interfaces.OnMatchCreatedListener;
 import com.example.kevin.fifastatistics.listeners.FabScrollListener;
-import com.example.kevin.fifastatistics.managers.sync.FavoriteTeamSynchronizer;
 import com.example.kevin.fifastatistics.managers.FifaEventManager;
 import com.example.kevin.fifastatistics.managers.RetrievalManager;
 import com.example.kevin.fifastatistics.managers.preferences.PrefsManager;
+import com.example.kevin.fifastatistics.managers.sync.FavoriteTeamSynchronizer;
 import com.example.kevin.fifastatistics.managers.sync.FootballersSynchronizer;
 import com.example.kevin.fifastatistics.models.databasemodels.match.Match;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
 import com.example.kevin.fifastatistics.network.service.UpdateTokenService;
+import com.example.kevin.fifastatistics.utils.BottomNavUtils;
 import com.example.kevin.fifastatistics.utils.BuildUtils;
 import com.example.kevin.fifastatistics.utils.ColorUtils;
 import com.example.kevin.fifastatistics.utils.FabFactory;
-import com.example.kevin.fifastatistics.utils.ObservableUtils;
 import com.example.kevin.fifastatistics.views.FifaActionMenu;
-import com.example.kevin.fifastatistics.views.FifaNavigationDrawer;
 import com.github.clans.fab.FloatingActionButton;
 import com.lapism.searchview.SearchView;
 
 import net.hockeyapp.android.CrashManager;
 import net.hockeyapp.android.UpdateManager;
 
-import java.util.concurrent.TimeUnit;
-
-import rx.Observable;
 import rx.Subscription;
 
 public class MainActivity extends FifaBaseActivity implements OnMatchCreatedListener, View.OnScrollChangeListener {
 
-    public static final String PAGE_EXTRA = "page";
-    private static final String INITIALIZER = "initializer";
-    private static final String DRAWER_POSITION = "drawerPosition";
+    private static final String SELECTED_NAV_ITEM_ID = "navPosition";
 
-    private Toolbar mToolbar;
-    private FifaNavigationDrawer mDrawer;
-    private FragmentAdapter mAdapter;
-    private TabLayout mTabLayout;
-    private ViewPager mViewPager;
+    private ActivityMainBinding mBinding;
     private FifaActionMenu mActionMenu;
     private FifaEventManager mEventManager;
-    private FragmentInitializer mInitializer;
     private FabScrollListener mFabScrollListener;
     private User mUser;
-    private int currentDrawerPosition = 1;
+    private int mSelectedNavItemId = R.id.action_overview;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        mBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         restoreInstance(savedInstanceState);
-        initializeToolbar();
-        initializeViewPager();
-        initializeDrawer(savedInstanceState);
+        initToolbar();
         initializeFab();
-        initializeFragment();
+        initBottomBar();
+        initFragment(mSelectedNavItemId);
         syncRegistrationToken();
         syncFootballerCache();
         checkForHockeyAppUpdates();
@@ -77,91 +64,34 @@ public class MainActivity extends FifaBaseActivity implements OnMatchCreatedList
 
     private void restoreInstance(Bundle savedInstanceState) {
         if (savedInstanceState != null) {
-            mInitializer = (FragmentInitializer) savedInstanceState.getSerializable(INITIALIZER);
+            mSelectedNavItemId = savedInstanceState.getInt(SELECTED_NAV_ITEM_ID);
+            mUser = (User) savedInstanceState.getSerializable(USER);
         }
     }
 
     @SuppressWarnings("ConstantConditions")
-    private void initializeToolbar() {
-        mToolbar = (Toolbar) findViewById(R.id.toolbar);
-        SearchView sv = (SearchView) findViewById(R.id.searchView);
-        sv.setVersion(SearchView.VERSION_MENU_ITEM);
-        setSupportActionBar(mToolbar);
-    }
-
-    @SuppressWarnings("ConstantConditions")
-    private void initializeViewPager() {
-        mAdapter = new FragmentAdapter(getSupportFragmentManager());
-        mViewPager = (ViewPager) findViewById(R.id.viewpager);
-        mViewPager.setAdapter(mAdapter);
-        mViewPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
-            @Override
-            public void onPageSelected(int position) {
-                setOnBackPressHandler((OnBackPressedHandler) mAdapter.getItem(position));
-            }
-        });
-
-        mTabLayout = (TabLayout) findViewById(R.id.tabs);
-        mTabLayout.setupWithViewPager(mViewPager);
-    }
-
-    private void initializeDrawer(Bundle savedInstanceState) {
-        mDrawer = FifaNavigationDrawer.newInstance(this, mToolbar, mColor, savedInstanceState);
-        mDrawer.setOnDrawerItemClickListener((view, position, drawerItem) -> {
-            if (position == currentDrawerPosition) {
-                mDrawer.closeDrawer();
-                return true;
-            } else {
-                handleDrawerClick(position);
-                return false;
-            }
-        });
-    }
-
-    private void handleDrawerClick(int position) {
-        if (position == 7) {
-            Intent intent = new Intent(this, SettingsActivity.class);
-            startActivity(intent);
-            mDrawer.setPosition(currentDrawerPosition);
-            return;
-        }
-        Subscription drawerSubscription = Observable.just(position)
-                .map(p -> currentDrawerPosition = p)
-                .map(p -> FragmentInitializerFactory.createFragmentInitializer(p, mUser))
-                .compose(ObservableUtils.applySchedulers())
-                .delaySubscription(mDrawer.isOpen() ? 370 : 0, TimeUnit.MILLISECONDS)
-                .subscribe(this::prepareActivityForFragments);
-        addSubscription(drawerSubscription);
-    }
-
-    private void initializeFragment() {
-        if (mInitializer == null) {
-            mInitializer = FragmentInitializerFactory.createFragmentInitializer(this);
-        }
-        prepareActivityForFragments(mInitializer);
-    }
-
-    private void prepareActivityForFragments(FragmentInitializer initializer) {
-        mInitializer = initializer;
-        initializer.setActivityTitle(this);
-        initializer.changeAdapterDataSet(mAdapter);
-        initializer.setTabLayoutVisibility(mTabLayout);
-        initializer.setFabVisibility(mActionMenu);
-        mTabLayout.setSelectedTabIndicatorColor(mColor);
-        int currentPage = getIntent().getIntExtra(PAGE_EXTRA, 0);
-        mViewPager.setCurrentItem(currentPage);
-        setOnBackPressHandler((OnBackPressedHandler) mAdapter.getItem(currentPage));
+    private void initToolbar() {
+        mBinding.searchView.setVersion(SearchView.VERSION_MENU_ITEM);
+        setSupportActionBar(mBinding.toolbar);
     }
 
     private void initializeFab() {
-        mActionMenu = (FifaActionMenu) findViewById(R.id.fab_menu);
-        mActionMenu.setGradient(findViewById(R.id.gradient));
+        mActionMenu = mBinding.fabLayout.fabMenu;
+        mActionMenu.setGradient(mBinding.fabGradient);
         mFabScrollListener = new FabScrollListener(mActionMenu);
-        RetrievalManager.getCurrentUser().subscribe(user -> {
-            mUser = user;
-            initFabWithUser(mUser);
-            setupFavoriteTeam(mUser);
-        });
+        if (mUser == null) {
+            RetrievalManager.getCurrentUser().subscribe(user -> {
+                mUser = user;
+                performPostUserRetrievalSetup();
+            });
+        } else {
+            performPostUserRetrievalSetup();
+        }
+    }
+
+    private void performPostUserRetrievalSetup() {
+        initFabWithUser(mUser);
+        setupFavoriteTeam(mUser);
     }
 
     private void initFabWithUser(User user) {
@@ -191,6 +121,45 @@ public class MainActivity extends FifaBaseActivity implements OnMatchCreatedList
             manager.startNewFlow();
         });
         mActionMenu.addMenuButton(seriesButton);
+    }
+
+    private void initBottomBar() {
+        BottomNavUtils.disableShiftMode(mBinding.bottomNavigation);
+        mBinding.bottomNavigation.setSelectedItemId(mSelectedNavItemId);
+        mBinding.bottomNavigation.setOnNavigationItemSelectedListener(item -> {
+            mSelectedNavItemId = item.getItemId();
+            initFragment(mSelectedNavItemId);
+            return true;
+        });
+    }
+
+    private void initFragment(int itemId) {
+        switch (itemId) {
+            case R.id.action_overview: {
+                showFragment(new UserOverviewFragment(), R.string.overview, View.VISIBLE);
+                break;
+            }
+            case R.id.action_matches: {
+                Fragment f = EventStreamFragment.newMatchStreamInstance(mUser);
+                showFragment(f, R.string.matches, View.GONE);
+                break;
+            }
+            case R.id.action_series: {
+                Fragment f = EventStreamFragment.newSeriesStreamInstance(mUser);
+                showFragment(f, R.string.series, View.GONE);
+                break;
+            }
+            case R.id.action_players:
+                showFragment(FriendsFragment.newInstance(), R.string.players, View.GONE);
+                break;
+        }
+    }
+
+    private void showFragment(Fragment fragment, @StringRes int titleRes, int actionMenuVisibilty) {
+        mActionMenu.setVisibility(actionMenuVisibilty);
+        setTitle(getString(titleRes));
+        getSupportFragmentManager().beginTransaction().replace(R.id.content, fragment).commit();
+        setOnBackPressHandler((OnBackPressedHandler) fragment);
     }
 
     private void syncRegistrationToken() {
@@ -244,35 +213,24 @@ public class MainActivity extends FifaBaseActivity implements OnMatchCreatedList
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        outState = mDrawer.saveInstanceState(outState);
         super.onSaveInstanceState(outState);
-        outState.putInt(DRAWER_POSITION, currentDrawerPosition);
-        outState.putSerializable(INITIALIZER, mInitializer);
+        outState.putInt(SELECTED_NAV_ITEM_ID, mSelectedNavItemId);
+        outState.putSerializable(USER, mUser);
     }
 
     @Override
     public void onBackPressed() {
         if (mActionMenu.isOpened()) {
             mActionMenu.close(true);
-        } else if (mDrawer.isOpen()) {
-            mDrawer.closeDrawer();
         } else if (performHandlerBackPress()) {
             return;
-        } else if (!(getCurrentFragment() instanceof UserOverviewFragment)) {
-            mDrawer.setPosition(1);
         } else {
             superOnBackPressed();
         }
     }
 
-    private Fragment getCurrentFragment() {
-        return mAdapter.getItem(0);
-    }
-
     @Override
     protected void onColorUpdated() {
-        mTabLayout.setSelectedTabIndicatorColor(mColor);
-        mDrawer.updateColors(mColor);
         mActionMenu.removeAllMenuButtons();
         initFabWithUser(mUser);
     }
@@ -288,11 +246,6 @@ public class MainActivity extends FifaBaseActivity implements OnMatchCreatedList
         if (mEventManager != null) {
             mEventManager.onMatchCreated(match);
         }
-    }
-
-    @Override
-    public void setNavigationLocked(boolean locked) {
-        mDrawer.setLocked(locked);
     }
 
     @Override

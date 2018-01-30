@@ -1,15 +1,20 @@
 package com.example.kevin.fifastatistics.fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 
 import com.example.kevin.fifastatistics.FifaApplication;
 import com.example.kevin.fifastatistics.R;
+import com.example.kevin.fifastatistics.activities.SettingsActivity;
 import com.example.kevin.fifastatistics.animation.CircularAnimationHelper;
 import com.example.kevin.fifastatistics.databinding.FragmentUserOverviewBinding;
 import com.example.kevin.fifastatistics.event.EventBus;
@@ -58,6 +63,7 @@ public class UserOverviewFragment extends FifaBaseFragment implements OnBackPres
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mUser = PrefsManager.getUser();
+        setHasOptionsMenu(true);
         observeUpdateRemovedEvents();
         observerSeriesRemovedEvents();
     }
@@ -136,6 +142,22 @@ public class UserOverviewFragment extends FifaBaseFragment implements OnBackPres
     private void refresh() {
         mBinding.swiperefresh.setRefreshing(true);
         mViewModel.update();
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_user_overview, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.action_settings) {
+            Intent intent = new Intent(getContext(), SettingsActivity.class);
+            startActivity(intent);
+            return true;
+        } else {
+            return super.onOptionsItemSelected(item);
+        }
     }
 
     @Override

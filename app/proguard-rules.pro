@@ -15,3 +15,8 @@
 #-keepclassmembers class fqcn.of.javascript.interface.for.webview {
 #   public *;
 #}
+
+# Needed for using reflection to disable shifting mode in bottom navigation menu
+-keepclassmembers class android.support.design.internal.BottomNavigationMenuView {
+    boolean mShiftingMode;
+}

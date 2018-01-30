@@ -83,19 +83,6 @@ public class FifaSearchView {
                 return false;
             }
         });
-        mSearchView.setOnOpenCloseListener(new SearchView.OnOpenCloseListener() {
-            @Override
-            public boolean onOpen() {
-                activity.setNavigationLocked(true);
-                return true;
-            }
-
-            @Override
-            public boolean onClose() {
-                activity.setNavigationLocked(false);
-                return true;
-            }
-        });
     }
 
     private SearchAdapter initializeAdapter(FifaBaseActivity activity, List<? extends Player> players) {

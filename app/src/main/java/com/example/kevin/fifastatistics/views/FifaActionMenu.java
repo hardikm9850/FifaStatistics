@@ -2,20 +2,20 @@ package com.example.kevin.fifastatistics.views;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.view.animation.AnimationUtils;
 
 import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.animation.CircularAnimationHelper;
+import com.example.kevin.fifastatistics.utils.UiUtils;
 import com.github.clans.fab.FloatingActionMenu;
-
-/**
- * Created by kevin on 2017-06-30.
- */
 
 public class FifaActionMenu extends FloatingActionMenu {
 
     private View mGradient;
+    private int[] mCenterCoordinates;
 
     public FifaActionMenu(Context context) {
         this(context, null);
@@ -29,17 +29,28 @@ public class FifaActionMenu extends FloatingActionMenu {
         super(context, attrs, defStyleAttr);
         setMenuButtonShowAnimation(AnimationUtils.loadAnimation(context, R.anim.slide_in_bottom));
         setMenuButtonHideAnimation(AnimationUtils.loadAnimation(context, R.anim.slide_out_bottom));
+        calculateCenterCoordinates();
+    }
+
+    private void calculateCenterCoordinates() {
+        getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                mCenterCoordinates = UiUtils.getCenterCoordinates(FifaActionMenu.this);
+            }
+        });
     }
 
     @Override
     public void open(boolean animate) {
-        CircularAnimationHelper.revealOpenBottomRight(mGradient, getContext(), null);
+        CircularAnimationHelper.revealOpenFrom(mGradient, mCenterCoordinates, getContext());
         super.open(animate);
     }
 
     @Override
     public void close(boolean animate) {
-        CircularAnimationHelper.revealCloseBottomRight(mGradient, getContext(), null);
+        CircularAnimationHelper.revealCloseTo(mGradient, mCenterCoordinates, getContext());
         super.close(animate);
     }
 

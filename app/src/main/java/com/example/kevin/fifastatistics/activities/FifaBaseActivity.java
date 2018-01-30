@@ -45,8 +45,6 @@ public abstract class FifaBaseActivity extends AppCompatActivity implements Tran
 
     protected void onColorUpdated() {}
 
-    public void setNavigationLocked(boolean locked) {}
-
     @Override
     public void onBackPressed() {
         if (performHandlerBackPress()) {

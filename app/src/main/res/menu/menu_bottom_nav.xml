@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/action_overview"
+        android:icon="@drawable/ic_home_black_24dp"
+        android:title="@string/overview" />
+    <item
+        android:id="@+id/action_matches"
+        android:icon="@drawable/soccer"
+        android:title="@string/matches" />
+    <item
+        android:id="@+id/action_series"
+        android:icon="@drawable/trophy"
+        android:title="@string/series" />
+    <item
+        android:id="@+id/action_players"
+        android:icon="@drawable/ic_group_black_24dp"
+        android:title="@string/players" />
+
+</menu>

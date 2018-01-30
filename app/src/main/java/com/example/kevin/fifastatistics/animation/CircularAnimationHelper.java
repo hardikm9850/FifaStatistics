@@ -26,6 +26,14 @@ public class CircularAnimationHelper {
         revealClose(view, view.getWidth() / 2, view.getHeight() / 2, 200, context, null);
     }
 
+    public static void revealOpenFrom(View view, int[] coordinates, Context context) {
+        revealOpen(view, coordinates[0], coordinates[1], 200, context, null);
+    }
+
+    public static void revealCloseTo(View view, int[] coordinates, Context context) {
+        revealClose(view, coordinates[0], coordinates[1], 200, context, null);
+    }
+
     public static void revealOpenBottomRight(View view, Context context, final AnimationListener listener) {
         int[] br = UiUtils.getViewBottomRight(view);
         revealOpen(view, br[0], br[1], 200, context, listener);

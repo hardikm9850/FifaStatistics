@@ -64,7 +64,6 @@ public class StatsImageHandler {
         return new SimpleObserver<User.StatsPair>() {
             @Override
             public void onError(Throwable e) {
-                Log.e("KEVIN!!!", e.getMessage(), e);
                 onOcrResultReceived(dialog);
                 mInteraction.onStatsRetrievalError();
             }
