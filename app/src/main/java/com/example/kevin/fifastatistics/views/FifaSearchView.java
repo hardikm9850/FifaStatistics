@@ -46,7 +46,6 @@ public class FifaSearchView {
         mSearchView = (SearchView) activity.findViewById(R.id.searchView);
         setBasicSearchViewProperties();
         setSearchViewListeners(activity);
-
         mAdapter = initializeAdapter(activity, users);
         attachAdapter();
     }
@@ -65,6 +64,7 @@ public class FifaSearchView {
         mSearchView.setTheme(SearchView.THEME_LIGHT);
         mSearchView.setVoice(false);
         mSearchView.setHint(R.string.search_players);
+        mSearchView.setArrowOnly(true);
     }
 
     private void setSearchViewListeners(FifaBaseActivity activity) {
@@ -88,7 +88,6 @@ public class FifaSearchView {
     private SearchAdapter initializeAdapter(FifaBaseActivity activity, List<? extends Player> players) {
         SearchAdapter adapter = new SearchAdapter(activity, players);
         adapter.addOnItemClickListener((v, p) -> launchPlayerActivity(activity, adapter, v, p));
-
         return adapter;
     }
 
