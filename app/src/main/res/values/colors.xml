@@ -5,8 +5,8 @@
     <color name="colorPrimaryDark">#181715</color>
     <color name="colorPrimaryDarkTranslucent">#B2181715</color>
     <color name="colorPrimaryDarkTranslucenter">#92181715</color>
-    <color name="colorAccent">#00c763</color>
-    <color name="colorAccentDark">#00ac56</color>
+    <color name="colorAccent">#80CBC4</color>
+    <color name="colorAccentDark">#4DB6AC</color>
     <color name="blue">#3F51B5</color>
     <color name="white">#FFFFFF</color>
     <color name="background">#212121</color>
@@ -29,7 +29,6 @@
     <color name="black_semi_transparent">#B2000000</color>
     <color name="black_tint">#50000000</color>
 
-    <color name="material_drawer_dark_selected_text">#4CAF50</color>
     <color name="gold">#FFD700</color>
 
     <color name="circle_background">#FF484644</color>
