@@ -12,6 +12,7 @@
     <color name="background">#212121</color>
     <color name="transparent">#00000000</color>
     <color name="error">@android:color/holo_red_light</color>
+    <color name="colorMenuItem">#909090</color>
 
     <!-- Card view colors -->
     <color name="cardViewBackground">#262523</color>
