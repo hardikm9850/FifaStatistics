@@ -36,14 +36,15 @@ public class LeadersCardViewModel extends FifaBaseViewModel {
     private String mUsername;
     private ActivityLauncher mLauncher;
 
-    public LeadersCardViewModel(Leaders leaders, String username, ActivityLauncher launcher) {
-        initUsername(username);
+    public LeadersCardViewModel(Leaders leaders, String username, ActivityLauncher launcher,
+                                boolean isMyLeaders) {
+        initUsername(username, isMyLeaders);
         initLeaders(leaders);
         mLauncher = launcher;
     }
 
-    private void initUsername(String username) {
-        if (username != null && username.equals(PrefsManager.getUserName())) {
+    private void initUsername(String username, boolean isMyLeaders) {
+        if (isMyLeaders) {
             username = MY_LEFT_HEADER;
         }
         mUsername = username;

@@ -58,7 +58,6 @@ public abstract class RecyclerCardViewModel<T, ADAPTER extends AbstractCardAdapt
 
     @Bindable
     public int getVisibility() {
-        Log.d("VIEWMODEL", "items empty? " + CollectionUtils.isEmpty(mItems));
         return mIsCurrentUser && !CollectionUtils.isEmpty(mItems) ? View.VISIBLE : View.GONE;
     }
 

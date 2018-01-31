@@ -56,7 +56,6 @@ public class MainActivity extends FifaBaseActivity implements OnMatchCreatedList
         initToolbar();
         initializeFab();
         initBottomBar();
-        initFragment(mSelectedNavItemId);
         syncRegistrationToken();
         syncFootballerCache();
         checkForHockeyAppUpdates();
@@ -91,6 +90,7 @@ public class MainActivity extends FifaBaseActivity implements OnMatchCreatedList
     }
 
     private void performPostUserRetrievalSetup() {
+        initFragment(mSelectedNavItemId);
         initFabWithUser(mUser);
         setupFavoriteTeam(mUser);
     }
@@ -128,8 +128,10 @@ public class MainActivity extends FifaBaseActivity implements OnMatchCreatedList
         BottomNavUtils.disableShiftMode(mBinding.bottomNavigation);
         mBinding.bottomNavigation.setSelectedItemId(mSelectedNavItemId);
         mBinding.bottomNavigation.setOnNavigationItemSelectedListener(item -> {
-            mSelectedNavItemId = item.getItemId();
-            initFragment(mSelectedNavItemId);
+            if (mSelectedNavItemId != item.getItemId()) {
+                mSelectedNavItemId = item.getItemId();
+                initFragment(mSelectedNavItemId);
+            }
             return true;
         });
     }
@@ -137,7 +139,7 @@ public class MainActivity extends FifaBaseActivity implements OnMatchCreatedList
     private void initFragment(int itemId) {
         switch (itemId) {
             case R.id.action_overview: {
-                showFragment(new UserOverviewFragment(), R.string.overview, View.VISIBLE);
+                showFragment(UserOverviewFragment.newInstance(mUser), R.string.overview, View.VISIBLE);
                 break;
             }
             case R.id.action_matches: {

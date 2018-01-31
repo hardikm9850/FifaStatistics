@@ -4,6 +4,7 @@ import android.databinding.Bindable;
 
 import com.example.kevin.fifastatistics.BR;
 import com.example.kevin.fifastatistics.interfaces.ActivityLauncher;
+import com.example.kevin.fifastatistics.listeners.SimpleObserver;
 import com.example.kevin.fifastatistics.managers.preferences.PrefsManager;
 import com.example.kevin.fifastatistics.models.databasemodels.match.CurrentSeries;
 import com.example.kevin.fifastatistics.models.databasemodels.match.MatchUpdate;
@@ -18,6 +19,7 @@ import com.example.kevin.fifastatistics.viewmodels.card.UpdatesCardViewModel;
 import java.util.ArrayList;
 import java.util.List;
 
+import rx.Observable;
 import rx.Subscription;
 
 public class UserOverviewViewModel extends FifaBaseViewModel {
@@ -28,34 +30,33 @@ public class UserOverviewViewModel extends FifaBaseViewModel {
     private UpdatesCardViewModel mUpdatesViewModel;
     private CurrentSeriesCardViewModel mCurrentSeriesViewModel;
     private LeadersCardViewModel mLeadersViewModel;
-    private List<MatchUpdate> mMatchUpdates;
 
     public UserOverviewViewModel(User user) {
-        this(user, null, null, null);
+        this(user, null, null);
     }
 
-    public UserOverviewViewModel(User user, UserOverviewViewModelInteraction interaction,
-                                 List<MatchUpdate> updates, ActivityLauncher launcher) {
+    public UserOverviewViewModel(User user, UserOverviewViewModelInteraction interaction, ActivityLauncher launcher) {
         mUser = user;
         mInteraction = interaction;
         mRecords = new RecordsCardViewModel(user);
-        mUpdatesViewModel = new UpdatesCardViewModel(launcher, updates, user);
-        mLeadersViewModel = new LeadersCardViewModel(user.getLeaders(), user.getName(), launcher);
-        mMatchUpdates = updates;
-        initCurrentSeriesCard(launcher, user);
+        boolean isCurrentUser = interaction != null;
+        mUpdatesViewModel = new UpdatesCardViewModel(launcher, null, user, isCurrentUser);
+        mLeadersViewModel = new LeadersCardViewModel(user.getLeaders(), user.getName(), launcher, isCurrentUser);
+        initCurrentSeriesCard(launcher, user, isCurrentUser);
     }
 
-    private void initCurrentSeriesCard(ActivityLauncher launcher, User currentUser) {
-        boolean isCurrentUser = launcher != null;
-        List<CurrentSeries> series = PrefsManager.getSeriesPrefs().getCurrentSeries();
-        mCurrentSeriesViewModel = new CurrentSeriesCardViewModel(launcher, series, isCurrentUser, currentUser);
+    private void initCurrentSeriesCard(ActivityLauncher launcher, User currentUser, boolean isCurrentUser) {
+        mCurrentSeriesViewModel = new CurrentSeriesCardViewModel(launcher, null, isCurrentUser, currentUser);
+        Observable.fromCallable(() -> PrefsManager.getSeriesPrefs().getCurrentSeries())
+                .compose(ObservableUtils.applySchedulers())
+                .subscribe(series -> mCurrentSeriesViewModel.setItems(series));
     }
 
     public void update() {
         if (mUser != null) {
             Subscription s = FifaApi.getUserApi().getUser(mUser.getId())
                     .compose(ObservableUtils.applySchedulers())
-                    .subscribe(new ObservableUtils.EmptyOnCompleteObserver<User>() {
+                    .subscribe(new SimpleObserver<User>() {
                 @Override
                 public void onError(Throwable e) {
                     if (mInteraction != null) {

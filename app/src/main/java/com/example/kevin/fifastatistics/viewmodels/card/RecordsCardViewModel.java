@@ -1,12 +1,12 @@
 package com.example.kevin.fifastatistics.viewmodels.card;
 
+import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
-import com.example.kevin.fifastatistics.viewmodels.FifaBaseViewModel;
 import com.example.kevin.fifastatistics.viewmodels.item.RecordsItemViewModel;
 
-public class RecordsCardViewModel extends FifaBaseViewModel {
+public class RecordsCardViewModel extends BaseObservable {
 
     private RecordsItemViewModel mMatchesViewModel;
     private RecordsItemViewModel mSeriesViewModel;
