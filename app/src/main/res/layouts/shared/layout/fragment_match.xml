@@ -35,7 +35,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:layoutAnimation="@anim/default_layout_animation">
+                    android:layoutAnimation="@anim/default_layout_animation"
+                    android:visibility="@{viewModel.statsVisibility}">
 
                     <include
                         layout="@layout/card_boxscore"
@@ -59,8 +60,7 @@
                     <include
                         android:id="@+id/stats_card_layout"
                         layout="@layout/card_stats_new"
-                        bind:viewModel="@{viewModel.stats}"
-                        android:visibility="@{viewModel.statsVisibility}"/>
+                        bind:viewModel="@{viewModel.stats}"/>
 
                 </LinearLayout>
 
