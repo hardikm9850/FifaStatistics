@@ -6,10 +6,7 @@
     <color name="colorPrimaryDarkTranslucent">#B2181715</color>
     <color name="colorPrimaryDarkTranslucenter">#92181715</color>
     <color name="colorAccent">#80CBC4</color>
-    <color name="colorAccentDark">#4DB6AC</color>
-    <color name="blue">#3F51B5</color>
     <color name="white">#FFFFFF</color>
-    <color name="background">#212121</color>
     <color name="transparent">#00000000</color>
     <color name="error">@android:color/holo_red_light</color>
     <color name="colorMenuItem">#909090</color>
@@ -20,13 +17,10 @@
     <color name="statOpponentColor">#FF484644</color>
 
     <color name="lighter_black">#212330</color>
-    <color name="steel_gray">#1a1a26</color>
     <color name="storm_gray">#717482</color>
 
     <!-- FAB -->
-    <color name="white_pressed">#f1f1f1</color>
     <color name="half_black">#808080</color>
-    <color name="black_semi_transparent">#B2000000</color>
     <color name="black_tint">#50000000</color>
 
     <color name="gold">#FFD700</color>

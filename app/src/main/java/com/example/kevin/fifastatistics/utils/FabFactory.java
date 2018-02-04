@@ -34,14 +34,6 @@ public class FabFactory {
         return createButtonWithAttributes(R.string.play_series, R.drawable.trophy);
     }
 
-    public FloatingActionButton createAcceptRequestFab() {
-        return createButtonWithAttributes(R.string.accept_friend_request, R.drawable.ic_check_white_24dp);
-    }
-
-    public FloatingActionButton createDeclineRequestFab() {
-        return createButtonWithAttributes(R.string.decline_friend_request, R.drawable.ic_not_interested_white_24dp);
-    }
-
     private FloatingActionButton createButtonWithAttributes(int titleId, int iconId) {
         FloatingActionButton button = new FloatingActionButton(mContext);
         button.setColorNormal(mColor);

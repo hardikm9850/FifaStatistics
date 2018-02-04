@@ -1,90 +1,27 @@
 <resources>
     <string name="app_name">FIFA Statistics</string>
 
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
-
-    <string name="action_settings">Settings</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-
     <!-- MENU ITEMS -->
     <string name="menuItem_settings">Settings</string>
     <string name="menuItem_search">Search</string>
-    <string name="menuItem_requests">Requests</string>
     <string name="menuItem_add_match">Add Match</string>
-    <string name="menuItem_camera">Camera</string>
-    <string name="menuItem_confirm">Confirm</string>
     <string name="menuItem_filterMatches">Filter Matches</string>
     <string name="menuItem_requestUpdate">Request update</string>
     <string name="menuItem_viewPendingUpdate">View pending update</string>
 
     <!-- NAVIGATION DRAWER -->
     <string name="overview">Overview</string>
-    <string name="statistics">Statistics</string>
-    <string name="friends">Friends</string>
     <string name="players">Players</string>
     <string name="settings">Settings</string>
-    <string name="starred">Starred</string>
     <string name="matches">Matches</string>
-    <string name="title_activity_login">Sign in</string>
-    <string name="drawer.fifa_legend">FIFA Legend</string>
 
-    <!-- Sign-in status messages -->
-    <string name="title_text">Google Sign-In\nQuickstart</string>
-    <string name="signed_in_fmt">Signed in as: %s</string>
-    <string name="signed_in">Signed in</string>
-    <string name="signing_in">Signing in…</string>
-    <string name="signed_out">Signed out</string>
-    <string name="signed_in_err">"Error: please check logs."</string>
-    <string name="error_null_person">
-        Error: Plus.PeopleApi.getCurrentPerson returned null. Ensure that the Google+ API is
-        enabled for your project, you have a properly configured google-services.json file
-        and that your device has an internet connection.
-    </string>
-    <string name="loading">Loading…</string>
-    <string name="auth_code_fmt">Auth Code: %s</string>
-    <string name="id_token_fmt">ID Token: %s</string>
 
-    <!-- Google Play Services error for Toast -->
-    <string name="play_services_error_fmt">Google Play Services Error: %i</string>
-
-    <!-- Button labels -->
-    <string name="sign_out">Sign Out</string>
-    <string name="disconnect">Disconnect</string>
     <string name="camera_button_description">Take Picture</string>
 
-    <!-- Content Description for images -->
-    <string name="desc_google_icon">Google Logo</string>
-
-    <!-- Rationale for asking for Contacts -->
-    <string name="contacts_permission_rationale">Contacts access is needed in order to retrieve your email address.</string>
-
-    <!-- Activity Names and Descriptions -->
-    <string name="name_sign_in_activity">SignInActivity</string>
-    <string name="desc_sign_in_activity">Signing in, signing out, and revoking access.</string>
-    <string name="desc_sign_in_activity_scopes">Signing in, signing out, and revoking access with Google Drive permissions.</string>
-    <string name="name_id_token_activity">IdTokenActivity</string>
-    <string name="desc_id_token_activity">Retrieving an ID Token for the user.</string>
-    <string name="desc_auth_code_activity">Demonstrate retrieving an auth code for authorizing your server.</string>
-    <string name="name_auth_code_activity">ServerAuthCodeActivity</string>
     <string name="name_camera_activity">Camera</string>
 
-    <!-- TODO(user): replace with your real server client ID -->
-    <!-- Server Client ID.  This should be a valid Web OAuth 2.0 Client ID obtained
-         from https://console.developers.google.com/ -->
     <string name="server_client_id">433114915503-sc59fevmgf8npcehi31ooc8en6b7j7ak.apps.googleusercontent.com</string>
-    <string name="notification_key">AAAAZNepIq8:APA91bF6NciH4LRjh-LyDtbTfSbympijUo1doURSTP63WIrYlEJMqt91RpHk5nCuzatYxz5TibqKvl9eK4-m5ThxzYMr3aUTxhv5TWmhcq_zRtsr_oncpY9U31YbqgX2jyubAxwhC0SNW5uKLq4vER1KN3I9Wab6cA</string>
 
-    <!-- NOTIFICATIONS -->
-    <string name="friend_request_from">Friend request from</string>
-    <string name="accepted_your_friend_request">accepted your friend request</string>
-    <string name="declined_your_friend_request">declined your friend request</string>
-    <string name="new_friend_request_npe">New friend request</string>
-    <string name="added_a_new_match">added a new match</string>
-    <string name="notification_accept">ACCEPT</string>
-    <string name="notification_decline">DECLINE</string>
     <string name="view">View</string>
     <string name="view_match">View match</string>
 
@@ -124,7 +61,6 @@
     <string name="failed_to_parse">Failed to parse image.</string>
     <string name="keep_editing">Keep Editing</string>
     <string name="discard">Discard</string>
-    <string name="team_logo">%1$s logo</string>
     <string name="retry">Retry</string>
     <string name="error_goals">Cannot change the match result</string>
     <string name="error_shots">You cannot have more Goals or Shots on Target than Shots</string>
@@ -156,15 +92,10 @@
     <string name="no_network">No network connection</string>
     <string name="unable_to_contact_server">Unable to contact server</string>
     <string name="unknown_error">Unknown error</string>
-    <string name="friend_request_error">Unable to send friend request</string>
 
     <!-- FABS -->
-    <string name="send_friend_request">Send Friend Request</string>
     <string name="play_match">Play Match</string>
     <string name="play_series">Play Series</string>
-    <string name="accept_friend_request">Accept Friend Request</string>
-    <string name="decline_friend_request">Decline Friend Request</string>
-    <string name="friend_request_pending">Friend Request Pending</string>
     <string name="error_loading_players">Failed to load players.</string>
     <string name="error_select_teams">Please select teams</string>
     <string name="switch_sides">Switch sides</string>
@@ -217,10 +148,6 @@
     <string name="et2">ET2</string>
     <string name="creating_update">Uploading request</string>
 
-    <!-- PERMISSIONS -->
-    <string name="request_camera_permission">FIFA Statistics needs camera permission.</string>
-    <string name="camera_error">This device doesn\'t support Camera2 API.</string>
-
     <!-- TRANSITIONS -->
     <string name="transition_profile_image">fifaTransitionProfileImage</string>
     <string name="transition_match_toolbar">fifaTransitionMatchToolbar</string>
@@ -229,7 +156,6 @@
     <string name="error_loading_teams">Failed to load teams</string>
     <string name="theme">Theme</string>
     <string name="general">General</string>
-    <string name="notifications">Notifications</string>
     <string name="advanced">Advanced</string>
 
     <!-- preferences -->

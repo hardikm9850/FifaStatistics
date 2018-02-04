@@ -24,12 +24,6 @@
         <item name="android:textColor">@android:color/white</item>
     </style>
 
-    <!-- FAB menu -->
-    <style name="menu_labels_style">
-        <item name="android:background">@drawable/fab_label_background</item>
-        <item name="android:textColor">@color/white</item>
-    </style>
-
     <!-- Text -->
     <style name="text_tiny_grey" parent="TextAppearance.AppCompat">
         <item name="android:textSize">@dimen/text_tiny</item>

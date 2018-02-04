@@ -1,7 +1,6 @@
 <resources>
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="nav_header_vertical_spacing">16dp</dimen>
-    <dimen name="nav_header_height">160dp</dimen>
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">8dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
@@ -11,13 +10,10 @@
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="fab_button_margin">4dp</dimen>
     <dimen name="text_margin">16dp</dimen>
-    <dimen name="g_top_margin">100dp</dimen>
     <dimen name="elevation">4dp</dimen>
 
-    <dimen name="app_bar_height">156dp</dimen>
     <dimen name="toolbar_height">48dp</dimen>
     <dimen name="update_padding_bottom">64dp</dimen>
-    <dimen name="status_bar_height">24dp</dimen>
     <dimen name="search_item_size">48dp</dimen>
     <dimen name="search_list_item_height">72dp</dimen>
     <dimen name="shutter_size">45dp</dimen>
@@ -26,7 +22,6 @@
     <dimen name="civ_border_width">4dp</dimen>
     <dimen name="progress_loader_item_margin">5dp</dimen>
     <dimen name="retry_icon_size">48dp</dimen>
-    <dimen name="stats_list_item_height">52dp</dimen>
     <dimen name="match_player_margin_internal">10dp</dimen>
     <dimen name="match_player_margin_external">12dp</dimen>
     <dimen name="match_score_margin_end">50dp</dimen>
@@ -36,14 +31,12 @@
     <dimen name="team_item_logo_size">30dp</dimen>
     <dimen name="match_team_logo_size">20dp</dimen>
     <dimen name="match_team_logo_size_large">60dp</dimen>
-    <dimen name="match_event_item_player_image_size">52dp</dimen>
     <dimen name="match_event_icon_size">18dp</dimen>
     <dimen name="match_event_icon_margin_top">6dp</dimen>
     <dimen name="match_card_edittext_width">40dp</dimen>
     <dimen name="match_card_current_width">30dp</dimen>
     <dimen name="boxscore_item_width">40dp</dimen>
     <dimen name="shutter_button_margin">12dp</dimen>
-    <dimen name="leader_image_size">35dp</dimen>
 
     <dimen name="friends_fragment_image_height">130dp</dimen>
     <dimen name="headshot_radius">25dp</dimen>
@@ -52,25 +45,17 @@
     <dimen name="player_search_margin_bottom">7dp</dimen>
 
     <!-- Card view properties -->
-    <dimen name="card_corner_radius">4dp</dimen>
-    <dimen name="card_header_height">40dp</dimen>
-    <dimen name="card_header_text_size">15sp</dimen>
     <dimen name="record_item_vertical_padding">4dp</dimen>
     <dimen name="record_header_vertical_padding">5dp</dimen>
 
     <!-- PLAYER ACTIVITY -->
-    <dimen name="user_image_height">100dp</dimen>
-    <dimen name="player_image_width">100dp</dimen>
-    <dimen name="player_image_small_width">32dp</dimen>
     <dimen name="toolbar_profile_image_size">32dp</dimen>
     <dimen name="toolbar_image_margin_end">12dp</dimen>
 
     <!-- Create Series Activity -->
     <dimen name="match_number_textview_margin_end">20dp</dimen>
     <dimen name="match_result_textview_layout_width">25dp</dimen>
-    <dimen name="match_result_textview_margin_end">2dp</dimen>
     <dimen name="create_series_user_image_size">50dp</dimen>
-    <dimen name="create_series_user_image_border_size">2dp</dimen>
     <dimen name="create_series_user_image_margin">20dp</dimen>
     <dimen name="create_series_score_summary_size">82dp</dimen>
 
