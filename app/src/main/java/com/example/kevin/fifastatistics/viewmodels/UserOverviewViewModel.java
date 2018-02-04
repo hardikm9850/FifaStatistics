@@ -43,7 +43,7 @@ public class UserOverviewViewModel extends FifaBaseViewModel {
         mRecords = new RecordsCardViewModel(user);
         boolean isCurrentUser = interaction != null;
         mUpdatesViewModel = new UpdatesCardViewModel(launcher, null, user, isCurrentUser);
-        mLeadersViewModel = new LeadersCardViewModel(user.getLeaders(), user.getName(), launcher, isCurrentUser);
+        mLeadersViewModel = new LeadersCardViewModel(user.getLeaders(), user.getFirstName(), launcher, isCurrentUser);
         initCurrentSeriesCard(launcher, user, isCurrentUser);
         initStatsCard(user, isCurrentUser);
     }

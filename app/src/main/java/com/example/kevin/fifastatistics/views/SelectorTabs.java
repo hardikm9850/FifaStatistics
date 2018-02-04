@@ -83,7 +83,9 @@ public class SelectorTabs extends TabLayout {
 
     @BindingAdapter("addOnTabSelectedListener")
     public static void addTabSelectedListener(TabLayout layout, OnTabSelectedListener listener) {
-        layout.addOnTabSelectedListener(listener);
+        if (listener != null) {
+            layout.addOnTabSelectedListener(listener);
+        }
     }
 
     @BindingAdapter("tabTitles")

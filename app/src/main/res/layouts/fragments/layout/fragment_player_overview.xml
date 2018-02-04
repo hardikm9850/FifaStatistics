@@ -31,6 +31,7 @@
                 android:descendantFocusability="blocksDescendants">
 
                 <include layout="@layout/user_overview_data_layout"
+                    android:id="@+id/user_overview_layout"
                     bind:viewModel="@{viewModel}"
                     android:visibility="@{viewModel != null ? View.VISIBLE : View.GONE}"/>
 

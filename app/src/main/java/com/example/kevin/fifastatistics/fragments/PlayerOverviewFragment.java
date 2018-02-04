@@ -13,6 +13,7 @@ import com.example.kevin.fifastatistics.databinding.FragmentPlayerOverviewBindin
 import com.example.kevin.fifastatistics.interfaces.OnBackPressedHandler;
 import com.example.kevin.fifastatistics.managers.RetrofitErrorManager;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
+import com.example.kevin.fifastatistics.utils.TransitionUtils;
 import com.example.kevin.fifastatistics.viewmodels.fragment.PlayerOverviewFragmentViewModel;
 import com.example.kevin.fifastatistics.viewmodels.UserOverviewViewModel;
 
@@ -80,6 +81,14 @@ public class PlayerOverviewFragment extends FifaBaseFragment implements OnBackPr
     public void onPlayerLoaded(User player) {
         UserOverviewViewModel viewModel = new UserOverviewViewModel(player);
         mBinding.setViewModel(viewModel);
+        preventStatsTransitionFromMakingViewBlank();
+    }
+
+    private void preventStatsTransitionFromMakingViewBlank() {
+        mBinding.getRoot().postDelayed(() ->
+                TransitionUtils.addTransitionCallbackToBinding(mBinding.userOverviewLayout.statsCardLayout),
+                100
+        );
     }
 
     @Override
