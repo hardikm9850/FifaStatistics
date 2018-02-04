@@ -226,7 +226,11 @@ public class MainActivity extends FifaBaseActivity implements OnMatchCreatedList
         if (mActionMenu.isOpened()) {
             mActionMenu.close(true);
         } else if (!performHandlerBackPress()) {
-            superOnBackPressed();
+            if (mSelectedNavItemId != R.id.action_overview) {
+                mBinding.bottomNavigation.setSelectedItemId(R.id.action_overview);
+            } else {
+                super.onBackPressed();
+            }
         }
     }
 

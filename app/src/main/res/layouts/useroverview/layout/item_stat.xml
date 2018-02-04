@@ -10,14 +10,14 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="52dp">
+        android:layout_height="52dp"
+        android:layout_marginRight="@dimen/activity_vertical_margin"
+        android:layout_marginLeft="@dimen/activity_vertical_margin">
 
         <android.support.percent.PercentFrameLayout
             android:id="@+id/percent"
             android:layout_width="match_parent"
             android:layout_height="2dp"
-            android:layout_marginRight="@dimen/activity_horizontal_margin"
-            android:layout_marginLeft="@dimen/activity_horizontal_margin"
             android:layout_alignParentBottom="true">
 
             <View
@@ -42,12 +42,11 @@
             android:id="@+id/stat_for_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/activity_horizontal_margin"
             android:layout_marginBottom="@dimen/activity_vertical_margin"
             android:layout_above="@id/percent"
             android:layout_alignParentStart="true"
             android:textColor="@color/text_main"
-            android:gravity="center"
+            android:gravity="center_vertical|start"
             android:text="@{viewModel.leftValue}"
             android:textAppearance="@style/text_tiny_bold_main"/>
 
@@ -55,12 +54,11 @@
             android:id="@+id/stat_against_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/activity_horizontal_margin"
             android:layout_marginBottom="@dimen/activity_vertical_margin"
             android:layout_above="@id/percent"
             android:layout_alignParentEnd="true"
             android:textColor="@color/text_main"
-            android:gravity="center"
+            android:gravity="center_vertical|end"
             android:text="@{viewModel.rightValue}"
             android:textAppearance="@style/text_tiny_bold_main"/>
 

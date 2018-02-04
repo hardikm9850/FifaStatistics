@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:bind="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="com.example.kevin.fifastatistics.viewmodels.card.StatsCardViewModel"/>
+    </data>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/activity_horizontal_margin"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:layout_marginBottom="@dimen/activity_horizontal_margin"
+            android:textAppearance="@style/text_bold_grey_small"
+            android:text="@string/stats"/>
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/stats_card_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/activity_horizontal_margin"
+            style="@style/CardViewStyle">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/activity_vertical_margin"
+                android:orientation="vertical">
+
+                <android.support.design.widget.TabLayout
+                    android:id="@+id/stats_tabs"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="@{viewModel.tabVisibility}"
+                    app:tabTitles="@{viewModel.tabTitles}"
+                    app:addOnTabSelectedListener="@{viewModel.onTabSelectedListener}">
+                </android.support.design.widget.TabLayout>
+
+                <include
+                    layout="@layout/card_view_header"
+                    android:id="@+id/header"
+                    bind:headerLeft="@{viewModel.leftHeader}"
+                    bind:headerRight="@{viewModel.rightHeader}"
+                    bind:headToHead="@{true}"/>
+
+                <include
+                    layout="@layout/item_stat"
+                    android:id="@+id/goals_stat"
+                    bind:viewModel="@{viewModel.goals}"/>
+
+                <include
+                    layout="@layout/item_stat"
+                    android:id="@+id/goals_stat"
+                    bind:viewModel="@{viewModel.shots}"/>
+
+                <include
+                    layout="@layout/item_stat"
+                    android:id="@+id/goals_stat"
+                    bind:viewModel="@{viewModel.shotsOnTarget}"/>
+
+                <include
+                    layout="@layout/item_stat"
+                    android:id="@+id/goals_stat"
+                    bind:viewModel="@{viewModel.possession}"/>
+
+                <include
+                    layout="@layout/item_stat"
+                    android:id="@+id/goals_stat"
+                    bind:viewModel="@{viewModel.tackles}"/>
+
+                <include
+                    layout="@layout/item_stat"
+                    android:id="@+id/goals_stat"
+                    bind:viewModel="@{viewModel.fouls}"/>
+
+                <include
+                    layout="@layout/item_stat"
+                    android:id="@+id/goals_stat"
+                    bind:viewModel="@{viewModel.yellowCards}"/>
+
+                <include
+                    layout="@layout/item_stat"
+                    android:id="@+id/goals_stat"
+                    bind:viewModel="@{viewModel.redCards}"/>
+
+                <include
+                    layout="@layout/item_stat"
+                    android:id="@+id/goals_stat"
+                    bind:viewModel="@{viewModel.offsides}"/>
+
+                <include
+                    layout="@layout/item_stat"
+                    android:id="@+id/goals_stat"
+                    bind:viewModel="@{viewModel.injuries}"/>
+
+                <include
+                    layout="@layout/item_stat"
+                    android:id="@+id/goals_stat"
+                    bind:viewModel="@{viewModel.corners}"/>
+
+                <include
+                    layout="@layout/item_stat"
+                    android:id="@+id/goals_stat"
+                    bind:viewModel="@{viewModel.shotAccuracy}"/>
+
+                <include
+                    layout="@layout/item_stat"
+                    android:id="@+id/goals_stat"
+                    bind:viewModel="@{viewModel.passAccuracy}"/>
+
+            </LinearLayout>
+
+        </android.support.v7.widget.CardView>
+
+    </LinearLayout>
+
+</layout>

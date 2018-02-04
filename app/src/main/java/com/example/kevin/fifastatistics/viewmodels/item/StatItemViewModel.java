@@ -7,10 +7,13 @@ import android.databinding.BindingAdapter;
 import android.support.percent.PercentLayoutHelper;
 import android.view.View;
 
+import com.example.kevin.fifastatistics.BR;
 import com.example.kevin.fifastatistics.models.databasemodels.user.Stats;
 
 import java.util.HashSet;
 import java.util.Set;
+
+import rx.functions.Func1;
 
 public class StatItemViewModel extends BaseObservable {
 
@@ -33,9 +36,20 @@ public class StatItemViewModel extends BaseObservable {
     private float mLeftValue;
     private float mRightValue;
 
+    public StatItemViewModel(int leftColor, int rightColor, String title, boolean doShowDecimal) {
+        mLeftColor = ColorStateList.valueOf(leftColor);
+        mRightColor = ColorStateList.valueOf(rightColor);
+        mTitle = title;
+        setFloatFormat(doShowDecimal);
+    }
+
+    private void setFloatFormat(boolean doShowDecimal) {
+        mFloatFormat = doShowDecimal ? "%.1f" : "%.0f";
+    }
+
     public StatItemViewModel(float leftValue, float rightValue, int leftColor, int rightColor, String title, boolean doShowDecimal) {
         init(leftValue, rightValue, leftColor, rightColor, title);
-        mFloatFormat = doShowDecimal ? "%.1f" : "%.0f";
+        setFloatFormat(doShowDecimal);
     }
 
     public void init(float leftValue, float rightValue, int leftColor, int rightColor, String title) {
@@ -45,6 +59,16 @@ public class StatItemViewModel extends BaseObservable {
         mRightColor = ColorStateList.valueOf(rightColor);
         mTitle = title;
         notifyChange();
+    }
+
+    public void setValues(float leftValue, float rightValue, boolean showDecimal) {
+        mLeftValue = leftValue;
+        mRightValue = rightValue;
+        setFloatFormat(showDecimal);
+        notifyPropertyChanged(BR.leftValue);
+        notifyPropertyChanged(BR.rightValue);
+        notifyPropertyChanged(BR.leftPercentage);
+        notifyPropertyChanged(BR.rightPercentage);
     }
 
     @Bindable

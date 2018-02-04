@@ -10,13 +10,10 @@ import com.example.kevin.fifastatistics.managers.RetrievalManager;
 import com.example.kevin.fifastatistics.models.databasemodels.match.Match;
 import com.example.kevin.fifastatistics.models.databasemodels.match.MatchProjection;
 import com.example.kevin.fifastatistics.models.databasemodels.user.Player;
-import com.example.kevin.fifastatistics.models.databasemodels.user.User;
 import com.example.kevin.fifastatistics.viewmodels.EventResultHeaderViewModel;
 import com.example.kevin.fifastatistics.viewmodels.card.BoxScoreViewModel;
 import com.example.kevin.fifastatistics.viewmodels.card.MatchEventsCardViewModel;
-
-import java.util.Collections;
-import java.util.List;
+import com.example.kevin.fifastatistics.viewmodels.card.StatsCardViewModel;
 
 import rx.Subscription;
 
@@ -33,6 +30,7 @@ public class MatchFragmentViewModel extends ProgressFragmentViewModel {
     private MatchEventsCardViewModel<GoalItem> mGoalsViewModel;
     private MatchEventsCardViewModel<CardItem> mCardsViewModel;
     private MatchEventsCardViewModel<InjuryItem> mInjuriesViewModel;
+    private StatsCardViewModel mStatsViewModel;
     private Match mMatch;
     private String mMatchId;
     private Player mPlayer;
@@ -84,6 +82,7 @@ public class MatchFragmentViewModel extends ProgressFragmentViewModel {
         mGoalsViewModel.setMatch(mMatch, mMatch.getGoals());
         mCardsViewModel.setMatch(mMatch, mMatch.getCards());
         mInjuriesViewModel.setMatch(mMatch, mMatch.getInjuries());
+        mStatsViewModel = StatsCardViewModel.matchStats(mMatch, getUsername());
         if (mProjection != null) {
             notifyPropertyChanged(BR.statsVisibility);
             notifyPropertyChanged(BR.stats);
@@ -117,8 +116,8 @@ public class MatchFragmentViewModel extends ProgressFragmentViewModel {
     }
 
     @Bindable
-    public List<User.StatsPair> getStats() {
-        return mMatch != null ? Collections.singletonList(new User.StatsPair(mMatch.getStats())) : null;
+    public StatsCardViewModel getStats() {
+        return mStatsViewModel;
     }
 
     @Bindable

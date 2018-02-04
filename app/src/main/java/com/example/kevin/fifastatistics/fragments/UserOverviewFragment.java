@@ -27,6 +27,7 @@ import com.example.kevin.fifastatistics.managers.sync.MatchUpdateSynchronizer;
 import com.example.kevin.fifastatistics.models.databasemodels.match.MatchUpdate;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
 import com.example.kevin.fifastatistics.utils.ObservableUtils;
+import com.example.kevin.fifastatistics.utils.TransitionUtils;
 import com.example.kevin.fifastatistics.viewmodels.UserOverviewViewModel;
 
 import rx.Observable;
@@ -117,6 +118,7 @@ public class UserOverviewFragment extends FifaBaseFragment implements OnBackPres
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         mBinding.swiperefresh.setOnRefreshListener(() -> mViewModel.update());
         mBinding.scrollview.setOnScrollChangeListener(mScrollListener);
+        TransitionUtils.addTransitionCallbackToBinding(mBinding.overviewLayout.statsCardLayout);
         loadLocalPendingUpdates();
     }
 

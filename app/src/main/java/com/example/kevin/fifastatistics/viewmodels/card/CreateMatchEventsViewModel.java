@@ -123,11 +123,11 @@ public class CreateMatchEventsViewModel extends FifaBaseViewModel {
     }
 
     public List<CardItem> getCards() {
-        return mGoalsCard.getItems() != null ? mCardsCard.getItems() : Collections.emptyList();
+        return mCardsCard.getItems() != null ? mCardsCard.getItems() : Collections.emptyList();
     }
 
     public List<InjuryItem> getInjuries() {
-        return mGoalsCard.getItems() != null ? mInjuriesCard.getItems() : Collections.emptyList();
+        return mInjuriesCard.getItems() != null ? mInjuriesCard.getItems() : Collections.emptyList();
     }
 
     public Team getTeamWinner() {

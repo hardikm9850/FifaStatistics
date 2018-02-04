@@ -86,6 +86,16 @@ public class SelectorTabs extends TabLayout {
         layout.addOnTabSelectedListener(listener);
     }
 
+    @BindingAdapter("tabTitles")
+    public static void setTabTitles(TabLayout layout, String[] titles) {
+        if (titles != null && layout.getTabCount() == 0) {
+            for (String title : titles) {
+                Tab tab = layout.newTab().setText(title);
+                layout.addTab(tab);
+            }
+        }
+    }
+
     @BindingAdapter("initialPosition")
     public static void setTabPosition(SelectorTabs tabs, int index) {
         tabs.setInitialTabIndex(index);

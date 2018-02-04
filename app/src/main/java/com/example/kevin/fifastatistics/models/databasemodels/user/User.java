@@ -78,6 +78,11 @@ public class User extends DatabaseModel implements Player {
         return event != null && event.getWinnerId() != null && event.getWinnerId().equals(id);
     }
 
+    @JsonIgnore
+    public String getFirstName() {
+        return name.split(" ")[0];
+    }
+
     @AllArgsConstructor
     @Getter
     public static class StatsPair implements Serializable {

@@ -14,6 +14,7 @@ import com.example.kevin.fifastatistics.utils.ObservableUtils;
 import com.example.kevin.fifastatistics.viewmodels.card.CurrentSeriesCardViewModel;
 import com.example.kevin.fifastatistics.viewmodels.card.LeadersCardViewModel;
 import com.example.kevin.fifastatistics.viewmodels.card.RecordsCardViewModel;
+import com.example.kevin.fifastatistics.viewmodels.card.StatsCardViewModel;
 import com.example.kevin.fifastatistics.viewmodels.card.UpdatesCardViewModel;
 
 import java.util.ArrayList;
@@ -25,10 +26,11 @@ import rx.Subscription;
 public class UserOverviewViewModel extends FifaBaseViewModel {
 
     private User mUser;
-    private RecordsCardViewModel mRecords;
     private UserOverviewViewModelInteraction mInteraction;
+    private RecordsCardViewModel mRecords;
     private UpdatesCardViewModel mUpdatesViewModel;
     private CurrentSeriesCardViewModel mCurrentSeriesViewModel;
+    private StatsCardViewModel mStatsCardViewModel;
     private LeadersCardViewModel mLeadersViewModel;
 
     public UserOverviewViewModel(User user) {
@@ -43,6 +45,7 @@ public class UserOverviewViewModel extends FifaBaseViewModel {
         mUpdatesViewModel = new UpdatesCardViewModel(launcher, null, user, isCurrentUser);
         mLeadersViewModel = new LeadersCardViewModel(user.getLeaders(), user.getName(), launcher, isCurrentUser);
         initCurrentSeriesCard(launcher, user, isCurrentUser);
+        initStatsCard(user, isCurrentUser);
     }
 
     private void initCurrentSeriesCard(ActivityLauncher launcher, User currentUser, boolean isCurrentUser) {
@@ -50,6 +53,12 @@ public class UserOverviewViewModel extends FifaBaseViewModel {
         Observable.fromCallable(() -> PrefsManager.getSeriesPrefs().getCurrentSeries())
                 .compose(ObservableUtils.applySchedulers())
                 .subscribe(series -> mCurrentSeriesViewModel.setItems(series));
+    }
+
+    private void initStatsCard(User user, boolean isCurrentUser) {
+        mStatsCardViewModel = isCurrentUser ?
+                StatsCardViewModel.myStats(user) :
+                StatsCardViewModel.playerStats(user);
     }
 
     public void update() {
@@ -102,15 +111,8 @@ public class UserOverviewViewModel extends FifaBaseViewModel {
     }
 
     @Bindable
-    public List<User.StatsPair> getStats() {
-        if (mUser != null) {
-            List<User.StatsPair> stats = new ArrayList<>();
-            stats.add(mUser.getAverageStats());
-            stats.add(mUser.getRecordStats());
-            return stats;
-        } else {
-            return null;
-        }
+    public StatsCardViewModel getStats() {
+        return mStatsCardViewModel;
     }
 
     @Bindable
