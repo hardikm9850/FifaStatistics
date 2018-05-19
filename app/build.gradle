@@ -51,7 +51,8 @@ android {
             debuggable true
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            buildConfigField "String", "SERVER_URL", '"http://192.168.0.13:8080/"'
+//            buildConfigField "String", "SERVER_URL", '"http://192.168.0.13:8080/"'
+            buildConfigField "String", "SERVER_URL", '"https://fifastatisticsapi.azurewebsites.net/"'
         }
         hockeyapp {
             initWith(buildTypes.debug)
@@ -69,8 +70,8 @@ android {
 }
 
 ext {
-    android_support_version = "25.3.0"
-    google_play_services_version = "10.0.1"
+    android_support_version = "27.0.2"
+    google_play_services_version = "10.2.1"
 }
 
 dependencies {
