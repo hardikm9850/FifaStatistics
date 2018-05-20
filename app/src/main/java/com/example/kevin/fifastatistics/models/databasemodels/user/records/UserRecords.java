@@ -26,4 +26,13 @@ public class UserRecords implements Serializable {
     public String getStreak() {
         return currentStreak.toString();
     }
+
+    @JsonIgnore
+    public int getEventCount() {
+        if (overallRecord != null) {
+            return overallRecord.getWins() + overallRecord.getLosses();
+        } else {
+            return 0;
+        }
+    }
 }

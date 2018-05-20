@@ -83,6 +83,15 @@ public class User extends DatabaseModel implements Player {
         return name.split(" ")[0];
     }
 
+    @JsonIgnore
+    public StatsPair getTotalStats() {
+        int matchesPlayed = matchRecords.getEventCount();
+        StatsPair p = new StatsPair();
+        p.statsFor = averageStats.statsFor.aggregate(matchesPlayed);
+        p.statsAgainst = averageStats.statsAgainst.aggregate(matchesPlayed);
+        return p;
+    }
+
     @AllArgsConstructor
     @Getter
     public static class StatsPair implements Serializable {
