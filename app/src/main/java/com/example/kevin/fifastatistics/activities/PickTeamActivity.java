@@ -41,8 +41,10 @@ public class PickTeamActivity extends FifaBaseActivity implements TeamItemViewMo
 
     @SuppressWarnings("ConstantConditions")
     private void initToolbar() {
-        setSupportActionBar(mBinding.toolbar);
+        setSupportActionBar(mBinding.toolbarLayout.toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        mBinding.toolbarLayout.toolbarTitle.setText(getString(R.string.activity_pick_team));
     }
 
     private void initColors() {

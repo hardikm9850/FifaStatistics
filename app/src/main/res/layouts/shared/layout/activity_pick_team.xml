@@ -23,13 +23,8 @@
                 app:contentScrim="?attr/colorPrimary"
                 app:layout_scrollFlags="scroll|enterAlways">
 
-                <android.support.v7.widget.Toolbar
-                    android:id="@+id/toolbar"
-                    android:layout_width="match_parent"
-                    android:layout_height="?attr/actionBarSize"
-                    android:visibility="visible"
-                    app:popupTheme="@style/AppTheme.PopupOverlay"
-                    app:title="@string/activity_pick_team"/>
+                <include layout="@layout/toolbar_center_title"
+                    android:id="@+id/toolbar_layout"/>
 
             </android.support.design.widget.CollapsingToolbarLayout>
 

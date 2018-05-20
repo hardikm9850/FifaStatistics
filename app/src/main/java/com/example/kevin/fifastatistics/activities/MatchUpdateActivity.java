@@ -52,9 +52,10 @@ public class MatchUpdateActivity extends FifaBaseActivity {
 
     @SuppressWarnings("ConstantConditions")
     private void initToolbar() {
-        mBinding.toolbar.setTitle(mType == MatchEditType.UPDATE ? R.string.title_activity_match_update : R.string.review_update);
-        setSupportActionBar(mBinding.toolbar);
+        setSupportActionBar(mBinding.toolbarLayout.toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        mBinding.toolbarLayout.toolbarTitle.setText(mType == MatchEditType.UPDATE ? R.string.title_activity_match_update : R.string.review_update);
     }
 
     private void initFragment() {
