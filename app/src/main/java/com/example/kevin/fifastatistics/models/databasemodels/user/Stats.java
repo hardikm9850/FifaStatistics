@@ -124,4 +124,25 @@ public class Stats implements Serializable {
     public boolean validate() {
         return !(shots < shotsOnTarget || possession > 100 || shotAccuracy > 100 || passAccuracy > 100);
     }
+
+    /**
+     * Aggregates all the average stats over the count to get the total stats.
+     */
+    public Stats aggregate(int count) {
+        Stats stats = new Stats();
+        stats.goals = Math.round(goals*count);
+        stats.shots = Math.round(shots*count);
+        stats.shotsOnTarget = Math.round(shotsOnTarget*count);
+        stats.possession = possession;
+        stats.tackles = Math.round(tackles*count);
+        stats.fouls = Math.round(fouls*count);
+        stats.yellowCards = Math.round(yellowCards*count);
+        stats.redCards = Math.round(redCards*count);
+        stats.offsides = Math.round(offsides*count);
+        stats.corners = Math.round(corners*count);
+        stats.injuries = Math.round(injuries*count);
+        stats.shotAccuracy = shotAccuracy;
+        stats.passAccuracy = passAccuracy;
+        return stats;
+    }
 }

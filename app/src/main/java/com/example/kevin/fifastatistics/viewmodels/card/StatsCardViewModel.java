@@ -25,8 +25,7 @@ public class StatsCardViewModel extends FifaBaseViewModel {
 
     public static final String MY_STATS_LEFT_HEADER;
     private static final String PLAYER_STATS_RIGHT_HEADER;
-    private static final String[] PLAYER_TAB_TITLES;
-    private static final String[] SERIES_TAB_TITLES;
+    private static final String[] TAB_TITLES;
     private static final int DEFAULT_RIGHT_COLOR;
 
     static {
@@ -37,8 +36,8 @@ public class StatsCardViewModel extends FifaBaseViewModel {
 
         String averages = context.getString(R.string.averages);
         String records = context.getString(R.string.records);
-        PLAYER_TAB_TITLES = new String[] {averages, records};
-        SERIES_TAB_TITLES = new String[] {averages, records};
+        String totals = context.getString(R.string.totals);
+        TAB_TITLES = new String[] {averages, records, totals};
     }
 
     private List<User.StatsPair> mStatsGroup = new ArrayList<>();
@@ -95,8 +94,9 @@ public class StatsCardViewModel extends FifaBaseViewModel {
         mRightHeader = PLAYER_STATS_RIGHT_HEADER;
         mStatsGroup.add(user.getAverageStats());
         mStatsGroup.add(user.getRecordStats());
-        mShowDecimalForStatsAtPosition = new boolean[] {true, false};
-        mTabTitles = PLAYER_TAB_TITLES;
+        mStatsGroup.add(user.getTotalStats());
+        mShowDecimalForStatsAtPosition = new boolean[] {true, false, false};
+        mTabTitles = TAB_TITLES;
         initColorForPlayer();
         initStatViewModels();
     }

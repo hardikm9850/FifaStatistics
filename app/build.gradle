@@ -51,7 +51,8 @@ android {
             debuggable true
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            buildConfigField "String", "SERVER_URL", '"http://192.168.0.13:8080/"'
+//            buildConfigField "String", "SERVER_URL", '"http://192.168.0.13:8080/"'
+            buildConfigField "String", "SERVER_URL", '"https://fifastatisticsapi.azurewebsites.net/"'
         }
         hockeyapp {
             initWith(buildTypes.debug)
@@ -105,19 +106,19 @@ dependencies {
     compile 'net.hockeyapp.android:HockeySDK:4.1.5'
 
     // RX
-    implementation 'io.reactivex:rxandroid:1.2.1'
-    implementation 'io.reactivex:rxjava:1.2.1'
+    compile 'io.reactivex:rxandroid:1.2.1'
+    compile 'io.reactivex:rxjava:1.2.1'
 
     // Lombok
     provided "org.projectlombok:lombok:1.16.8"
     annotationProcessor "org.projectlombok:lombok:1.16.8"
 
     // Images
-    implementation 'de.hdodenhof:circleimageview:2.2.0'
+    compile 'de.hdodenhof:circleimageview:2.2.0'
     compile 'com.h6ah4i.android.materialshadowninepatch:materialshadowninepatch:0.6.5'
     compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
     compile 'com.rmtheis:tess-two:6.0.4'
-    compile 'com.wonderkiln:camerakit:0.13.1'
+    compile 'com.flurgle:camerakit:0.9.18'
 
     // API (HTTP, JSON)
     compile 'com.squareup.okhttp3:okhttp:3.5.0'
