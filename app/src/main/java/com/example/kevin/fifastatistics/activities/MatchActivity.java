@@ -12,9 +12,13 @@ import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.databinding.ActivityMatchBinding;
 import com.example.kevin.fifastatistics.fragments.MatchFragment;
 import com.example.kevin.fifastatistics.managers.RetrievalManager;
+import com.example.kevin.fifastatistics.models.databasemodels.match.FifaEvent;
+import com.example.kevin.fifastatistics.models.databasemodels.match.Match;
 import com.example.kevin.fifastatistics.models.databasemodels.match.MatchProjection;
+import com.example.kevin.fifastatistics.models.databasemodels.user.User;
+import com.example.kevin.fifastatistics.viewmodels.EventToolbarViewModel;
 
-public class MatchActivity extends FifaBaseActivity {
+public class MatchActivity extends FifaBaseActivity implements MatchFragment.OnMatchLoadSuccessListener {
 
     private ActivityMatchBinding mBinding;
 
@@ -42,8 +46,9 @@ public class MatchActivity extends FifaBaseActivity {
 
     @SuppressWarnings("ConstantConditions")
     private void initToolbar() {
-        setSupportActionBar(mBinding.toolbar);
+        setSupportActionBar(mBinding.toolbarLayout.toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
     }
 
     private void initFragment() {
@@ -52,11 +57,17 @@ public class MatchActivity extends FifaBaseActivity {
             Fragment f;
             if (p != null) {
                 f = MatchFragment.newInstance(p, user);
+                initToolbarData(p, user);
             } else {
                 f = MatchFragment.newInstance(getIntent().getStringExtra(EVENT_ID), user);
             }
             getSupportFragmentManager().beginTransaction().replace(R.id.content, f).commit();
         });
+    }
+
+    private void initToolbarData(FifaEvent projection, User currentUser) {
+        EventToolbarViewModel viewModel = new EventToolbarViewModel(projection, currentUser);
+        mBinding.toolbarLayout.setViewModel(viewModel);
     }
 
     @Override
@@ -66,5 +77,12 @@ public class MatchActivity extends FifaBaseActivity {
                 onBackPressed();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onMatchLoad(Match match) {
+        RetrievalManager.getCurrentUser().subscribe(user -> {
+            initToolbarData(match, user);
+        });
     }
 }

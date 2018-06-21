@@ -1,5 +1,6 @@
 package com.example.kevin.fifastatistics.fragments;
 
+import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -24,6 +25,7 @@ public class SeriesFragment extends FifaBaseFragment implements SeriesFragmentVi
     private User mUser;
     private SeriesFragmentViewModel mViewModel;
     private FragmentSeriesBinding mBinding;
+    private OnSeriesLoadSuccessListener mSeriesListener;
 
     public static SeriesFragment newInstance(SeriesProjection seriesProjection, User user) {
         SeriesFragment f = new SeriesFragment();
@@ -41,6 +43,20 @@ public class SeriesFragment extends FifaBaseFragment implements SeriesFragmentVi
         args.putString(EVENT_ID, seriesId);
         f.setArguments(args);
         return f;
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof OnSeriesLoadSuccessListener) {
+            mSeriesListener = (OnSeriesLoadSuccessListener) context;
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mSeriesListener = null;
     }
 
     @Override
@@ -92,11 +108,18 @@ public class SeriesFragment extends FifaBaseFragment implements SeriesFragmentVi
     @Override
     public void onSeriesLoaded(Series series) {
         mSeries = series;
+        if (mSeriesListener != null) {
+            mSeriesListener.onSeriesLoad(series);
+        }
     }
 
     @Override
     public void onSeriesLoadFailed(Throwable t) {
         RetrofitErrorManager.showToastForError(t, getActivity());
         getActivity().finish();
+    }
+
+    public interface OnSeriesLoadSuccessListener {
+        void onSeriesLoad(Series series);
     }
 }

@@ -1,5 +1,6 @@
 package com.example.kevin.fifastatistics.fragments;
 
+import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
@@ -29,6 +30,7 @@ public class MatchFragment extends FifaBaseFragment implements MatchFragmentView
     private String mMatchId;
     private User mUser;
     private MatchFragmentViewModel mViewModel;
+    private OnMatchLoadSuccessListener mMatchListener;
 
     public static MatchFragment newInstance(MatchProjection matchProjection, User user) {
         MatchFragment f = new MatchFragment();
@@ -46,6 +48,20 @@ public class MatchFragment extends FifaBaseFragment implements MatchFragmentView
         args.putString(EVENT_ID, matchId);
         f.setArguments(args);
         return f;
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof OnMatchLoadSuccessListener) {
+            mMatchListener = (OnMatchLoadSuccessListener) context;
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mMatchListener = null;
     }
 
     @Override
@@ -128,11 +144,18 @@ public class MatchFragment extends FifaBaseFragment implements MatchFragmentView
     public void onMatchLoaded(Match match) {
         mMatch = match;
         getActivity().invalidateOptionsMenu();
+        if (mMatchListener != null) {
+            mMatchListener.onMatchLoad(match);
+        }
     }
 
     @Override
     public void onMatchLoadFailed(Throwable t) {
         RetrofitErrorManager.showToastForError(t, getActivity());
         getActivity().finish();
+    }
+
+    public interface OnMatchLoadSuccessListener {
+        void onMatchLoad(Match match);
     }
 }

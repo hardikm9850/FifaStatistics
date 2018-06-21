@@ -12,9 +12,13 @@ import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.databinding.ActivitySeriesBinding;
 import com.example.kevin.fifastatistics.fragments.SeriesFragment;
 import com.example.kevin.fifastatistics.managers.RetrievalManager;
+import com.example.kevin.fifastatistics.models.databasemodels.match.FifaEvent;
+import com.example.kevin.fifastatistics.models.databasemodels.match.Series;
 import com.example.kevin.fifastatistics.models.databasemodels.match.SeriesProjection;
+import com.example.kevin.fifastatistics.models.databasemodels.user.User;
+import com.example.kevin.fifastatistics.viewmodels.EventToolbarViewModel;
 
-public class SeriesActivity extends FifaBaseActivity {
+public class SeriesActivity extends FifaBaseActivity implements SeriesFragment.OnSeriesLoadSuccessListener {
 
     private ActivitySeriesBinding mBinding;
 
@@ -42,8 +46,9 @@ public class SeriesActivity extends FifaBaseActivity {
 
     @SuppressWarnings("ConstantConditions")
     private void initToolbar() {
-        setSupportActionBar(mBinding.toolbar);
+        setSupportActionBar(mBinding.toolbarLayout.toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
     }
 
     private void initFragment() {
@@ -52,11 +57,17 @@ public class SeriesActivity extends FifaBaseActivity {
             Fragment f;
             if (p != null) {
                 f = SeriesFragment.newInstance(p, user);
+                initToolbarData(p, user);
             } else {
                 f = SeriesFragment.newInstance(getIntent().getStringExtra(EVENT_ID), user);
             }
             getSupportFragmentManager().beginTransaction().replace(R.id.content, f).commit();
         });
+    }
+
+    private void initToolbarData(FifaEvent projection, User currentUser) {
+        EventToolbarViewModel viewModel = new EventToolbarViewModel(projection, currentUser);
+        mBinding.toolbarLayout.setViewModel(viewModel);
     }
 
     @Override
@@ -66,5 +77,12 @@ public class SeriesActivity extends FifaBaseActivity {
                 onBackPressed();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onSeriesLoad(Series series) {
+        RetrievalManager.getCurrentUser().subscribe(user -> {
+            initToolbarData(series, user);
+        });
     }
 }
