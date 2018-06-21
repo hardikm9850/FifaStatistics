@@ -10,6 +10,7 @@ public interface FragmentArguments {
     String SERIES = "series";
     String MATCH = "match";
     String MATCH_PROJECTION = "matchProjection";
+    String SERIES_PROJECTION = "seriesProjection";
     String MATCH_UPDATE = "matchUpdate";
     String UPDATE_ID = "updateId";
     String EVENT_ID = "eventId";

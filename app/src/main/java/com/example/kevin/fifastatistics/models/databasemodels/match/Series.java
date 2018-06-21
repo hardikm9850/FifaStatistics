@@ -19,7 +19,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Getter
-public class Series extends DatabaseModel implements TeamEvent {
+public class Series extends DatabaseModel implements TeamEvent, FifaEvent {
 
     public static final int DEFAULT_MAX_SERIES_LENGTH = 7;
 
@@ -31,6 +31,8 @@ public class Series extends DatabaseModel implements TeamEvent {
     private User.StatsPair averageStats;
     private List<Match> matches;
     private Leaders leaders;
+    private int matchesWinner;
+    private int matchesLoser;
     private int matchesPlayed;
     private int bestOf;
 
@@ -129,6 +131,54 @@ public class Series extends DatabaseModel implements TeamEvent {
                 }
             }
         }
+    }
+
+    @JsonIgnore
+    @Override
+    public String getLoserName() {
+        return loser.getName();
+    }
+
+    @JsonIgnore
+    @Override
+    public String getWinnerName() {
+        return winner.getName();
+    }
+
+    @JsonIgnore
+    @Override
+    public String getTeamWinnerImageUrl() {
+        return teamWinner.getCrestUrl();
+    }
+
+    @JsonIgnore
+    @Override
+    public String getTeamLoserImageUrl() {
+        return teamLoser.getCrestUrl();
+    }
+
+    @JsonIgnore
+    @Override
+    public String getWinnerId() {
+        return winner.getId();
+    }
+
+    @JsonIgnore
+    @Override
+    public String getLoserId() {
+        return loser.getId();
+    }
+
+    @JsonIgnore
+    @Override
+    public int getScoreWinner() {
+        return matchesWinner;
+    }
+
+    @JsonIgnore
+    @Override
+    public int getScoreLoser() {
+        return matchesLoser;
     }
 
     @Override

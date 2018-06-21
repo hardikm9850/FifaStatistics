@@ -13,6 +13,7 @@ import com.example.kevin.fifastatistics.event.EventBus;
 import com.example.kevin.fifastatistics.listeners.SimpleOnTabSelectedListener;
 import com.example.kevin.fifastatistics.managers.StatsPresenter;
 import com.example.kevin.fifastatistics.models.databasemodels.match.Match;
+import com.example.kevin.fifastatistics.models.databasemodels.match.Series;
 import com.example.kevin.fifastatistics.models.databasemodels.user.Stats;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
 import com.example.kevin.fifastatistics.viewmodels.FifaBaseViewModel;
@@ -25,7 +26,8 @@ public class StatsCardViewModel extends FifaBaseViewModel {
 
     public static final String MY_STATS_LEFT_HEADER;
     private static final String PLAYER_STATS_RIGHT_HEADER;
-    private static final String[] TAB_TITLES;
+    private static final String[] PLAYER_TAB_TITLES;
+    private static final String[] SERIES_TAB_TITLES;
     private static final int DEFAULT_RIGHT_COLOR;
 
     static {
@@ -37,7 +39,8 @@ public class StatsCardViewModel extends FifaBaseViewModel {
         String averages = context.getString(R.string.averages);
         String records = context.getString(R.string.records);
         String totals = context.getString(R.string.totals);
-        TAB_TITLES = new String[] {averages, records, totals};
+        PLAYER_TAB_TITLES = new String[] {averages, records, totals};
+        SERIES_TAB_TITLES = new String[] {averages, totals};
     }
 
     private List<User.StatsPair> mStatsGroup = new ArrayList<>();
@@ -73,6 +76,10 @@ public class StatsCardViewModel extends FifaBaseViewModel {
     public static StatsCardViewModel matchStats(Match match, String username) {
         return new StatsCardViewModel(match, username);
     }
+
+    public static StatsCardViewModel seriesStats(Series series, String username) {
+        return new StatsCardViewModel(series, username);
+    }
     
     private StatsCardViewModel(Match match, String username) {
         StatsPresenter presenter = new StatsPresenter(match.getStats(), match, username);
@@ -81,6 +88,19 @@ public class StatsCardViewModel extends FifaBaseViewModel {
         mStatsGroup.add(presenter.getStats());
         mShowDecimalForStatsAtPosition = new boolean[] {false};
         initColorForEvent(presenter);
+        initStatViewModels();
+    }
+
+    private StatsCardViewModel(Series series, String username) {
+        StatsPresenter avgPresenter = new StatsPresenter(series.getAverageStats(), series, username);
+        StatsPresenter totalPresenter = new StatsPresenter(series.getTotalStats(), series, username);
+        mLeftHeader = avgPresenter.getLeftHeader();
+        mRightHeader = avgPresenter.getRightHeader();
+        mStatsGroup.add(avgPresenter.getStats());
+        mStatsGroup.add(totalPresenter.getStats());
+        mShowDecimalForStatsAtPosition = new boolean[] {true, false};
+        mTabTitles = SERIES_TAB_TITLES;
+        initColorForEvent(avgPresenter);
         initStatViewModels();
     }
     
@@ -96,7 +116,7 @@ public class StatsCardViewModel extends FifaBaseViewModel {
         mStatsGroup.add(user.getRecordStats());
         mStatsGroup.add(user.getTotalStats());
         mShowDecimalForStatsAtPosition = new boolean[] {true, false, false};
-        mTabTitles = TAB_TITLES;
+        mTabTitles = PLAYER_TAB_TITLES;
         initColorForPlayer();
         initStatViewModels();
     }

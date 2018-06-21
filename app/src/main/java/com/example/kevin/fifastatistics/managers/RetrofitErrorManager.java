@@ -55,6 +55,8 @@ public class RetrofitErrorManager {
     }
 
     public static ErrorCode showToastForError(Throwable t, Activity activity) {
+        String s = Log.getStackTraceString(t);
+        Log.e("ERRORHANDLER", s);
         if (t instanceof HttpException) {
             return handleHttpException((HttpException) t, activity);
         } else if (t instanceof SocketTimeoutException) {
