@@ -12,13 +12,15 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:title="@string/series"
+        android:background="@color/cardViewBackground"
         app:popupTheme="@style/AppTheme.PopupOverlay" >
 
         <LinearLayout
+            android:id="@+id/toolbar_content"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center">
+            android:layout_gravity="center"
+            android:alpha="0">
 
             <ImageView
                 android:layout_width="@dimen/team_item_logo_size"

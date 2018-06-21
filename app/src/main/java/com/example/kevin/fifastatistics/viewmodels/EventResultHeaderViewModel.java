@@ -3,6 +3,7 @@ package com.example.kevin.fifastatistics.viewmodels;
 import android.content.res.Resources;
 import android.databinding.Bindable;
 import android.support.annotation.Nullable;
+import android.support.design.widget.AppBarLayout;
 import android.view.View;
 
 import com.example.kevin.fifastatistics.FifaApplication;
@@ -14,7 +15,6 @@ import com.example.kevin.fifastatistics.models.databasemodels.match.PenaltyEvent
 import com.example.kevin.fifastatistics.models.databasemodels.match.Series;
 import com.example.kevin.fifastatistics.models.databasemodels.match.SeriesProjection;
 import com.example.kevin.fifastatistics.models.databasemodels.user.Player;
-import com.example.kevin.fifastatistics.utils.ResourceUtils;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -106,5 +106,17 @@ public class EventResultHeaderViewModel extends FifaBaseViewModel {
     @Bindable
     public String getLoserScore() {
         return mPresenter.getBottomScore();
+    }
+
+    public AppBarLayout.OnOffsetChangedListener getOffsetListener() {
+        return (appBarLayout, verticalOffset) -> {
+            float alpha = 1.00f + ((float) verticalOffset)/750;
+            appBarLayout.getChildAt(0).setAlpha(alpha);
+            boolean isCollapsed = Math.abs(verticalOffset) >= appBarLayout.getTotalScrollRange();
+            if (isCollapsed) {
+                // do something
+            }
+        };
+
     }
 }
