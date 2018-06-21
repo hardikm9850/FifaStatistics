@@ -70,6 +70,7 @@
     <string name="error_empty_update">No changes made</string>
     <string name="error_penalties_same">Penalties cannot be the same for each side</string>
     <string name="error_missing_fields">Some required fields are empty</string>
+    <string name="best_of">Best of %1$d</string>
 
     <plurals name="error_wrong_goals_count">
         <item quantity="one">%1$d goal is needed for %2$s and %3$d for %4$s</item>
