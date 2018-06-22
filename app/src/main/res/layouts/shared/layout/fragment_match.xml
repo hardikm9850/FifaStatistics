@@ -26,11 +26,6 @@
                 android:orientation="vertical"
                 android:descendantFocusability="blocksDescendants">
 
-                <include
-                    layout="@layout/card_event_result_header"
-                    bind:headerViewModel="@{viewModel.headerViewModel}"
-                    android:visibility="@{viewModel.headerVisibility}"/>
-
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

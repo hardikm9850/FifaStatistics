@@ -25,7 +25,6 @@ public class MatchFragmentViewModel extends ProgressFragmentViewModel {
 
     private OnMatchLoadedListener mListener;
     private MatchProjection mProjection;
-    private EventResultHeaderViewModel mHeaderViewModel;
     private BoxScoreViewModel mBoxScoreViewModel;
     private MatchEventsCardViewModel<GoalItem> mGoalsViewModel;
     private MatchEventsCardViewModel<CardItem> mCardsViewModel;
@@ -41,7 +40,6 @@ public class MatchFragmentViewModel extends ProgressFragmentViewModel {
         mProjection = projection;
         mPlayer = player;
         mMatchId = matchId;
-        mHeaderViewModel = new EventResultHeaderViewModel(projection, player);
         mBoxScoreViewModel = new BoxScoreViewModel(null, player);
         mGoalsViewModel = new MatchEventsCardViewModel<>(launcher);
         mInjuriesViewModel = new MatchEventsCardViewModel<>(launcher);
@@ -88,9 +86,6 @@ public class MatchFragmentViewModel extends ProgressFragmentViewModel {
             notifyPropertyChanged(BR.stats);
             notifyPropertyChanged(BR.match);
             notifyPropertyChanged(BR.visibility);
-        } else {
-            mHeaderViewModel.setEvent(mMatch);
-            notifyChange();
         }
     }
 
@@ -154,10 +149,6 @@ public class MatchFragmentViewModel extends ProgressFragmentViewModel {
 
     public String getUsername() {
         return mPlayer.getName();
-    }
-
-    public EventResultHeaderViewModel getHeaderViewModel() {
-        return mHeaderViewModel;
     }
 
     public interface OnMatchLoadedListener {

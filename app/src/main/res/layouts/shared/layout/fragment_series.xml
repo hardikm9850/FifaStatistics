@@ -10,24 +10,10 @@
             type="com.example.kevin.fifastatistics.viewmodels.fragment.SeriesFragmentViewModel"/>
     </data>
 
-    <android.support.design.widget.CoordinatorLayout
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context="com.example.kevin.fifastatistics.fragments.SeriesFragment">
-
-        <android.support.design.widget.AppBarLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fitsSystemWindows="true"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed|enterAlwaysCollapsed"
-            app:onOffsetChangedListener="@{viewModel.headerViewModel.offsetListener}">
-
-            <include
-                layout="@layout/card_event_result_header"
-                bind:headerViewModel="@{viewModel.headerViewModel}"
-                android:visibility="@{viewModel.headerVisibility}"/>
-
-        </android.support.design.widget.AppBarLayout>
 
         <android.support.v4.widget.NestedScrollView
             android:id="@+id/nested_scroll_view"
@@ -61,6 +47,6 @@
             android:gravity="center"
             bind:progressViewModel="@{viewModel}"/>
 
-    </android.support.design.widget.CoordinatorLayout>
+    </FrameLayout>
 
 </layout>

@@ -1,5 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:bind="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="headerViewModel"
+            type="com.example.kevin.fifastatistics.viewmodels.EventResultHeaderViewModel"/>
+    </data>
 
     <LinearLayout
         android:orientation="vertical"
@@ -11,11 +20,32 @@
             layout="@layout/toolbar_event"
             android:id="@id/toolbar_layout"/>
 
-        <FrameLayout
-            android:id="@+id/content"
+        <android.support.design.widget.CoordinatorLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-        </FrameLayout>
+            android:layout_height="match_parent"
+            tools:context="com.example.kevin.fifastatistics.fragments.SeriesFragment">
+
+            <android.support.design.widget.AppBarLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_scrollFlags="scroll|exitUntilCollapsed|enterAlwaysCollapsed"
+                app:onOffsetChangedListener="@{headerViewModel.offsetListener}">
+
+                <include
+                    layout="@layout/card_event_result_header"
+                    bind:headerViewModel="@{headerViewModel}"
+                    android:visibility="@{headerViewModel.headerVisibility}"/>
+
+            </android.support.design.widget.AppBarLayout>
+
+            <FrameLayout
+                android:id="@+id/content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior">
+            </FrameLayout>
+
+        </android.support.design.widget.CoordinatorLayout>
 
     </LinearLayout>
 

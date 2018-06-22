@@ -19,7 +19,6 @@ public class SeriesFragmentViewModel extends ProgressFragmentViewModel {
 
     private SeriesFragmentViewModel.OnSeriesLoadedListener mListener;
     private SeriesProjection mProjection;
-    private EventResultHeaderViewModel mHeaderViewModel;
     private StatsCardViewModel mStatsViewModel;
     private Series mSeries;
     private String mSeriesId;
@@ -31,7 +30,6 @@ public class SeriesFragmentViewModel extends ProgressFragmentViewModel {
         mProjection = projection;
         mPlayer = player;
         mSeriesId = seriesId;
-        mHeaderViewModel = new EventResultHeaderViewModel(projection, player);
     }
 
     public void loadSeries() {
@@ -71,8 +69,7 @@ public class SeriesFragmentViewModel extends ProgressFragmentViewModel {
             notifyPropertyChanged(BR.series);
             notifyPropertyChanged(BR.visibility);
         } else {
-            mHeaderViewModel.setEvent(mSeries);
-            notifyChange();
+            // notificatino
         }
     }
 
@@ -116,10 +113,6 @@ public class SeriesFragmentViewModel extends ProgressFragmentViewModel {
 
     public String getUsername() {
         return mPlayer.getName();
-    }
-
-    public EventResultHeaderViewModel getHeaderViewModel() {
-        return mHeaderViewModel;
     }
 
     public interface OnSeriesLoadedListener {
