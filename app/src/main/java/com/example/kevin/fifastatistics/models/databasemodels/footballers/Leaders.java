@@ -23,6 +23,13 @@ public class Leaders implements Serializable {
         return leaders;
     }
 
+    public static Leaders swapped(Leaders leaders) {
+        Leaders l = new Leaders();
+        l.leadersFor = leaders.leadersAgainst;
+        l.leadersAgainst = leaders.leadersFor;
+        return l;
+    }
+
     @Getter
     @Setter
     public static class LeaderSet implements Serializable {

@@ -114,8 +114,6 @@ public class EventResultHeaderViewModel extends FifaBaseViewModel {
         return (appBarLayout, verticalOffset) -> {
             float alpha = 1.00f + ((float) verticalOffset)/750;
             appBarLayout.getChildAt(0).setAlpha(alpha);
-            // quickly turn to 1.0 when alpha <= 0.2f
-            // quickly turn to 0 when alpha >= 0.2f
             mToolbarTitle.setAlpha(-5.00f*alpha + 1.00f);
         };
 

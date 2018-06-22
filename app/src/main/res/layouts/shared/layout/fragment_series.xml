@@ -30,6 +30,10 @@
                 android:visibility="@{viewModel.statsVisibility}">
 
                 <include
+                    layout="@layout/card_leaders"
+                    bind:viewModel="@{viewModel.leaders}"/>
+
+                <include
                     android:id="@+id/stats_card_layout"
                     layout="@layout/card_stats_new"
                     bind:viewModel="@{viewModel.stats}"/>

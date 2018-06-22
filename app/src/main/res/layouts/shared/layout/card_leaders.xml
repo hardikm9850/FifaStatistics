@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:card_view="http://schemas.android.com/apk/res-auto"
-        xmlns:bind="http://schemas.android.com/tools">
+    xmlns:bind="http://schemas.android.com/tools">
 
     <data>
         <variable
@@ -52,25 +50,33 @@
                     layout="@layout/item_leader"
                     bind:leaderFor="@{viewModel.goalsFor}"
                     bind:leaderAgainst="@{viewModel.goalsAgainst}"
-                    bind:title="@{@string/goals}"/>
+                    bind:title="@{@string/goals}"
+                    bind:leftColor="@{viewModel.leftColor}"
+                    bind:rightColor="@{viewModel.rightColor}"/>
 
                 <include
                     layout="@layout/item_leader"
                     bind:leaderFor="@{viewModel.yellowCardsFor}"
                     bind:leaderAgainst="@{viewModel.yellowCardsAgainst}"
-                    bind:title="@{@string/yellow_cards}"/>
+                    bind:title="@{@string/yellow_cards}"
+                    bind:leftColor="@{viewModel.leftColor}"
+                    bind:rightColor="@{viewModel.rightColor}"/>
 
                 <include
                     layout="@layout/item_leader"
                     bind:leaderFor="@{viewModel.redCardsFor}"
                     bind:leaderAgainst="@{viewModel.redCardsAgainst}"
-                    bind:title="@{@string/red_cards}"/>
+                    bind:title="@{@string/red_cards}"
+                    bind:leftColor="@{viewModel.leftColor}"
+                    bind:rightColor="@{viewModel.rightColor}"/>
 
                 <include
                     layout="@layout/item_leader"
                     bind:leaderFor="@{viewModel.injuriesFor}"
                     bind:leaderAgainst="@{viewModel.injuriesAgainst}"
-                    bind:title="@{@string/injuries}"/>
+                    bind:title="@{@string/injuries}"
+                    bind:leftColor="@{viewModel.leftColor}"
+                    bind:rightColor="@{viewModel.rightColor}"/>
 
             </LinearLayout>
 

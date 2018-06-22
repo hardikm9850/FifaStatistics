@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:bind="http://schemas.android.com/tools">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
         <variable
@@ -13,6 +12,12 @@
         <variable
             name="title"
             type="String"/>
+        <variable
+            name="leftColor"
+            type="int"/>
+        <variable
+            name="rightColor"
+            type="int"/>
     </data>
 
     <RelativeLayout
@@ -42,7 +47,7 @@
             android:layout_below="@id/header"
             android:layout_marginEnd="@dimen/activity_horizontal_margin"
             app:footballer="@{leaderFor.player}"
-            app:color="@{@color/colorAccent}"/>
+            app:color="@{leftColor}"/>
 
         <TextView
             android:id="@+id/leader_name_for"
@@ -70,7 +75,7 @@
             android:layout_below="@id/header"
             android:layout_marginStart="@dimen/activity_horizontal_margin"
             app:footballer="@{leaderAgainst.player}"
-            app:color="@{@color/statOpponentColor}"/>
+            app:color="@{rightColor}"/>
 
         <TextView
             android:id="@+id/leader_name_against"

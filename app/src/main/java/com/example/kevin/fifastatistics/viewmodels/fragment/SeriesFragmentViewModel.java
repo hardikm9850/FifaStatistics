@@ -1,16 +1,20 @@
 package com.example.kevin.fifastatistics.viewmodels.fragment;
 
 import android.databinding.Bindable;
+import android.graphics.Color;
 import android.view.View;
 
 import com.example.kevin.fifastatistics.BR;
+import com.example.kevin.fifastatistics.databinding.ActivitySeriesBinding;
 import com.example.kevin.fifastatistics.interfaces.ActivityLauncher;
 import com.example.kevin.fifastatistics.listeners.SimpleObserver;
 import com.example.kevin.fifastatistics.managers.RetrievalManager;
+import com.example.kevin.fifastatistics.managers.StatsPresenter;
 import com.example.kevin.fifastatistics.models.databasemodels.match.Series;
 import com.example.kevin.fifastatistics.models.databasemodels.match.SeriesProjection;
 import com.example.kevin.fifastatistics.models.databasemodels.user.Player;
 import com.example.kevin.fifastatistics.viewmodels.EventResultHeaderViewModel;
+import com.example.kevin.fifastatistics.viewmodels.card.LeadersCardViewModel;
 import com.example.kevin.fifastatistics.viewmodels.card.StatsCardViewModel;
 
 import rx.Subscription;
@@ -20,9 +24,11 @@ public class SeriesFragmentViewModel extends ProgressFragmentViewModel {
     private SeriesFragmentViewModel.OnSeriesLoadedListener mListener;
     private SeriesProjection mProjection;
     private StatsCardViewModel mStatsViewModel;
+    private LeadersCardViewModel mLeadersViewModel;
     private Series mSeries;
     private String mSeriesId;
     private Player mPlayer;
+    private ActivityLauncher mLauncher;
 
     public SeriesFragmentViewModel(SeriesFragmentViewModel.OnSeriesLoadedListener listener, SeriesProjection projection,
                                   Player player, String seriesId, ActivityLauncher launcher) {
@@ -30,6 +36,7 @@ public class SeriesFragmentViewModel extends ProgressFragmentViewModel {
         mProjection = projection;
         mPlayer = player;
         mSeriesId = seriesId;
+        mLauncher = launcher;
     }
 
     public void loadSeries() {
@@ -63,13 +70,13 @@ public class SeriesFragmentViewModel extends ProgressFragmentViewModel {
 
     private void notifySeriesLoaded() {
         mStatsViewModel = StatsCardViewModel.seriesStats(mSeries, getUsername());
+        mLeadersViewModel = LeadersCardViewModel.series(mSeries, mPlayer, mLauncher);
         if (mProjection != null) {
             notifyPropertyChanged(BR.statsVisibility);
             notifyPropertyChanged(BR.stats);
+            notifyPropertyChanged(BR.leaders);
             notifyPropertyChanged(BR.series);
             notifyPropertyChanged(BR.visibility);
-        } else {
-            // notificatino
         }
     }
 
@@ -82,6 +89,7 @@ public class SeriesFragmentViewModel extends ProgressFragmentViewModel {
     public void destroy() {
         super.destroy();
         mListener = null;
+        mLauncher = null;
     }
 
     @Bindable
@@ -97,6 +105,11 @@ public class SeriesFragmentViewModel extends ProgressFragmentViewModel {
     @Bindable
     public StatsCardViewModel getStats() {
         return mStatsViewModel;
+    }
+
+    @Bindable
+    public LeadersCardViewModel getLeaders() {
+        return mLeadersViewModel;
     }
 
     @Bindable

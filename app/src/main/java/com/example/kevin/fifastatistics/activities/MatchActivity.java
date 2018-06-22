@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.databinding.ActivityMatchBinding;
@@ -16,6 +17,7 @@ import com.example.kevin.fifastatistics.models.databasemodels.match.FifaEvent;
 import com.example.kevin.fifastatistics.models.databasemodels.match.Match;
 import com.example.kevin.fifastatistics.models.databasemodels.match.MatchProjection;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
+import com.example.kevin.fifastatistics.viewmodels.EventResultHeaderViewModel;
 import com.example.kevin.fifastatistics.viewmodels.EventToolbarViewModel;
 
 public class MatchActivity extends FifaBaseActivity implements MatchFragment.OnMatchLoadSuccessListener {
@@ -68,6 +70,9 @@ public class MatchActivity extends FifaBaseActivity implements MatchFragment.OnM
     private void initToolbarData(FifaEvent projection, User currentUser) {
         EventToolbarViewModel viewModel = new EventToolbarViewModel(projection, currentUser);
         mBinding.toolbarLayout.setViewModel(viewModel);
+        View toolbarTitle = mBinding.toolbarLayout.toolbarContent;
+        EventResultHeaderViewModel headerViewModel = new EventResultHeaderViewModel(projection, currentUser, toolbarTitle);
+        mBinding.setHeaderViewModel(headerViewModel);
     }
 
     @Override

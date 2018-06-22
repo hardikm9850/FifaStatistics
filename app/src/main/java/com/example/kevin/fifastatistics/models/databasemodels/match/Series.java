@@ -181,6 +181,21 @@ public class Series extends DatabaseModel implements TeamEvent, FifaEvent {
         return matchesLoser;
     }
 
+    @JsonIgnore
+    public boolean didInclude(Player player) {
+        return wonBy(player) || lostBy(player);
+    }
+
+    @JsonIgnore
+    public boolean wonBy(Player player) {
+        return player != null && player.getId().equals(getWinnerId());
+    }
+
+    @JsonIgnore
+    public boolean lostBy(Player player) {
+        return player != null && player.getId().equals(getLoserId());
+    }
+
     @Override
     public String toString() {
         return SerializationUtils.toJson(this);

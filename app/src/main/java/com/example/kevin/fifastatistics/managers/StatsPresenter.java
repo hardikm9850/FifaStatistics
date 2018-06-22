@@ -14,7 +14,7 @@ public class StatsPresenter {
     private boolean mDidSwap;
 
     public StatsPresenter(User.StatsPair stats, TeamEvent event, String username) {
-        mStats = stats;
+        mStats = new User.StatsPair(stats);
         mEvent = event;
         mUsername = username;
         init();
