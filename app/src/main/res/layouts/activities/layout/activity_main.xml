@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:bind="http://schemas.android.com/tools">
+        xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -10,7 +9,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/colorPrimaryDark">
+            android:background="?colorPrimaryDark">
 
             <android.support.design.widget.AppBarLayout
                 android:id="@+id/app_bar_layout"
@@ -43,8 +42,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
-                android:background="@color/colorPrimary"
-                app:itemBackground="@color/colorPrimary"
+                android:background="?colorPrimary"
+                app:itemBackground="?colorPrimary"
                 app:itemIconTint="@drawable/selector_bottom_nav"
                 app:itemTextColor="@drawable/selector_bottom_nav"
                 app:menu="@menu/menu_bottom_nav"/>

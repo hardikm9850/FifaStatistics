@@ -157,6 +157,7 @@
     <string name="activity_pick_team">Choose a Team</string>
     <string name="error_loading_teams">Failed to load teams</string>
     <string name="theme">Theme</string>
+    <string name="look_and_feel">Look and feel</string>
     <string name="general">General</string>
     <string name="advanced">Advanced</string>
 

@@ -5,12 +5,36 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorPrimaryDarkTranslucent">@color/colorPrimaryDarkTranslucent</item>
+        <item name="colorPrimaryDarkTranslucenter">@color/colorPrimaryDarkTranslucenter</item>
+        <item name="cardViewBackground">@color/cardViewBackground</item>
+        <item name="cardViewHeaderBackground">@color/cardViewHeaderBackground</item>
+        <item name="statOpponentColor">@color/statOpponentColor</item>
         <item name="android:windowContentTransitions">true</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
 
     <style name="AppTheme.Settings" parent="AppTheme">
+        <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Material</item>
+    </style>
+
+    <!-- Cobalt theme -->
+    <style name="AppTheme.Cobalt" parent="Theme.AppCompat.NoActionBar">
+        <item name="colorPrimary">@color/colorPrimaryCob</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDarkCob</item>
+        <item name="colorAccent">@color/colorAccentCob</item>
+        <item name="colorPrimaryDarkTranslucent">@color/colorPrimaryDarkTranslucentCob</item>
+        <item name="colorPrimaryDarkTranslucenter">@color/colorPrimaryDarkTranslucenterCob</item>
+        <item name="cardViewBackground">@color/cardViewBackgroundCob</item>
+        <item name="cardViewHeaderBackground">@color/cardViewHeaderBackgroundCob</item>
+        <item name="statOpponentColor">@color/statOpponentColorCob</item>
+        <item name="android:windowContentTransitions">true</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="AppTheme.Settings.Cobalt" parent="AppTheme.Cobalt">
         <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Material</item>
     </style>
 
@@ -102,7 +126,7 @@
         <item name="android:layout_marginEnd">@dimen/activity_horizontal_margin</item>
         <item name="android:layout_marginBottom">@dimen/activity_horizontal_margin</item>
         <item name="cardCornerRadius">2dp</item>
-        <item name="cardBackgroundColor">@color/cardViewBackground</item>
+        <item name="cardBackgroundColor">?cardViewBackground</item>
     </style>
 
     <style name="CardViewHeaderText">
@@ -114,7 +138,7 @@
     <style name="Divider">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">1dp</item>
-        <item name="android:background">@color/cardViewHeaderBackground</item>
+        <item name="android:background">?cardViewHeaderBackground</item>
     </style>
 
 </resources>

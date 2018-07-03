@@ -70,13 +70,16 @@ public class SeriesFragmentViewModel extends ProgressFragmentViewModel {
 
     private void notifySeriesLoaded() {
         mStatsViewModel = StatsCardViewModel.seriesStats(mSeries, getUsername());
-        mLeadersViewModel = LeadersCardViewModel.series(mSeries, mPlayer, mLauncher);
+        if (mSeries.getLeaders() != null) {
+            mLeadersViewModel = LeadersCardViewModel.series(mSeries, mPlayer, mLauncher);
+        }
         if (mProjection != null) {
             notifyPropertyChanged(BR.statsVisibility);
             notifyPropertyChanged(BR.stats);
             notifyPropertyChanged(BR.leaders);
             notifyPropertyChanged(BR.series);
             notifyPropertyChanged(BR.visibility);
+            notifyPropertyChanged(BR.leadersVisibility);
         }
     }
 
@@ -110,6 +113,11 @@ public class SeriesFragmentViewModel extends ProgressFragmentViewModel {
     @Bindable
     public LeadersCardViewModel getLeaders() {
         return mLeadersViewModel;
+    }
+
+    @Bindable
+    public int getLeadersVisibility() {
+        return visibleIf(mLeadersViewModel != null);
     }
 
     @Bindable

@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!-- Themes -->
+    <attr name="colorPrimaryDarkTranslucent" format="reference|color" />
+    <attr name="colorPrimaryDarkTranslucenter" format="reference|color" />
+    <attr name="cardViewBackground" format="reference|color" />
+    <attr name="cardViewHeaderBackground" format="reference|color" />
+    <attr name="statOpponentColor" format="reference|color" />
+
     <declare-styleable name="RoundedFrameLayout">
         <attr name="radiusTopLeft" format="dimension"/>
         <attr name="radiusTopRight" format="dimension"/>

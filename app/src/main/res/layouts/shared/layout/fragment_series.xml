@@ -31,7 +31,8 @@
 
                 <include
                     layout="@layout/card_leaders"
-                    bind:viewModel="@{viewModel.leaders}"/>
+                    bind:viewModel="@{viewModel.leaders}"
+                    android:visibility="@{viewModel.leadersVisibility}"/>
 
                 <include
                     android:id="@+id/stats_card_layout"

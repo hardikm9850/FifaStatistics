@@ -1,32 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!-- Dark theme -->
     <color name="colorPrimary">#262523</color>
     <color name="colorPrimaryDark">#181715</color>
     <color name="colorPrimaryDarkTranslucent">#B2181715</color>
     <color name="colorPrimaryDarkTranslucenter">#92181715</color>
     <color name="colorAccent">#80CBC4</color>
-    <color name="white">#FFFFFF</color>
-    <color name="transparent">#00000000</color>
-    <color name="error">@android:color/holo_red_light</color>
-    <color name="colorMenuItem">#909090</color>
-
-    <!-- Card view colors -->
     <color name="cardViewBackground">#262523</color>
     <color name="cardViewHeaderBackground">#302F2D</color>
     <color name="statOpponentColor">#FF484644</color>
+    <color name="text_main">@color/white</color>
+    <color name="colorMenuItem">#909090</color>
 
-    <color name="lighter_black">#212330</color>
-    <color name="storm_gray">#717482</color>
+    <!-- Cobalt theme -->
+    <color name="colorPrimaryCob">#4527a0</color>
+    <color name="colorPrimaryDarkCob">#311b92</color>
+    <color name="colorPrimaryDarkTranslucentCob">#B2311b92</color>
+    <color name="colorPrimaryDarkTranslucenterCob">#92311b92</color>
+    <color name="colorAccentCob">#42a5f5</color>
+    <color name="cardViewBackgroundCob">#4527a0</color>
+    <color name="cardViewHeaderBackgroundCob">#6a56a5</color>
+    <color name="statOpponentColorCob">#FF484644</color>
+    <color name="text_mainCob">@color/white</color>
+    <color name="colorMenuItemCob">#909090</color>
 
-    <!-- FAB -->
+    <!-- Misc -->
     <color name="half_black">#808080</color>
     <color name="black_tint">#50000000</color>
-
+    <color name="white">#FFFFFF</color>
+    <color name="transparent">#00000000</color>
+    <color name="error">@android:color/holo_red_light</color>
+    <color name="lighter_black">#212330</color>
+    <color name="storm_gray">#717482</color>
     <color name="gold">#FFD700</color>
-
-    <color name="circle_background">#FF484644</color>
-    <color name="text_main">@color/white</color>
-    <color name="circle_background_cross">#50FFFFFF</color>
 
 </resources>

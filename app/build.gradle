@@ -134,9 +134,7 @@ dependencies {
     compile 'com.tonicartos:superslim:0.4.13'
     compile 'com.robinhood.ticker:ticker:1.1.1'
 
-
     // Unused...
-    compile 'com.52inc:scoops:1.0.0'
     compile 'com.diogobernardino:williamchart:2.2'
 }
 

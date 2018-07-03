@@ -2,7 +2,6 @@ package com.example.kevin.fifastatistics;
 
 import android.content.Context;
 import android.content.res.AssetManager;
-import android.preference.PreferenceManager;
 import android.support.multidex.MultiDexApplication;
 import android.util.Log;
 
@@ -10,7 +9,6 @@ import com.example.kevin.fifastatistics.activities.FifaActivityLifecycleCallback
 import com.example.kevin.fifastatistics.managers.ImageLoaderManager;
 import com.example.kevin.fifastatistics.managers.preferences.PrefsManager;
 import com.example.kevin.fifastatistics.utils.ObservableUtils;
-import com.ftinc.scoop.Scoop;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -48,17 +46,6 @@ public class FifaApplication extends MultiDexApplication {
         PrefsManager.initialize(this);
         ensureTrainedDataExists();
         registerActivityLifecycleCallbacks(new FifaActivityLifecycleCallbacks());
-        initScoop();
-    }
-
-    private void initScoop() {
-        Scoop.waffleCone()
-                .addFlavor("Default", R.style.Theme_Scoop, true)
-                .addFlavor("Light", R.style.Theme_Scoop_Light)
-                .addDayNightFlavor("DayNight", R.style.Theme_Scoop_DayNight)
-                .addFlavor("Alternate 1", R.style.Theme_Scoop_Alt1)
-                .setSharedPreferences(PreferenceManager.getDefaultSharedPreferences(this))
-                .initialize();
     }
 
     private void ensureTrainedDataExists() {
