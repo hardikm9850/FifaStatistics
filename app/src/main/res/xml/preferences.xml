@@ -1,55 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<android.support.v7.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <PreferenceCategory android:title="@string/general">
+    <android.support.v7.preference.PreferenceCategory android:title="@string/general">
 
-        <SwitchPreference
+        <android.support.v7.preference.SwitchPreferenceCompat
             android:key="@string/openToCamera"
             android:title="@string/pref_direct_camera"
             android:summary="@string/pref_direct_camera_desc"
             android:defaultValue="false"/>
 
-        <Preference
+        <android.support.v7.preference.Preference
             android:key="@string/favoriteTeam"
             android:title="@string/pref_favorite_team"
             android:summary="-">
             <intent android:action="com.example.kevin.fifastatistics.activities.PickTeamActivity"/>
-        </Preference>
+        </android.support.v7.preference.Preference>
 
-    </PreferenceCategory>
+    </android.support.v7.preference.PreferenceCategory>
 
-    <PreferenceCategory android:title="@string/look_and_feel">
+    <android.support.v7.preference.PreferenceCategory android:title="@string/look_and_feel">
 
-        <SwitchPreference
-            android:key="@string/darkTheme"
-            android:title="@string/pref_dark_theme"
-            android:defaultValue="false"/>
+        <com.example.kevin.fifastatistics.managers.preferences.ThemePreference
+            style="@style/AppPreference.DialogPreference"
+            android:defaultValue="@style/AppTheme"
+            android:key="@string/themePref"
+            android:title="@string/pref_theme"/>
 
-        <SwitchPreference
+        <android.support.v7.preference.SwitchPreferenceCompat
             android:key="@string/teamAsColor"
             android:title="@string/pref_team_color_as_accent"
             android:defaultValue="false"/>
 
-    </PreferenceCategory>
+    </android.support.v7.preference.PreferenceCategory>
 
-    <PreferenceCategory android:title="@string/advanced">
+    <android.support.v7.preference.PreferenceCategory android:title="@string/advanced">
 
-        <Preference
+        <android.support.v7.preference.Preference
             android:key="@string/resendRegToken"
             android:title="@string/pref_resend_reg_token">
-        </Preference>
+        </android.support.v7.preference.Preference>
 
-        <Preference
+        <android.support.v7.preference.Preference
             android:key="@string/syncFootballerCache"
             android:title="@string/pref_update_player_cache">
-        </Preference>
+        </android.support.v7.preference.Preference>
 
-        <SwitchPreference
+        <android.support.v7.preference.SwitchPreferenceCompat
             android:key="@string/saveFactBitmaps"
             android:title="@string/pref_save_bitmaps"
             android:defaultValue="false"/>
 
-    </PreferenceCategory>
+    </android.support.v7.preference.PreferenceCategory>
 
-
-</PreferenceScreen>
+</android.support.v7.preference.PreferenceScreen>

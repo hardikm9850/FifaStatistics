@@ -3,48 +3,57 @@ package com.example.kevin.fifastatistics.fragments;
 import android.os.Bundle;
 import android.support.v7.preference.DialogPreference;
 import android.support.v7.preference.PreferenceDialogFragmentCompat;
+import android.util.SparseIntArray;
 import android.view.View;
 
 import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.managers.preferences.ThemePreference;
-import com.example.kevin.fifastatistics.views.ThemePicker;
+import com.example.kevin.fifastatistics.utils.ToastUtils;
+import com.example.kevin.fifastatistics.views.ThemeRadioButton;
+import com.example.kevin.fifastatistics.views.ThemeRadioGroup;
 
 public class ThemePreferenceDialogFragment extends PreferenceDialogFragmentCompat {
 
-    private ThemePicker mThemePicker;
+    private static final SparseIntArray THEMES_TO_IDS;
+
+    static {
+        THEMES_TO_IDS = new SparseIntArray();
+        THEMES_TO_IDS.put(R.style.AppTheme, R.id.button_dark_theme);
+        THEMES_TO_IDS.put(R.style.AppTheme_Cobalt, R.id.button_cobalt_theme);
+        THEMES_TO_IDS.put(R.style.AppTheme_Light, R.id.button_light_theme);
+    }
+
+    private ThemeRadioGroup mRadioGroup;
 
     public static ThemePreferenceDialogFragment newInstance(String key) {
-        final ThemePreferenceDialogFragment
-                fragment = new ThemePreferenceDialogFragment();
+        final ThemePreferenceDialogFragment fragment = new ThemePreferenceDialogFragment();
         final Bundle b = new Bundle(1);
         b.putString(ARG_KEY, key);
         fragment.setArguments(b);
-
         return fragment;
     }
 
     @Override
     protected void onBindDialogView(View view) {
         super.onBindDialogView(view);
-        mThemePicker = view.findViewById(R.id.theme_picker);
+        mRadioGroup = view.findViewById(R.id.theme_radio_group);
 
-        int theme = 0;
+        int theme = R.style.AppTheme;
         DialogPreference preference = getPreference();
         if (preference instanceof ThemePreference) {
             theme = ((ThemePreference) preference).getTheme();
         }
-
-        // Set the theme to the theme picker
-        if (theme != 0) {
-            // TODO
-        }
+        mRadioGroup.check(THEMES_TO_IDS.get(theme));
     }
 
     @Override
     public void onDialogClosed(boolean positiveResult) {
         if (positiveResult) {
-            int theme = mThemePicker.getTheme();
+            int selectedId = mRadioGroup.getCheckedRadioButtonId();
+            ThemeRadioButton selectedButton = mRadioGroup.findViewById(selectedId);
+            int theme = selectedButton.getTheme();
             DialogPreference preference = getPreference();
+            ToastUtils.showShortToast(getContext(), selectedButton.getText());
             if (preference instanceof ThemePreference) {
                 ThemePreference ThemePreference = ((ThemePreference) preference);
                 if (ThemePreference.callChangeListener(theme)) {

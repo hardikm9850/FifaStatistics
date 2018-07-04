@@ -1,13 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<com.example.kevin.fifastatistics.views.ThemeRadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/theme_radio_group"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:weightSum="3">
 
-    <com.example.kevin.fifastatistics.views.ThemePicker
-        android:id="@+id/theme_picker"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+    <com.example.kevin.fifastatistics.views.ThemeRadioButton
+        android:id="@+id/button_cobalt_theme"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:theme="@style/AppTheme.Cobalt"
+        app:text="@string/cobalt"
+        app:buttonTheme="@style/AppTheme.Cobalt"/>
 
-    </com.example.kevin.fifastatistics.views.ThemePicker>
+    <com.example.kevin.fifastatistics.views.ThemeRadioButton
+        android:id="@+id/button_dark_theme"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:theme="@style/AppTheme"
+        app:text="@string/dark"
+        app:buttonTheme="@style/AppTheme"/>
 
-</LinearLayout>
+    <com.example.kevin.fifastatistics.views.ThemeRadioButton
+        android:id="@+id/button_light_theme"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:theme="@style/AppTheme.Cobalt"
+        app:text="@string/cobalt"
+        app:buttonTheme="@style/AppTheme.Cobalt"/>
+
+</com.example.kevin.fifastatistics.views.ThemeRadioGroup>

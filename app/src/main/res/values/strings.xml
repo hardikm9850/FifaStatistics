@@ -162,7 +162,7 @@
     <string name="advanced">Advanced</string>
 
     <!-- preferences -->
-    <string name="pref_dark_theme">Dark Theme</string>
+    <string name="pref_theme">Theme</string>
     <string name="pref_direct_camera">Direct Camera</string>
     <string name="pref_direct_camera_desc">Immediately open the camera when creating a match</string>
     <string name="pref_favorite_team">Favourite Team</string>
@@ -172,5 +172,8 @@
     <string name="pref_save_bitmaps">Save match facts to gallery</string>
     <string name="updating_token">Updating token</string>
     <string name="updating_player_cache">Updating player cache</string>
+    <string name="cobalt">Cobalt</string>
+    <string name="dark">Dark</string>
+    <string name="light">Light</string>
 
 </resources>

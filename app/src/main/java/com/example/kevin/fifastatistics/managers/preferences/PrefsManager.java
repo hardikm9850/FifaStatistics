@@ -12,8 +12,6 @@ import android.util.Log;
 import com.example.kevin.fifastatistics.FifaApplication;
 import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.models.databasemodels.league.Team;
-import com.example.kevin.fifastatistics.models.databasemodels.match.CurrentSeries;
-import com.example.kevin.fifastatistics.models.databasemodels.match.Match;
 import com.example.kevin.fifastatistics.models.databasemodels.match.MatchUpdate;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
 import com.example.kevin.fifastatistics.utils.SerializationUtils;
@@ -38,7 +36,6 @@ public class PrefsManager {
     private static final String MATCH_UPDATES = "MATCH_UPDATES";
     private static final String FAVORITE_TEAM;
     private static final String DIRECT_CAMERA;
-    private static final String DARK_THEME;
     private static final String TEAM_COLOR_AS_ACCENT;
     private static final String SAVE_FACT_BITMAPS;
 
@@ -50,7 +47,6 @@ public class PrefsManager {
         Context context = FifaApplication.getContext();
         FAVORITE_TEAM = context.getString(R.string.favoriteTeam);
         DIRECT_CAMERA = context.getString(R.string.openToCamera);
-        DARK_THEME = context.getString(R.string.darkTheme);
         TEAM_COLOR_AS_ACCENT = context.getString(R.string.teamAsColor);
         SAVE_FACT_BITMAPS = context.getString(R.string.saveFactBitmaps);
     }

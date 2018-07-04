@@ -5,6 +5,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceFragmentCompat;
@@ -18,6 +19,7 @@ import com.example.kevin.fifastatistics.event.EventBus;
 import com.example.kevin.fifastatistics.interfaces.OnTeamSelectedListener;
 import com.example.kevin.fifastatistics.managers.RetrievalManager;
 import com.example.kevin.fifastatistics.managers.preferences.PrefsManager;
+import com.example.kevin.fifastatistics.managers.preferences.ThemePreference;
 import com.example.kevin.fifastatistics.models.databasemodels.league.Team;
 import com.example.kevin.fifastatistics.network.service.SyncPlayerCacheService;
 import com.example.kevin.fifastatistics.network.service.UpdateTokenService;
@@ -164,6 +166,17 @@ public class SettingsFragment extends PreferenceFragmentCompat implements OnTeam
         setFavoriteTeamSummary();
         if (PrefsManager.doUseTeamColorAsAccent()) {
             updateColors(team);
+        }
+    }
+
+    @Override
+    public void onDisplayPreferenceDialog(Preference preference) {
+        if (preference instanceof ThemePreference) {
+            DialogFragment dialogFragment = ThemePreferenceDialogFragment.newInstance(preference.getKey());
+            dialogFragment.setTargetFragment(this, 0);
+            dialogFragment.show(getFragmentManager(), "android.support.v7.preference.PreferenceFragment.DIALOG");
+        } else {
+            super.onDisplayPreferenceDialog(preference);
         }
     }
 

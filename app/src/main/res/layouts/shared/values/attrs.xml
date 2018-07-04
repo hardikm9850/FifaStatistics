@@ -2,17 +2,25 @@
 <resources>
 
     <!-- Themes -->
+
     <attr name="colorPrimaryDarkTranslucent" format="reference|color" />
     <attr name="colorPrimaryDarkTranslucenter" format="reference|color" />
     <attr name="cardViewBackground" format="reference|color" />
     <attr name="cardViewHeaderBackground" format="reference|color" />
     <attr name="statOpponentColor" format="reference|color" />
 
+    <!-- Views -->
+
     <declare-styleable name="RoundedFrameLayout">
         <attr name="radiusTopLeft" format="dimension"/>
         <attr name="radiusTopRight" format="dimension"/>
         <attr name="radiusBottomRight" format="dimension"/>
         <attr name="radiusBottomLeft" format="dimension"/>
+    </declare-styleable>
+
+    <declare-styleable name="ThemeRadioButton">
+        <attr name="text" format="string"/>
+        <attr name="buttonTheme" format="integer"/>
     </declare-styleable>
 
 </resources>

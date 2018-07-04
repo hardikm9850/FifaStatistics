@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <ImageView
+        android:id="@+id/theme_preview"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:background="?colorPrimaryDark"/>
+
+    <TextView
+        android:id="@+id/theme_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/checked_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="selected"
+        android:visibility="gone"/>
+
+</merge>
