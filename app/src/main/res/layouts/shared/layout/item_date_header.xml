@@ -24,7 +24,7 @@
             android:paddingTop="@dimen/date_header_vertical_margin"
             android:textAppearance="@style/text_bold_grey_small"
             android:text="@{date}"
-            android:background="@color/colorPrimaryDark" />
+            android:background="?colorPrimaryDark" />
 
         <View
             android:layout_width="match_parent"

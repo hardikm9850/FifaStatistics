@@ -3,6 +3,7 @@ package com.example.kevin.fifastatistics.managers.preferences;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
@@ -38,6 +39,7 @@ public class PrefsManager {
     private static final String DIRECT_CAMERA;
     private static final String TEAM_COLOR_AS_ACCENT;
     private static final String SAVE_FACT_BITMAPS;
+    private static final String THEME;
 
     private static SharedPreferences preferences;
     private static SharedPreferences.Editor editor;
@@ -49,6 +51,7 @@ public class PrefsManager {
         DIRECT_CAMERA = context.getString(R.string.openToCamera);
         TEAM_COLOR_AS_ACCENT = context.getString(R.string.teamAsColor);
         SAVE_FACT_BITMAPS = context.getString(R.string.saveFactBitmaps);
+        THEME = context.getString(R.string.themePref);
     }
 
     /**
@@ -161,7 +164,15 @@ public class PrefsManager {
 
     @ColorInt
     public static int getColorAccent() {
-        int accentColor = ContextCompat.getColor(FifaApplication.getContext(), R.color.colorAccent);
+        Context context = FifaApplication.getContext();
+        TypedArray a = context.getTheme().obtainStyledAttributes(getTheme(), new int[] { R.attr.colorAccent });
+        int defaultColor = ContextCompat.getColor(context, R.color.colorAccent);
+        int accentColor = defaultColor;
+        try {
+            accentColor = a.getColor(0, defaultColor);
+        } finally {
+            a.recycle();
+        }
         if (doUseTeamColorAsAccent()) {
             String color = preferences.getString(COLOR_ACCENT, null);
             return color != null ? Color.parseColor(color) : accentColor;
@@ -180,6 +191,10 @@ public class PrefsManager {
 
     public static boolean doSaveMatchFactsBitmap() {
         return preferences.getBoolean(SAVE_FACT_BITMAPS, false);
+    }
+
+    public static int getTheme() {
+        return preferences.getInt(THEME, R.style.AppTheme);
     }
 
     public static User getUser() {

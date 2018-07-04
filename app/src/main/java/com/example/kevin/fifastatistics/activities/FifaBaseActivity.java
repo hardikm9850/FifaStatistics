@@ -5,11 +5,14 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
 import com.example.kevin.fifastatistics.FifaApplication;
+import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.event.ColorChangeEvent;
 import com.example.kevin.fifastatistics.event.EventBus;
+import com.example.kevin.fifastatistics.event.ThemeChangeEvent;
 import com.example.kevin.fifastatistics.interfaces.FragmentArguments;
 import com.example.kevin.fifastatistics.interfaces.OnBackPressedHandler;
 import com.example.kevin.fifastatistics.interfaces.TransitionStarter;
+import com.example.kevin.fifastatistics.managers.preferences.PrefsManager;
 import com.example.kevin.fifastatistics.utils.ObservableUtils;
 
 import rx.Subscription;
@@ -32,6 +35,7 @@ public abstract class FifaBaseActivity extends AppCompatActivity implements Tran
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initColors();
+        initTheme();
         mCallingActivityHashCode = getIntent() != null ? getIntent().getIntExtra(EXTRA_HASH_CODE, 0) : 0;
     }
 
@@ -44,6 +48,17 @@ public abstract class FifaBaseActivity extends AppCompatActivity implements Tran
     }
 
     protected void onColorUpdated() {}
+
+    private void initTheme() {
+        int theme = PrefsManager.getTheme();
+        if (theme != R.style.AppTheme) {
+            setTheme(theme);
+        }
+        EventBus.getInstance().observeEvents(ThemeChangeEvent.class).subscribe(event -> {
+            FifaApplication.setAccentColor(PrefsManager.getColorAccent());
+            recreate();
+        });
+    }
 
     @Override
     public void onBackPressed() {

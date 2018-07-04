@@ -1,6 +1,7 @@
 package com.example.kevin.fifastatistics.fragments;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -16,6 +17,7 @@ import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.activities.PickTeamActivity;
 import com.example.kevin.fifastatistics.event.ColorChangeEvent;
 import com.example.kevin.fifastatistics.event.EventBus;
+import com.example.kevin.fifastatistics.event.ThemeChangeEvent;
 import com.example.kevin.fifastatistics.interfaces.OnTeamSelectedListener;
 import com.example.kevin.fifastatistics.managers.RetrievalManager;
 import com.example.kevin.fifastatistics.managers.preferences.PrefsManager;
@@ -30,7 +32,7 @@ import com.example.kevin.fifastatistics.utils.UserUtils;
 import rx.Observable;
 import rx.Subscription;
 
-public class SettingsFragment extends PreferenceFragmentCompat implements OnTeamSelectedListener {
+public class SettingsFragment extends PreferenceFragmentCompat implements OnTeamSelectedListener, SharedPreferences.OnSharedPreferenceChangeListener {
 
     private static final int SETTINGS_REQUEST_CODE = 5377;
 
@@ -144,6 +146,19 @@ public class SettingsFragment extends PreferenceFragmentCompat implements OnTeam
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        getPreferenceManager().getSharedPreferences().registerOnSharedPreferenceChangeListener(this);
+
+    }
+
+    @Override
+    public void onPause() {
+        getPreferenceManager().getSharedPreferences().unregisterOnSharedPreferenceChangeListener(this);
+        super.onPause();
+    }
+
+    @Override
     public void onStop() {
         super.onStop();
         if (mUpdateTeamSubscription != null) {
@@ -191,5 +206,13 @@ public class SettingsFragment extends PreferenceFragmentCompat implements OnTeam
         int newColor = Color.parseColor(team.getColor());
         FifaApplication.setAccentColor(newColor);
         mEventBus.post(new ColorChangeEvent(newColor));
+    }
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        if (key.equals(getString(R.string.themePref))) {
+            int theme = sharedPreferences.getInt(key, R.style.AppTheme);
+            mEventBus.post(new ThemeChangeEvent(theme));
+        }
     }
 }

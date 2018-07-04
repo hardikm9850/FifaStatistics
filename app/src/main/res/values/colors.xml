@@ -14,13 +14,13 @@
     <color name="colorMenuItem">#909090</color>
 
     <!-- Cobalt theme -->
-    <color name="colorPrimaryCob">#4527a0</color>
-    <color name="colorPrimaryDarkCob">#311b92</color>
-    <color name="colorPrimaryDarkTranslucentCob">#B2311b92</color>
-    <color name="colorPrimaryDarkTranslucenterCob">#92311b92</color>
+    <color name="colorPrimaryCob">#1a1a26</color>
+    <color name="colorPrimaryDarkCob">#14141e</color>
+    <color name="colorPrimaryDarkTranslucentCob">#B214141e</color>
+    <color name="colorPrimaryDarkTranslucenterCob">#9214141e</color>
     <color name="colorAccentCob">#42a5f5</color>
-    <color name="cardViewBackgroundCob">#4527a0</color>
-    <color name="cardViewHeaderBackgroundCob">#6a56a5</color>
+    <color name="cardViewBackgroundCob">@color/colorPrimaryCob</color>
+    <color name="cardViewHeaderBackgroundCob">#242435</color>
     <color name="statOpponentColorCob">#FF484644</color>
     <color name="text_mainCob">@color/white</color>
     <color name="colorMenuItemCob">#909090</color>

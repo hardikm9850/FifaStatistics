@@ -28,7 +28,7 @@
             android:paddingTop="@dimen/record_header_vertical_padding"
             android:paddingBottom="@dimen/record_header_vertical_padding"
             android:orientation="horizontal"
-            android:background="@color/cardViewBackground"
+            android:background="?cardViewBackground"
             tools:ignore="RtlSymmetry">
 
             <TextView

@@ -110,8 +110,10 @@ public class LeadersCardViewModel extends FifaBaseViewModel {
     }
 
     public void setColors(@ColorInt int leftColor, @ColorInt int rightColor) {
-        mLeftColor = leftColor;
-        mRightColor = rightColor;
+        if (leftColor != 0 && rightColor != 0) {
+            mLeftColor = leftColor;
+            mRightColor = rightColor;
+        }
     }
 
     public String getLeftHeader() {
