@@ -8,7 +8,6 @@ import android.view.View;
 
 import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.managers.preferences.ThemePreference;
-import com.example.kevin.fifastatistics.utils.ToastUtils;
 import com.example.kevin.fifastatistics.views.ThemeRadioButton;
 import com.example.kevin.fifastatistics.views.ThemeRadioGroup;
 
@@ -40,6 +39,7 @@ public class ThemePreferenceDialogFragment extends PreferenceDialogFragmentCompa
 
         int theme = R.style.AppTheme;
         DialogPreference preference = getPreference();
+        preference.setDialogTitle(R.string.select_theme);
         if (preference instanceof ThemePreference) {
             theme = ((ThemePreference) preference).getTheme();
         }
@@ -53,7 +53,6 @@ public class ThemePreferenceDialogFragment extends PreferenceDialogFragmentCompa
             ThemeRadioButton selectedButton = mRadioGroup.findViewById(selectedId);
             int theme = selectedButton.getTheme();
             DialogPreference preference = getPreference();
-            ToastUtils.showShortToast(getContext(), selectedButton.getText());
             if (preference instanceof ThemePreference) {
                 ThemePreference ThemePreference = ((ThemePreference) preference);
                 if (ThemePreference.callChangeListener(theme)) {

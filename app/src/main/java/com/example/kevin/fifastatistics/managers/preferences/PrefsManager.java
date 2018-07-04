@@ -194,7 +194,7 @@ public class PrefsManager {
     }
 
     public static int getTheme() {
-        return preferences.getInt(THEME, R.style.AppTheme);
+        return preferences.getInt(THEME, R.style.AppTheme_Cobalt);
     }
 
     public static User getUser() {

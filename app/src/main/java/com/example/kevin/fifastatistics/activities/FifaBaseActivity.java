@@ -51,7 +51,7 @@ public abstract class FifaBaseActivity extends AppCompatActivity implements Tran
 
     private void initTheme() {
         int theme = PrefsManager.getTheme();
-        if (theme != R.style.AppTheme) {
+        if (theme != R.style.AppTheme_Cobalt) {
             setTheme(theme);
         }
         EventBus.getInstance().observeEvents(ThemeChangeEvent.class).subscribe(event -> {

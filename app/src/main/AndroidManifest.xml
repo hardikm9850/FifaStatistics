@@ -52,37 +52,37 @@
         <activity
             android:name=".activities.MainActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme">
+            android:theme="@style/AppTheme.Cobalt">
         </activity>
 
         <activity
             android:name=".activities.PlayerActivty"
             android:label="@string/title_activity_player_activty"
-            android:theme="@style/AppTheme">
+            android:theme="@style/AppTheme.Cobalt">
         </activity>
 
         <activity
             android:name=".activities.MatchActivity"
             android:label="@string/title_activity_match"
-            android:theme="@style/AppTheme">
+            android:theme="@style/AppTheme.Cobalt">
         </activity>
 
         <activity
             android:name=".activities.SeriesActivity"
             android:label="@string/series"
-            android:theme="@style/AppTheme">
+            android:theme="@style/AppTheme.Cobalt">
         </activity>
 
         <activity
             android:name=".activities.MatchUpdateActivity"
             android:label="@string/title_activity_match_update"
-            android:theme="@style/AppTheme">
+            android:theme="@style/AppTheme.Cobalt">
         </activity>
 
         <activity
             android:name=".activities.CreateMatchActivity"
             android:label="@string/new_match"
-            android:theme="@style/AppTheme"
+            android:theme="@style/AppTheme.Cobalt"
             android:screenOrientation="portrait"
             android:configChanges="orientation|keyboardHidden">>
         </activity>
@@ -90,13 +90,13 @@
         <activity
             android:name=".activities.CreateSeriesActivity"
             android:label="@string/title_activity_create_series_activity"
-            android:theme="@style/AppTheme">
+            android:theme="@style/AppTheme.Cobalt">
         </activity>
 
         <activity
             android:name=".activities.PickTeamActivity"
             android:label="@string/activity_pick_team"
-            android:theme="@style/AppTheme">
+            android:theme="@style/AppTheme.Cobalt">
             <intent-filter>
                 <action android:name="com.example.kevin.fifastatistics.activities.PickTeamActivity" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -112,7 +112,7 @@
         <activity
             android:name=".activities.CameraActivity"
             android:label="@string/name_camera_activity"
-            android:theme="@style/AppTheme"
+            android:theme="@style/AppTheme.Cobalt"
             android:screenOrientation="landscape"
             android:configChanges="orientation|keyboardHidden">
         </activity>

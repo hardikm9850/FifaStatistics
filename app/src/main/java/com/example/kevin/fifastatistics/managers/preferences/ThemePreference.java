@@ -38,7 +38,7 @@ public class ThemePreference extends DialogPreference {
 
     @Override
     protected Object onGetDefaultValue(TypedArray a, int index) {
-        return a.getResourceId(index, R.style.AppTheme);
+        return a.getResourceId(index, R.style.AppTheme_Cobalt);
     }
 
     @Override

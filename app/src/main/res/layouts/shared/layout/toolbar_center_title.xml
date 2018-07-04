@@ -6,7 +6,6 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:title="@string/new_match"
         app:popupTheme="@style/AppTheme.PopupOverlay">
 
         <TextView
@@ -14,7 +13,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:textAppearance="@style/text_bold_medium"/>
+            android:textAppearance="@style/text_bold_medium"
+            android:textColor="?android:textColorPrimary" />
 
     </android.support.v7.widget.Toolbar>
 </layout>

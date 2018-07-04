@@ -16,12 +16,14 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"/>
 
-    <TextView
-        android:id="@+id/checked_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <View
+        android:id="@+id/checkbox"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:layout_gravity="center_horizontal"
-        android:text="selected"
+        android:layout_margin="@dimen/activity_horizontal_margin"
+        android:background="@drawable/baseline_check_circle_black_48"
+        android:backgroundTint="?colorAccent"
         android:visibility="gone"/>
 
 </merge>

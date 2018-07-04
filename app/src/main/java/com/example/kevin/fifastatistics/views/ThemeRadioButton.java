@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -11,6 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.kevin.fifastatistics.R;
+import com.example.kevin.fifastatistics.animation.CircularAnimationHelper;
 import com.example.kevin.fifastatistics.interfaces.RadioCheckable;
 
 import java.util.ArrayList;
@@ -19,7 +21,7 @@ import java.util.List;
 public class ThemeRadioButton extends LinearLayout implements RadioCheckable {
 
     private String mTitle;
-    private TextView mIsSelectedText;
+    private View mIsSelectedCheck;
     private OnClickListener mOnClickListener;
     private OnTouchListener mOnTouchListener;
     private List<OnCheckedChangeListener> mOnCheckedChangeListeners = new ArrayList<>();
@@ -62,7 +64,7 @@ public class ThemeRadioButton extends LinearLayout implements RadioCheckable {
         setOrientation(VERTICAL);
         LayoutInflater inflater = LayoutInflater.from(context);
         inflater.inflate(R.layout.radio_button_theme, this, true);
-        mIsSelectedText = findViewById(R.id.checked_text);
+        mIsSelectedCheck = findViewById(R.id.checkbox);
         TextView title = findViewById(R.id.theme_text);
         title.setText(mTitle);
     }
@@ -91,7 +93,7 @@ public class ThemeRadioButton extends LinearLayout implements RadioCheckable {
                 }
             }
         }
-        mIsSelectedText.setVisibility(mChecked ? View.VISIBLE : View.GONE);
+        mIsSelectedCheck.setVisibility(mChecked ? View.VISIBLE : View.GONE);
     }
 
     @Override

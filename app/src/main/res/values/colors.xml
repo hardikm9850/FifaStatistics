@@ -6,7 +6,7 @@
     <color name="colorPrimaryDark">#181715</color>
     <color name="colorPrimaryDarkTranslucent">#B2181715</color>
     <color name="colorPrimaryDarkTranslucenter">#92181715</color>
-    <color name="colorAccent">#80CBC4</color>
+    <color name="colorAccent">@color/blue</color>
     <color name="cardViewBackground">@color/colorPrimary</color>
     <color name="cardViewHeaderBackground">#302F2D</color>
     <color name="statOpponentColor">#FF484644</color>
@@ -19,7 +19,7 @@
     <color name="colorPrimaryDarkCob">#14141e</color>
     <color name="colorPrimaryDarkTranslucentCob">#B214141e</color>
     <color name="colorPrimaryDarkTranslucenterCob">#9214141e</color>
-    <color name="colorAccentCob">#42a5f5</color>
+    <color name="colorAccentCob">@color/blue</color>
     <color name="cardViewBackgroundCob">@color/colorPrimaryCob</color>
     <color name="cardViewHeaderBackgroundCob">#242435</color>
     <color name="statOpponentColorCob">#FF484644</color>
@@ -32,7 +32,7 @@
     <color name="colorPrimaryDarkLight">#e0e0e0</color>
     <color name="colorPrimaryDarkTranslucentLight">#B2e0e0e0</color>
     <color name="colorPrimaryDarkTranslucenterLight">#92e0e0e0</color>
-    <color name="colorAccentLight">#42a5f5</color>
+    <color name="colorAccentLight">@color/blue</color>
     <color name="cardViewBackgroundLight">@color/colorPrimaryLight</color>
     <color name="cardViewHeaderBackgroundLight">#eeeeee</color>
     <color name="statOpponentColorLight">#FF484644</color>
@@ -49,5 +49,6 @@
     <color name="lighter_black">#212330</color>
     <color name="storm_gray">#717482</color>
     <color name="gold">#FFD700</color>
+    <color name="blue">#42a5f5</color>
 
 </resources>

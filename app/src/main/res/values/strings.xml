@@ -163,6 +163,7 @@
 
     <!-- preferences -->
     <string name="pref_theme">Theme</string>
+    <string name="select_theme">Select a theme</string>
     <string name="pref_direct_camera">Direct Camera</string>
     <string name="pref_direct_camera_desc">Immediately open the camera when creating a match</string>
     <string name="pref_favorite_team">Favourite Team</string>
