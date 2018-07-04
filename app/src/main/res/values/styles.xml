@@ -7,9 +7,12 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="colorPrimaryDarkTranslucent">@color/colorPrimaryDarkTranslucent</item>
         <item name="colorPrimaryDarkTranslucenter">@color/colorPrimaryDarkTranslucenter</item>
+        <item name="colorMenuItem">@color/colorMenuItem</item>
         <item name="cardViewBackground">@color/cardViewBackground</item>
         <item name="cardViewHeaderBackground">@color/cardViewHeaderBackground</item>
         <item name="statOpponentColor">@color/statOpponentColor</item>
+        <item name="android:textColorPrimary">@color/textColorPrimary</item>
+        <item name="android:textColorSecondary">@color/textColorSecondary</item>
         <item name="android:windowContentTransitions">true</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
@@ -26,16 +29,33 @@
         <item name="colorAccent">@color/colorAccentCob</item>
         <item name="colorPrimaryDarkTranslucent">@color/colorPrimaryDarkTranslucentCob</item>
         <item name="colorPrimaryDarkTranslucenter">@color/colorPrimaryDarkTranslucenterCob</item>
+        <item name="colorMenuItem">@color/colorMenuItemCob</item>
         <item name="cardViewBackground">@color/cardViewBackgroundCob</item>
         <item name="cardViewHeaderBackground">@color/cardViewHeaderBackgroundCob</item>
         <item name="statOpponentColor">@color/statOpponentColorCob</item>
+        <item name="android:textColorPrimary">@color/textColorPrimaryCob</item>
+        <item name="android:textColorSecondary">@color/textColorSecondaryCob</item>
         <item name="android:windowContentTransitions">true</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
 
+    <!-- Light Theme -->
     <style name="AppTheme.Light" parent="Theme.AppCompat.Light.NoActionBar">
-
+        <item name="colorPrimary">@color/colorPrimaryLight</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDarkLight</item>
+        <item name="colorAccent">@color/colorAccentLight</item>
+        <item name="colorPrimaryDarkTranslucent">@color/colorPrimaryDarkTranslucentLight</item>
+        <item name="colorPrimaryDarkTranslucenter">@color/colorPrimaryDarkTranslucenterLight</item>
+        <item name="colorMenuItem">@color/colorMenuItemLight</item>
+        <item name="cardViewBackground">@color/cardViewBackgroundLight</item>
+        <item name="cardViewHeaderBackground">@color/cardViewHeaderBackgroundLight</item>
+        <item name="statOpponentColor">@color/statOpponentColorLight</item>
+        <item name="android:textColorPrimary">@color/textColorPrimaryLight</item>
+        <item name="android:textColorSecondary">@color/textColorSecondaryLight</item>
+        <item name="android:windowContentTransitions">true</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
     </style>
 
     <style name="AppTheme.Settings.Cobalt" parent="AppTheme.Cobalt">
@@ -66,11 +86,11 @@
     <!-- Text -->
     <style name="text_tiny_grey" parent="TextAppearance.AppCompat">
         <item name="android:textSize">@dimen/text_tiny</item>
-        <item name="android:textColor">@android:color/secondary_text_dark</item>
+        <item name="android:textColor">?android:textColorSecondary</item>
     </style>
 
     <style name="text_tiny_bold_main" parent="text_tiny_grey">
-        <item name="android:textColor">@color/text_main</item>
+        <item name="android:textColor">?android:textColorPrimary</item>
         <item name="android:fontFamily">sans-serif-medium</item>
     </style>
 
@@ -79,6 +99,7 @@
     </style>
 
     <style name="text_medium" parent="TextAppearance.AppCompat">
+        <item name="android:textColor">?android:textColorPrimary</item>
         <item name="android:textSize">22sp</item>
     </style>
 
@@ -91,7 +112,7 @@
     </style>
 
     <style name="text_white_small" parent="text_small">
-        <item name="android:textColor">@color/white</item>
+        <item name="android:textColor">?android:textColorPrimary</item>
     </style>
 
     <style name="text_bold_white_small" parent="text_small">
@@ -103,19 +124,19 @@
     </style>
 
     <style name="text_white_medium" parent="text_medium">
-        <item name="android:textColor">@color/white</item>
+        <item name="android:textColor">?android:textColorPrimary</item>
     </style>
 
     <style name="text_grey_medium" parent="text_medium">
-        <item name="android:textColor">@android:color/secondary_text_dark</item>
+        <item name="android:textColor">?android:textColorSecondary</item>
     </style>
 
     <style name="text_grey_small" parent="text_small">
-        <item name="android:textColor">@android:color/secondary_text_dark</item>
+        <item name="android:textColor">?android:textColorSecondary</item>
     </style>
 
     <style name="text_bold_grey_small" parent="text_bold_small">
-        <item name="android:textColor">@android:color/secondary_text_dark</item>
+        <item name="android:textColor">?android:textColorSecondary</item>
     </style>
 
     <style name="text_error" parent="text_small">

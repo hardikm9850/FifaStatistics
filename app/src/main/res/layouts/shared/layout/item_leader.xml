@@ -56,7 +56,7 @@
             android:layout_toEndOf="@id/leader_image_for"
             android:layout_alignTop="@id/leader_image_for"
             android:layout_marginTop="16dp"
-            android:textColor="@color/text_main"
+            android:textColor="?android:textColorPrimary"
             android:text="@{leaderFor.player.name}"/>
 
         <TextView
@@ -84,7 +84,7 @@
             android:layout_marginTop="16dp"
             android:layout_toStartOf="@id/leader_image_against"
             android:layout_alignTop="@id/leader_image_against"
-            android:textColor="@color/text_main"
+            android:textColor="?android:textColorPrimary"
             android:text="@{leaderAgainst.player.name}"/>
 
         <TextView

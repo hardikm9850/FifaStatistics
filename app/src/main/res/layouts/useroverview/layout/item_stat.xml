@@ -45,7 +45,7 @@
             android:layout_marginBottom="@dimen/activity_vertical_margin"
             android:layout_above="@id/percent"
             android:layout_alignParentStart="true"
-            android:textColor="@color/text_main"
+            android:textColor="?android:textColorPrimary"
             android:gravity="center_vertical|start"
             android:text="@{viewModel.leftValue}"
             android:textAppearance="@style/text_tiny_bold_main"/>
@@ -57,7 +57,7 @@
             android:layout_marginBottom="@dimen/activity_vertical_margin"
             android:layout_above="@id/percent"
             android:layout_alignParentEnd="true"
-            android:textColor="@color/text_main"
+            android:textColor="?android:textColorPrimary"
             android:gravity="center_vertical|end"
             android:text="@{viewModel.rightValue}"
             android:textAppearance="@style/text_tiny_bold_main"/>

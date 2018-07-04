@@ -7,10 +7,11 @@
     <color name="colorPrimaryDarkTranslucent">#B2181715</color>
     <color name="colorPrimaryDarkTranslucenter">#92181715</color>
     <color name="colorAccent">#80CBC4</color>
-    <color name="cardViewBackground">#262523</color>
+    <color name="cardViewBackground">@color/colorPrimary</color>
     <color name="cardViewHeaderBackground">#302F2D</color>
     <color name="statOpponentColor">#FF484644</color>
-    <color name="text_main">@color/white</color>
+    <color name="textColorPrimary">@color/white</color>
+    <color name="textColorSecondary">@android:color/secondary_text_dark</color>
     <color name="colorMenuItem">#909090</color>
 
     <!-- Cobalt theme -->
@@ -22,8 +23,22 @@
     <color name="cardViewBackgroundCob">@color/colorPrimaryCob</color>
     <color name="cardViewHeaderBackgroundCob">#242435</color>
     <color name="statOpponentColorCob">#FF484644</color>
-    <color name="text_mainCob">@color/white</color>
+    <color name="textColorPrimaryCob">@color/white</color>
+    <color name="textColorSecondaryCob">@android:color/secondary_text_dark</color>
     <color name="colorMenuItemCob">#909090</color>
+    
+    <!-- Light theme -->
+    <color name="colorPrimaryLight">#f5f5f5</color>
+    <color name="colorPrimaryDarkLight">#e0e0e0</color>
+    <color name="colorPrimaryDarkTranslucentLight">#B2e0e0e0</color>
+    <color name="colorPrimaryDarkTranslucenterLight">#92e0e0e0</color>
+    <color name="colorAccentLight">#42a5f5</color>
+    <color name="cardViewBackgroundLight">@color/colorPrimaryLight</color>
+    <color name="cardViewHeaderBackgroundLight">#eeeeee</color>
+    <color name="statOpponentColorLight">#FF484644</color>
+    <color name="textColorPrimaryLight">@android:color/primary_text_light</color>
+    <color name="textColorSecondaryLight">@android:color/secondary_text_light</color>
+    <color name="colorMenuItemLight">@color/colorAccent</color>
 
     <!-- Misc -->
     <color name="half_black">#808080</color>
