@@ -21,7 +21,8 @@ public class PendingUpdatesAdapter extends
     }
 
     @Override
-    protected PendingUpdateItemViewModel createViewModel(MatchUpdate item, ActivityLauncher launcher, boolean isLastItem, int color) {
+    protected PendingUpdateItemViewModel createViewModel(MatchUpdate item, ActivityLauncher launcher,
+                                                         boolean isLastItem, int color, int position) {
         return new PendingUpdateItemViewModel(item, launcher, color, isLastItem);
     }
 }

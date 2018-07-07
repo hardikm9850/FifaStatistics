@@ -30,6 +30,11 @@
                 android:visibility="@{viewModel.statsVisibility}">
 
                 <include
+                    layout="@layout/card_pending_updates"
+                    bind:viewModel="@{viewModel.matches}"
+                    bind:title="@{@string/matches}" />
+
+                <include
                     layout="@layout/card_leaders"
                     bind:viewModel="@{viewModel.leaders}"
                     android:visibility="@{viewModel.leadersVisibility}"/>

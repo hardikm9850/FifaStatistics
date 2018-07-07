@@ -88,7 +88,7 @@ public class CreateSeriesScoreViewModel extends FifaBaseViewModel implements OnM
         if (savedSeries.getMatches() != null) {
             for (Match match : savedSeries.getMatches()) {
                 if (match != null) {
-                    if (match.didWin(mUser)) {
+                    if (match.wonBy(mUser)) {
                         mUserWins++;
                         mUserTeam = match.getTeamWinner();
                         mOpponentTeam = match.getTeamLoser();

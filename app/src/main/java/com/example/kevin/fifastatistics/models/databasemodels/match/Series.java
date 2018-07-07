@@ -95,7 +95,7 @@ public class Series extends DatabaseModel implements TeamEvent, FifaEvent {
     }
 
     private void updateStats(Match match) {
-        if (match.didWin(playerOne)) {
+        if (match.wonBy(playerOne)) {
             playerOneWins++;
         } else {
             playerTwoWins++;
@@ -123,7 +123,7 @@ public class Series extends DatabaseModel implements TeamEvent, FifaEvent {
         if (matches != null) {
             for (Match match : matches) {
                 if (match != null) {
-                    if (match.didWin(player)) {
+                    if (match.wonBy(player)) {
                         match.setTeamWinner(team);
                     } else {
                         match.setTeamLoser(team);

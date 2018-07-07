@@ -14,10 +14,6 @@ import com.example.kevin.fifastatistics.viewmodels.FifaBaseViewModel;
 
 import java.util.List;
 
-/**
- * Created by kevin on 2017-08-15.
- */
-
 public abstract class RecyclerCardViewModel<T, ADAPTER extends AbstractCardAdapter<T, ?, ?>> extends
         FifaBaseViewModel {
 

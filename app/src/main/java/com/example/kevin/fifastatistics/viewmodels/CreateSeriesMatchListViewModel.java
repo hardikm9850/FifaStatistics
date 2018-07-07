@@ -87,7 +87,7 @@ public class CreateSeriesMatchListViewModel extends FifaBaseViewModel implements
     }
 
     private void updateSeriesScoreViewModel(Match match) {
-        if (match.didWin(mUser)) {
+        if (match.wonBy(mUser)) {
             mSeriesScoreViewModel.incrementUserWins();
         } else {
             mSeriesScoreViewModel.incrementOpponentWins();
@@ -95,7 +95,7 @@ public class CreateSeriesMatchListViewModel extends FifaBaseViewModel implements
     }
 
     private void maybeEndSeries(Match match) {
-        if (match.didWin(mUser)) {
+        if (match.wonBy(mUser)) {
             mUserWins++;
         } else {
             mOpponentWins++;

@@ -50,5 +50,7 @@
     <color name="storm_gray">#717482</color>
     <color name="gold">#FFD700</color>
     <color name="blue">#42a5f5</color>
+    <color name="red_loser">#b92b3c</color>
+    <color name="green_winner">#00cc71</color>
 
 </resources>

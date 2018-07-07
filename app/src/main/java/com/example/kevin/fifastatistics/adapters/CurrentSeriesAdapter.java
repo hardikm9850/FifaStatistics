@@ -25,7 +25,7 @@ public class CurrentSeriesAdapter extends AbstractCardAdapter<
     }
 
     @Override
-    protected CurrentSeriesItemViewModel createViewModel(CurrentSeries item, ActivityLauncher launcher, boolean isLastItem, int color) {
+    protected CurrentSeriesItemViewModel createViewModel(CurrentSeries item, ActivityLauncher launcher, boolean isLastItem, int color, int position) {
         return new CurrentSeriesItemViewModel(item, launcher, color, isLastItem, mCurrentUser);
     }
 

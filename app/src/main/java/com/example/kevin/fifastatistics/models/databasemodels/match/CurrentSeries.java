@@ -1,6 +1,5 @@
 package com.example.kevin.fifastatistics.models.databasemodels.match;
 
-import com.example.kevin.fifastatistics.models.ApiListResponse;
 import com.example.kevin.fifastatistics.models.databasemodels.DatabaseModel;
 import com.example.kevin.fifastatistics.models.databasemodels.league.Team;
 import com.example.kevin.fifastatistics.models.databasemodels.user.Friend;
@@ -53,7 +52,7 @@ public class CurrentSeries extends DatabaseModel {
             int wins = 0;
             int losses = 0;
             for (Match match : matches) {
-                if (match.didWin(currentUser)) {
+                if (match.wonBy(currentUser)) {
                     wins++;
                 } else {
                     losses++;

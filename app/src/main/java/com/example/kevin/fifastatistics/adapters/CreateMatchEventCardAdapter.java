@@ -114,7 +114,7 @@ public class CreateMatchEventCardAdapter<T extends MatchEventItem>
     }
 
     @Override
-    protected CreateMatchEventItemViewModel<T> createViewModel(T item, ActivityLauncher launcher, boolean isLastItem, int color) {
+    protected CreateMatchEventItemViewModel<T> createViewModel(T item, ActivityLauncher launcher, boolean isLastItem, int color, int position) {
         return new CreateMatchEventItemViewModel<>(mContext, item, isLastItem, mTeamWinner, mTeamLoser, mFootballers);
     }
 

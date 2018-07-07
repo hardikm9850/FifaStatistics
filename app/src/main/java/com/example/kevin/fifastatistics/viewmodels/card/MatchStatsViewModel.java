@@ -420,12 +420,12 @@ public abstract class MatchStatsViewModel extends FifaBaseViewModel {
 
     @Bindable
     public String getLeftHeader() {
-        return mMatch.didWin(mUser) ? "You" : mMatch.getWinnerFirstName();
+        return mMatch.wonBy(mUser) ? "You" : mMatch.getWinnerFirstName();
     }
 
     @Bindable
     public String getRightHeader() {
-        return !mMatch.didWin(mUser) ? "You" : mMatch.getLoserFirstName();
+        return !mMatch.wonBy(mUser) ? "You" : mMatch.getLoserFirstName();
     }
 
     public int getHeaderVisibility() {

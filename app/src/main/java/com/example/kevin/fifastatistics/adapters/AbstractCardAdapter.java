@@ -71,7 +71,7 @@ public abstract class AbstractCardAdapter
     public void onBindViewHolder(AbstractCardAdapter.ItemViewHolder holder, int position) {
         int size = CollectionUtils.getSize(mItems);
         if (position < size) {
-            holder.bind(mItems.get(position), position == size - 1);
+            holder.bind(mItems.get(position), position == size - 1, position);
         }
     }
 
@@ -89,13 +89,13 @@ public abstract class AbstractCardAdapter
             mBinding = binding;
         }
 
-        void bind(T t, boolean isLastItem) {
+        void bind(T t, boolean isLastItem, int position) {
             VIEWMODEL viewModel = getBindingViewModel(mBinding);
             if (viewModel != null) {
                 viewModel.setItem(t);
                 onRebind(viewModel);
             } else {
-                viewModel = createViewModel(t, mLauncher, isLastItem, mButtonColor);
+                viewModel = createViewModel(t, mLauncher, isLastItem, mButtonColor, position);
                 mBinding.setVariable(BR.viewModel, viewModel);
             }
             mBinding.executePendingBindings();
@@ -106,5 +106,5 @@ public abstract class AbstractCardAdapter
 
     protected void onRebind(VIEWMODEL viewModel) {}
 
-    protected abstract VIEWMODEL createViewModel(T item, ActivityLauncher launcher, boolean isLastItem, int color);
+    protected abstract VIEWMODEL createViewModel(T item, ActivityLauncher launcher, boolean isLastItem, int color, int position);
 }

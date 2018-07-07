@@ -92,7 +92,7 @@ public class CreateSeriesListItemViewModel extends BaseObservable {
 
     @Bindable
     public String getMatchResult() {
-        return ((mMatch.didWin(mUser)) ? getResultPrefix(R.string.win) : getResultPrefix(R.string.loss));
+        return ((mMatch.wonBy(mUser)) ? getResultPrefix(R.string.win) : getResultPrefix(R.string.loss));
     }
 
     private String getResultPrefix(int id) {

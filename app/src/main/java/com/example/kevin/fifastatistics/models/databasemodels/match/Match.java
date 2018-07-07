@@ -77,11 +77,11 @@ public class Match extends DatabaseModel implements TeamEvent, FifaEvent, Penalt
         return match;
     }
 
-    public boolean didWin(Player player) {
+    public boolean wonBy(Player player) {
         return player.getId().equals(winner.getId());
     }
 
-    public boolean didLose(Player player) {
+    public boolean lostBy(Player player) {
         return player.getId().equals(loser.getId());
     }
 
@@ -177,9 +177,9 @@ public class Match extends DatabaseModel implements TeamEvent, FifaEvent, Penalt
     @JsonIgnore
     public Team getTeamFor(Player player) {
         if (player != null) {
-            if (didWin(player)) {
+            if (wonBy(player)) {
                 return teamWinner;
-            } else if (didLose(player)) {
+            } else if (lostBy(player)) {
                 return teamLoser;
             }
         }
