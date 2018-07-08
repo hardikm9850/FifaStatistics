@@ -72,7 +72,7 @@ public class SeriesFragmentViewModel extends ProgressFragmentViewModel {
         if (mSeries.getLeaders() != null) {
             mLeadersViewModel = LeadersCardViewModel.series(mSeries, mUser, mLauncher);
         }
-        if (mProjection != null) {
+        if (mSeries != null) {
             notifyPropertyChanged(BR.statsVisibility);
             notifyPropertyChanged(BR.stats);
             notifyPropertyChanged(BR.leaders);

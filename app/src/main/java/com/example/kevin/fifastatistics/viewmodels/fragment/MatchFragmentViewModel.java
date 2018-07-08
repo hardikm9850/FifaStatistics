@@ -81,7 +81,7 @@ public class MatchFragmentViewModel extends ProgressFragmentViewModel {
         mCardsViewModel.setMatch(mMatch, mMatch.getCards());
         mInjuriesViewModel.setMatch(mMatch, mMatch.getInjuries());
         mStatsViewModel = StatsCardViewModel.matchStats(mMatch, getUsername());
-        if (mProjection != null) {
+        if (mMatch != null) {
             notifyPropertyChanged(BR.statsVisibility);
             notifyPropertyChanged(BR.stats);
             notifyPropertyChanged(BR.match);

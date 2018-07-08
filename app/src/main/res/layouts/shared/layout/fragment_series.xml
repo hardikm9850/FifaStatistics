@@ -52,8 +52,8 @@
             layout="@layout/progress"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/activity_vertical_margin"
-            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/big_margin"
+            android:layout_gravity="center_horizontal"
             android:gravity="center"
             bind:progressViewModel="@{viewModel}"/>
 
