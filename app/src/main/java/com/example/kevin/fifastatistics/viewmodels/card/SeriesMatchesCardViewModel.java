@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import com.example.kevin.fifastatistics.adapters.SeriesMatchAdapter;
 import com.example.kevin.fifastatistics.interfaces.ActivityLauncher;
 import com.example.kevin.fifastatistics.models.databasemodels.match.Match;
+import com.example.kevin.fifastatistics.models.databasemodels.match.Series;
 import com.example.kevin.fifastatistics.models.databasemodels.user.Player;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
 
@@ -12,11 +13,10 @@ import java.util.List;
 
 public class SeriesMatchesCardViewModel extends RecyclerCardViewModel<Match, SeriesMatchAdapter> {
 
-    public SeriesMatchesCardViewModel(ActivityLauncher launcher, List<Match> items,
-                                      User currentUser, Player seriesWinner) {
-        super(launcher, items, true);
+    public SeriesMatchesCardViewModel(ActivityLauncher launcher, Series series, User currentUser) {
+        super(launcher, series.getMatches(), true);
         mAdapter.setUser(currentUser);
-        mAdapter.setSeriesWinner(seriesWinner);
+        mAdapter.setSeries(series);
     }
 
     @NonNull

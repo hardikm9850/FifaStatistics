@@ -1,5 +1,6 @@
 package com.example.kevin.fifastatistics.managers;
 
+import com.example.kevin.fifastatistics.models.databasemodels.league.Team;
 import com.example.kevin.fifastatistics.models.databasemodels.match.TeamEvent;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
 import com.example.kevin.fifastatistics.viewmodels.card.StatsCardViewModel;
@@ -57,6 +58,14 @@ public class StatsPresenter {
 
     public String getRightColor() {
         return mDidSwap ? mEvent.getTeamWinner().getColor() : mEvent.getTeamLoser().getColor();
+    }
+
+    public Team getLeftTeam() {
+        return mDidSwap ? mEvent.getTeamLoser() : mEvent.getTeamWinner();
+    }
+
+    public Team getRightTeam() {
+        return mDidSwap ? mEvent.getTeamWinner() : mEvent.getTeamLoser();
     }
 
     public User.StatsPair getStats() {

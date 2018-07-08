@@ -22,12 +22,16 @@ import java.util.List;
  */
 public abstract class AbstractCardAdapter
         <T, BINDING extends ViewDataBinding, VIEWMODEL extends ItemViewModel<T>>
-        extends RecyclerView.Adapter<AbstractCardAdapter.ItemViewHolder> {
+        extends RecyclerView.Adapter {
+
+    private static final int HEADER_VIEW_TYPE = 1;
+    private static final int ITEM_VIEW_TYPE = 2;
 
     protected List<T> mItems;
     private ActivityLauncher mLauncher;
     private int mButtonColor;
     private int mLayout;
+    private boolean mIncludeHeader = false;
 
     public AbstractCardAdapter(List<T> items, ActivityLauncher launcher, @LayoutRes int layout) {
         mItems = items;
@@ -59,25 +63,52 @@ public abstract class AbstractCardAdapter
         }
     }
 
+    protected void setIncludeHeader(boolean includeHeader) {
+        mIncludeHeader = includeHeader;
+    }
+
     @Override
-    public ItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        BINDING binding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()),
-                mLayout, parent, false);
-        return new ItemViewHolder(binding);
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        if (viewType == ITEM_VIEW_TYPE) {
+            BINDING binding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()),
+                    mLayout, parent, false);
+            return new ItemViewHolder(binding);
+        } else {
+            return getHeaderViewHolder(parent);
+        }
     }
 
     @SuppressWarnings("unchecked")
     @Override
-    public void onBindViewHolder(AbstractCardAdapter.ItemViewHolder holder, int position) {
-        int size = CollectionUtils.getSize(mItems);
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        int size = getItemCount();
         if (position < size) {
-            holder.bind(mItems.get(position), position == size - 1, position);
+            if (isHeaderItem(position)) {
+                bindHeader(holder);
+            } else {
+                int offset = mIncludeHeader ? 1 : 0;
+                ((ItemViewHolder) holder).bind(mItems.get(position - offset), position == size - 1, position - offset);
+            }
         }
     }
 
     @Override
     public int getItemCount() {
-        return CollectionUtils.getSize(mItems);
+        int offset = mIncludeHeader ? 1 : 0;
+        return CollectionUtils.getSize(mItems) + offset;
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        if (isHeaderItem(position)) {
+            return HEADER_VIEW_TYPE;
+        } else {
+            return ITEM_VIEW_TYPE;
+        }
+    }
+
+    private boolean isHeaderItem(int position) {
+        return mIncludeHeader && position == 0;
     }
 
     public class ItemViewHolder extends RecyclerView.ViewHolder {
@@ -105,6 +136,14 @@ public abstract class AbstractCardAdapter
     protected abstract VIEWMODEL getBindingViewModel(BINDING binding);
 
     protected void onRebind(VIEWMODEL viewModel) {}
+
+    protected RecyclerView.ViewHolder getHeaderViewHolder(ViewGroup parent) {
+        throw new IllegalStateException("Must be overriden by child when using header");
+    }
+
+    protected <S extends RecyclerView.ViewHolder> void bindHeader(S header) {
+        throw new IllegalStateException("Must be overriden by child when using header");
+    }
 
     protected abstract VIEWMODEL createViewModel(T item, ActivityLauncher launcher, boolean isLastItem, int color, int position);
 }
