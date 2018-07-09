@@ -1,8 +1,10 @@
 package com.example.kevin.fifastatistics.activities;
 
 import android.os.Bundle;
+import android.support.annotation.ColorInt;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.util.TypedValue;
 
 import com.example.kevin.fifastatistics.FifaApplication;
 import com.example.kevin.fifastatistics.R;
@@ -110,5 +112,15 @@ public abstract class FifaBaseActivity extends AppCompatActivity implements Tran
 
     public void setOnBackPressHandler(OnBackPressedHandler handler) {
         mBackPressHandler = handler;
+    }
+
+    @ColorInt
+    final int getPrimaryTextColor() {
+        TypedValue typedValue = new TypedValue();
+        if (getTheme().resolveAttribute(R.attr.colorTextMain, typedValue, true)) {
+            return typedValue.data;
+        } else {
+            return getColor(R.color.textColorPrimary);
+        }
     }
 }

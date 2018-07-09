@@ -9,6 +9,7 @@
     <attr name="cardViewHeaderBackground" format="reference|color" />
     <attr name="statOpponentColor" format="reference|color" />
     <attr name="colorMenuItem" format="reference|color" />
+    <attr name="colorTextMain" format="reference|color"/>
 
     <!-- Views -->
 

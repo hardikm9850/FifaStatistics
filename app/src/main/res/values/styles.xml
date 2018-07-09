@@ -8,6 +8,7 @@
         <item name="colorPrimaryDarkTranslucent">@color/colorPrimaryDarkTranslucent</item>
         <item name="colorPrimaryDarkTranslucenter">@color/colorPrimaryDarkTranslucenter</item>
         <item name="colorMenuItem">@color/colorMenuItem</item>
+        <item name="colorTextMain">@color/textColorPrimary</item>
         <item name="cardViewBackground">@color/cardViewBackground</item>
         <item name="cardViewHeaderBackground">@color/cardViewHeaderBackground</item>
         <item name="statOpponentColor">@color/statOpponentColor</item>
@@ -36,6 +37,7 @@
         <item name="colorPrimaryDarkTranslucent">@color/colorPrimaryDarkTranslucentCob</item>
         <item name="colorPrimaryDarkTranslucenter">@color/colorPrimaryDarkTranslucenterCob</item>
         <item name="colorMenuItem">@color/colorMenuItemCob</item>
+        <item name="colorTextMain">@color/textColorPrimaryCob</item>
         <item name="cardViewBackground">@color/cardViewBackgroundCob</item>
         <item name="cardViewHeaderBackground">@color/cardViewHeaderBackgroundCob</item>
         <item name="statOpponentColor">@color/statOpponentColorCob</item>
@@ -64,6 +66,7 @@
         <item name="colorPrimaryDarkTranslucent">@color/colorPrimaryDarkTranslucentLight</item>
         <item name="colorPrimaryDarkTranslucenter">@color/colorPrimaryDarkTranslucenterLight</item>
         <item name="colorMenuItem">@color/colorMenuItemLight</item>
+        <item name="colorTextMain">@color/textColorPrimaryLight</item>
         <item name="cardViewBackground">@color/cardViewBackgroundLight</item>
         <item name="cardViewHeaderBackground">@color/cardViewHeaderBackgroundLight</item>
         <item name="statOpponentColor">@color/statOpponentColorLight</item>

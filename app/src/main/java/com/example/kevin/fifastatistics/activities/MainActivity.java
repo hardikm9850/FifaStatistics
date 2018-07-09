@@ -73,6 +73,7 @@ public class MainActivity extends FifaBaseActivity implements OnMatchCreatedList
         mBinding.searchView.setVersion(SearchView.VERSION_MENU_ITEM);
         setSupportActionBar(mBinding.toolbarLayout.toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
+        mBinding.toolbarLayout.toolbarTitle.setTextColor(getPrimaryTextColor());
     }
 
     private void initializeFab() {
