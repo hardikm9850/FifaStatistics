@@ -146,9 +146,8 @@ public class CreateMatchFragment extends FifaBaseFragment implements StatsImageH
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == CREATE_MATCH_REQUEST_CODE && resultCode == CameraActivity.PICTURE_TAKEN_RESULT_CODE) {
             byte[] picture = ByteHolder.getData();
-            String preprocessor = data.getStringExtra(CameraActivity.EXTRA_PREPROCESSOR);
             StatsImageHandler handler = new StatsImageHandler(getContext(), this);
-            handler.processImage(picture, preprocessor);
+            handler.processImage(picture);
         } else if (requestCode == CREATE_MATCH_REQUEST_CODE && resultCode == PickTeamActivity.RESULT_TEAM_PICKED) {
             Team team = (Team) data.getExtras().getSerializable(PickTeamActivity.EXTRA_TEAM);
             mViewModel.updateTeam(team);

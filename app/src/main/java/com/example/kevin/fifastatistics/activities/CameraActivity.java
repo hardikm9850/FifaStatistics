@@ -13,8 +13,6 @@ import android.view.ViewTreeObserver;
 
 import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.databinding.ActivityCameraBinding;
-import com.example.kevin.fifastatistics.interfaces.MatchFactsPreprocessor;
-import com.example.kevin.fifastatistics.managers.MatchFactsPreprocessor15;
 import com.example.kevin.fifastatistics.utils.ByteHolder;
 import com.example.kevin.fifastatistics.utils.UiUtils;
 import com.flurgle.camerakit.CameraListener;
@@ -23,35 +21,14 @@ import com.flurgle.camerakit.CameraView;
 public class CameraActivity extends AppCompatActivity {
 
     public static final int PICTURE_TAKEN_RESULT_CODE = 6173;
-    public static final String EXTRA_PICTURE = "extraPicture";
-    public static final String EXTRA_PREPROCESSOR = "extraPreprocessor";
     private static final float CAMERA_VIEW_RATIO = 20.000f/11.000f;
 
     private CameraView mCamera;
-    private Preprocessor mPreprocessor;
-
-    public enum Preprocessor {
-        PREPROCESSOR_15 {
-            @Override
-            public MatchFactsPreprocessor getPreprocessor() {
-                return new MatchFactsPreprocessor15();
-            }
-        },
-        PREPROCESSOR_17 {
-            @Override
-            public MatchFactsPreprocessor getPreprocessor() {
-                return new MatchFactsPreprocessor15();
-            }
-        };
-
-        public abstract MatchFactsPreprocessor getPreprocessor();
-    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ActivityCameraBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_camera);
-        mPreprocessor = Preprocessor.PREPROCESSOR_17;
         makeFullscreen();
         initShutter(binding);
         initCamera(binding);
@@ -109,7 +86,6 @@ public class CameraActivity extends AppCompatActivity {
 
     private void setResult() {
         Intent intent = new Intent();
-        intent.putExtra(EXTRA_PREPROCESSOR, mPreprocessor.toString());
         setResult(PICTURE_TAKEN_RESULT_CODE, intent);
     }
 

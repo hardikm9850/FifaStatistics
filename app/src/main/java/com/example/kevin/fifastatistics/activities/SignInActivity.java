@@ -119,20 +119,35 @@ public class SignInActivity extends AppCompatActivity implements
     }
 
     private void initializeSignInButton() {
-        SignInButton signInButton = (SignInButton) findViewById(R.id.sign_in_button);
+        SignInButton signInButton = findViewById(R.id.sign_in_button);
         signInButton.setSize(SignInButton.SIZE_WIDE);
     }
 
     private void initializeDebugLoginButton() {
         if (BuildUtils.isDebug()) {
-            Button loginButton = (Button) findViewById(R.id.debug_login_button);
+            Button loginButton = findViewById(R.id.debug_login_button);
             loginButton.setVisibility(View.VISIBLE);
             loginButton.setOnClickListener(v -> loginToDebugAccount());
+            Button mainLoginButton = findViewById(R.id.debug_main_login_button);
+            mainLoginButton.setVisibility(View.VISIBLE);
+            mainLoginButton.setOnClickListener(v -> loginToMainAccount());
         }
     }
 
     private void loginToDebugAccount() {
         String personal = "591557f8c843e73118060968";
+        FifaApi.getUserApi().getUser(personal)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(user -> {
+                    PrefsManager.storeUser(user);
+                    PrefsManager.setSignedIn(true);
+                    checkSignedIn();
+                });
+    }
+
+    private void loginToMainAccount() {
+        String personal = "5914f83e100c382a04a0d816";
         FifaApi.getUserApi().getUser(personal)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())

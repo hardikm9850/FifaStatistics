@@ -1,5 +1,6 @@
 package com.example.kevin.fifastatistics;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.support.multidex.MultiDexApplication;
 
@@ -15,6 +16,7 @@ import rx.Observable;
 
 public class FifaApplication extends MultiDexApplication {
 
+    @SuppressLint("StaticFieldLeak")
     private static Context instance;
     private static int colorAccent;
 

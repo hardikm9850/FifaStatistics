@@ -4,14 +4,10 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.util.Log;
 
 import com.example.kevin.fifastatistics.R;
-import com.example.kevin.fifastatistics.activities.CameraActivity;
-import com.example.kevin.fifastatistics.interfaces.MatchFactsPreprocessor;
 import com.example.kevin.fifastatistics.listeners.SimpleObserver;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
-import com.example.kevin.fifastatistics.utils.ByteHolder;
 import com.example.kevin.fifastatistics.utils.ObservableUtils;
 
 import java.io.IOException;
@@ -29,8 +25,8 @@ public class StatsImageHandler {
         mInteraction = interaction;
     }
 
-    public void processImage(final byte[] picture, String preprocessorKey) {
-        final MatchFactsPreprocessor preprocessor = CameraActivity.Preprocessor.valueOf(preprocessorKey).getPreprocessor();
+    public void processImage(final byte[] picture) {
+        final MatchFactsPreprocessor preprocessor = new MatchFactsPreprocessor();
         ProgressDialog dialog = showProcessingDialog();
         Observable.<Bitmap>create(s -> {
             Bitmap result = BitmapFactory.decodeByteArray(picture, 0, picture.length);

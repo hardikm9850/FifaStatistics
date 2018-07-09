@@ -3,20 +3,17 @@ package com.example.kevin.fifastatistics.managers;
 import android.graphics.Bitmap;
 import android.util.Log;
 
-import com.example.kevin.fifastatistics.interfaces.MatchFactsPreprocessor;
 import com.example.kevin.fifastatistics.utils.BitmapUtils;
+
+import java.io.Serializable;
 
 import rx.Observable;
 
-/**
- * Processor for FIFA 15 Match Facts.
- */
-public class MatchFactsPreprocessor15 implements MatchFactsPreprocessor {
+public class MatchFactsPreprocessor implements Serializable {
 
-    public static final float SCALE_LEVEL = 4.8f;
+    private static final float SCALE_LEVEL = 4.8f;
 
-    @Override
-    public Observable<Bitmap> processBitmap(Bitmap matchFactsBitmap) {
+    public final Observable<Bitmap> processBitmap(Bitmap matchFactsBitmap) {
         Log.d("ORIGINAL SIZE", "w: " + matchFactsBitmap.getWidth());
         return Observable.just(matchFactsBitmap)
                 .map(BitmapUtils::getMutableBitmap)
@@ -32,7 +29,35 @@ public class MatchFactsPreprocessor15 implements MatchFactsPreprocessor {
     }
 
     private Bitmap invertColors(Bitmap bitmap) {
-        return BitmapUtils.getInvertedBitmap(bitmap);
+        if (isDark(bitmap)) {
+            Log.d("PREPROCESSOR", "inverting!!");
+            return BitmapUtils.getInvertedBitmap(bitmap);
+        } else {
+            return bitmap;
+        }
+    }
+
+    private boolean isDark(Bitmap bitmap) {
+        final int width = bitmap.getWidth()/20;
+        final int height = bitmap.getHeight()/10;
+        int[] pixels = new int[width*height];
+        int startX = width * 13;
+        int startY = height * 5;
+        bitmap.getPixels(pixels, 0, width, startX, startY, width, height);
+
+        int darkPixels = 0;
+        int lightPixels = 0;
+        int darkThreshold = 0xff9b9b9b;
+        for (int pixel : pixels) {
+            if (pixel > darkThreshold) {
+                lightPixels++;
+            } else {
+                darkPixels++;
+            }
+        }
+
+        Log.d("PREPROCESSOR","dark pixels: " + darkPixels + ", light pixels: " + lightPixels);
+        return darkPixels > lightPixels;
     }
 
     private Bitmap makeMonochrome(Bitmap bitmap) {
