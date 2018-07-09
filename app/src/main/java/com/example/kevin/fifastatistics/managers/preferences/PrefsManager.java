@@ -173,16 +173,19 @@ public class PrefsManager {
         } finally {
             a.recycle();
         }
-        if (doUseTeamColorAsAccent()) {
-            String color = preferences.getString(COLOR_ACCENT, null);
-            return color != null ? Color.parseColor(color) : accentColor;
-        } else {
-            return accentColor;
-        }
+        return accentColor;
+//        if (doUseTeamColorAsAccent()) {
+//            String color = preferences.getString(COLOR_ACCENT, null);
+//            return color != null ? Color.parseColor(color) : accentColor;
+//        } else {
+//            return accentColor;
+//        }
     }
 
     public static boolean doUseTeamColorAsAccent() {
-        return preferences.getBoolean(TEAM_COLOR_AS_ACCENT, false);
+        // Removal of functionality
+        return false;
+//        return preferences.getBoolean(TEAM_COLOR_AS_ACCENT, false);
     }
 
     public static boolean openCameraImmediately() {

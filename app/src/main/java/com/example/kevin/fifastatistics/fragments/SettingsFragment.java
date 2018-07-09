@@ -56,7 +56,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements OnTeam
         getPreferenceManager().setSharedPreferencesName(PrefsManager.name());
         addPreferencesFromResource(R.xml.preferences);
         initFavoriteTeamPreference();
-        initTeamAsColorAccentPreferenceChangeListener();
+//        initTeamAsColorAccentPreferenceChangeListener();
         initResendRegTokenPreference();
         initUpdatePlayerCachePreference();
         initSaveToGalleryPreference();

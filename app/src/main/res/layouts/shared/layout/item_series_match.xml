@@ -7,74 +7,81 @@
             type="com.example.kevin.fifastatistics.viewmodels.item.SeriesMatchItemViewModel"/>
     </data>
 
-    <RelativeLayout
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingStart="@dimen/activity_horizontal_margin"
-        android:paddingEnd="@dimen/activity_vertical_margin"
+        android:layout_marginEnd="@dimen/activity_horizontal_margin"
         android:background="?selectableItemBackground"
         android:onClick="@{() -> viewModel.onClick()}">
 
-        <TextView
-            android:layout_width="wrap_content"
+        <RelativeLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_centerVertical="true"
-            android:gravity="center"
-            android:textAppearance="@style/text_bold_medium"
-            android:textColor="@{viewModel.leftResultColor}"
-            android:text="@{viewModel.leftTeamResult}" />
+            android:paddingStart="@dimen/activity_horizontal_margin"
+            android:paddingEnd="@dimen/activity_horizontal_margin">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
-            android:gravity="center"
-            android:textAppearance="@style/text_bold_medium"
-            android:textColor="@{viewModel.rightResultColor}"
-            android:text="@{viewModel.rightTeamResult}" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:gravity="center"
+                android:textAppearance="@style/text_bold_medium"
+                android:textColor="@{viewModel.leftResultColor}"
+                android:text="@{viewModel.leftTeamResult}" />
 
-        <TextView
-            android:id="@+id/score_textview"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:layout_centerVertical="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="@dimen/activity_vertical_margin"
-            android:layout_marginBottom="@dimen/activity_vertical_margin"
-            android:gravity="center"
-            android:textAppearance="@style/text_small"
-            android:text="@{viewModel.score}"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:gravity="center"
+                android:textAppearance="@style/text_bold_medium"
+                android:textColor="@{viewModel.rightResultColor}"
+                android:text="@{viewModel.rightTeamResult}" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toEndOf="@id/score_textview"
-            android:layout_centerVertical="true"
-            android:layout_marginStart="@dimen/activity_horizontal_margin"
-            android:gravity="center"
-            android:textAppearance="@style/text_grey_small"
-            android:text="@{viewModel.rightPenalties}"
-            android:visibility="@{viewModel.penaltiesVisibility}"/>
+            <TextView
+                android:id="@+id/score_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_centerVertical="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:layout_marginBottom="@dimen/activity_vertical_margin"
+                android:gravity="center"
+                android:textAppearance="@style/text_small"
+                android:text="@{viewModel.score}"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toStartOf="@id/score_textview"
-            android:layout_centerVertical="true"
-            android:layout_marginEnd="@dimen/activity_horizontal_margin"
-            android:gravity="center"
-            android:textAppearance="@style/text_grey_small"
-            android:text="@{viewModel.leftPenalties}"
-            android:visibility="@{viewModel.penaltiesVisibility}"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@id/score_textview"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="@dimen/activity_horizontal_margin"
+                android:gravity="center"
+                android:textAppearance="@style/text_grey_small"
+                android:text="@{viewModel.rightPenalties}"
+                android:visibility="@{viewModel.penaltiesVisibility}"/>
 
-        <View
-            android:layout_alignParentBottom="true"
-            android:visibility="@{viewModel.dividerVisibility}"
-            style="@style/Divider"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toStartOf="@id/score_textview"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                android:gravity="center"
+                android:textAppearance="@style/text_grey_small"
+                android:text="@{viewModel.leftPenalties}"
+                android:visibility="@{viewModel.penaltiesVisibility}"/>
 
-    </RelativeLayout>
+            <View
+                android:layout_alignParentBottom="true"
+                android:visibility="@{viewModel.dividerVisibility}"
+                style="@style/Divider"/>
+
+        </RelativeLayout>
+
+    </FrameLayout>
 
 </layout>

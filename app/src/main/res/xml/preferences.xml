@@ -26,10 +26,10 @@
             android:key="@string/themePref"
             android:title="@string/pref_theme"/>
 
-        <android.support.v7.preference.SwitchPreferenceCompat
-            android:key="@string/teamAsColor"
-            android:title="@string/pref_team_color_as_accent"
-            android:defaultValue="false"/>
+        <!--<android.support.v7.preference.SwitchPreferenceCompat-->
+            <!--android:key="@string/teamAsColor"-->
+            <!--android:title="@string/pref_team_color_as_accent"-->
+            <!--android:defaultValue="false"/>-->
 
     </android.support.v7.preference.PreferenceCategory>
 
