@@ -30,7 +30,6 @@ public class MatchFactsPreprocessor implements Serializable {
 
     private Bitmap invertColors(Bitmap bitmap) {
         if (isDark(bitmap)) {
-            Log.d("PREPROCESSOR", "inverting!!");
             return BitmapUtils.getInvertedBitmap(bitmap);
         } else {
             return bitmap;
@@ -56,7 +55,6 @@ public class MatchFactsPreprocessor implements Serializable {
             }
         }
 
-        Log.d("PREPROCESSOR","dark pixels: " + darkPixels + ", light pixels: " + lightPixels);
         return darkPixels > lightPixels;
     }
 

@@ -2,6 +2,7 @@ package com.example.kevin.fifastatistics;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.support.annotation.StyleRes;
 import android.support.multidex.MultiDexApplication;
 
 import com.example.kevin.fifastatistics.activities.FifaActivityLifecycleCallbacks;
@@ -19,6 +20,7 @@ public class FifaApplication extends MultiDexApplication {
     @SuppressLint("StaticFieldLeak")
     private static Context instance;
     private static int colorAccent;
+    private static int theme;
 
     public static Context getContext() {
         return instance;
@@ -29,6 +31,17 @@ public class FifaApplication extends MultiDexApplication {
             colorAccent = PrefsManager.getColorAccent();
         }
         return colorAccent;
+    }
+
+    public static int getSelectedTheme() {
+        if (theme == 0) {
+            theme = PrefsManager.getTheme();
+        }
+        return theme;
+    }
+
+    public static void setSelectedTheme(@StyleRes int theme) {
+        FifaApplication.theme = theme;
     }
 
     public static void setAccentColor(int color) {

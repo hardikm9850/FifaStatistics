@@ -49,7 +49,7 @@ public class PlayerActivty extends BasePlayerActivity implements OnMatchCreatedL
         mFam.setGradient(mBinding.famLayout.gradient);
         mFam.setMenuButtonColorNormal(mColor);
         mFam.setMenuButtonColorPressed(mColor);
-        mFam.getMenuIconView().setImageDrawable(ColorUtils.getTintedDrawable(R.drawable.ic_add_white_24dp, mColor));
+        mFam.getMenuIconView().setImageDrawable(ColorUtils.getTintedDrawableForLumosity(R.drawable.ic_add_white_24dp, mColor));
         mFabScrollListener = new FabScrollListener(mFam);
         mDidEnterFromSearch = getIntent().getExtras().getBoolean(EXTRA_ENTERED_FROM_SEARCH_BAR);
         RetrievalManager.getCurrentUser().subscribe(user -> {
@@ -75,6 +75,8 @@ public class PlayerActivty extends BasePlayerActivity implements OnMatchCreatedL
         mBinding.viewpager.setAdapter(adapter);
         mBinding.tabs.setupWithViewPager(mBinding.viewpager);
         mBinding.tabs.setSelectedTabIndicatorColor(mColor);
+        int color = ColorUtils.getPrimaryTextColor(this);
+        mBinding.tabs.setTabTextColors(color, color);
 
         adapter.addFragment(PlayerOverviewFragment.newInstance(getPlayerId()), "Overview");
         adapter.addFragment(new SecondFragment(), "Head to head");

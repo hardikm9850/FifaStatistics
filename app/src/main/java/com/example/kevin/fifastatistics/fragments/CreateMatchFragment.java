@@ -26,6 +26,7 @@ import com.example.kevin.fifastatistics.models.databasemodels.user.Player;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
 import com.example.kevin.fifastatistics.utils.BuildUtils;
 import com.example.kevin.fifastatistics.utils.ByteHolder;
+import com.example.kevin.fifastatistics.utils.ColorUtils;
 import com.example.kevin.fifastatistics.utils.MatchUtils;
 import com.example.kevin.fifastatistics.utils.ToastUtils;
 import com.example.kevin.fifastatistics.utils.TransitionUtils;
@@ -158,6 +159,7 @@ public class CreateMatchFragment extends FifaBaseFragment implements StatsImageH
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         int menuRes = BuildUtils.isDebug() ? R.menu.menu_create_match_debug : R.menu.menu_create_match;
         inflater.inflate(menuRes, menu);
+        ColorUtils.tintMenuItems(menu, R.id.menu_item_complete_match);
     }
 
     @Override

@@ -19,10 +19,12 @@ import com.example.kevin.fifastatistics.databinding.FragmentFriendsBinding;
 import com.example.kevin.fifastatistics.interfaces.OnBackPressedHandler;
 import com.example.kevin.fifastatistics.models.databasemodels.user.Player;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
+import com.example.kevin.fifastatistics.utils.ColorUtils;
 import com.example.kevin.fifastatistics.utils.ToastUtils;
 import com.example.kevin.fifastatistics.utils.UiUtils;
 import com.example.kevin.fifastatistics.viewmodels.fragment.PlayersFragmentViewModel;
 import com.example.kevin.fifastatistics.views.FifaSearchView;
+import com.example.kevin.fifastatistics.views.databinding.ToolbarBindingAdapter;
 
 import java.util.List;
 
@@ -110,6 +112,7 @@ public class FriendsFragment extends FifaBaseFragment implements OnBackPressedHa
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.menu_players, menu);
         MenuItem searchItem = menu.findItem(R.id.action_search);
+        ColorUtils.tintMenuItem(searchItem);
         searchItem.setVisible(mIsSearchViewReady);
     }
 

@@ -6,12 +6,14 @@
         android:orderInCategory="300"
         android:title="autofill"
         android:icon="@drawable/ic_filter_list_white_24dp"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="ifRoom"
+        app:itemIconTint="?android:textColorPrimary"/>
     <item
         android:id="@+id/menu_item_complete_match"
         android:orderInCategory="200"
         android:title="@string/menuItem_add_match"
         android:icon="@drawable/ic_check_white_24dp"
         android:visible="true"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="ifRoom"
+        app:itemIconTint="?android:textColorPrimary"/>
 </menu>

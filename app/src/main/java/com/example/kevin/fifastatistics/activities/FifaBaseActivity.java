@@ -1,13 +1,11 @@
 package com.example.kevin.fifastatistics.activities;
 
 import android.os.Bundle;
-import android.support.annotation.ColorInt;
 import android.support.annotation.Nullable;
+import android.support.annotation.StyleRes;
 import android.support.v7.app.AppCompatActivity;
-import android.util.TypedValue;
 
 import com.example.kevin.fifastatistics.FifaApplication;
-import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.event.ColorChangeEvent;
 import com.example.kevin.fifastatistics.event.EventBus;
 import com.example.kevin.fifastatistics.event.ThemeChangeEvent;
@@ -28,6 +26,7 @@ public abstract class FifaBaseActivity extends AppCompatActivity implements Tran
     private OnBackPressedHandler mBackPressHandler;
     private CompositeSubscription mCompositeSubscription;
     private int mCallingActivityHashCode;
+
 
     public FifaBaseActivity() {
         mCompositeSubscription = new CompositeSubscription();
@@ -52,14 +51,16 @@ public abstract class FifaBaseActivity extends AppCompatActivity implements Tran
     protected void onColorUpdated() {}
 
     private void initTheme() {
-        int theme = PrefsManager.getTheme();
-        if (theme != R.style.AppTheme_Cobalt) {
-            setTheme(theme);
-        }
         EventBus.getInstance().observeEvents(ThemeChangeEvent.class).subscribe(event -> {
             FifaApplication.setAccentColor(PrefsManager.getColorAccent());
             recreate();
         });
+    }
+
+    @Override
+    public void setTheme(@StyleRes int resid) {
+        int theme = FifaApplication.getSelectedTheme();
+        super.setTheme(theme);
     }
 
     @Override
@@ -112,15 +113,5 @@ public abstract class FifaBaseActivity extends AppCompatActivity implements Tran
 
     public void setOnBackPressHandler(OnBackPressedHandler handler) {
         mBackPressHandler = handler;
-    }
-
-    @ColorInt
-    final int getPrimaryTextColor() {
-        TypedValue typedValue = new TypedValue();
-        if (getTheme().resolveAttribute(R.attr.colorTextMain, typedValue, true)) {
-            return typedValue.data;
-        } else {
-            return getColor(R.color.textColorPrimary);
-        }
     }
 }

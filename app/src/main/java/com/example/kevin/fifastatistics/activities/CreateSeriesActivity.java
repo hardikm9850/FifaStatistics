@@ -26,6 +26,7 @@ import com.example.kevin.fifastatistics.models.databasemodels.user.Friend;
 import com.example.kevin.fifastatistics.models.databasemodels.user.Player;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
 import com.example.kevin.fifastatistics.network.CreateFailedException;
+import com.example.kevin.fifastatistics.utils.ColorUtils;
 import com.example.kevin.fifastatistics.utils.SeriesUtils;
 import com.example.kevin.fifastatistics.utils.ToastUtils;
 
@@ -67,7 +68,7 @@ public class CreateSeriesActivity extends BasePlayerActivity implements
 
     @SuppressWarnings("ConstantConditions")
     private void initializeToolbar() {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
@@ -115,6 +116,7 @@ public class CreateSeriesActivity extends BasePlayerActivity implements
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_create_series, menu);
+        ColorUtils.tintMenuItems(menu, R.id.menu_item_add_match, R.id.menu_item_complete_series);
         setMenuItemVisibility(menu);
         return true;
     }

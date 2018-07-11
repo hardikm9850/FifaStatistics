@@ -212,6 +212,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements OnTeam
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         if (key.equals(getString(R.string.themePref))) {
             int theme = sharedPreferences.getInt(key, R.style.AppTheme);
+            FifaApplication.setSelectedTheme(theme);
             mEventBus.post(new ThemeChangeEvent(theme));
         }
     }

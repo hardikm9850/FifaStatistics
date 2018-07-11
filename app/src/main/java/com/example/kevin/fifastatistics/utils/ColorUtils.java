@@ -7,9 +7,12 @@ import android.support.annotation.ColorInt;
 import android.support.annotation.DrawableRes;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.ProgressBar;
 
 import com.example.kevin.fifastatistics.FifaApplication;
+import com.example.kevin.fifastatistics.R;
 
 public class ColorUtils {
 
@@ -31,7 +34,7 @@ public class ColorUtils {
         return darkness > 0.5;
     }
 
-    public static Drawable getTintedDrawable(@DrawableRes int drawable, @ColorInt int color) {
+    public static Drawable getTintedDrawableForLumosity(@DrawableRes int drawable, @ColorInt int color) {
         Context context = FifaApplication.getContext();
         Drawable icon = context.getDrawable(drawable);
         if (icon != null) {
@@ -45,5 +48,40 @@ public class ColorUtils {
         } else {
             return null;
         }
+    }
+
+    public static void tintMenuItems(Menu menu, int... itemIds) {
+        if (itemIds != null) {
+            for (int id : itemIds) {
+                MenuItem item = menu.findItem(id);
+                if (item != null) {
+                    tintMenuItem(item);
+                }
+            }
+        }
+    }
+
+    public static void tintMenuItem(MenuItem item) {
+        Drawable icon = item.getIcon();
+        int color = ColorUtils.getPrimaryTextColor(FifaApplication.getContext());
+        icon = ColorUtils.getTintedDrawable(icon, color);
+        item.setIcon(icon);
+    }
+
+    public static Drawable getTintedDrawable(Drawable drawable, @ColorInt int color) {
+        if (drawable != null) {
+            drawable = DrawableCompat.wrap(drawable);
+            DrawableCompat.setTint(drawable.mutate(), color);
+            return drawable;
+        } else {
+            return null;
+        }
+    }
+
+    @ColorInt
+    public static int getPrimaryTextColor(Context context) {
+        boolean isLight = FifaApplication.getSelectedTheme() == R.style.AppTheme_Light;
+        int colorRes = isLight ? R.color.textColorPrimaryLight : R.color.textColorPrimary;
+        return context.getColor(colorRes);
     }
 }

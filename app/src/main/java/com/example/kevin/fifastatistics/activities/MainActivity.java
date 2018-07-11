@@ -73,7 +73,6 @@ public class MainActivity extends FifaBaseActivity implements OnMatchCreatedList
         mBinding.searchView.setVersion(SearchView.VERSION_MENU_ITEM);
         setSupportActionBar(mBinding.toolbarLayout.toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
-        mBinding.toolbarLayout.toolbarTitle.setTextColor(getPrimaryTextColor());
     }
 
     private void initializeFab() {
@@ -244,7 +243,7 @@ public class MainActivity extends FifaBaseActivity implements OnMatchCreatedList
     private void setFabColor() {
         mActionMenu.setMenuButtonColorNormal(mColor);
         mActionMenu.setMenuButtonColorPressed(mColor);
-        mActionMenu.getMenuIconView().setImageDrawable(ColorUtils.getTintedDrawable(R.drawable.ic_add_white_24dp, mColor));
+        mActionMenu.getMenuIconView().setImageDrawable(ColorUtils.getTintedDrawableForLumosity(R.drawable.ic_add_white_24dp, mColor));
     }
 
     @Override

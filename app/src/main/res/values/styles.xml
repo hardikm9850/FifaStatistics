@@ -16,6 +16,8 @@
         <item name="android:textColorSecondary">@color/textColorSecondary</item>
         <item name="android:windowContentTransitions">true</item>
         <item name="android:toolbarStyle">@style/AppTheme.Toolbar</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Material</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
@@ -45,6 +47,8 @@
         <item name="android:textColorSecondary">@color/textColorSecondaryCob</item>
         <item name="android:windowContentTransitions">true</item>
         <item name="android:toolbarStyle">@style/AppTheme.Toolbar.Cobalt</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Material</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
@@ -74,9 +78,19 @@
         <item name="android:textColorSecondary">@color/textColorSecondaryLight</item>
         <item name="android:windowContentTransitions">true</item>
         <item name="android:windowLightStatusBar">true</item>
-        <item name="android:toolbarStyle">@style/AppTheme.Toolbar.Light</item>
+        <item name="actionOverflowButtonStyle">@style/AppTheme.Overflow.Light</item>
+        <item name="toolbarNavigationButtonStyle">@style/Toolbar.Button.Navigation.Tinted</item>
+        <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Material</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="Toolbar.Button.Navigation.Tinted" parent="Widget.AppCompat.Toolbar.Button.Navigation">
+        <item name="tint">@color/textColorPrimaryLight</item>
+    </style>
+
+    <style name="AppTheme.Overflow.Light" parent="Widget.AppCompat.ActionButton.Overflow">
+        <item name="android:tint">@color/textColorPrimaryLight</item>
     </style>
 
     <style name="AppTheme.Toolbar.Light" parent="Theme.AppCompat.NoActionBar">

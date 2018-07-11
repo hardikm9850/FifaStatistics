@@ -23,6 +23,7 @@ import com.example.kevin.fifastatistics.listeners.EndlessRecyclerViewScrollListe
 import com.example.kevin.fifastatistics.models.ApiListResponse;
 import com.example.kevin.fifastatistics.models.databasemodels.match.FifaEvent;
 import com.example.kevin.fifastatistics.models.databasemodels.user.Player;
+import com.example.kevin.fifastatistics.utils.ColorUtils;
 import com.example.kevin.fifastatistics.utils.ToastUtils;
 import com.example.kevin.fifastatistics.viewmodels.fragment.EventStreamFragmentViewModel;
 import com.tonicartos.superslim.LayoutManager;
@@ -123,6 +124,7 @@ public abstract class EventStreamFragment<EVENT extends FifaEvent, ADAPTER exten
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.menu_event_stream, menu);
+        ColorUtils.tintMenuItems(menu, R.id.filter);
     }
 
     @Override

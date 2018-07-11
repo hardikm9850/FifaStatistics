@@ -39,7 +39,7 @@ public class FabFactory {
         button.setColorNormal(mColor);
         button.setColorPressed(mColor);
         button.setButtonSize(FloatingActionButton.SIZE_MINI);
-        button.setImageDrawable(ColorUtils.getTintedDrawable(iconId, mColor));
+        button.setImageDrawable(ColorUtils.getTintedDrawableForLumosity(iconId, mColor));
         button.setLabelText(ResourceUtils.getStringFromResourceId(titleId));
 
         return button;
