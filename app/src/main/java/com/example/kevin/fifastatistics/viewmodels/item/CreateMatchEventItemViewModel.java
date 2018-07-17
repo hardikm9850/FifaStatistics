@@ -18,6 +18,7 @@ import com.example.kevin.fifastatistics.adapters.MatchEventFootballerAdapter;
 import com.example.kevin.fifastatistics.data.MinMaxInputFilter;
 import com.example.kevin.fifastatistics.data.Trie;
 import com.example.kevin.fifastatistics.listeners.SimpleOnTabSelectedListener;
+import com.example.kevin.fifastatistics.managers.CrestUrlResizer;
 import com.example.kevin.fifastatistics.models.databasemodels.footballers.Footballer;
 import com.example.kevin.fifastatistics.models.databasemodels.footballers.MatchEvents;
 import com.example.kevin.fifastatistics.models.databasemodels.league.Team;
@@ -159,7 +160,7 @@ public class CreateMatchEventItemViewModel<T extends MatchEventItem> extends Ite
 
     @Bindable
     public String getTeamImageUrl() {
-        return mCurrentTeam != null ? mCurrentTeam.getCrestUrl() : null;
+        return mCurrentTeam != null ? CrestUrlResizer.resizeSmall(mCurrentTeam.getCrestUrl()) : null;
     }
 
     @ColorInt

@@ -11,26 +11,38 @@
         android:tint="@color/black_tint"
         android:scaleType="centerCrop"/>
 
-    <Button
-        android:id="@+id/debug_login_button"
+    <LinearLayout
+        android:id="@+id/debug_login_buttons"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="Kevin Login"
-        android:textAppearance="@style/text_bold_medium"
-        android:layout_margin="@dimen/activity_horizontal_margin"
-        android:visibility="gone"/>
+        android:orientation="vertical"
+        android:visibility="gone">
 
-    <Button
-        android:id="@+id/debug_main_login_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
-        android:layout_gravity="center_horizontal|top"
-        android:text="Kevin Main Login"
-        android:textAppearance="@style/text_bold_medium"
-        android:layout_margin="@dimen/activity_horizontal_margin"
-        android:visibility="gone"/>
+        <Button
+            android:id="@+id/debug_login_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Kevin Debug Login"
+            android:textAppearance="@style/text_bold_medium"
+            android:layout_margin="@dimen/activity_horizontal_margin" />
+
+        <Button
+            android:id="@+id/debug_main_login_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Kevin Main Login"
+            android:textAppearance="@style/text_bold_medium"
+            android:layout_margin="@dimen/activity_horizontal_margin" />
+
+        <Button
+            android:id="@+id/debug_main_eyshr_login_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Eyshr Main Login"
+            android:textAppearance="@style/text_bold_medium"
+            android:layout_margin="@dimen/activity_horizontal_margin" />
+
+    </LinearLayout>
 
     <com.google.android.gms.common.SignInButton
         android:id="@+id/sign_in_button"

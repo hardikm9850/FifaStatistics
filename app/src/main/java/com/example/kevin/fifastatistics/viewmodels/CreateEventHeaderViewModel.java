@@ -10,6 +10,7 @@ import com.example.kevin.fifastatistics.activities.PickTeamActivity;
 import com.example.kevin.fifastatistics.fragments.CreateMatchFragment;
 import com.example.kevin.fifastatistics.fragments.CreateSeriesMatchListFragment;
 import com.example.kevin.fifastatistics.interfaces.ActivityLauncher;
+import com.example.kevin.fifastatistics.managers.CrestUrlResizer;
 import com.example.kevin.fifastatistics.managers.RetrievalManager;
 import com.example.kevin.fifastatistics.managers.preferences.PrefsManager;
 import com.example.kevin.fifastatistics.models.databasemodels.league.Team;
@@ -178,12 +179,12 @@ public class CreateEventHeaderViewModel extends FifaBaseViewModel {
 
     @Bindable
     public String getLeftTeamImageUrl() {
-        return mLeftTeam != null ? mLeftTeam.getCrestUrl() : null;
+        return mLeftTeam != null ? CrestUrlResizer.resizeMedium(mLeftTeam.getCrestUrl()) : null;
     }
 
     @Bindable
     public String getRightTeamImageUrl() {
-        return mRightTeam != null ? mRightTeam.getCrestUrl() : null;
+        return mRightTeam != null ? CrestUrlResizer.resizeMedium(mRightTeam.getCrestUrl()) : null;
     }
 
     public int getTeamVisibility() {

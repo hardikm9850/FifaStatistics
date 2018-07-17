@@ -20,6 +20,7 @@ import com.example.kevin.fifastatistics.models.databasemodels.user.User;
 import com.example.kevin.fifastatistics.network.FifaApi;
 import com.example.kevin.fifastatistics.network.MatchApi;
 import com.example.kevin.fifastatistics.network.NotFoundException;
+import com.example.kevin.fifastatistics.utils.ColorUtils;
 import com.example.kevin.fifastatistics.utils.ObservableUtils;
 import com.example.kevin.fifastatistics.utils.ToastUtils;
 import com.example.kevin.fifastatistics.viewmodels.FooterButtonsViewModel;
@@ -193,7 +194,11 @@ public class MatchUpdateFragmentViewModel extends FooterButtonsViewModel {
     private void createUpdate() {
         String title = mContext.getString(R.string.creating_update);
         String message = mContext.getString(R.string.please_wait);
-        ProgressDialog d = ProgressDialog.show(mContext, title, message, true);
+        ProgressDialog d = new ProgressDialog(mContext, ColorUtils.getDialogTheme());
+        d.setTitle(title);
+        d.setMessage(message);
+        d.setIndeterminate(true);
+        d.show();
         Subscription s = FifaApi.getUpdateApi().createUpdate(mUpdateStatsCardViewModel.build())
                 .compose(ObservableUtils.applySchedulers())
                 .subscribe(new SimpleObserver<Response<Void>>() {

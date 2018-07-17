@@ -25,7 +25,8 @@
             fab:menu_icon="@drawable/ic_add_white_24dp"
             fab:menu_labels_showAnimation="@anim/fab_scale_up"
             fab:menu_labels_colorNormal="@android:color/transparent"
-            fab:menu_labels_showShadow="false"/>
+            fab:menu_labels_showShadow="false"
+            fab:menu_labels_textColor="?android:textColorPrimary"/>
 
     </FrameLayout>
 

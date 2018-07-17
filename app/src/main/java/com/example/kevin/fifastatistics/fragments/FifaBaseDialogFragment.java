@@ -2,6 +2,7 @@ package com.example.kevin.fifastatistics.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.StyleRes;
 import android.support.v4.app.DialogFragment;
 
 import com.example.kevin.fifastatistics.interfaces.ActivityLauncher;

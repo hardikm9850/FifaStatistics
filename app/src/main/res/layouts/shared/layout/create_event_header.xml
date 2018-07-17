@@ -50,6 +50,7 @@
             android:layout_margin="@dimen/activity_vertical_margin"
             android:src="@drawable/ic_swap_horiz_white_24dp"
             android:background="?attr/selectableItemBackgroundBorderless"
+            android:tint="?android:textColorPrimary"
             android:contentDescription="@string/switch_sides"
             android:onClick="@{() -> viewModel.onSwapSidesButtonClicked()}"/>
 

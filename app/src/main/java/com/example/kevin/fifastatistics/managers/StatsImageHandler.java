@@ -8,6 +8,7 @@ import android.graphics.BitmapFactory;
 import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.listeners.SimpleObserver;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
+import com.example.kevin.fifastatistics.utils.ColorUtils;
 import com.example.kevin.fifastatistics.utils.ObservableUtils;
 
 import java.io.IOException;
@@ -39,7 +40,7 @@ public class StatsImageHandler {
     }
 
     private ProgressDialog showProcessingDialog() {
-        ProgressDialog dialog = new ProgressDialog(mContext);
+        ProgressDialog dialog = new ProgressDialog(mContext, ColorUtils.getDialogTheme());
         dialog.setTitle(mContext.getString(R.string.processing_image));
         dialog.setMessage(mContext.getString(R.string.please_wait));
         dialog.setCancelable(false);

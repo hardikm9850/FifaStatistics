@@ -11,6 +11,7 @@ import com.example.kevin.fifastatistics.adapters.ImageListAdapter;
 import com.example.kevin.fifastatistics.managers.RetrievalManager;
 import com.example.kevin.fifastatistics.models.databasemodels.user.Player;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
+import com.example.kevin.fifastatistics.utils.ColorUtils;
 import com.example.kevin.fifastatistics.utils.ObservableUtils;
 import com.example.kevin.fifastatistics.utils.ToastUtils;
 
@@ -38,10 +39,11 @@ public class SelectOpponentDialogFragment extends FifaBaseDialogFragment {
         return dialog;
     }
 
+    @SuppressWarnings("ConstantConditions")
     @Override
     @NonNull
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), ColorUtils.getDialogTheme());
         initAdapter();
         builder.setAdapter(mAdapter, (dialog, which) ->
             mListener.onOpponentClick(mPlayers.get(which))

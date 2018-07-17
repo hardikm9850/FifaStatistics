@@ -2,6 +2,7 @@ package com.example.kevin.fifastatistics.activities;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
@@ -10,6 +11,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.example.kevin.fifastatistics.R;
+import com.example.kevin.fifastatistics.databinding.ActivityCreateSeriesBinding;
+import com.example.kevin.fifastatistics.databinding.ToolbarCenterTitleBinding;
 import com.example.kevin.fifastatistics.fragments.CreateSeriesMatchListFragment;
 import com.example.kevin.fifastatistics.interfaces.OnMatchCreatedListener;
 import com.example.kevin.fifastatistics.interfaces.OnSeriesCompletedListener;
@@ -51,9 +54,9 @@ public class CreateSeriesActivity extends BasePlayerActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_create_series);
+        ActivityCreateSeriesBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_create_series);
         restoreInstance(savedInstanceState);
-        initializeToolbar();
+        initializeToolbar(binding.toolbarLayout);
         initializeUsers();
     }
 
@@ -67,10 +70,11 @@ public class CreateSeriesActivity extends BasePlayerActivity implements
     }
 
     @SuppressWarnings("ConstantConditions")
-    private void initializeToolbar() {
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+    private void initializeToolbar(ToolbarCenterTitleBinding binding) {
+        setSupportActionBar(binding.toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        binding.toolbarTitle.setText(getString(R.string.new_series));
     }
 
     private void initializeUsers() {
@@ -160,7 +164,7 @@ public class CreateSeriesActivity extends BasePlayerActivity implements
     }
 
     private void uploadSeries() {
-        ProgressDialog d = new ProgressDialog(this);
+        ProgressDialog d = new ProgressDialog(this, ColorUtils.getDialogTheme());
         d.setTitle(R.string.uploading_series);
         d.setMessage(getString(R.string.please_wait));
         d.setCancelable(false);
@@ -192,7 +196,7 @@ public class CreateSeriesActivity extends BasePlayerActivity implements
     }
 
     private void showConfirmationDialog() {
-        AlertDialog dialog = new AlertDialog.Builder(this).create();
+        AlertDialog dialog = new AlertDialog.Builder(this, ColorUtils.getDialogTheme()).create();
         dialog.setMessage(getString(R.string.create_series_exit_confirmation));
         dialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.dialog_keep_editing), (d, w) -> dialog.dismiss());
         dialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.dialog_discard), (d, w) -> {

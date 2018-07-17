@@ -36,6 +36,7 @@
             android:layout_below="@id/team_imageview"
             android:layout_alignParentStart="true"
             android:src="@drawable/ic_swap_horiz_white_24dp"
+            android:tint="?android:textColorPrimary"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:contentDescription="@string/switch_sides"
             android:onClick="@{b -> viewModel.onChangeTeam(b)}"/>

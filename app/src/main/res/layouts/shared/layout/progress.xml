@@ -19,25 +19,25 @@
             android:visibility="@{progressViewModel.retryButtonVisibility}"
             android:orientation="vertical">
 
-            <ImageView
-                android:layout_width="@dimen/retry_icon_size"
-                android:layout_height="@dimen/retry_icon_size"
-                android:tint="@{progressViewModel.color}"
-                android:onClick="@{() -> progressViewModel.onRetryButtonClick()}"
-                android:src="@drawable/ic_refresh_white_24dp"
-                android:scaleType="fitCenter"
-                android:layout_gravity="center_horizontal"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="@dimen/activity_vertical_margin"
+                android:textAppearance="@style/text_bold_medium"
+                android:textSize="17sp"
+                android:text="@string/something_wrong"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/retry"
-                android:textAppearance="@style/text_grey_small"
                 android:layout_gravity="center_horizontal"
-                android:gravity="center_horizontal"/>
+                android:gravity="center_horizontal"
+                android:text="@string/retry"
+                android:onClick="@{() -> progressViewModel.onRetryButtonClick()}"
+                style="@style/ButtonPill"/>
 
         </LinearLayout>
-
 
         <ProgressBar
             android:id="@+id/progressBar"

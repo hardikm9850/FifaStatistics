@@ -61,6 +61,7 @@
     <string name="failed_to_parse">Failed to parse image.</string>
     <string name="keep_editing">Keep Editing</string>
     <string name="discard">Discard</string>
+    <string name="something_wrong">Oops, something went wrong</string>
     <string name="retry">Retry</string>
     <string name="error_goals">Cannot change the match result</string>
     <string name="error_shots">You cannot have more Goals or Shots on Target than Shots</string>

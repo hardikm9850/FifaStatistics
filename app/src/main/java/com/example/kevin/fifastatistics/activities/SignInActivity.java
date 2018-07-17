@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.GestureDetector;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -58,7 +60,6 @@ public class SignInActivity extends AppCompatActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         checkSignedIn();
-//        _debugging_setUserToAccount();
         setContentView(R.layout.activity_login);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
 
@@ -67,11 +68,10 @@ public class SignInActivity extends AppCompatActivity implements
         initializeApiClient();
         initializeFirebaseAuth();
         initializeSignInButton();
-        initializeDebugLoginButton();
+        showDebugButtonsOnLongPress();
     }
 
-    private void checkSignedIn()
-    {
+    private void checkSignedIn() {
         if (PrefsManager.isSignedIn()) {
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
@@ -123,39 +123,37 @@ public class SignInActivity extends AppCompatActivity implements
         signInButton.setSize(SignInButton.SIZE_WIDE);
     }
 
+    private void loginTo(String id) {
+        FifaApi.getUserApi().getUser(id)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(user -> {
+                    PrefsManager.storeUser(user);
+                    PrefsManager.setSignedIn(true);
+                    checkSignedIn();
+                });
+    }
+
+    private void showDebugButtonsOnLongPress() {
+        View root = findViewById(android.R.id.content);
+        GestureDetector detector = new GestureDetector(this, new GestureDetector.SimpleOnGestureListener() {
+            @Override
+            public void onLongPress(MotionEvent e) {
+                initializeDebugLoginButton();
+            }
+        });
+        root.setOnTouchListener((v, event) -> detector.onTouchEvent(event));
+    }
+
     private void initializeDebugLoginButton() {
-        if (BuildUtils.isDebug()) {
-            Button loginButton = findViewById(R.id.debug_login_button);
-            loginButton.setVisibility(View.VISIBLE);
-            loginButton.setOnClickListener(v -> loginToDebugAccount());
-            Button mainLoginButton = findViewById(R.id.debug_main_login_button);
-            mainLoginButton.setVisibility(View.VISIBLE);
-            mainLoginButton.setOnClickListener(v -> loginToMainAccount());
-        }
-    }
-
-    private void loginToDebugAccount() {
-        String personal = "591557f8c843e73118060968";
-        FifaApi.getUserApi().getUser(personal)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
-                .subscribe(user -> {
-                    PrefsManager.storeUser(user);
-                    PrefsManager.setSignedIn(true);
-                    checkSignedIn();
-                });
-    }
-
-    private void loginToMainAccount() {
-        String personal = "5914f83e100c382a04a0d816";
-        FifaApi.getUserApi().getUser(personal)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
-                .subscribe(user -> {
-                    PrefsManager.storeUser(user);
-                    PrefsManager.setSignedIn(true);
-                    checkSignedIn();
-                });
+        View buttonLayout = findViewById(R.id.debug_login_buttons);
+        buttonLayout.setVisibility(View.VISIBLE);
+        Button loginButton = findViewById(R.id.debug_login_button);
+        Button mainLoginButton = findViewById(R.id.debug_main_login_button);
+        Button eyshrButton = findViewById(R.id.debug_main_eyshr_login_button);
+        loginButton.setOnClickListener(v -> loginTo("591557f8c843e73118060968"));
+        mainLoginButton.setOnClickListener(v -> loginTo("5914f83e100c382a04a0d816"));
+        eyshrButton.setOnClickListener(v -> loginTo("5914ff42100c382a04a0d817"));
     }
 
     @Override

@@ -11,6 +11,7 @@
         <item name="colorTextMain">@color/textColorPrimary</item>
         <item name="colorListItem">@color/colorPrimaryDark</item>
         <item name="colorListItemTranslucent">@color/colorPrimaryDarkTranslucent</item>
+        <item name="colorPillUnselected">@color/lighter_black</item>
         <item name="cardViewBackground">@color/cardViewBackground</item>
         <item name="cardViewHeaderBackground">@color/cardViewHeaderBackground</item>
         <item name="statOpponentColor">@color/statOpponentColor</item>
@@ -22,6 +23,11 @@
         <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Material</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="AppTheme.Dialog" parent="Theme.AppCompat.Dialog.Alert">
+        <item name="android:background">@color/colorPrimary</item>
+        <item name="android:colorAccent">@color/colorAccent</item>
     </style>
 
     <style name="AppTheme.Settings" parent="AppTheme.Cobalt">
@@ -43,7 +49,8 @@
         <item name="colorMenuItem">@color/colorMenuItemCob</item>
         <item name="colorTextMain">@color/textColorPrimaryCob</item>
         <item name="colorListItem">@color/colorPrimaryDarkCob</item>
-        <item name="colorListItemTranslucent">@color/colorPrimaryDarkTranslucent</item>
+        <item name="colorListItemTranslucent">@color/colorPrimaryDarkTranslucentCob</item>
+        <item name="colorPillUnselected">@color/lighter_black</item>
         <item name="cardViewBackground">@color/cardViewBackgroundCob</item>
         <item name="cardViewHeaderBackground">@color/cardViewHeaderBackgroundCob</item>
         <item name="statOpponentColor">@color/statOpponentColorCob</item>
@@ -62,8 +69,9 @@
         <item name="android:textColorSecondary">@color/textColorSecondaryCob</item>
     </style>
 
-    <style name="AppTheme.Dialog.Cobalt" parent="Theme.AppCompat.Dialog">
-        <item name="android:windowBackground">@color/blue</item>
+    <style name="AppTheme.Dialog.Cobalt" parent="Theme.AppCompat.Dialog.Alert">
+        <item name="android:background">@color/colorPrimaryCob</item>
+        <item name="android:colorAccent">@color/colorAccent</item>
     </style>
 
     <!-- Light Theme -->
@@ -77,6 +85,7 @@
         <item name="colorTextMain">@color/textColorPrimaryLight</item>
         <item name="colorListItem">@color/colorPrimaryLight</item>
         <item name="colorListItemTranslucent">@color/colorPrimaryLightTranslucent</item>
+        <item name="colorPillUnselected">@color/colorPrimaryDarkLight</item>
         <item name="cardViewBackground">@color/cardViewBackgroundLight</item>
         <item name="cardViewHeaderBackground">@color/cardViewHeaderBackgroundLight</item>
         <item name="statOpponentColor">@color/statOpponentColorLight</item>
@@ -89,6 +98,10 @@
         <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Material</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="AppTheme.Dialog.Light" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="android:colorAccent">@color/colorAccent</item>
     </style>
 
     <style name="Toolbar.Button.Navigation.Tinted" parent="Widget.AppCompat.Toolbar.Button.Navigation">
@@ -197,6 +210,21 @@
         <item name="android:paddingEnd">12dp</item>
         <item name="android:paddingTop">2dp</item>
         <item name="android:paddingBottom">2dp</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="ButtonPill">
+        <item name="android:textColor">?android:textColorPrimary</item>
+        <item name="android:textAppearance">@style/text_bold_small</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:background">@drawable/pill_unselected</item>
+        <item name="android:minWidth">0dp</item>
+        <item name="android:minHeight">0dp</item>
+        <item name="android:paddingStart">80dp</item>
+        <item name="android:paddingEnd">80dp</item>
+        <item name="android:paddingTop">18dp</item>
+        <item name="android:paddingBottom">18dp</item>
         <item name="android:gravity">center</item>
     </style>
 

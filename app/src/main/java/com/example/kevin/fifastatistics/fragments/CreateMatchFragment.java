@@ -117,7 +117,7 @@ public class CreateMatchFragment extends FifaBaseFragment implements StatsImageH
     }
 
     private void initMatchUploadingDialog() {
-        mMatchUploadingDialog = new ProgressDialog(getContext());
+        mMatchUploadingDialog = new ProgressDialog(getContext(), ColorUtils.getDialogTheme());
         mMatchUploadingDialog.setTitle(getString(R.string.uploading_match));
         mMatchUploadingDialog.setMessage(getString(R.string.please_wait));
         mMatchUploadingDialog.setCancelable(false);

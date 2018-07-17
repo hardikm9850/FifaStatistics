@@ -118,7 +118,8 @@ public class MatchFragment extends FifaBaseFragment implements MatchFragmentView
         MenuItem viewUpdate = menu.findItem(R.id.view_pending_update);
         boolean isUpdatePending = mMatch != null && mMatch.getUpdateId() != null;
         viewUpdate.setVisible(isUpdatePending);
-        requestUpdate.setVisible(mMatch != null && mUser.participatedIn(mMatchProjection) && !isUpdatePending);
+        boolean doShowUpdateItem = mMatch != null && mUser.participatedIn(mMatch) && !isUpdatePending;
+        requestUpdate.setVisible(doShowUpdateItem);
     }
 
     @Override

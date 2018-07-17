@@ -14,6 +14,7 @@ import com.example.kevin.fifastatistics.managers.RetrievalManager;
 import com.example.kevin.fifastatistics.models.databasemodels.league.Team;
 import com.example.kevin.fifastatistics.models.databasemodels.match.Match;
 import com.example.kevin.fifastatistics.models.databasemodels.user.Player;
+import com.example.kevin.fifastatistics.utils.ColorUtils;
 
 public class CreateMatchActivity extends FifaBaseActivity implements CreateMatchFragment.OnMatchUpdatedListener {
 
@@ -69,8 +70,10 @@ public class CreateMatchActivity extends FifaBaseActivity implements CreateMatch
 
     @SuppressWarnings("ConstantConditions")
     private void initToolbar(ActivityCreateMatchBinding binding) {
-        setSupportActionBar(binding.toolbar);
+        setSupportActionBar(binding.toolbarLayout.toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        binding.toolbarLayout.toolbarTitle.setText(getString(R.string.new_match));
     }
 
     private void initFragment() {
@@ -102,7 +105,7 @@ public class CreateMatchActivity extends FifaBaseActivity implements CreateMatch
     }
 
     private void showConfirmationDialog() {
-        AlertDialog dialog = new AlertDialog.Builder(this).create();
+        AlertDialog dialog = new AlertDialog.Builder(this, ColorUtils.getDialogTheme()).create();
         dialog.setMessage(getString(R.string.create_match_exit_confirmation));
         dialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.keep_editing), (d, w) -> dialog.dismiss());
         dialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.discard), (d, w) -> finishAfterTransition());

@@ -37,7 +37,7 @@ public class ThemePreferenceDialogFragment extends PreferenceDialogFragmentCompa
         super.onBindDialogView(view);
         mRadioGroup = view.findViewById(R.id.theme_radio_group);
 
-        int theme = R.style.AppTheme;
+        int theme = R.style.AppTheme_Cobalt;
         DialogPreference preference = getPreference();
         preference.setDialogTitle(R.string.select_theme);
         if (preference instanceof ThemePreference) {

@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.ColorInt;
 import android.support.annotation.DrawableRes;
+import android.support.annotation.StyleRes;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.view.Menu;
@@ -90,5 +91,17 @@ public class ColorUtils {
         boolean isLight = FifaApplication.getSelectedTheme() == R.style.AppTheme_Light;
         int colorRes = isLight ? R.color.textColorSecondaryLight : R.color.textColorSecondary;
         return context.getColor(colorRes);
+    }
+
+    @StyleRes
+    public static int getDialogTheme() {
+        int currentTheme = FifaApplication.getSelectedTheme();
+        if (currentTheme == R.style.AppTheme_Cobalt) {
+            return R.style.AppTheme_Dialog_Cobalt;
+        } else if (currentTheme == R.style.AppTheme) {
+            return R.style.AppTheme_Dialog;
+        } else {
+            return R.style.AppTheme_Dialog_Light;
+        }
     }
 }

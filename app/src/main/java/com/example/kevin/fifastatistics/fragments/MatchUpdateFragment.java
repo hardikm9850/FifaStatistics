@@ -2,6 +2,7 @@ package com.example.kevin.fifastatistics.fragments;
 
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.v7.app.AlertDialog;
@@ -23,6 +24,7 @@ import com.example.kevin.fifastatistics.models.databasemodels.match.MatchUpdate;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
 import com.example.kevin.fifastatistics.network.FifaApi;
 import com.example.kevin.fifastatistics.utils.BuildUtils;
+import com.example.kevin.fifastatistics.utils.ColorUtils;
 import com.example.kevin.fifastatistics.utils.ObservableUtils;
 import com.example.kevin.fifastatistics.utils.ToastUtils;
 import com.example.kevin.fifastatistics.utils.TransitionUtils;
@@ -78,7 +80,7 @@ public class MatchUpdateFragment extends FifaBaseFragment implements OnBackPress
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState) {
+    public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putSerializable(USER, mUser);
         outState.putSerializable(MATCH, mMatch);
@@ -89,7 +91,7 @@ public class MatchUpdateFragment extends FifaBaseFragment implements OnBackPress
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_match_update, container, false);
         mViewModel = new MatchUpdateFragmentViewModel(mMatch, mUpdate, mUser, getContext(), this, mBinding, mType, mUpdateId);
         TransitionUtils.addTransitionCallbackToBinding(mBinding.cardUpdateStatsLayout);
@@ -98,7 +100,7 @@ public class MatchUpdateFragment extends FifaBaseFragment implements OnBackPress
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         mViewModel.load();
     }
 
@@ -120,7 +122,7 @@ public class MatchUpdateFragment extends FifaBaseFragment implements OnBackPress
     }
 
     private void showConfirmationDialog() {
-        AlertDialog dialog = new AlertDialog.Builder(getContext()).create();
+        AlertDialog dialog = new AlertDialog.Builder(getContext(), ColorUtils.getDialogTheme()).create();
         dialog.setMessage(getString(R.string.confirm_discard_update));
         dialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.keep_editing), (d, w) -> dialog.dismiss());
         dialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.discard), (d, w) -> {
