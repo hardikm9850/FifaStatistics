@@ -79,6 +79,8 @@ public class PickTeamActivity extends FifaBaseActivity implements TeamItemViewMo
         TeamFragmentAdapter adapter = new TeamFragmentAdapter(getSupportFragmentManager(), response);
         mBinding.viewpager.setAdapter(adapter);
         mBinding.tabs.setupWithViewPager(mBinding.viewpager);
+        int color = ColorUtils.getPrimaryTextColor(this);
+        mBinding.tabs.setTabTextColors(color, color);
         mBinding.tabs.setVisibility(View.VISIBLE);
     }
 

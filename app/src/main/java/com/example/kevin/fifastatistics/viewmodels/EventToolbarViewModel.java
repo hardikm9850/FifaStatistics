@@ -3,6 +3,7 @@ package com.example.kevin.fifastatistics.viewmodels;
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 
+import com.example.kevin.fifastatistics.managers.CrestUrlResizer;
 import com.example.kevin.fifastatistics.models.databasemodels.match.FifaEvent;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
 
@@ -29,12 +30,12 @@ public class EventToolbarViewModel extends BaseObservable {
 
     @Bindable
     public String getLeftImage() {
-        return mLeftImageUrl;
+        return CrestUrlResizer.resizeMedium(mLeftImageUrl);
     }
 
     @Bindable
     public String getRightImage() {
-        return mRightImageUrl;
+        return CrestUrlResizer.resizeMedium(mRightImageUrl);
     }
 
     @Bindable

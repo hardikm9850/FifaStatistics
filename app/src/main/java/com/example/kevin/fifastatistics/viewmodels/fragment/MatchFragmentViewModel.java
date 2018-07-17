@@ -40,7 +40,7 @@ public class MatchFragmentViewModel extends ProgressFragmentViewModel {
         mProjection = projection;
         mPlayer = player;
         mMatchId = matchId;
-        mBoxScoreViewModel = new BoxScoreViewModel(null, player);
+        mBoxScoreViewModel = new BoxScoreViewModel(null, player, launcher.getContext());
         mGoalsViewModel = new MatchEventsCardViewModel<>(launcher);
         mInjuriesViewModel = new MatchEventsCardViewModel<>(launcher);
         mCardsViewModel = new MatchEventsCardViewModel<>(launcher);
@@ -98,6 +98,11 @@ public class MatchFragmentViewModel extends ProgressFragmentViewModel {
     public void destroy() {
         super.destroy();
         mListener = null;
+        mBoxScoreViewModel.destroy();
+        mGoalsViewModel.destroy();
+        mCardsViewModel.destroy();
+        mInjuriesViewModel.destroy();
+        mStatsViewModel.destroy();
     }
 
     @Bindable

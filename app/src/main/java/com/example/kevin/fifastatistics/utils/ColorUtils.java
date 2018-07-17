@@ -84,4 +84,11 @@ public class ColorUtils {
         int colorRes = isLight ? R.color.textColorPrimaryLight : R.color.textColorPrimary;
         return context.getColor(colorRes);
     }
+
+    @ColorInt
+    public static int getSecondaryTextColor(Context context) {
+        boolean isLight = FifaApplication.getSelectedTheme() == R.style.AppTheme_Light;
+        int colorRes = isLight ? R.color.textColorSecondaryLight : R.color.textColorSecondary;
+        return context.getColor(colorRes);
+    }
 }

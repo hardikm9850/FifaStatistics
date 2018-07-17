@@ -9,8 +9,10 @@ import android.support.annotation.ColorInt;
 import com.example.kevin.fifastatistics.FifaApplication;
 import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.interfaces.ActivityLauncher;
+import com.example.kevin.fifastatistics.managers.CrestUrlResizer;
 import com.example.kevin.fifastatistics.models.databasemodels.footballers.MatchEvents;
 import com.example.kevin.fifastatistics.models.databasemodels.league.Team;
+import com.example.kevin.fifastatistics.utils.ColorUtils;
 import com.example.kevin.fifastatistics.utils.MinuteFormatter;
 
 import static com.example.kevin.fifastatistics.models.databasemodels.footballers.MatchEvents.DummyPlayer;
@@ -47,7 +49,7 @@ public class MatchEventItemViewModel<T extends MatchEventItem> extends ItemViewM
 
     @Bindable
     public String getTeamImageUrl() {
-        return mTeam != null ? mTeam.getCrestUrl() : null;
+        return mTeam != null ? CrestUrlResizer.resizeSmall(mTeam.getCrestUrl()) : null;
     }
 
     @Bindable
@@ -85,7 +87,7 @@ public class MatchEventItemViewModel<T extends MatchEventItem> extends ItemViewM
         if (mItem.isGoldenGoal() && mIsLastItem) {
             return getColor(R.color.gold);
         } else {
-            return getColor(android.R.color.white);
+            return ColorUtils.getPrimaryTextColor(mLauncher.getContext());
         }
     }
 

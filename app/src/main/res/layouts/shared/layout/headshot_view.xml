@@ -23,7 +23,8 @@
         android:layout_gravity="center"
         android:paddingTop="15dp"
         android:gravity="center"
-        android:textSize="24dp"/>
+        android:textSize="24dp"
+        android:textColor="@color/white"/>
 
     <ImageView
         android:id="@+id/headshot_photo"

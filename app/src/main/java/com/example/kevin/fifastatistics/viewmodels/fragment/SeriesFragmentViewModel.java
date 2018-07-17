@@ -69,7 +69,7 @@ public class SeriesFragmentViewModel extends ProgressFragmentViewModel {
     private void notifySeriesLoaded() {
         mMatchesViewModel = new SeriesMatchesCardViewModel(mLauncher, mSeries, mUser);
         mStatsViewModel = StatsCardViewModel.seriesStats(mSeries, getUsername());
-        if (mSeries.getLeaders() != null) {
+        if (mSeries.getLeaders() != null && !mSeries.getLeaders().isEmpty()) {
             mLeadersViewModel = LeadersCardViewModel.series(mSeries, mUser, mLauncher);
         }
         if (mSeries != null) {

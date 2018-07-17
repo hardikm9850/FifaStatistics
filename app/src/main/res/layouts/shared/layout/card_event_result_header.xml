@@ -12,53 +12,65 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?cardViewBackground"
         android:orientation="vertical"
-        android:elevation="@dimen/elevation"
+        android:background="?colorPrimaryDark"
         app:layout_scrollFlags="scroll|exitUntilCollapsed|enterAlwaysCollapsed">
 
-        <FrameLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/activity_vertical_margin"
-            android:layout_marginEnd="@dimen/activity_vertical_margin"
-            android:layout_marginTop="@dimen/activity_horizontal_margin"
-            android:layout_marginBottom="@dimen/activity_horizontal_margin">
+            android:background="?cardViewBackground"
+            android:orientation="vertical">
 
-            <TextView
-                android:layout_width="wrap_content"
+            <FrameLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="start"
-                android:gravity="center_horizontal"
-                android:textAppearance="@style/text_bold_grey_small"
-                android:text="@{headerViewModel.date}"/>
+                android:layout_marginStart="@dimen/activity_vertical_margin"
+                android:layout_marginEnd="@dimen/activity_vertical_margin"
+                android:layout_marginTop="@dimen/activity_horizontal_margin"
+                android:layout_marginBottom="@dimen/activity_horizontal_margin">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:gravity="center_horizontal"
-                android:textAppearance="@style/text_bold_grey_small"
-                android:text="@{headerViewModel.message}"
-                android:visibility="@{headerViewModel.messageVisibility}"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start"
+                    android:gravity="center_horizontal"
+                    android:textAppearance="@style/text_bold_grey_small"
+                    android:text="@{headerViewModel.date}"/>
 
-        </FrameLayout>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:gravity="center_horizontal"
+                    android:textAppearance="@style/text_bold_grey_small"
+                    android:text="@{headerViewModel.message}"
+                    android:visibility="@{headerViewModel.messageVisibility}"/>
 
-        <View style="@style/Divider"
-            android:layout_marginStart="@dimen/activity_vertical_margin"
-            android:layout_marginEnd="@dimen/activity_vertical_margin"/>
+            </FrameLayout>
 
-        <include
-            layout="@layout/item_event_header_team_score"
-            bind:imageUrl="@{headerViewModel.winnerImageUrl}"
-            bind:name="@{headerViewModel.winnerName}"
-            bind:score="@{headerViewModel.winnerScore}"/>
+            <View style="@style/Divider"
+                android:layout_marginStart="@dimen/activity_vertical_margin"
+                android:layout_marginEnd="@dimen/activity_vertical_margin"/>
 
-        <include
-            layout="@layout/item_event_header_team_score"
-            bind:imageUrl="@{headerViewModel.loserImageUrl}"
-            bind:name="@{headerViewModel.loserName}"
-            bind:score="@{headerViewModel.loserScore}"/>
+            <include
+                layout="@layout/item_event_header_team_score"
+                bind:imageUrl="@{headerViewModel.winnerImageUrl}"
+                bind:name="@{headerViewModel.winnerName}"
+                bind:score="@{headerViewModel.winnerScore}"/>
+
+            <include
+                layout="@layout/item_event_header_team_score"
+                bind:imageUrl="@{headerViewModel.loserImageUrl}"
+                bind:name="@{headerViewModel.loserName}"
+                bind:score="@{headerViewModel.loserScore}"/>
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="4dp"
+            android:background="@drawable/bottom_shadow"/>
 
     </LinearLayout>
 

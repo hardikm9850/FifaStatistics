@@ -118,7 +118,7 @@
                     android:layout_weight="1"
                     bind:summary="@{viewModel.fullTime}"
                     bind:fulltime="@{true}"
-                    bind:textColor="@{@android:color/white}"
+                    bind:textColor="@{viewModel.fullTimeTextColor}"
                     bind:title="@{@string/ft}"/>
 
                 <include
@@ -128,7 +128,7 @@
                     android:layout_weight="1"
                     bind:summary="@{viewModel.penalties}"
                     bind:fulltime="@{false}"
-                    bind:textColor="@{@android:color/secondary_text_dark}"
+                    bind:textColor="@{viewModel.eachHalfTextColor}"
                     bind:title="@{@string/pk}"
                     android:visibility="@{viewModel.penaltiesVisibility}"/>
 
@@ -139,7 +139,7 @@
                     android:layout_weight="1"
                     bind:summary="@{viewModel.secondExtraTime}"
                     bind:fulltime="@{false}"
-                    bind:textColor="@{@android:color/secondary_text_dark}"
+                    bind:textColor="@{viewModel.eachHalfTextColor}"
                     bind:title="@{@string/et2}"
                     android:visibility="@{viewModel.secondExtraTimeVisibility}"/>
 
@@ -150,7 +150,7 @@
                     android:layout_weight="1"
                     bind:summary="@{viewModel.firstExtraTime}"
                     bind:fulltime="@{false}"
-                    bind:textColor="@{@android:color/secondary_text_dark}"
+                    bind:textColor="@{viewModel.eachHalfTextColor}"
                     bind:title="@{@string/et1}"
                     android:visibility="@{viewModel.firstExtraTimeVisibility}"/>
 
@@ -161,7 +161,7 @@
                     android:layout_weight="1"
                     bind:summary="@{viewModel.secondHalf}"
                     bind:fulltime="@{false}"
-                    bind:textColor="@{@android:color/secondary_text_dark}"
+                    bind:textColor="@{viewModel.eachHalfTextColor}"
                     bind:title='@{"2"}'/>
 
                 <include
@@ -171,7 +171,7 @@
                     android:layout_weight="1"
                     bind:summary="@{viewModel.firstHalf}"
                     bind:fulltime="@{false}"
-                    bind:textColor="@{@android:color/secondary_text_dark}"
+                    bind:textColor="@{viewModel.eachHalfTextColor}"
                     bind:title='@{"1"}'/>
 
             </LinearLayout>

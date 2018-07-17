@@ -5,6 +5,8 @@
 
     <attr name="colorPrimaryDarkTranslucent" format="reference|color" />
     <attr name="colorPrimaryDarkTranslucenter" format="reference|color" />
+    <attr name="colorListItem" format="reference|color"/>
+    <attr name="colorListItemTranslucent" format="reference|color"/>
     <attr name="cardViewBackground" format="reference|color" />
     <attr name="cardViewHeaderBackground" format="reference|color" />
     <attr name="statOpponentColor" format="reference|color" />

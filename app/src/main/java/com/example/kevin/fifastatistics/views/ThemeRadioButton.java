@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.animation.CircularAnimationHelper;
 import com.example.kevin.fifastatistics.interfaces.RadioCheckable;
+import com.example.kevin.fifastatistics.utils.ColorUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -66,6 +67,7 @@ public class ThemeRadioButton extends LinearLayout implements RadioCheckable {
         inflater.inflate(R.layout.radio_button_theme, this, true);
         mIsSelectedCheck = findViewById(R.id.checkbox);
         TextView title = findViewById(R.id.theme_text);
+        title.setTextColor(ColorUtils.getPrimaryTextColor(context));
         title.setText(mTitle);
     }
 

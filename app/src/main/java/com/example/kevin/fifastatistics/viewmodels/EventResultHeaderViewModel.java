@@ -4,7 +4,9 @@ import android.content.res.Resources;
 import android.databinding.Bindable;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
+import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 
 import com.example.kevin.fifastatistics.FifaApplication;
 import com.example.kevin.fifastatistics.R;
@@ -112,9 +114,11 @@ public class EventResultHeaderViewModel extends FifaBaseViewModel {
 
     public AppBarLayout.OnOffsetChangedListener getOffsetListener() {
         return (appBarLayout, verticalOffset) -> {
-            float alpha = 1.00f + ((float) verticalOffset)/750;
-            appBarLayout.getChildAt(0).setAlpha(alpha);
-            mToolbarTitle.setAlpha(-5.00f*alpha + 1.00f);
+            float alpha = 1.00f + ((float) verticalOffset)/550;
+            View content = ((ViewGroup) appBarLayout.getChildAt(0)).getChildAt(0);
+            content.setAlpha(alpha);
+            float titleAlpha = -5.00f*alpha + 1.00f;
+            mToolbarTitle.setAlpha(titleAlpha);
         };
 
     }

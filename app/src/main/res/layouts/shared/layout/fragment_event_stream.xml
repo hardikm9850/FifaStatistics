@@ -16,6 +16,7 @@
             android:id="@+id/matches_recyclerview"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="?colorListItem"
             android:layoutAnimation="@anim/default_recycler_layout_animation"/>
 
         <include

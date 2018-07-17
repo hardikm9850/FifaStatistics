@@ -8,6 +8,7 @@ import com.example.kevin.fifastatistics.R;
 public class CrestUrlResizer {
 
     private static final int CREST_SIZE_SMALL;
+    private static final int CREST_SIZE_MEDIUM;
     private static final int CREST_SIZE_LARGE;
     private static final String SVG_PNG = ".svg.png";
     private static final String SIZE_REGEX = "\\d{2,4}?px";
@@ -15,11 +16,16 @@ public class CrestUrlResizer {
     static {
         Resources resources = FifaApplication.getContext().getResources();
         CREST_SIZE_SMALL = resources.getDimensionPixelSize(R.dimen.match_team_logo_size);
+        CREST_SIZE_MEDIUM = resources.getDimensionPixelSize(R.dimen.team_item_logo_size);
         CREST_SIZE_LARGE = resources.getDimensionPixelSize(R.dimen.match_team_logo_size_large);
     }
 
     public static String resizeSmall(String crestUrl) {
         return resize(crestUrl, CREST_SIZE_SMALL);
+    }
+
+    public static String resizeMedium(String crestUrl) {
+        return resize(crestUrl, CREST_SIZE_MEDIUM);
     }
 
     public static String resizeLarge(String crestUrl) {

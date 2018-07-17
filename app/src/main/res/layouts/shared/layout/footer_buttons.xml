@@ -12,7 +12,7 @@
         android:id="@+id/button_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?colorPrimaryDark"
+        android:background="?colorListItem"
         android:orientation="vertical"
         app:slideVisibility="@{buttonsViewModel.footerVisibility}">
 

@@ -1,16 +1,20 @@
 package com.example.kevin.fifastatistics.viewmodels.card;
 
+import android.content.Context;
 import android.databinding.Bindable;
+import android.support.annotation.ColorInt;
 import android.support.annotation.Nullable;
 import android.view.View;
 
+import com.example.kevin.fifastatistics.managers.CrestUrlResizer;
 import com.example.kevin.fifastatistics.managers.EventPresenter;
 import com.example.kevin.fifastatistics.models.databasemodels.match.Match;
 import com.example.kevin.fifastatistics.models.databasemodels.match.MatchScoreSummary;
 import com.example.kevin.fifastatistics.models.databasemodels.user.Player;
+import com.example.kevin.fifastatistics.utils.ColorUtils;
 import com.example.kevin.fifastatistics.viewmodels.FifaBaseViewModel;
 
-import static com.example.kevin.fifastatistics.models.databasemodels.match.MatchScoreSummary.*;
+import static com.example.kevin.fifastatistics.models.databasemodels.match.MatchScoreSummary.TextPartSummary;
 
 public class BoxScoreViewModel extends FifaBaseViewModel {
 
@@ -18,9 +22,11 @@ public class BoxScoreViewModel extends FifaBaseViewModel {
 
     private MatchScoreSummary mSummary;
     private EventPresenter<Match> mPresenter;
+    private Context mContext;
 
-    public BoxScoreViewModel(@Nullable Match match, Player currentUser) {
+    public BoxScoreViewModel(@Nullable Match match, Player currentUser, Context context) {
         mPresenter = new EventPresenter<>(currentUser);
+        mContext = context;
         initBoxscore(match);
     }
 
@@ -54,14 +60,24 @@ public class BoxScoreViewModel extends FifaBaseViewModel {
         return mSummary != null && mSummary.getPenalties() != null ? View.VISIBLE : View.GONE;
     }
 
+    @ColorInt
+    public int getFullTimeTextColor() {
+        return ColorUtils.getPrimaryTextColor(mContext);
+    }
+
+    @ColorInt
+    public int getEachHalfTextColor() {
+        return ColorUtils.getSecondaryTextColor(mContext);
+    }
+
     @Bindable
     public String getTopTeamImageUrl() {
-        return mPresenter.getTopTeamImageUrl();
+        return CrestUrlResizer.resizeSmall(mPresenter.getTopTeamImageUrl());
     }
 
     @Bindable
     public String getBottomTeamImageUrl() {
-        return mPresenter.getBottomTeamImageUrl();
+        return CrestUrlResizer.resizeSmall(mPresenter.getBottomTeamImageUrl());
     }
 
     @Bindable
@@ -130,5 +146,11 @@ public class BoxScoreViewModel extends FifaBaseViewModel {
     public int getEndWeightSum() {
         final int numberOfPartLayouts = 6;
         return numberOfPartLayouts - getNumberOfNotVisibleParts();
+    }
+
+    @Override
+    public void destroy() {
+        super.destroy();
+        mContext = null;
     }
 }

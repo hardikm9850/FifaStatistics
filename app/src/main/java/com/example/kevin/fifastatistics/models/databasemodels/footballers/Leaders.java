@@ -30,6 +30,11 @@ public class Leaders implements Serializable {
         return l;
     }
 
+    @JsonIgnore
+    public boolean isEmpty() {
+        return leadersAgainst.isEmpty() && leadersFor.isEmpty();
+    }
+
     @Getter
     @Setter
     public static class LeaderSet implements Serializable {
@@ -43,6 +48,11 @@ public class Leaders implements Serializable {
             if (injuries == null) injuries = leader;
             if (yellowCards == null) yellowCards = leader;
             if (redCards == null) redCards = leader;
+        }
+
+        @JsonIgnore
+        public boolean isEmpty() {
+            return goals == null && injuries == null && yellowCards == null && redCards == null;
         }
     }
 
