@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="series_length_min">3</integer>
+    <integer name="series_length_max">15</integer>
+    <integer name="series_length_default">7</integer>
+    <integer name="series_length_seekbar_max">9</integer>
+</resources>

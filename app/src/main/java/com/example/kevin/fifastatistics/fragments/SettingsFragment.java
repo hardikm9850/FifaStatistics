@@ -3,6 +3,7 @@ package com.example.kevin.fifastatistics.fragments;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -10,6 +11,7 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceFragmentCompat;
+import android.support.v7.preference.SeekBarPreference;
 import android.support.v7.preference.TwoStatePreference;
 
 import com.example.kevin.fifastatistics.FifaApplication;
@@ -40,6 +42,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements OnTeam
     private TwoStatePreference mSaveFactsPreference;
     private EventBus mEventBus;
     private Subscription mUpdateTeamSubscription;
+    private int mSeriesLength;
 
     public static SettingsFragment newInstance() {
         return new SettingsFragment();
@@ -56,6 +59,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements OnTeam
         getPreferenceManager().setSharedPreferencesName(PrefsManager.name());
         addPreferencesFromResource(R.xml.preferences);
         initFavoriteTeamPreference();
+        initDefaultSeriesLengthPreference();
 //        initTeamAsColorAccentPreferenceChangeListener();
         initResendRegTokenPreference();
         initUpdatePlayerCachePreference();
@@ -75,6 +79,30 @@ public class SettingsFragment extends PreferenceFragmentCompat implements OnTeam
         Observable.<Team>create(subscriber -> subscriber.onNext(PrefsManager.getFavoriteTeam()))
                 .compose(ObservableUtils.applySchedulers())
                 .subscribe(team -> mTeamPreference.setSummary(team != null ? team.getShortName() : null));
+    }
+
+    private void initDefaultSeriesLengthPreference() {
+        Resources r = getResources();
+        int minLength = r.getInteger(R.integer.series_length_min);
+        SeekBarPreference seriesLengthPref = (SeekBarPreference) findPreference(getString(R.string.pref_default_series_length));
+        seriesLengthPref.setOnPreferenceChangeListener((preference, newValue) -> {
+            int trueLength = ((int) newValue * 2) - minLength;
+            setSeriesLengthPreferenceSummary(seriesLengthPref, trueLength);
+            return true;
+        });
+        Observable.<Integer>create(subscriber -> subscriber.onNext(PrefsManager.getDefaultSeriesLength()))
+                .compose(ObservableUtils.applySchedulers())
+                .subscribe(length -> {
+                    seriesLengthPref.setValue((length + minLength)/2);
+                    setSeriesLengthPreferenceSummary(seriesLengthPref, length);
+                });
+
+    }
+
+    private void setSeriesLengthPreferenceSummary(Preference preference, int length) {
+        mSeriesLength = length;
+        String summary = FifaApplication.getContext().getString(R.string.best_of, length);
+        preference.setSummary(summary);
     }
 
     private void initTeamAsColorAccentPreferenceChangeListener() {
@@ -154,6 +182,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements OnTeam
 
     @Override
     public void onPause() {
+        PrefsManager.setDefaultSeriesLength(mSeriesLength);
         getPreferenceManager().getSharedPreferences().unregisterOnSharedPreferenceChangeListener(this);
         super.onPause();
     }

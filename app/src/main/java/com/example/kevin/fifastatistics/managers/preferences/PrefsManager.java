@@ -3,6 +3,7 @@ package com.example.kevin.fifastatistics.managers.preferences;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.support.annotation.ColorInt;
@@ -40,6 +41,7 @@ public class PrefsManager {
     private static final String TEAM_COLOR_AS_ACCENT;
     private static final String SAVE_FACT_BITMAPS;
     private static final String THEME;
+    private static final String DEFAULT_SERIES_LENGTH;
 
     private static SharedPreferences preferences;
     private static SharedPreferences.Editor editor;
@@ -52,6 +54,7 @@ public class PrefsManager {
         TEAM_COLOR_AS_ACCENT = context.getString(R.string.teamAsColor);
         SAVE_FACT_BITMAPS = context.getString(R.string.saveFactBitmaps);
         THEME = context.getString(R.string.themePref);
+        DEFAULT_SERIES_LENGTH = context.getString(R.string.defaultSeriesLength);
     }
 
     /**
@@ -194,6 +197,18 @@ public class PrefsManager {
 
     public static boolean doSaveMatchFactsBitmap() {
         return preferences.getBoolean(SAVE_FACT_BITMAPS, false);
+    }
+
+    public static int getDefaultSeriesLength() {
+        Resources resources = FifaApplication.getContext().getResources();
+        int defaultLength = resources.getInteger(R.integer.series_length_default);
+        return preferences.getInt(DEFAULT_SERIES_LENGTH, defaultLength);
+    }
+
+    public static void setDefaultSeriesLength(int length) {
+        editor = preferences.edit();
+        editor.putInt(DEFAULT_SERIES_LENGTH, length);
+        editor.apply();
     }
 
     public static int getTheme() {

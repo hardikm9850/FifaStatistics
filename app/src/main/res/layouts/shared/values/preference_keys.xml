@@ -7,4 +7,5 @@
     <string name="resendRegToken">resendRegToken</string>
     <string name="saveFactBitmaps">saveFactBitmaps</string>
     <string name="syncFootballerCache">syncFootballerCache</string>
+    <string name="defaultSeriesLength">defaultSeriesLength</string>
 </resources>

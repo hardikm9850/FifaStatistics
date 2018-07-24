@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<android.support.v7.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <android.support.v7.preference.PreferenceCategory android:title="@string/general">
 
@@ -8,6 +9,14 @@
             android:title="@string/pref_direct_camera"
             android:summary="@string/pref_direct_camera_desc"
             android:defaultValue="false"/>
+
+        <android.support.v7.preference.SeekBarPreference
+            android:key="@string/pref_default_series_length"
+            android:title="@string/pref_default_series_length"
+            android:defaultValue="@integer/series_length_default"
+            android:max="@integer/series_length_seekbar_max"
+            app:min="@integer/series_length_min"
+            app:showSeekBarValue="false"/>
 
         <android.support.v7.preference.Preference
             android:key="@string/favoriteTeam"

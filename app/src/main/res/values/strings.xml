@@ -172,6 +172,7 @@
     <string name="pref_resend_reg_token">Resend registration token</string>
     <string name="pref_update_player_cache">Update player cache</string>
     <string name="pref_save_bitmaps">Save match facts to gallery</string>
+    <string name="pref_default_series_length">Default series length</string>
     <string name="updating_token">Updating token</string>
     <string name="updating_player_cache">Updating player cache</string>
     <string name="cobalt">Cobalt</string>
