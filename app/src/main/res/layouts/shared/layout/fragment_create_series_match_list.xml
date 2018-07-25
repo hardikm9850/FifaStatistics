@@ -16,6 +16,18 @@
         android:orientation="vertical"
         android:background="?colorListItem">
 
+        <com.example.kevin.fifastatistics.views.DiscreteNumberPicker
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="@dimen/activity_vertical_margin"
+            android:background="?cardViewBackground"
+            app:min="@integer/series_length_min"
+            app:max="@integer/series_length_max"
+            app:step="2"
+            app:start="@{listViewModel.seriesScoreViewModel.defaultSeriesLength}"
+            app:numberChangedListener="@{listViewModel.seriesScoreViewModel}"/>
+
         <include
             android:id="@+id/create_series_score_summary"
             layout="@layout/create_series_score_summary"

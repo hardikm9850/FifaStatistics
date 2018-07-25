@@ -28,4 +28,12 @@
         <attr name="buttonTheme" format="integer"/>
     </declare-styleable>
 
+    <declare-styleable name="DiscreteNumberPicker">
+        <attr name="min" format="integer"/>
+        <attr name="max" format="integer"/>
+        <attr name="step" format="integer"/>
+        <attr name="textLabel" format="string"/>
+        <attr name="start" format="integer"/>
+    </declare-styleable>
+
 </resources>
