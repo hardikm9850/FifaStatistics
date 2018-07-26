@@ -23,7 +23,7 @@ public class DiscreteNumberPicker extends LinearLayout {
     private static final int DEFAULT_MIN = 0;
     private static final int DEFAULT_MAX = 99;
     private static final int DEFAULT_STEP = 1;
-    private static final int STEP_MULTIPLER = 1000;
+    private static final int STEP_MULTIPLER = 10;
 
     private OnNumberChangedListener listener;
     private TextView label;
@@ -100,12 +100,16 @@ public class DiscreteNumberPicker extends LinearLayout {
         seekBar = root.findViewById(R.id.seekbar);
         seekBar.setMax(max*STEP_MULTIPLER - min*STEP_MULTIPLER);
         seekBar.setMin(0);
-        seekBar.setOnSeekBarChangeListener(new SimpleOnSeekBarChangeListener(){
+        seekBar.setOnSeekBarChangeListener(new SimpleOnSeekBarChangeListener() {
             @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-                int progress = seekBar.getProgress();
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 currentValue = getClosestValueTo(progress);
                 setLabel();
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                setSeekbarValue();
                 notifyChange();
             }
         });
@@ -118,9 +122,6 @@ public class DiscreteNumberPicker extends LinearLayout {
     }
 
     private int getClosestValueTo(int value) {
-        Log.d("SEEKBAR", "value: " + value);
-        Log.d("SEEKBAR", "min:" + seekBar.getMin());
-        Log.d("SEEKBAR", "max:" + seekBar.getMax());
         int floor = values.floor(value);
         int ceiling = values.ceiling(value);
         int lowerDistance = Math.abs(value - floor);
@@ -144,7 +145,7 @@ public class DiscreteNumberPicker extends LinearLayout {
     }
 
     private void setSeekbarValue() {
-        int seekbarValue = currentValue*STEP_MULTIPLER;
+        int seekbarValue = (currentValue - min)*STEP_MULTIPLER;
         seekBar.setProgress(seekbarValue);
     }
 
