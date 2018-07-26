@@ -2,6 +2,7 @@ package com.example.kevin.fifastatistics.viewmodels;
 
 import android.databinding.ObservableArrayList;
 import android.databinding.ObservableList;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 
@@ -15,6 +16,7 @@ import com.example.kevin.fifastatistics.interfaces.OnSeriesCompletedListener;
 import com.example.kevin.fifastatistics.interfaces.OnSeriesScoreUpdateListener;
 import com.example.kevin.fifastatistics.interfaces.OnSeriesUpdatedListener;
 import com.example.kevin.fifastatistics.interfaces.OnTeamSelectedListener;
+import com.example.kevin.fifastatistics.managers.preferences.PrefsManager;
 import com.example.kevin.fifastatistics.managers.sync.CurrentSeriesSynchronizer;
 import com.example.kevin.fifastatistics.models.databasemodels.league.Team;
 import com.example.kevin.fifastatistics.models.databasemodels.match.Match;
@@ -23,6 +25,7 @@ import com.example.kevin.fifastatistics.models.databasemodels.user.Friend;
 import com.example.kevin.fifastatistics.models.databasemodels.user.User;
 import com.example.kevin.fifastatistics.utils.CollectionUtils;
 import com.example.kevin.fifastatistics.viewmodels.item.CreateSeriesListItemViewModel;
+import com.example.kevin.fifastatistics.views.DiscreteNumberPicker;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -31,7 +34,7 @@ import java.util.List;
 import me.tatarka.bindingcollectionadapter.ItemView;
 
 public class CreateSeriesMatchListViewModel extends FifaBaseViewModel implements OnMatchUpdatedListener,
-        OnTeamSelectedListener, OnMatchCreatedListener {
+        OnTeamSelectedListener, OnMatchCreatedListener, DiscreteNumberPicker.OnNumberChangedListener {
 
     private final ObservableList<CreateSeriesListItemViewModel> mItems;
     private final ItemView mItemView;
@@ -63,14 +66,18 @@ public class CreateSeriesMatchListViewModel extends FifaBaseViewModel implements
         mSeriesScoreViewModel = new CreateSeriesScoreViewModel(user, opponent,
                 scoreUpdateListener, activity, launcher, series, userTeam, opponentTeam);
         mOnSeriesCompletedListener = seriesCompletedListener;
-        mMaxSeriesLength = Series.DEFAULT_MAX_SERIES_LENGTH;
         mUpdatedMatchIndex = -1;
         mOnMatchUpdateListeners = Arrays.asList(mSeriesScoreViewModel, this);
         restoreSeries(series);
     }
 
     private void restoreSeries(Series series) {
+        mMaxSeriesLength = PrefsManager.getDefaultSeriesLength();
         if (series != null && series.getMatches() != null) {
+            int numberOfMatches = series.getMatches().size();
+            if (numberOfMatches > mMaxSeriesLength) {
+                mMaxSeriesLength = numberOfMatches + 1 - (numberOfMatches % 2);
+            }
             for (Match match : series.getMatches()) {
                 mItems.add(new CreateSeriesListItemViewModel(mLauncher, match, mUser, mOpponent, mItems.size() + 1, mOnMatchUpdateListeners));
                 maybeEndSeries(match);
@@ -100,6 +107,10 @@ public class CreateSeriesMatchListViewModel extends FifaBaseViewModel implements
         } else {
             mOpponentWins++;
         }
+        completeSeriesIfWon();
+    }
+
+    private void completeSeriesIfWon() {
         if (didWinSeries(mUserWins) || didWinSeries(mOpponentWins)) {
             Series series = getSeries();
             mIsSeriesDone = true;
@@ -237,5 +248,23 @@ public class CreateSeriesMatchListViewModel extends FifaBaseViewModel implements
             mSeriesScoreViewModel.setUserTeam(userTeam);
             mSeriesScoreViewModel.setOpponentTeam(opponentTeam);
         }
+    }
+
+    public int getDefaultSeriesLength() {
+        return mMaxSeriesLength;
+    }
+
+    @Override
+    public void onNumberPickerNumberChanged(int newNumber) {
+        mMaxSeriesLength = newNumber;
+        if (isSeriesIncomplete()) {
+            mOnSeriesCompletedListener.onSeriesContinued();
+        } else {
+            completeSeriesIfWon();
+        }
+    }
+
+    private boolean isSeriesIncomplete() {
+        return !didWinSeries(mUserWins) && !didWinSeries(mOpponentWins);
     }
 }

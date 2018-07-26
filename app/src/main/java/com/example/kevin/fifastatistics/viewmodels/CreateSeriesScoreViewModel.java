@@ -3,7 +3,6 @@ package com.example.kevin.fifastatistics.viewmodels;
 import android.content.Context;
 import android.content.Intent;
 import android.databinding.Bindable;
-import android.util.Log;
 
 import com.example.kevin.fifastatistics.BR;
 import com.example.kevin.fifastatistics.activities.PickTeamActivity;
@@ -21,13 +20,12 @@ import com.example.kevin.fifastatistics.models.databasemodels.match.Series;
 import com.example.kevin.fifastatistics.models.databasemodels.user.Friend;
 import com.example.kevin.fifastatistics.models.databasemodels.user.Player;
 import com.example.kevin.fifastatistics.utils.ObservableUtils;
-import com.example.kevin.fifastatistics.views.DiscreteNumberPicker;
 
 import rx.Observable;
 import rx.Subscription;
 
 public class CreateSeriesScoreViewModel extends FifaBaseViewModel
-        implements OnMatchUpdatedListener, OnTeamSelectedListener, DiscreteNumberPicker.OnNumberChangedListener {
+        implements OnMatchUpdatedListener, OnTeamSelectedListener {
 
     private Player mUser;
     private Player mOpponent;
@@ -177,10 +175,6 @@ public class CreateSeriesScoreViewModel extends FifaBaseViewModel
         mListener.onOpponentTeamUpdated(team);
     }
 
-    public int getDefaultSeriesLength() {
-        return PrefsManager.getDefaultSeriesLength();
-    }
-
     @Bindable
     public String getUserTeamImageUrl() {
         return mUserTeam != null ? CrestUrlResizer.resizeSmall(mUserTeam.getCrestUrl()) : null;
@@ -217,10 +211,5 @@ public class CreateSeriesScoreViewModel extends FifaBaseViewModel
     @Override
     public void setMatchIndex(int index) {
 
-    }
-
-    @Override
-    public void onNumberChanged(int newNumber) {
-        Log.d("SCORE", "value: " + newNumber);
     }
 }

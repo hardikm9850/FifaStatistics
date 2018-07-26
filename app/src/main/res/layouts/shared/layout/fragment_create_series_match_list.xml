@@ -25,8 +25,8 @@
             app:min="@integer/series_length_min"
             app:max="@integer/series_length_max"
             app:step="2"
-            app:start="@{listViewModel.seriesScoreViewModel.defaultSeriesLength}"
-            app:numberChangedListener="@{listViewModel.seriesScoreViewModel}"/>
+            app:start="@{listViewModel.defaultSeriesLength}"
+            app:numberChangedListener="@{listViewModel}"/>
 
         <include
             android:id="@+id/create_series_score_summary"

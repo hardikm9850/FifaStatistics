@@ -3,30 +3,32 @@ package com.example.kevin.fifastatistics.views;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.databinding.BindingAdapter;
+import android.graphics.Typeface;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import com.example.kevin.fifastatistics.FifaApplication;
 import com.example.kevin.fifastatistics.R;
+import com.example.kevin.fifastatistics.animation.AnimationHelper;
 import com.example.kevin.fifastatistics.listeners.SimpleOnSeekBarChangeListener;
+import com.example.kevin.fifastatistics.utils.ColorUtils;
 
 import java.util.NavigableSet;
 import java.util.TreeSet;
 
 public class DiscreteNumberPicker extends LinearLayout {
 
-    private static final int MESSAGE_ID = R.string.best_of;
     private static final int DEFAULT_MIN = 0;
     private static final int DEFAULT_MAX = 99;
     private static final int DEFAULT_STEP = 1;
     private static final int STEP_MULTIPLER = 10;
 
     private OnNumberChangedListener listener;
-    private TextView label;
+    private TextView numberLabel;
     private SeekBar seekBar;
     private NavigableSet<Integer> values;
     private int min;
@@ -56,7 +58,7 @@ public class DiscreteNumberPicker extends LinearLayout {
     private View initView(Context context) {
         setOrientation(HORIZONTAL);
         View root = inflate(context, R.layout.widget_number_picker, this);
-        label = root.findViewById(R.id.text);
+        numberLabel = root.findViewById(R.id.number_textview);
         return root;
     }
 
@@ -77,6 +79,7 @@ public class DiscreteNumberPicker extends LinearLayout {
 
     private void processStart(int start) {
         if (start >= min && start <= max) {
+            setLabel();
             setSeekbarValue();
         }
     }
@@ -106,10 +109,14 @@ public class DiscreteNumberPicker extends LinearLayout {
                 currentValue = getClosestValueTo(progress);
                 setLabel();
             }
-
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+                focusNumberLabel();
+            }
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
                 setSeekbarValue();
+                unfocusNumberLabel();
                 notifyChange();
             }
         });
@@ -117,7 +124,7 @@ public class DiscreteNumberPicker extends LinearLayout {
 
     private void notifyChange() {
         if (listener != null) {
-            listener.onNumberChanged(currentValue);
+            listener.onNumberPickerNumberChanged(currentValue);
         }
     }
 
@@ -127,6 +134,18 @@ public class DiscreteNumberPicker extends LinearLayout {
         int lowerDistance = Math.abs(value - floor);
         int higherDistance = Math.abs(value - ceiling);
         return ((lowerDistance < higherDistance ? floor : ceiling)/STEP_MULTIPLER) + min;
+    }
+
+    private void focusNumberLabel() {
+        AnimationHelper.scaleIn(numberLabel);
+        numberLabel.setTypeface(null, Typeface.BOLD);
+        numberLabel.setTextColor(FifaApplication.getAccentColor());
+    }
+
+    private void unfocusNumberLabel() {
+        AnimationHelper.scaleOut(numberLabel);
+        numberLabel.setTypeface(null, Typeface.NORMAL);
+        numberLabel.setTextColor(ColorUtils.getPrimaryTextColor(getContext()));
     }
 
     public void setOnNumberChangedListener(OnNumberChangedListener listener) {
@@ -140,8 +159,8 @@ public class DiscreteNumberPicker extends LinearLayout {
     }
 
     private void setLabel() {
-        String text = getContext().getString(MESSAGE_ID, currentValue);
-        label.setText(text);
+        String text = String.valueOf(currentValue);
+        numberLabel.setText(text);
     }
 
     private void setSeekbarValue() {
@@ -150,7 +169,7 @@ public class DiscreteNumberPicker extends LinearLayout {
     }
 
     public interface OnNumberChangedListener {
-        void onNumberChanged(int newNumber);
+        void onNumberPickerNumberChanged(int newNumber);
     }
 
     @BindingAdapter("numberChangedListener")
