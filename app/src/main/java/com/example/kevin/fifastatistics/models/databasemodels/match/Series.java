@@ -46,11 +46,11 @@ public class Series extends DatabaseModel implements TeamEvent, FifaEvent {
     private int matchesWinner;
     private int matchesLoser;
     private int matchesPlayed;
-    private int bestOf;
 
     @Setter private String currentSeriesId;
     @Setter private Team teamWinner;
     @Setter private Team teamLoser;
+    @Setter private int bestOf;
     @JsonIgnore private Friend playerOne;
     @JsonIgnore private Friend playerTwo;
     @JsonIgnore private int playerOneWins;

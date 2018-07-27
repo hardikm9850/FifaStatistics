@@ -114,6 +114,7 @@ public class CreateSeriesMatchListViewModel extends FifaBaseViewModel implements
     private void completeSeriesIfWon() {
         if (didWinSeries(mUserWins) || didWinSeries(mOpponentWins)) {
             Series series = getSeries();
+            series.setBestOf(getMinimumSeriesLength());
             mIsSeriesDone = true;
             mOnSeriesCompletedListener.onSeriesCompleted(series);
         }
@@ -126,6 +127,7 @@ public class CreateSeriesMatchListViewModel extends FifaBaseViewModel implements
     private Series getSeries() {
         List<Match> matches = getMatches();
         Series series = new Series(Friend.fromPlayer(mUser), mOpponent);
+        series.setBestOf(mMaxSeriesLength);
         series.addAll(matches);
         if (mUserWins > mOpponentWins) {
             series.setTeamWinner(mSeriesScoreViewModel.getUserTeam());
