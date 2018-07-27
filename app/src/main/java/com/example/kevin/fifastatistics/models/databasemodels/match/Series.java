@@ -1,5 +1,10 @@
 package com.example.kevin.fifastatistics.models.databasemodels.match;
 
+import android.content.Context;
+import android.content.res.Resources;
+
+import com.example.kevin.fifastatistics.FifaApplication;
+import com.example.kevin.fifastatistics.R;
 import com.example.kevin.fifastatistics.models.databasemodels.DatabaseModel;
 import com.example.kevin.fifastatistics.models.databasemodels.footballers.Leaders;
 import com.example.kevin.fifastatistics.models.databasemodels.league.Team;
@@ -21,7 +26,14 @@ import lombok.Setter;
 @Getter
 public class Series extends DatabaseModel implements TeamEvent, FifaEvent {
 
-    public static final int DEFAULT_MAX_SERIES_LENGTH = 7;
+    public static final int DEFAULT_MAX_SERIES_LENGTH;
+    public static final int MIN_SERIES_LENGTH;
+
+    static {
+        Resources r = FifaApplication.getContext().getResources();
+        DEFAULT_MAX_SERIES_LENGTH = r.getInteger(R.integer.series_length_default);
+        MIN_SERIES_LENGTH = r.getInteger(R.integer.series_length_min);
+    }
 
     private String id;
     private Friend winner;

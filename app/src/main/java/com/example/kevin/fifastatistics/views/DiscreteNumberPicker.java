@@ -35,6 +35,7 @@ public class DiscreteNumberPicker extends LinearLayout {
     private int max;
     private int step;
     private int currentValue;
+    private int lowerThreshold;
 
     public DiscreteNumberPicker(Context context) {
         this(context, null);
@@ -68,6 +69,7 @@ public class DiscreteNumberPicker extends LinearLayout {
             max = ta.getInt(R.styleable.DiscreteNumberPicker_max, DEFAULT_MAX);
             min = ta.getInt(R.styleable.DiscreteNumberPicker_min, DEFAULT_MIN);
             step = ta.getInt(R.styleable.DiscreteNumberPicker_step, DEFAULT_STEP);
+            lowerThreshold = min;
             int start = ta.getInt(R.styleable.DiscreteNumberPicker_start, min - 1);
             processStart(start);
             verifyAttributes();
@@ -106,8 +108,13 @@ public class DiscreteNumberPicker extends LinearLayout {
         seekBar.setOnSeekBarChangeListener(new SimpleOnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                currentValue = getClosestValueTo(progress);
-                setLabel();
+                int thresholdMin = (lowerThreshold - min)*STEP_MULTIPLER;
+                if (progress < thresholdMin) {
+                    seekBar.setProgress(thresholdMin);
+                } else {
+                    currentValue = getClosestValueTo(progress);
+                    setLabel();
+                }
             }
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
@@ -168,6 +175,12 @@ public class DiscreteNumberPicker extends LinearLayout {
         seekBar.setProgress(seekbarValue);
     }
 
+    public void setLowerThreshold(int lowerThreshold) {
+        if (lowerThreshold >= min) {
+            this.lowerThreshold = lowerThreshold;
+        }
+    }
+
     public interface OnNumberChangedListener {
         void onNumberPickerNumberChanged(int newNumber);
     }
@@ -180,5 +193,10 @@ public class DiscreteNumberPicker extends LinearLayout {
     @BindingAdapter("start")
     public static void setStart(DiscreteNumberPicker picker, int start) {
         picker.setStartValue(start);
+    }
+
+    @BindingAdapter("lowerThreshold")
+    public static void setLowerThreshold(DiscreteNumberPicker picker, int threshold) {
+        picker.setLowerThreshold(threshold);
     }
 }

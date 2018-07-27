@@ -1,5 +1,6 @@
 package com.example.kevin.fifastatistics.viewmodels;
 
+import android.databinding.Bindable;
 import android.databinding.ObservableArrayList;
 import android.databinding.ObservableList;
 import android.util.Log;
@@ -151,6 +152,7 @@ public class CreateSeriesMatchListViewModel extends FifaBaseViewModel implements
     }
 
     private void notifySeriesUpdated() {
+        notifyPropertyChanged(BR.minimumSeriesLength);
         if (mOnSeriesUpdateListener != null) {
             mOnSeriesUpdateListener.onSeriesUpdated(getSeries());
         }
@@ -252,6 +254,12 @@ public class CreateSeriesMatchListViewModel extends FifaBaseViewModel implements
 
     public int getDefaultSeriesLength() {
         return mMaxSeriesLength;
+    }
+
+    @Bindable
+    public int getMinimumSeriesLength() {
+        int mostWins = Math.max(mUserWins, mOpponentWins);
+        return Math.max((mostWins*2) - 1, Series.MIN_SERIES_LENGTH);
     }
 
     @Override

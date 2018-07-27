@@ -26,6 +26,7 @@
             app:max="@integer/series_length_max"
             app:step="2"
             app:start="@{listViewModel.defaultSeriesLength}"
+            app:lowerThreshold="@{listViewModel.minimumSeriesLength}"
             app:numberChangedListener="@{listViewModel}"/>
 
         <include
