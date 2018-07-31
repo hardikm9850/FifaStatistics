@@ -35,6 +35,12 @@ public class Footballer extends DatabaseModel implements Searchable {
         return name;
     }
 
+    @JsonIgnore
+    @Override
+    public String getSecondarySearchString() {
+        return firstName + " " + lastName;
+    }
+
     @Override
     public String toString() {
         return SerializationUtils.toFormattedJson(this);

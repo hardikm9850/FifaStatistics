@@ -51,16 +51,28 @@ public class Trie<T extends Searchable> implements Serializable {
         if (item == null || item.getSearchString() == null) {
             return;
         }
+        if (!doInsert(item, true)) {
+            doInsert(item, false);
+        }
+    }
+
+    private boolean doInsert(T item, boolean primaryString) {
         Trie<T> node = this;
-        String word = stripAccents(item.getSearchString());
+        String accentedWord = primaryString ? item.getSearchString() : item.getSecondarySearchString();
+        String word = stripAccents(accentedWord);
+        boolean unique = false;
         for (char c : word.toCharArray()) {
             c = Character.toLowerCase(c);
             if (!node.children.containsKey(c)) {
                 node.add(c);
+                unique = true;
             }
             node = node.children.get(c);
         }
-        node.item = item;
+        if (unique) {
+            node.item = item;
+        }
+        return unique;
     }
 
     private String stripAccents(String s) {
