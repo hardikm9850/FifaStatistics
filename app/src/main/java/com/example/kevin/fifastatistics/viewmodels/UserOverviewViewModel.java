@@ -17,7 +17,6 @@ import com.example.kevin.fifastatistics.viewmodels.card.RecordsCardViewModel;
 import com.example.kevin.fifastatistics.viewmodels.card.StatsCardViewModel;
 import com.example.kevin.fifastatistics.viewmodels.card.UpdatesCardViewModel;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import rx.Observable;

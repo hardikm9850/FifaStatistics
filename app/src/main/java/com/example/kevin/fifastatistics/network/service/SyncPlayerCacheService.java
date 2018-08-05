@@ -56,7 +56,7 @@ public class SyncPlayerCacheService extends IntentService implements FragmentArg
     }
 
     private void syncPlayers() {
-        Log.d(NAME, "loading footballer cachce");
+        Log.d(NAME, "loading footballer cache");
         FifaApi.getFootballerApi().getFootballers()
                 .retryWhen(ObservableUtils.getExponentialBackoffRetryWhen())
                 .compose(ObservableUtils.applySchedulers())
